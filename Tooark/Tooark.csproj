@@ -4,6 +4,21 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>Tooark</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <Company>Grupo Jacto</Company>
+    <PackageDescription>Set of tools and functions for C# projects</PackageDescription>
+    <Description>Set of tools and functions for C# projects</Description>
+    <RepositoryUrL>https://github.com/Grupo-Jacto/tooark</RepositoryUrL>
+    <PackageProjectUrl>https://github.com/Grupo-Jacto/tooark</PackageProjectUrl>
+    <PackageIcon>icon.jpeg</PackageIcon>
+    <PackageTags>toolkit</PackageTags>
+    <Title>Tooark</Title>
+    <Summary>Set of tools and functions for C# projects</Summary>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="..\Media\icon.jpeg" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>
