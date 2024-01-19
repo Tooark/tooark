@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Defining main branch
-      uses: actions/checkout@main
+    - name: Checkout
+      uses: actions/checkout@v2
 
     - name: Set up .Net Core
       uses: actions/setup-dotnet@v3
