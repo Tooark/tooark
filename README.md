@@ -18,19 +18,39 @@ Restaure configurações do projeto .NET
 
 `dotnet restore`
 
-### Estrutura do projeto
+---
 
-tooark  
-- .github  
-  - workflows
-- Media
-- Tooark
-  - Extensions
-  - Types
-- Tooark.Benchmarks  
-  - Benchmarks  
-  - Models  
-  - Services  
-- Tooark.Tests  
-  - Extensions  
-  - Models  
+## Configurar package source para o Nuget utilizar também o GitHub Package
+
+``` XML
+<configuration>
+  <packageSources>
+    <add key="github" value="https://nuget.pkg.github.com/Grupo-Jacto/index.json" />
+  </packageSources>
+  <packageSourceCredentials>
+    <github>
+      <add key="Username" value="<username-github>" />
+      <add key="ClearTextPassword" value="<personal-access-tokens-classic>" />
+    </github>
+  </packageSourceCredentials>
+</configuration> 
+```
+
+---
+
+## Estrutura do projeto
+
+- tooark
+  - .github
+    - workflows
+  - Media
+  - Tooark
+    - Extensions
+    - Types
+  - Tooark.Benchmarks
+    - Benchmarks
+    - Models
+    - Services
+  - Tooark.Tests
+    - Extensions
+    - Models
