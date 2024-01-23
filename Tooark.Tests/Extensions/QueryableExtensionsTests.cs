@@ -1,6 +1,6 @@
 using System.Text;
 using Tooark.Extensions;
-using Tooark.Tests.Model;
+using Tooark.Tests.Models;
 
 namespace Tooark.Tests.Extensions;
 
