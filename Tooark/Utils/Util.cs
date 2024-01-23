@@ -10,24 +10,27 @@ public static class Util
     public static string Current => CultureInfo.CurrentCulture.Name;
   }
 
-  public static string GetName<T>(IList<T> listValue)
+  public static string GetName<T>(IList<T> listValue, string? languageCode = null!)
   {
-    return GetLanguageCode(listValue, "Name");
+    languageCode ??= Languages.Current;
+    return GetLanguageCode(listValue, "Name", languageCode);
   }
 
-  public static string GetTitle<T>(IList<T> listValue)
+  public static string GetTitle<T>(IList<T> listValue, string? languageCode = null!)
   {
-    return GetLanguageCode(listValue, "Title");
+    languageCode ??= Languages.Current;
+    return GetLanguageCode(listValue, "Title", languageCode);
   }
 
-  public static string GetDescription<T>(IList<T> listValue)
+  public static string GetDescription<T>(IList<T> listValue, string? languageCode = null!)
   {
-    return GetLanguageCode(listValue, "Description");
+    languageCode ??= Languages.Current;
+    return GetLanguageCode(listValue, "Description", languageCode);
   }
 
-  public static string GetLanguageCode<T>(IList<T> listValue, string property)
+  public static string GetLanguageCode<T>(IList<T> listValue, string property, string currentLanguageCode = null!)
   {
-    var currentLanguageCode = Languages.Current;
+    currentLanguageCode ??= Languages.Current;
     var defaultLanguageCode = Languages.Default;
 
     var languageCodeProperty = typeof(T).GetProperty("LanguageCode");
