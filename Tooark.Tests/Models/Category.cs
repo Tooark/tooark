@@ -1,4 +1,4 @@
-namespace Tooark.Tests.Model;
+namespace Tooark.Tests.Models;
 
 public class Category
 {
