@@ -2,7 +2,7 @@ using System.Text;
 using Tooark.Extensions;
 using Tooark.Tests.Model;
 
-namespace Tooark.Tests;
+namespace Tooark.Tests.Extensions;
 
 public class QueryableExtensionsTests
 {
@@ -77,7 +77,7 @@ public class QueryableExtensionsTests
     var queryable = _categories.AsQueryable();
     var orderedResult = queryable.OrderByProperty("Type").ToList();
 
-  
+
     Assert.Equal("Type I", orderedResult[0].Type);
     Assert.Equal("Type K", orderedResult[1].Type);
     Assert.Equal("Type N", orderedResult[2].Type);
@@ -200,5 +200,5 @@ public class QueryableExtensionsTests
     Assert.Equal(3, orderedResult[2].Id);
     Assert.Equal(2, orderedResult[3].Id);
     Assert.Equal(1, orderedResult[4].Id);
-  }  
+  }
 }

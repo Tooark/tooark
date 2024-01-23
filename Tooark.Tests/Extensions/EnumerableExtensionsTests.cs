@@ -2,7 +2,7 @@ using System.Text;
 using Tooark.Extensions;
 using Tooark.Tests.Model;
 
-namespace Tooark.Tests;
+namespace Tooark.Tests.Extensions;
 
 public class EnumerableExtensionsTests
 {

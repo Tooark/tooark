@@ -7,11 +7,8 @@ public class ParameterSearchDto
   public int PageSize { get; set; } = 50;
 }
 
-public class ParameterSearchOrderDto
+public class ParameterSearchOrderDto : ParameterSearchDto
 {
-  public string? Search { get; set; }
-  public int PageIndex { get; set; } = 0;
-  public int PageSize { get; set; } = 50;
   public Order? Order { get; set; }
 }
 
