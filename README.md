@@ -22,6 +22,33 @@ Restaure configurações do projeto .NET
 
 ## Configurar package source para o Nuget utilizar também o GitHub Package
 
+### Opção 1: Editar arquivo 'Nuget.Config' global
+
+Abra o arquivo de configuração do Nuget.Config global:
+
+`c:\Users\<seu-usuario>\AppData\Roaming\NuGet\NuGet.Config`
+
+Revise as configurações conforme abaixo
+
+``` XML
+<configuration>
+  <packageSources>
+    <... Manter aqui outras fontes que já utiliza ...>
+    <add key="github" value="https://nuget.pkg.github.com/Grupo-Jacto/index.json" />
+  </packageSources>
+  <packageSourceCredentials>
+    <github>
+      <add key="Username" value="<username-github>" />
+      <add key="ClearTextPassword" value="<personal-access-tokens-classic>" />
+    </github>
+  </packageSourceCredentials>
+</configuration> 
+```
+
+### Opção 2: Criar arquivo 'Nuget.Config' dentro do projeto
+
+No projeto que vai utilizar a biblioteca crie um arquivo 'Nuget.Config' e adicione as configurações abaixo. Lembre de adicionar o 'Nuget.Config' ao arquivo '.gitignore' para não subir para o repositório chave de acesso.
+
 ``` XML
 <configuration>
   <packageSources>
@@ -36,21 +63,15 @@ Restaure configurações do projeto .NET
 </configuration> 
 ```
 
----
+### Opção 3: Executar comando para configurar fonte de pacotes
 
-## Estrutura do projeto
+Abra o terminal e execute o comando abaixo
 
-- tooark
-  - .github
-    - workflows
-  - Media
-  - Tooark
-    - Extensions
-    - Types
-  - Tooark.Benchmarks
-    - Benchmarks
-    - Models
-    - Services
-  - Tooark.Tests
-    - Extensions
-    - Models
+``` sh
+dotnet nuget add source https://nuget.pkg.github.com/Grupo-Jacto/index.json -n github -u <username-github> -p <personal-access-tokens-classic> --store-password-in-clear-text
+```
+
+> ### Para todas as opções substitua os textos abaixo pelos seus dados de acesso
+> 
+> - `<username-github>`
+> - `<personal-access-tokens-classic>`
