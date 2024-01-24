@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace Tooark.Extensions;
 
+/// <summary>
+/// Fornece extensões para IQueryable que facilitam operações de ordenação e filtragem dinâmica
+/// </summary>
 public static class QueryableExtensions
 {
   private static bool IsCollection { get; set; } = false;
@@ -27,6 +30,16 @@ public static class QueryableExtensions
       m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IEnumerable<>) &&
       m.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Func<,>));
 
+  /// <summary>
+  /// Aplica ordenação dinâmica a uma fonte de dados IQueryable
+  /// </summary>
+  /// <typeparam name="T">O tipo de elemento da fonte de dados</typeparam>
+  /// <param name="source">A fonte de dados IQueryable</param>
+  /// <param name="propertyName">O nome da propriedade para ordenar</param>
+  /// <param name="ascending">True para ordenação ascendente, False para descendente</param>
+  /// <param name="propertyEquals">Propriedade para condição de igualdade adicional (opcional)</param>
+  /// <param name="valueEquals">Valor para a condição de igualdade (opcional)</param>
+  /// <returns>Um IQueryable ordenado conforme especificado</returns>
   public static IQueryable<T> OrderByProperty<T>(
     this IQueryable<T> source,
     string? propertyName,
@@ -325,7 +338,7 @@ public static class QueryableExtensions
     return firstOrDefaultExpression;
   }
 
-  public static ConstantExpression GetDefaultValue(Type type)
+  private static ConstantExpression GetDefaultValue(Type type)
   {
     if (type == null)
     {
