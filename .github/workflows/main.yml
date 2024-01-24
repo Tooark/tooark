@@ -31,7 +31,7 @@ jobs:
       run: dotnet test
 
     - name: Create the package
-      run: dotnet pack --configuration Release
+      run: dotnet pack --configuration Release /p:NoWarn="1591" /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg
 
     - name: Publish the package to GPR
       run: dotnet nuget push Tooark/bin/Release/*.nupkg --source "https://nuget.pkg.github.com/Grupo-Jacto" --api-key ${{secrets.GITHUB_TOKEN}}
