@@ -30,7 +30,7 @@ Abra o arquivo de configuração do Nuget.Config global:
 
 Revise as configurações conforme abaixo
 
-``` XML
+```XML
 <configuration>
   <packageSources>
     <... Manter aqui outras fontes que já utiliza ...>
@@ -42,14 +42,14 @@ Revise as configurações conforme abaixo
       <add key="ClearTextPassword" value="<personal-access-tokens-classic>" />
     </github>
   </packageSourceCredentials>
-</configuration> 
+</configuration>
 ```
 
 ### Opção 2: Criar arquivo 'Nuget.Config' dentro do projeto
 
 No projeto que vai utilizar a biblioteca crie um arquivo 'Nuget.Config' e adicione as configurações abaixo. Lembre de adicionar o 'Nuget.Config' ao arquivo '.gitignore' para não subir para o repositório chave de acesso.
 
-``` XML
+```XML
 <configuration>
   <packageSources>
     <add key="github" value="https://nuget.pkg.github.com/Grupo-Jacto/index.json" />
@@ -60,18 +60,54 @@ No projeto que vai utilizar a biblioteca crie um arquivo 'Nuget.Config' e adicio
       <add key="ClearTextPassword" value="<personal-access-tokens-classic>" />
     </github>
   </packageSourceCredentials>
-</configuration> 
+</configuration>
 ```
 
 ### Opção 3: Executar comando para configurar fonte de pacotes
 
 Abra o terminal e execute o comando abaixo
 
-``` sh
+```sh
 dotnet nuget add source https://nuget.pkg.github.com/Grupo-Jacto/index.json -n github -u <username-github> -p <personal-access-tokens-classic> --store-password-in-clear-text
 ```
 
 > ### Para todas as opções substitua os textos abaixo pelos seus dados de acesso
-> 
+>
 > - `<username-github>`
 > - `<personal-access-tokens-classic>`
+
+---
+
+## Configurar para exibir documentação do swagger
+
+1. No arquivo `*.csproj` do projeto que vai utilizar a biblioteca Tooark adicione a configuração abaixo:
+
+```XML
+<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <ItemGroup>
+    <TooarkDocs Include="$(UserProfile)\.nuget\packages\tooark\*\lib\net7.0\Tooark.xml" />
+  </ItemGroup>
+  <Copy SourceFiles="@(TooarkDocs)" DestinationFolder="$(OutputPath)" Condition="Exists('@(TooarkDocs)')" />
+</Target>
+```
+
+2. No arquivo `Program.cs` adicione o código abaixo dentro do `builder.Services.AddSwaggerGen`
+
+```C#
+var tooarkXmlFile = "Tooark.xml";
+var tooarkXmlPath = Path.Combine(AppContext.BaseDirectory, tooarkXmlFile);
+c.IncludeXmlComments(tooarkXmlPath);
+```
+
+O resultado do trecho do código do `Program.cs`
+
+```C#
+builder.Services.AddSwaggerGen(c =>
+{
+  // SEU CÓDIGO AQUI...
+
+  var tooarkXmlFile = "Tooark.xml";
+  var tooarkXmlPath = Path.Combine(AppContext.BaseDirectory, tooarkXmlFile);
+  c.IncludeXmlComments(tooarkXmlPath);
+});
+```
