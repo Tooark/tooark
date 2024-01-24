@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '7.0.x'
-        source-url: https://nuget.pkg.github.com/minha-organizacao/index.json
+        source-url: https://nuget.pkg.github.com/Grupo-Jacto/index.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     
@@ -34,4 +34,4 @@ jobs:
       run: dotnet pack --configuration Release /p:NoWarn="1591" /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:DocumentationFile=Tooark.xml
 
     - name: Publish the package to GPR
-      run: dotnet nuget push Tooark/bin/Release/*.nupkg --source "https://nuget.pkg.github.com/minha-organizacao" --api-key ${{secrets.GITHUB_TOKEN}}
+      run: dotnet nuget push Tooark/bin/Release/*.nupkg --source "https://nuget.pkg.github.com/Grupo-Jacto" --api-key ${{secrets.GITHUB_TOKEN}}
