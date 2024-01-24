@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace Tooark.Extensions;
 
+/// <summary>
+/// Fornece extensões para IEnumerable que facilitam operações de ordenação e filtragem dinâmica.
+/// </summary>
 public static class EnumerableExtensions
 {
   private static bool IsCollection { get; set; } = false;
@@ -27,6 +30,16 @@ public static class EnumerableExtensions
       m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IEnumerable<>) &&
       m.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Func<,>));
 
+  /// <summary>
+  /// Aplica ordenação dinâmica a uma fonte de dados IEnumerable
+  /// </summary>
+  /// <typeparam name="T">O tipo de elemento da fonte de dados</typeparam>
+  /// <param name="source">A fonte de dados IEnumerable</param>
+  /// <param name="propertyName">O nome da propriedade para ordenar</param>
+  /// <param name="ascending">True para ordenação ascendente, False para descendente</param>
+  /// <param name="propertyEquals">Propriedade para condição de igualdade adicional (opcional)</param>
+  /// <param name="valueEquals">Valor para a condição de igualdade (opcional)</param>
+  /// <returns>Um IEnumerable ordenado conforme especificado</returns>
   public static IEnumerable<T> OrderByProperty<T>(
     this IEnumerable<T> source,
     string? propertyName,
@@ -319,7 +332,7 @@ public static class EnumerableExtensions
     return firstOrDefaultExpression;
   }
 
-  public static ConstantExpression GetDefaultValue(Type type)
+  private static ConstantExpression GetDefaultValue(Type type)
   {
     if (type == null)
     {
