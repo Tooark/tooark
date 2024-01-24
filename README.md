@@ -89,6 +89,12 @@ dotnet nuget add source https://nuget.pkg.github.com/Grupo-Jacto/index.json -n g
   </ItemGroup>
   <Copy SourceFiles="@(TooarkDocs)" DestinationFolder="$(OutputPath)" Condition="Exists('@(TooarkDocs)')" />
 </Target>
+<Target Name="PostPublish" AfterTargets="Publish">
+  <ItemGroup>
+    <TooarkDocs Include="$(UserProfile)\.nuget\packages\tooark\*\lib\net7.0\Tooark.xml" />
+  </ItemGroup>
+  <Copy SourceFiles="@(TooarkDocs)" DestinationFolder="$(PublishDir)" Condition="Exists('@(TooarkDocs)')" />
+</Target>
 ```
 
 2. No arquivo `Program.cs` adicione o código abaixo dentro do `builder.Services.AddSwaggerGen`
