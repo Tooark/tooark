@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Tooark</PackageId>
-    <Version>1.0.2.3</Version>
+    <Version>1.0.2.4</Version>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
     <Company>Grupo Jacto</Company>
     <PackageDescription>Set of tools and functions for C# projects</PackageDescription>
@@ -16,6 +16,9 @@
     <PackageTags>toolkit</PackageTags>
     <Title>Tooark</Title>
     <Summary>Set of tools and functions for C# projects</Summary>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
