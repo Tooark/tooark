@@ -1,4 +1,4 @@
-namespace Tooark.Tests.Models;
+namespace Tooark.Tests.Moq.Models.Language;
 
 public class Language
 {
