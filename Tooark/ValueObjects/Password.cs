@@ -16,11 +16,11 @@ public partial class Password : ValueObject
   /// Inicializa uma nova instância da classe Password com os critérios de complexidade especificados.
   /// </summary>
   /// <param name="value">O valor da senha a ser validado.</param>
-  /// <param name="useLowercase">Exige carácter minúsculo. Padrão: true</param>
-  /// <param name="useUppercase">Exige carácter maiúsculo. Padrão: true</param>
-  /// <param name="useNumbers">Exige carácter numérico. Padrão: true</param>
-  /// <param name="useSymbols">Exige carácter especial. Padrão: true</param>
-  /// <param name="passwordLength">Tamanho mínimo da senha. Padrão: 8</param>
+  /// <param name="useLowercase">Exige carácter minúsculo. Padrão: true.</param>
+  /// <param name="useUppercase">Exige carácter maiúsculo. Padrão: true.</param>
+  /// <param name="useNumbers">Exige carácter numérico. Padrão: true.</param>
+  /// <param name="useSymbols">Exige carácter especial. Padrão: true.</param>
+  /// <param name="passwordLength">Tamanho mínimo da senha. Padrão: 8.</param>
   public Password(string value, bool useLowercase = true, bool useUppercase = true, bool useNumbers = true, bool useSymbols = true, int passwordLength = 8)
   {
     if (string.IsNullOrWhiteSpace(value) || !IsValidPassword(value, useLowercase, useUppercase, useNumbers, useSymbols, passwordLength))
@@ -35,11 +35,11 @@ public partial class Password : ValueObject
   /// Valida a complexidade da senha.
   /// </summary>
   /// <param name="password">A senha a ser validada.</param>
-  /// <param name="useLowercase">Exige carácter minúsculo. Padrão: true</param>
-  /// <param name="useUppercase">Exige carácter maiúsculo. Padrão: true</param>
-  /// <param name="useNumbers">Exige carácter numérico. Padrão: true</param>
-  /// <param name="useSymbols">Exige carácter especial. Padrão: true</param>
-  /// <param name="passwordLength">Tamanho mínimo da senha. Padrão: 8</param>
+  /// <param name="useLowercase">Exige carácter minúsculo. Padrão: true.</param>
+  /// <param name="useUppercase">Exige carácter maiúsculo. Padrão: true.</param>
+  /// <param name="useNumbers">Exige carácter numérico. Padrão: true.</param>
+  /// <param name="useSymbols">Exige carácter especial. Padrão: true.</param>
+  /// <param name="passwordLength">Tamanho mínimo da senha. Padrão: 8.</param>
   /// <returns>Verdadeiro se a senha for válida, falso caso contrário.</returns>
   private static bool IsValidPassword(string password, bool useLowercase, bool useUppercase, bool useNumbers, bool useSymbols, int passwordLength)
   {

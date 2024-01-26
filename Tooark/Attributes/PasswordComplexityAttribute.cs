@@ -16,11 +16,11 @@ public class PasswordComplexityAttribute : ValidationAttribute
   /// <summary>
   /// Inicializa uma nova instância da classe PasswordComplexityAttribute com os critérios de complexidade especificados.
   /// </summary>
-  /// <param name="useLowercase">Exige carácter minúsculo. Padrão: true</param>
-  /// <param name="useUppercase">Exige carácter maiúsculo. Padrão: true</param>
-  /// <param name="useNumbers">Exige carácter numérico. Padrão: true</param>
-  /// <param name="useSymbols">Exige carácter especial. Padrão: true</param>
-  /// <param name="passwordLength">Tamanho mínimo da senha. Padrão: 8</param>
+  /// <param name="useLowercase">Exige carácter minúsculo. Padrão: true.</param>
+  /// <param name="useUppercase">Exige carácter maiúsculo. Padrão: true.</param>
+  /// <param name="useNumbers">Exige carácter numérico. Padrão: true.</param>
+  /// <param name="useSymbols">Exige carácter especial. Padrão: true.</param>
+  /// <param name="passwordLength">Tamanho mínimo da senha. Padrão: 8.</param>
   public PasswordComplexityAttribute(
     bool useLowercase = true,
     bool useUppercase = true,

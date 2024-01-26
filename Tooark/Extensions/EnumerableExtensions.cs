@@ -33,13 +33,13 @@ public static class EnumerableExtensions
   /// <summary>
   /// Aplica ordenação dinâmica a uma fonte de dados IEnumerable
   /// </summary>
-  /// <typeparam name="T">O tipo de elemento da fonte de dados</typeparam>
-  /// <param name="source">A fonte de dados IEnumerable</param>
-  /// <param name="propertyName">O nome da propriedade para ordenar</param>
-  /// <param name="ascending">True para ordenação ascendente, False para descendente</param>
-  /// <param name="propertyEquals">Propriedade para condição de igualdade adicional (opcional)</param>
-  /// <param name="valueEquals">Valor para a condição de igualdade (opcional)</param>
-  /// <returns>Um IEnumerable ordenado conforme especificado</returns>
+  /// <typeparam name="T">O tipo de elemento da fonte de dados.</typeparam>
+  /// <param name="source">A fonte de dados IEnumerable.</param>
+  /// <param name="propertyName">O nome da propriedade para ordenar.</param>
+  /// <param name="ascending">True para ordenação ascendente, False para descendente.</param>
+  /// <param name="propertyEquals">Propriedade para condição de igualdade adicional (opcional).</param>
+  /// <param name="valueEquals">Valor para a condição de igualdade (opcional).</param>
+  /// <returns>Um IEnumerable ordenado conforme especificado.</returns>
   public static IEnumerable<T> OrderByProperty<T>(
     this IEnumerable<T> source,
     string? propertyName,
