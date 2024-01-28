@@ -43,7 +43,7 @@ public partial class Email : ValueObject
   }
 
   [GeneratedRegex(
-    @"^[a-zA-Z0-9_.-]+@[a-zA-Z0-9_-]+\.[a-zA-Z0-9_.-]+[^.]$",
+    @"^[a-zA-Z0-9]+[a-zA-Z0-9_.-]*[a-zA-Z0-9]+@[a-zA-Z0-9]+[a-zA-Z0-9.-]*[a-zA-Z0-9]+\.[a-zA-Z0-9]+[a-zA-Z0-9.]*[a-zA-Z0-9]$",
     RegexOptions.IgnoreCase,
     matchTimeoutMilliseconds: 250)]
   private static partial Regex EmailRegex();

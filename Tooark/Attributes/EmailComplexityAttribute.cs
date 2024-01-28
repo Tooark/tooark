@@ -12,7 +12,7 @@ public partial class EmailComplexityAttribute : ValidationAttribute
   /// Expressão regular gerada para validar o formato do email.
   /// </summary>
   [GeneratedRegex(
-    @"^[a-zA-Z0-9_.-]+@[a-zA-Z0-9_-]+\.[a-zA-Z0-9_.-]+[^.]$",
+    @"^[a-zA-Z0-9]+[a-zA-Z0-9_.-]*[a-zA-Z0-9]+@[a-zA-Z0-9]+[a-zA-Z0-9.-]*[a-zA-Z0-9]+\.[a-zA-Z0-9]+[a-zA-Z0-9.]*[a-zA-Z0-9]$",
     RegexOptions.IgnoreCase,
     matchTimeoutMilliseconds: 250)]
   private static partial Regex EmailRegex();
