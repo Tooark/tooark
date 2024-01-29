@@ -73,8 +73,8 @@ dotnet nuget add source https://nuget.pkg.github.com/Grupo-Jacto/index.json -n g
 
 > ### Para todas as opções substitua os textos abaixo pelos seus dados de acesso
 >
-> - `<username-github>`
-> - `<personal-access-tokens-classic>`
+> - `<username-github>` <= Usuário do GitHub que tenha permissão de acesso ao pacote
+> - `<personal-access-tokens-classic>` <= Token clássico do usuário do GitHub
 
 ---
 
@@ -83,17 +83,13 @@ dotnet nuget add source https://nuget.pkg.github.com/Grupo-Jacto/index.json -n g
 1. No arquivo `*.csproj` do projeto que vai utilizar a biblioteca Tooark adicione a configuração abaixo:
 
 ```XML
-<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-  <ItemGroup>
-    <TooarkDocs Include="$(UserProfile)\.nuget\packages\tooark\*\lib\net7.0\Tooark.xml" />
-  </ItemGroup>
-  <Copy SourceFiles="@(TooarkDocs)" DestinationFolder="$(OutputPath)" Condition="Exists('@(TooarkDocs)')" />
-</Target>
-<Target Name="PostPublish" AfterTargets="Publish">
-  <ItemGroup>
-    <TooarkDocs Include="$(UserProfile)\.nuget\packages\tooark\*\lib\net7.0\Tooark.xml" />
-  </ItemGroup>
-  <Copy SourceFiles="@(TooarkDocs)" DestinationFolder="$(PublishDir)" Condition="Exists('@(TooarkDocs)')" />
+<PropertyGroup>
+  <TooarkPackagePath Condition="'$(OS)' == 'Windows_NT'"> $(UserProfile)\.nuget\packages\tooark\[version-using-tooark]\lib\[version-dotnet-tooark]\Tooark.xml</TooarkPackagePath>
+  <TooarkPackagePath Condition="'$(OS)' != 'Windows_NT'"> /root/.nuget/packages/tooark/[version-using-tooark]/lib/[version-dotnet-tooark]/Tooark.xml</TooarkPackagePath>
+</PropertyGroup>
+
+<Target Name="PostBuildPublish" AfterTargets="Build;Publish">
+  <Copy SourceFiles="$(TooarkPackagePath)" DestinationFolder="$(OutputPath)" Condition="Exists('$(TooarkPackagePath)')" />
 </Target>
 ```
 
@@ -117,3 +113,8 @@ builder.Services.AddSwaggerGen(c =>
   c.IncludeXmlComments(tooarkXmlPath);
 });
 ```
+
+> ### Para a etapa 1 substitua os textos abaixo pelas informações da versão utilizada do pacote
+>
+> - `[version-using-tooark]` <= Versão do pacote que esta utilizando
+> - `[version-dotnet-tooark]` <= Versão do dotnet do pacote que esta utilizando
