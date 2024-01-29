@@ -9,8 +9,21 @@ namespace Tooark.Extensions;
 /// </summary>
 public static class QueryableExtensions
 {
+  public static IQueryable<T> OrderByProperty<T>(
+    this IQueryable<T> source,
+    string? propertyName,
+    bool ascending = true,
+    string? propertyEquals = null,
+    dynamic? valueEquals = null)
+  {
+    return InternalQueryableImplementations.OrderByProperty(source, propertyName, ascending, propertyEquals, valueEquals);
+  }
+}
+
+internal static class InternalQueryableImplementations
+{
   private static bool IsCollection { get; set; } = false;
-  private static readonly List<string> ParameterLetter = new() { "a", "b", "c", "d", "e" };
+  private static readonly List<string> ParameterLetter = ["a", "b", "c", "d", "e"];
   private static readonly MethodInfo SelectMethod = typeof(Enumerable)
     .GetMethods(BindingFlags.Static | BindingFlags.Public)
     .First(m =>
@@ -40,7 +53,7 @@ public static class QueryableExtensions
   /// <param name="propertyEquals">Propriedade para condição de igualdade adicional (opcional).</param>
   /// <param name="valueEquals">Valor para a condição de igualdade (opcional).</param>
   /// <returns>Um IQueryable ordenado conforme especificado.</returns>
-  public static IQueryable<T> OrderByProperty<T>(
+  internal static IQueryable<T> OrderByProperty<T>(
     this IQueryable<T> source,
     string? propertyName,
     bool ascending = true,

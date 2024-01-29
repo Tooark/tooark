@@ -46,7 +46,7 @@ public class EmailComplexityAttributeTests
   [InlineData("test@", false)] // Domínio ausente
   [InlineData("", false)] // Email vazio
   [InlineData(null, false)] // Email nulo
-  public void IsValid_ShouldValidateEmailsCorrectly(string email, bool expected)
+  public void IsValid_ShouldValidateEmailsCorrectly(string? email, bool expected)
   {
     // Act
     var result = _emailComplexityAttribute.IsValid(email);

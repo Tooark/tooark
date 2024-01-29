@@ -9,8 +9,21 @@ namespace Tooark.Extensions;
 /// </summary>
 public static class EnumerableExtensions
 {
+  public static IEnumerable<T> OrderByProperty<T>(
+    this IEnumerable<T> source,
+    string? propertyName,
+    bool ascending = true,
+    string? propertyEquals = null,
+    dynamic? valueEquals = null)
+  {
+    return InternalEnumerableImplementations.OrderByProperty(source, propertyName, ascending, propertyEquals, valueEquals);
+  }
+}
+
+internal static class InternalEnumerableImplementations
+{
   private static bool IsCollection { get; set; } = false;
-  private static readonly List<string> ParameterLetter = new() { "a", "b", "c", "d", "e" };
+  private static readonly List<string> ParameterLetter = ["a", "b", "c", "d", "e"];
   private static readonly MethodInfo SelectMethod = typeof(Enumerable)
     .GetMethods(BindingFlags.Static | BindingFlags.Public)
     .First(m =>
@@ -40,7 +53,7 @@ public static class EnumerableExtensions
   /// <param name="propertyEquals">Propriedade para condição de igualdade adicional (opcional).</param>
   /// <param name="valueEquals">Valor para a condição de igualdade (opcional).</param>
   /// <returns>Um IEnumerable ordenado conforme especificado.</returns>
-  public static IEnumerable<T> OrderByProperty<T>(
+  internal static IEnumerable<T> OrderByProperty<T>(
     this IEnumerable<T> source,
     string? propertyName,
     bool ascending = true,
