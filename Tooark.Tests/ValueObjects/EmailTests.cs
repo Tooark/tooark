@@ -56,13 +56,13 @@ public class EmailTests
   [InlineData("test@")] // Domínio ausente
   [InlineData("")] // Email vazio
   [InlineData(null)] // Email nulo
-  public void Constructor_InvalidEmail_ShouldThrowArgumentException(string email)
+  public void Constructor_InvalidEmail_ShouldThrowArgumentException(string? email)
   {
     // Arrange
     var invalidEmail = email;
 
     // Act & Assert
-    var exception = Assert.Throws<ArgumentException>(() => new Email(invalidEmail));
+    var exception = Assert.Throws<ArgumentException>(() => new Email(invalidEmail!));
     Assert.Equal("InvalidField;Email", exception.Message);
   }
 
