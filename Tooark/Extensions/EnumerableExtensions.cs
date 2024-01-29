@@ -5,10 +5,22 @@ using System.Reflection;
 namespace Tooark.Extensions;
 
 /// <summary>
-/// Fornece extensões para IEnumerable que facilitam operações de ordenação e filtragem dinâmica.
+/// Classe estática que fornece métodos de extensão para operações com IEnumerable.
+/// Esta classe serve como a interface pública para a aplicação de ordenação dinâmica
+/// e outras operações em conjuntos de dados IEnumerable.
 /// </summary>
 public static class EnumerableExtensions
 {
+  /// <summary>
+  /// Aplica ordenação dinâmica a uma fonte de dados IEnumerable com base no nome da propriedade.
+  /// </summary>
+  /// <typeparam name="T">O tipo de elemento da fonte de dados.</typeparam>
+  /// <param name="source">A fonte de dados IEnumerable.</param>
+  /// <param name="propertyName">O nome da propriedade para ordenar.</param>
+  /// <param name="ascending">Especifica se a ordenação deve ser ascendente (true) ou descendente (false).</param>
+  /// <param name="propertyEquals">Nome da propriedade para condição de igualdade adicional (opcional).</param>
+  /// <param name="valueEquals">Valor para a condição de igualdade adicional (opcional).</param>
+  /// <returns>Um IEnumerable ordenado conforme especificado.</returns>
   public static IEnumerable<T> OrderByProperty<T>(
     this IEnumerable<T> source,
     string? propertyName,
@@ -16,11 +28,11 @@ public static class EnumerableExtensions
     string? propertyEquals = null,
     dynamic? valueEquals = null)
   {
-    return InternalEnumerableImplementations.OrderByProperty(source, propertyName, ascending, propertyEquals, valueEquals);
+    return InternalEnumerable.OrderByProperty(source, propertyName, ascending, propertyEquals, valueEquals);
   }
 }
 
-internal static class InternalEnumerableImplementations
+internal static class InternalEnumerable
 {
   private static bool IsCollection { get; set; } = false;
   private static readonly List<string> ParameterLetter = ["a", "b", "c", "d", "e"];
@@ -44,14 +56,14 @@ internal static class InternalEnumerableImplementations
       m.GetParameters()[1].ParameterType.GetGenericTypeDefinition() == typeof(Func<,>));
 
   /// <summary>
-  /// Aplica ordenação dinâmica a uma fonte de dados IEnumerable
+  /// Implementação interna da ordenação dinâmica de um IEnumerable. Esta classe não é exposta publicamente.
   /// </summary>
   /// <typeparam name="T">O tipo de elemento da fonte de dados.</typeparam>
   /// <param name="source">A fonte de dados IEnumerable.</param>
   /// <param name="propertyName">O nome da propriedade para ordenar.</param>
-  /// <param name="ascending">True para ordenação ascendente, False para descendente.</param>
-  /// <param name="propertyEquals">Propriedade para condição de igualdade adicional (opcional).</param>
-  /// <param name="valueEquals">Valor para a condição de igualdade (opcional).</param>
+  /// <param name="ascending">Especifica se a ordenação deve ser ascendente (true) ou descendente (false).</param>
+  /// <param name="propertyEquals">Nome da propriedade para condição de igualdade adicional (opcional).</param>
+  /// <param name="valueEquals">Valor para a condição de igualdade adicional (opcional).</param>
   /// <returns>Um IEnumerable ordenado conforme especificado.</returns>
   internal static IEnumerable<T> OrderByProperty<T>(
     this IEnumerable<T> source,
