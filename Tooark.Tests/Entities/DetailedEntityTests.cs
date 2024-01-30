@@ -50,14 +50,14 @@ public class DetailedEntityTests
   }
 
   [Fact]
-  public void UpdateEntity_ValidGuid_UpdatesUpdatedByAndUpdatedAt()
+  public void SetUpdatedBy_ValidGuid_UpdatesUpdatedByAndUpdatedAt()
   {
     // Arrange
     var entity = new FakeDetailedEntity();
     var updatedBy = Guid.NewGuid();
 
     // Act
-    entity.UpdateEntity(updatedBy);
+    entity.SetUpdatedBy(updatedBy);
 
     // Assert
     Assert.Equal(updatedBy, entity.UpdatedBy);

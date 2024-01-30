@@ -52,7 +52,7 @@ public abstract class DetailedEntity: BaseEntity
   /// Atualiza o usuário que atualizou a entidade pela última vez e a data da atualização.
   /// </summary>
   /// <param name="updatedBy">O identificador do usuário que atualizou a entidade.</param>
-  public void UpdateEntity(Guid updatedBy)
+  public void SetUpdatedBy(Guid updatedBy)
   {
     UpdatedBy = updatedBy;
     UpdatedAt = DateTime.UtcNow;
