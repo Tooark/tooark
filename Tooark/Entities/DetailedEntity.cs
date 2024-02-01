@@ -5,7 +5,7 @@ namespace Tooark.Entities;
 /// Esta classe é usada para representar entidades com informações de auditoria,
 /// como quem criou e atualizou a entidade, além de quando esses eventos ocorreram.
 /// </summary>
-public abstract class DetailedEntity: BaseEntity
+public abstract class DetailedEntity : BaseEntity
 {
   /// <summary>
   /// Identificador do usuário que criou a entidade.

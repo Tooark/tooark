@@ -32,6 +32,9 @@ public static class QueryableExtensions
   }
 }
 
+/// <summary>
+/// Classe estática interna que fornece métodos de extensão para operações com IQueryable.
+/// </summary>
 internal static class InternalQueryable
 {
   private static bool IsCollection { get; set; } = false;

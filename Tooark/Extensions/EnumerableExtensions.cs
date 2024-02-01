@@ -32,6 +32,9 @@ public static class EnumerableExtensions
   }
 }
 
+/// <summary>
+/// Classe estática interna que fornece métodos de extensão para operações com IEnumerable.
+/// </summary>
 internal static class InternalEnumerable
 {
   private static bool IsCollection { get; set; } = false;

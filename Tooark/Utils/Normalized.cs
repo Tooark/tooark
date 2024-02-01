@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 namespace Tooark.Utils;
 
 /// <summary>
-/// Classe de utilitários com métodos para normalização de strings.
+/// Classe estática parcial que fornece métodos para normalização de strings.
 /// </summary>
 public static partial class Util
 {
@@ -14,7 +14,33 @@ public static partial class Util
   /// <returns>Uma string contendo o valor normalizado.</returns>
   public static string NormalizeValue(string value)
   {
-    if(value == null)
+    return InternalUtil.NormalizeValue(value);
+  }
+
+  // <summary>
+  /// Normaliza um valor removendo espaços, convertendo para minúsculas e substituindo caracteres especiais.
+  /// </summary>
+  /// <param name="value">O valor a ser normalizado.</param>
+  /// <returns>Uma string contendo o valor normalizado.</returns>
+  public static string NormalizeValueRegex(string value)
+  {
+    return InternalUtil.NormalizeValueRegex(value);
+  }
+}
+
+/// <summary>
+/// Classe interna estática parcial que fornece métodos para normalização de strings.
+/// </summary>
+internal static partial class InternalUtil
+{
+  /// <summary>
+  /// Normaliza um valor removendo espaços, convertendo para minúsculas e substituindo caracteres especiais.
+  /// </summary>
+  /// <param name="value">O valor a ser normalizado.</param>
+  /// <returns>Uma string contendo o valor normalizado.</returns>
+  internal static string NormalizeValue(string value)
+  {
+    if (value == null)
     {
       return "";
     }
@@ -83,13 +109,13 @@ public static partial class Util
   /// </summary>
   /// <param name="value">O valor a ser normalizado.</param>
   /// <returns>Uma string contendo o valor normalizado.</returns>
-  public static string NormalizeValueRegex(string value)
+  internal static string NormalizeValueRegex(string value)
   {
-    if(value == null)
+    if (value == null)
     {
       return "";
     }
-    
+
     // Converte para minúsculas
     value = value.ToLowerInvariant();
 
