@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Tooark</PackageId>
-    <Version>1.1.3.1</Version>
+    <Version>1.1.3.2</Version>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
     <Company>Grupo Jacto</Company>
     <PackageDescription>Set of tools and functions for C# projects</PackageDescription>
