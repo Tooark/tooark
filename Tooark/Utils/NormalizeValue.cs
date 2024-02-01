@@ -17,7 +17,7 @@ public static partial class Util
     return InternalUtil.NormalizeValue(value);
   }
 
-  // <summary>
+  /// <summary>
   /// Normaliza um valor removendo espaços, convertendo para minúsculas e substituindo caracteres especiais.
   /// </summary>
   /// <param name="value">O valor a ser normalizado.</param>
