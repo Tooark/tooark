@@ -5,14 +5,15 @@ namespace Tooark.Tests.Entities;
 public class DetailedEntityTests
 {
   // Uma classe concreta para testar DetailedEntity
-  private class FakeDetailedEntity : DetailedEntity
+  private class TestDetailedEntity : DetailedEntity
   { }
 
+  // Testa se o construtor atribui valores padrão
   [Fact]
-  public void Constructor_AssignsDefaultValues()
+  public void Constructor_ShouldAssignDefaultValues()
   {
     // Arrange & Act
-    var entity = new FakeDetailedEntity();
+    var entity = new TestDetailedEntity();
 
     // Assert
     Assert.Equal(Guid.Empty, entity.CreatedBy);
@@ -21,11 +22,12 @@ public class DetailedEntityTests
     Assert.True((DateTime.UtcNow - entity.UpdatedAt).TotalSeconds < 1);
   }
 
+  // Testa se SetCreatedBy atribui um Guid válido
   [Fact]
-  public void SetCreatedBy_ValidGuid_AssignsGuid()
+  public void SetCreatedBy_WithValidGuid_ShouldAssignGuid()
   {
     // Arrange
-    var entity = new FakeDetailedEntity();
+    var entity = new TestDetailedEntity();
     var createdBy = Guid.NewGuid();
 
     // Act
@@ -36,11 +38,12 @@ public class DetailedEntityTests
     Assert.Equal(createdBy, entity.UpdatedBy);
   }
 
+  // Testa se SetCreatedBy lança uma exceção ao tentar alterar o criador
   [Fact]
-  public void SetCreatedBy_NonEmptyGuid_ThrowsInvalidOperationException()
+  public void SetCreatedBy_WithNonEmptyGuid_ShouldThrowInvalidOperationException()
   {
     // Arrange
-    var entity = new FakeDetailedEntity();
+    var entity = new TestDetailedEntity();
     var createdBy = Guid.NewGuid();
     entity.SetCreatedBy(createdBy);
 
@@ -49,11 +52,12 @@ public class DetailedEntityTests
     Assert.Equal("ChangeNotAllowed;CreatedBy", exception.Message);
   }
 
+  // Testa se SetUpdatedBy atualiza o atualizador e a data de atualização
   [Fact]
-  public void SetUpdatedBy_ValidGuid_UpdatesUpdatedByAndUpdatedAt()
+  public void SetUpdatedBy_WithValidGuid_ShouldUpdateUpdatedByAndUpdatedAt()
   {
     // Arrange
-    var entity = new FakeDetailedEntity();
+    var entity = new TestDetailedEntity();
     var updatedBy = Guid.NewGuid();
 
     // Act

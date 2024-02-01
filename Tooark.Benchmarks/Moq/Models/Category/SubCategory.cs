@@ -1,4 +1,4 @@
-namespace Tooark.Benchmarks.Model;
+namespace Tooark.Benchmarks.Moq.Models.Category;
 
 public class SubCategory
 {

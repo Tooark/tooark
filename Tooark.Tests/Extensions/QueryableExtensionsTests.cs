@@ -10,14 +10,14 @@ public class QueryableExtensionsTests
 
   public QueryableExtensionsTests()
   {
-    _categories = new List<Category>
-    {
+    _categories =
+    [
       TestDataGenerator.CreateCategory(1),
       TestDataGenerator.CreateCategory(2),
       TestDataGenerator.CreateCategory(3),
       TestDataGenerator.CreateCategory(4),
       TestDataGenerator.CreateCategory(5),
-    };
+    ];
   }
 
   public static class TestDataGenerator
@@ -71,8 +71,9 @@ public class QueryableExtensionsTests
     }
   }
 
+  // Teste para Ordenação Ascendente Simples
   [Fact]
-  public void OrderByProperty_WithSimple_OrdersAscendingCorrectly()
+  public void OrderByProperty_WithSimpleType_OrdersAscendingCorrectly()
   {
     var queryable = _categories.AsQueryable();
     var orderedResult = queryable.OrderByProperty("Type").ToList();
@@ -85,8 +86,9 @@ public class QueryableExtensionsTests
     Assert.Equal("Type R", orderedResult[4].Type);
   }
 
+  // Teste para Ordenação Descendente Simples
   [Fact]
-  public void OrderByProperty_WithSimple_OrdersDescendingCorrectly()
+  public void OrderByProperty_WithSimpleType_OrdersDescendingCorrectly()
   {
     var queryable = _categories.AsQueryable();
     var orderedResult = queryable.OrderByProperty("Type", false).ToList();
@@ -98,8 +100,9 @@ public class QueryableExtensionsTests
     Assert.Equal("Type I", orderedResult[4].Type);
   }
 
+  // Teste para Ordenação Ascendente com Campos Nulos
   [Fact]
-  public void OrderByProperty_WithNull_OrdersAscendingCorrectly()
+  public void OrderByProperty_WithNullValues_OrdersAscendingCorrectly()
   {
     var queryable = _categories.AsQueryable();
     var orderedResult = queryable.OrderByProperty("Description").ToList();
@@ -111,8 +114,9 @@ public class QueryableExtensionsTests
     Assert.Equal("Description 75", orderedResult[4].Description);
   }
 
+  // Teste para Ordenação Descendente com Campos Nulos
   [Fact]
-  public void OrderByProperty_WithNull_OrdersDescendingCorrectly()
+  public void OrderByProperty_WithNullValues_OrdersDescendingCorrectly()
   {
     var queryable = _categories.AsQueryable();
     var orderedResult = queryable.OrderByProperty("Description", false).ToList();
@@ -124,8 +128,9 @@ public class QueryableExtensionsTests
     Assert.Null(orderedResult[4].Description);
   }
 
+  // Teste para Ordenação Ascendente de Propriedades Complexas
   [Fact]
-  public void OrderByProperty_WithComplex_OrdersAscendingCorrectly()
+  public void OrderByProperty_WithComplexType_OrdersAscendingCorrectly()
   {
     var queryable = _categories.AsQueryable();
     var orderedResult = queryable.OrderByProperty("SubCategory.Name", true).ToList();
@@ -137,8 +142,9 @@ public class QueryableExtensionsTests
     Assert.Equal("Name 4", orderedResult[4].SubCategory?.Name);
   }
 
+  // Teste para Ordenação Descendente de Propriedades Complexas
   [Fact]
-  public void OrderByProperty_WithComplex_OrdersDescendingCorrectly()
+  public void OrderByProperty_WithComplexType_OrdersDescendingCorrectly()
   {
     var queryable = _categories.AsQueryable();
     var orderedResult = queryable.OrderByProperty("SubCategory.Name", false).ToList();
@@ -150,6 +156,7 @@ public class QueryableExtensionsTests
     Assert.Null(orderedResult[3].SubCategory?.Name);
   }
 
+  // Teste para Ordenação Ascendente de Coleções Complexas
   [Fact]
   public void OrderByProperty_WithComplexCollection_OrdersAscendingCorrectly()
   {
@@ -163,6 +170,7 @@ public class QueryableExtensionsTests
     Assert.Equal("Name 14", orderedResult[4].ListSubCategory?.FirstOrDefault(x => x.Type == 1)?.Name);
   }
 
+  // Teste para Ordenação Descendente de Coleções Complexas
   [Fact]
   public void OrderByProperty_WithComplexCollection_OrdersDescendingCorrectly()
   {
@@ -176,8 +184,9 @@ public class QueryableExtensionsTests
     Assert.Null(orderedResult[4].ListSubCategory?.FirstOrDefault(x => x.Type == 1)?.Name);
   }
 
+  // Teste para Ordenação Ascendente com Campo Desconhecido
   [Fact]
-  public void OrderByProperty_WithUnknown_OrdersAscendingCorrectly()
+  public void OrderByProperty_WithUnknownProperty_OrdersAscendingCorrectly()
   {
     var queryable = _categories.AsQueryable();
     var orderedResult = queryable.OrderByProperty("Unknown").ToList();
@@ -189,8 +198,9 @@ public class QueryableExtensionsTests
     Assert.Equal(5, orderedResult[4].Id);
   }
 
+  // Teste para Ordenação Descendente com Campo Desconhecido
   [Fact]
-  public void OrderByProperty_WithUnknown_OrdersDescendingCorrectly()
+  public void OrderByProperty_WithUnknownProperty_OrdersDescendingCorrectly()
   {
     var queryable = _categories.AsQueryable();
     var orderedResult = queryable.OrderByProperty("Unknown", false).ToList();

@@ -4,14 +4,20 @@ namespace Tooark.Tests.Attributes;
 
 public class EmailComplexityAttributeTests
 {
+  // Instância do atributo de complexidade de email para ser testado
   private readonly EmailComplexityAttribute _emailComplexityAttribute = new();
 
+  // Teoria de testes com vários casos de emails para validar a complexidade
+  // Cada InlineData representa um caso de teste com o email e o resultado esperado (true para válido, false para inválido)
+  // Método de teste para validar a complexidade do email
   [Theory]
+  // Casos válidos abaixo
   [InlineData("teste@example.com", true)] // Email válido
   [InlineData("te.te@example.com", true)] // Email válido
   [InlineData("te-te@example.com", true)] // Email válido
   [InlineData("te_te@example.com", true)] // Email válido
   [InlineData("teste@exa-ple.com", true)] // Email válido
+  // Casos inválidos abaixo
   [InlineData(".test@example.com", false)] // Email iniciado com .
   [InlineData("-test@example.com", false)] // Email iniciado com -
   [InlineData("_test@example.com", false)] // Email iniciado com _

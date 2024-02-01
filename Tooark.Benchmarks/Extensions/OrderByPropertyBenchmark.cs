@@ -1,17 +1,17 @@
 using BenchmarkDotNet.Attributes;
-using Tooark.Benchmarks.Model;
-using Tooark.Benchmarks.Services;
+using Tooark.Benchmarks.Moq.Models.Category;
+using Tooark.Benchmarks.Moq.Services;
 using Tooark.Extensions;
 
-namespace Tooark.Benchmarks.Benchmark;
+namespace Tooark.Benchmarks.Extensions;
 
 // https://benchmarkdotnet.org/articles/overview.html
 
 [MemoryDiagnoser]
 public class OrderByPropertyBenchmark
 {
-  static readonly List<Category> _categories = new()
-  {
+  static readonly List<Category> _categories =
+  [
     GenerateCategoryData.CreateCategory(1),
     GenerateCategoryData.CreateCategory(2),
     GenerateCategoryData.CreateCategory(3),
@@ -27,7 +27,7 @@ public class OrderByPropertyBenchmark
     GenerateCategoryData.CreateCategory(13),
     GenerateCategoryData.CreateCategory(14),
     GenerateCategoryData.CreateCategory(15)
-  };
+  ];
 
   [Benchmark(Baseline = true)]
   public void QueryableSimple()

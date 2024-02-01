@@ -4,6 +4,9 @@ namespace Tooark.Tests.Attributes;
 
 public class PasswordComplexityAttributeTests
 {
+  // Teoria de testes para validar a complexidade da senha
+  // Cada InlineData representa um caso de teste com a senha e o resultado esperado (true para válido, false para inválido)
+  // Método de teste para validar a complexidade da senha
   [Theory]
   [InlineData("Senha@12", true)] // Senha válida
   [InlineData("senha@12", false)] // Sem letra maiúscula
@@ -23,6 +26,9 @@ public class PasswordComplexityAttributeTests
     Assert.Equal(expected, result);
   }
 
+  // Teoria de testes com parâmetros customizados para validar a complexidade da senha
+  // Cada InlineData representa um caso de teste com a senha e parâmetros customizados para a validação
+  // Método de teste para validar a complexidade da senha com parâmetros customizados
   [Theory]
   [InlineData("SENHA@12", false, true, true, true, 8, true)] // Sem minúscula, mas válido de acordo com os parâmetros
   [InlineData("senha@12", true, false, true, true, 8, true)] // Sem maiúscula, mas válido de acordo com os parâmetros

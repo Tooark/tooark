@@ -1,7 +1,7 @@
 using System.Text;
-using Tooark.Benchmarks.Model;
+using Tooark.Benchmarks.Moq.Models.Category;
 
-namespace Tooark.Benchmarks.Services;
+namespace Tooark.Benchmarks.Moq.Services;
 
 public class GenerateCategoryData
 {

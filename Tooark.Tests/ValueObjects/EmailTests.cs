@@ -4,13 +4,14 @@ namespace Tooark.Tests.ValueObjects;
 
 public class EmailTests
 {
+  // Testa se o construtor da classe Email cria um objeto válido a partir de um endereço de email válido
   [Theory]
   [InlineData("teste@example.com")] // Email válido
   [InlineData("te.te@example.com")] // Email válido
   [InlineData("te-te@example.com")] // Email válido
   [InlineData("te_te@example.com")] // Email válido
   [InlineData("teste@exa-ple.com")] // Email válido
-  public void Constructor_ValidEmail_ShouldCreateEmail(string validEmail)
+  public void Constructor_CreatesValidEmail_WhenGivenValidAddress(string validEmail)
   {
     // Act
     Email email = new(validEmail);
@@ -20,8 +21,8 @@ public class EmailTests
     Assert.Equal(validEmail, (string)email);
   }
 
+  // Testa se o construtor da classe Email lança uma exceção de argumento inválido a partir de um endereço de email inválido
   [Theory]
-  
   [InlineData(".test@example.com")] // Email iniciado com .
   [InlineData("-test@example.com")] // Email iniciado com -
   [InlineData("_test@example.com")] // Email iniciado com _
@@ -56,7 +57,7 @@ public class EmailTests
   [InlineData("test@")] // Domínio ausente
   [InlineData("")] // Email vazio
   [InlineData(null)] // Email nulo
-  public void Constructor_InvalidEmail_ShouldThrowArgumentException(string? email)
+  public void Constructor_ThrowsArgumentException_WhenGivenInvalidAddress(string? email)
   {
     // Arrange
     var invalidEmail = email;
@@ -66,8 +67,9 @@ public class EmailTests
     Assert.Equal("InvalidField;Email", exception.Message);
   }
 
+  // Testa se o construtor da classe Email lança uma exceção de argumento inválido a partir de um endereço de email nulo
   [Fact]
-  public void Constructor_NullEmail_ShouldThrowArgumentException()
+  public void Constructor_ThrowsArgumentException_WhenGivenNullAddress()
   {
     // Arrange
     string nullEmail = null!;
@@ -77,8 +79,9 @@ public class EmailTests
     Assert.Equal("InvalidField;Email", exception.Message);
   }
 
+  // Testa se o construtor da classe Email lança uma exceção de argumento inválido a partir de um endereço de email vazio
   [Fact]
-  public void Constructor_EmptyEmail_ShouldThrowArgumentException()
+  public void Constructor_ThrowsArgumentException_WhenGivenEmptyAddress()
   {
     // Arrange
     var emptyEmail = "";
@@ -88,8 +91,9 @@ public class EmailTests
     Assert.Equal("InvalidField;Email", exception.Message);
   }
 
+  // Testa se o operador implícito de conversão de string para Email funciona corretamente
   [Fact]
-  public void ImplicitOperator_StringToEmail_ShouldConvert()
+  public void ImplicitOperator_ConvertsStringToEmail()
   {
     // Arrange
     var validEmail = "test@example.com";
@@ -102,8 +106,9 @@ public class EmailTests
     Assert.Equal(validEmail, (string)email);
   }
 
+  // Testa se o operador implícito de conversão de Email para string funciona corretamente
   [Fact]
-  public void ImplicitOperator_EmailToString_ShouldConvert()
+  public void ImplicitOperator_ConvertsEmailToString()
   {
     // Arrange
     string validEmail = "test@example.com";
