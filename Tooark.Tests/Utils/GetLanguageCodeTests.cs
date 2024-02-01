@@ -1,5 +1,5 @@
 using System.Globalization;
-using Tooark.Tests.Moq.Models.Language;
+using Tooark.Tests.Moq.Model.Language;
 using Tooark.Utils;
 
 namespace Tooark.Tests.Utils;

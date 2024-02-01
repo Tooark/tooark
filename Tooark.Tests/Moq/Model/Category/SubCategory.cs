@@ -1,4 +1,4 @@
-namespace Tooark.Tests.Moq.Models.Category;
+namespace Tooark.Tests.Moq.Model.Category;
 
 public class SubCategory
 {
