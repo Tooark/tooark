@@ -4,6 +4,7 @@ namespace Tooark.Tests.ValueObjects;
 
 public class PasswordTests
 {
+  // Testa o construtor da classe Password com uma senha válida
   [Fact]
   public void Constructor_ValidPassword_ShouldCreatePassword()
   {
@@ -18,6 +19,7 @@ public class PasswordTests
     Assert.Equal(validPassword, (string)password);
   }
 
+  // Testa o construtor da classe Password com uma senha inválida
   [Fact]
   public void Constructor_InvalidPassword_ShouldThrowArgumentException()
   {
@@ -29,6 +31,7 @@ public class PasswordTests
     Assert.Equal("InvalidField;Password", exception.Message);
   }
 
+  // Testa o construtor da classe Password com uma senha vazia
   [Fact]
   public void Constructor_EmptyPassword_ShouldThrowArgumentException()
   {
@@ -40,6 +43,7 @@ public class PasswordTests
     Assert.Equal("InvalidField;Password", exception.Message);
   }
 
+  // Testa o operador implícito de conversão de string para Password
   [Fact]
   public void ImplicitOperator_StringToPassword_ShouldConvert()
   {
@@ -54,6 +58,7 @@ public class PasswordTests
     Assert.Equal(validPassword, (string)password);
   }
 
+  // Testa o operador implícito de conversão de Password para string
   [Fact]
   public void ImplicitOperator_PasswordToString_ShouldConvert()
   {
@@ -68,6 +73,7 @@ public class PasswordTests
     Assert.Equal(validPassword, passwordString);
   }
 
+  // Testa o construtor da classe Password com parâmetros personalizados de validação
   [Theory]
   [InlineData("SENHA@12", false, true, true, true, 8, true)] // Sem minúscula, mas válido de acordo com os parâmetros
   [InlineData("senha@12", true, false, true, true, 8, true)] // Sem maiúscula, mas válido de acordo com os parâmetros
