@@ -4,38 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Tooark.Entities;
 
 /// <summary>
-/// Classe base abstrata para entidades detalhadas que herda de BaseEntity.
+/// Classe base abstrata para entidades detalhadas.
+/// Herda de <see cref="InitialEntity"/> para incluir informações de criação.
 /// Esta classe é usada para representar entidades com informações de auditoria,
 /// como quem criou e atualizou a entidade, além de quando esses eventos ocorreram.
 /// </summary>
-public abstract class DetailedEntity : BaseEntity
+public abstract class DetailedEntity : InitialEntity
 {
-  /// <summary>
-  /// Identificador do usuário que criou a entidade.
-  /// </summary>
-  /// <value>
-  /// O identificador do criador é do tipo <see cref="Guid"/>.
-  /// </value>
-  /// <remarks>
-  /// A coluna correspondente no banco de dados é 'createdby' e é obrigatória.
-  /// </remarks>
-  [Column("createdby")]
-  [Required]
-  public Guid CreatedBy { get; private set; } = Guid.Empty;
-
-  /// <summary>
-  /// Data e hora de criação da entidade.
-  /// </summary>
-  /// <value>
-  /// A data e hora de criação é do tipo <see cref="DateTime"/> em UTC.
-  /// </value>
-  /// <remarks>
-  /// A coluna correspondente no banco de dados é 'createdat' e é obrigatória.
-  /// </remarks>
-  [Column("createdat", TypeName = "timestamp with time zone")]
-  [Required]
-  public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
-
   /// <summary>
   /// Identificador do usuário que atualizou a entidade pela última vez.
   /// </summary>
@@ -56,7 +31,8 @@ public abstract class DetailedEntity : BaseEntity
   /// A data e hora da última atualização é do tipo <see cref="DateTime"/> em UTC.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'updatedat' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'updatedat' e é obrigatória
+  /// do tipo 'timestamp with time zone'.
   /// </remarks>
   [Column("updatedat", TypeName = "timestamp with time zone")]
   [Required]
@@ -67,17 +43,11 @@ public abstract class DetailedEntity : BaseEntity
   /// </summary>
   /// <param name="createdBy">O valor do identificador do criador a ser definido.</param>
   /// <exception cref="InvalidOperationException">Lançada quando uma tentativa é feita para alterar o criador após a criação inicial.</exception>
-  public void SetCreatedBy(Guid createdBy)
+  public new void SetCreatedBy(Guid createdBy)
   {
-    if (CreatedBy == Guid.Empty)
-    {
-      CreatedBy = createdBy;
-      UpdatedBy = createdBy;
-    }
-    else
-    {
-      throw new InvalidOperationException("ChangeNotAllowed;CreatedBy");
-    }
+    base.SetCreatedBy(createdBy);
+
+    UpdatedBy = createdBy;
   }
 
   /// <summary>

@@ -2,10 +2,10 @@ using Tooark.Entities;
 
 namespace Tooark.Tests.Entities;
 
-public class DetailedEntityTests
+public class InitialEntityTests
 {
-  // Uma classe concreta para testar DetailedEntity
-  private class TestDetailedEntity : DetailedEntity
+  // Uma classe concreta para testar InitialEntity
+  private class TestInitialEntity : InitialEntity
   { }
 
   // Testa se o construtor atribui valores padrão
@@ -13,11 +13,11 @@ public class DetailedEntityTests
   public void Constructor_ShouldAssignDefaultValues()
   {
     // Arrange & Act
-    var entity = new TestDetailedEntity();
+    var entity = new TestInitialEntity();
 
     // Assert
-    Assert.Equal(Guid.Empty, entity.UpdatedBy);
-    Assert.True((DateTime.UtcNow - entity.UpdatedAt).TotalSeconds < 1);
+    Assert.Equal(Guid.Empty, entity.CreatedBy);
+    Assert.True((DateTime.UtcNow - entity.CreatedAt).TotalSeconds < 1);
   }
 
   // Testa se SetCreatedBy atribui um Guid válido
@@ -25,7 +25,7 @@ public class DetailedEntityTests
   public void SetCreatedBy_WithValidGuid_ShouldAssignGuid()
   {
     // Arrange
-    var entity = new TestDetailedEntity();
+    var entity = new TestInitialEntity();
     var createdBy = Guid.NewGuid();
 
     // Act
@@ -33,7 +33,6 @@ public class DetailedEntityTests
 
     // Assert
     Assert.Equal(createdBy, entity.CreatedBy);
-    Assert.Equal(createdBy, entity.UpdatedBy);
   }
 
   // Testa se SetCreatedBy lança uma exceção ao tentar alterar o criador
@@ -41,28 +40,12 @@ public class DetailedEntityTests
   public void SetCreatedBy_WithNonEmptyGuid_ShouldThrowInvalidOperationException()
   {
     // Arrange
-    var entity = new TestDetailedEntity();
+    var entity = new TestInitialEntity();
     var createdBy = Guid.NewGuid();
     entity.SetCreatedBy(createdBy);
 
     // Act & Assert
     var exception = Assert.Throws<InvalidOperationException>(() => entity.SetCreatedBy(Guid.NewGuid()));
     Assert.Equal("ChangeNotAllowed;CreatedBy", exception.Message);
-  }
-
-  // Testa se SetUpdatedBy atualiza o atualizador e a data de atualização
-  [Fact]
-  public void SetUpdatedBy_WithValidGuid_ShouldUpdateUpdatedByAndUpdatedAt()
-  {
-    // Arrange
-    var entity = new TestDetailedEntity();
-    var updatedBy = Guid.NewGuid();
-
-    // Act
-    entity.SetUpdatedBy(updatedBy);
-
-    // Assert
-    Assert.Equal(updatedBy, entity.UpdatedBy);
-    Assert.True((DateTime.UtcNow - entity.UpdatedAt).TotalSeconds < 1);
   }
 }
