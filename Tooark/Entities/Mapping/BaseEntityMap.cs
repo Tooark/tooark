@@ -16,6 +16,9 @@ public class BaseEntityMap : IEntityTypeConfiguration<BaseEntity>
   /// <param name="builder">Construtor usado para configurar a entidade BaseEntity.</param>
   public void Configure(EntityTypeBuilder<BaseEntity> builder)
   {
+    // Define primary key
+    builder.HasKey(prop => prop.Id);
+
     // Mapeia a propriedade Id para a coluna 'id' e define como chave primária obrigatória.
     builder.Property(b => b.Id)
       .HasColumnName("id")
