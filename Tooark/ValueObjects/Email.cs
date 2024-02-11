@@ -21,6 +21,7 @@ public partial class Email : ValueObject
   /// <param name="value">O valor do email a ser validado.</param>
   public Email(string value)
   {
+    value = value.ToLower().Trim();
 
     if (string.IsNullOrWhiteSpace(value) || !new EmailAddressAttribute().IsValid(value) || !IsValidEmail(value))
     {
