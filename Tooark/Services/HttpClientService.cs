@@ -8,13 +8,21 @@ namespace Tooark.Services;
 /// <summary>
 /// Fornece métodos para enviar solicitações HTTP e receber respostas HTTP de um recurso identificado por um URI.
 /// </summary>
-/// <param name="httpClient">A instância HttpClient a ser usada para enviar solicitações.</param>
-public class HttpClientService(HttpClient httpClient)
+public class HttpClientService
 {
   /// <summary>
   /// Inicializa uma nova instância da classe HttpClientService com um HttpClient específico.
   /// </summary>
-  private readonly HttpClient _httpClient = httpClient;
+  private readonly HttpClient _httpClient;
+
+  /// <summary>
+  /// Inicializa construtor da class.
+  /// </summary>
+  /// <param name="httpClient">A instância HttpClient a ser usada para enviar solicitações.</param>
+  public HttpClientService(HttpClient httpClient)
+  {
+    _httpClient = httpClient;
+  }
 
   /// <summary>
   /// Configura os cabeçalhos HTTP para a instância HttpClient.
