@@ -84,12 +84,12 @@ dotnet nuget add source https://nuget.pkg.github.com/Grupo-Jacto/index.json -n g
 
 ```XML
 <PropertyGroup>
-  <TooarkPackagePath Condition="'$(OS)' == 'Windows_NT'"> $(UserProfile)\.nuget\packages\tooark\[version-using-tooark]\lib\[version-dotnet-tooark]\Tooark.xml</TooarkPackagePath>
-  <TooarkPackagePath Condition="'$(OS)' != 'Windows_NT'"> /root/.nuget/packages/tooark/[version-using-tooark]/lib/[version-dotnet-tooark]/Tooark.xml</TooarkPackagePath>
+  <TooarkPackagePath Condition="'$(OS)' == 'Windows_NT'">$(UserProfile)\.nuget\packages\tooark\[version-using-tooark]\lib\[version-dotnet-tooark]\Tooark.xml</TooarkPackagePath>
+  <TooarkPackagePath Condition="'$(OS)' != 'Windows_NT'">$(HOME)/.nuget/packages/tooark/[version-using-tooark]/lib/[version-dotnet-tooark]/Tooark.xml</TooarkPackagePath>
 </PropertyGroup>
-
-<Target Name="PostBuildPublish" AfterTargets="Build;Publish">
+<Target Name="PostBuildPublish" AfterTargets="PostBuildEvent;Publish">
   <Copy SourceFiles="$(TooarkPackagePath)" DestinationFolder="$(OutputPath)" Condition="Exists('$(TooarkPackagePath)')" />
+  <Copy SourceFiles="$(TooarkPackagePath)" DestinationFolder="$(PublishDir)" Condition="Exists('$(TooarkPackagePath)')" />
 </Target>
 ```
 
@@ -98,7 +98,11 @@ dotnet nuget add source https://nuget.pkg.github.com/Grupo-Jacto/index.json -n g
 ```C#
 var tooarkXmlFile = "Tooark.xml";
 var tooarkXmlPath = Path.Combine(AppContext.BaseDirectory, tooarkXmlFile);
-c.IncludeXmlComments(tooarkXmlPath);
+
+if (File.Exists(tooarkXmlPath))
+{
+  c.IncludeXmlComments(tooarkXmlPath);
+}
 ```
 
 O resultado do trecho do código do `Program.cs`
@@ -110,7 +114,11 @@ builder.Services.AddSwaggerGen(c =>
 
   var tooarkXmlFile = "Tooark.xml";
   var tooarkXmlPath = Path.Combine(AppContext.BaseDirectory, tooarkXmlFile);
-  c.IncludeXmlComments(tooarkXmlPath);
+
+  if (File.Exists(tooarkXmlPath))
+  {
+    c.IncludeXmlComments(tooarkXmlPath);
+  }
 });
 ```
 
