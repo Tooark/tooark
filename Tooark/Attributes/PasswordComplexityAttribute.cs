@@ -5,23 +5,35 @@ namespace Tooark.Attributes;
 /// <summary>
 /// Atributo de validação que verifica se uma senha atende a critérios específicos de complexidade.
 /// </summary>
-/// <param name="useLowercase">Exige carácter minúsculo. Padrão: true.</param>
-/// <param name="useUppercase">Exige carácter maiúsculo. Padrão: true.</param>
-/// <param name="useNumbers">Exige carácter numérico. Padrão: true.</param>
-/// <param name="useSymbols">Exige carácter especial. Padrão: true.</param>
-/// <param name="passwordLength">Tamanho mínimo da senha. Padrão: 8.</param>
-public class PasswordComplexityAttribute(
+public class PasswordComplexityAttribute : ValidationAttribute
+{
+  private readonly bool UseLowercase;
+  private readonly bool UseUppercase;
+  private readonly bool UseNumbers;
+  private readonly bool UseSymbols;
+  private readonly int PasswordLength;
+
+  /// <summary>
+  /// Inicializa construtor da class.
+  /// </summary>
+  /// <param name="useLowercase">Exige carácter minúsculo. Padrão: true.</param>
+  /// <param name="useUppercase">Exige carácter maiúsculo. Padrão: true.</param>
+  /// <param name="useNumbers">Exige carácter numérico. Padrão: true.</param>
+  /// <param name="useSymbols">Exige carácter especial. Padrão: true.</param>
+  /// <param name="passwordLength">Tamanho mínimo da senha. Padrão: 8.</param>
+  public PasswordComplexityAttribute(
   bool useLowercase = true,
   bool useUppercase = true,
   bool useNumbers = true,
   bool useSymbols = true,
-  int passwordLength = 8) : ValidationAttribute
-{
-  private readonly bool useLowercase = useLowercase;
-  private readonly bool useUppercase = useUppercase;
-  private readonly bool useNumbers = useNumbers;
-  private readonly bool useSymbols = useSymbols;
-  private readonly int passwordLength = passwordLength;
+  int passwordLength = 8)
+  {
+    UseLowercase = useLowercase;
+    UseUppercase = useUppercase;
+    UseNumbers = useNumbers;
+    UseSymbols = useSymbols;
+    PasswordLength = passwordLength;
+  }
 
   /// <summary>
   /// Valida se o valor fornecido atende aos critérios de complexidade da senha.
@@ -55,11 +67,11 @@ public class PasswordComplexityAttribute(
   private bool CheckValid(string password)
   {
     return !(
-      password.Length < passwordLength ||
-      useLowercase && !password.Any(char.IsLower) ||
-      useUppercase && !password.Any(char.IsUpper) ||
-      useNumbers && !password.Any(char.IsDigit) ||
-      useSymbols && !password.Any(ch => !char.IsLetterOrDigit(ch))
+      password.Length < PasswordLength ||
+      UseLowercase && !password.Any(char.IsLower) ||
+      UseUppercase && !password.Any(char.IsUpper) ||
+      UseNumbers && !password.Any(char.IsDigit) ||
+      UseSymbols && !password.Any(ch => !char.IsLetterOrDigit(ch))
     );
   }
 }

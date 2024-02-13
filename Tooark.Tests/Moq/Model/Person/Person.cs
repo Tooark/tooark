@@ -1,7 +1,13 @@
 namespace Tooark.Tests.Moq.Model.Person;
 
-public class Person(string name, int age)
+public class Person
 {
-  public string Name { get; set; } = name;
-  public int Age { get; set; } = age;
+  public string Name { get; set; }
+  public int Age { get; set; }
+
+  public Person(string name, int age)
+  {
+    Name = name;
+    Age = age;
+  }
 }

@@ -10,14 +10,14 @@ public class QueryableExtensionsTests
 
   public QueryableExtensionsTests()
   {
-    _categories =
-    [
+    _categories = new()
+    {
       TestDataGenerator.CreateCategory(1),
       TestDataGenerator.CreateCategory(2),
       TestDataGenerator.CreateCategory(3),
       TestDataGenerator.CreateCategory(4),
-      TestDataGenerator.CreateCategory(5),
-    ];
+      TestDataGenerator.CreateCategory(5)
+    };
   }
 
   public static class TestDataGenerator

@@ -11,13 +11,14 @@ public class EnumerableExtensionsTests
   public EnumerableExtensionsTests()
   {
     _categories =
-    [
+    new()
+    {
       TestDataGenerator.CreateCategory(1),
       TestDataGenerator.CreateCategory(2),
       TestDataGenerator.CreateCategory(3),
       TestDataGenerator.CreateCategory(4),
-      TestDataGenerator.CreateCategory(5),
-    ];
+      TestDataGenerator.CreateCategory(5)
+    };
   }
 
   public static class TestDataGenerator
@@ -78,7 +79,7 @@ public class EnumerableExtensionsTests
     var queryable = _categories.AsEnumerable();
     var orderedResult = queryable.OrderByProperty("Type").ToList();
 
-  
+
     Assert.Equal("Type I", orderedResult[0].Type);
     Assert.Equal("Type K", orderedResult[1].Type);
     Assert.Equal("Type N", orderedResult[2].Type);
@@ -210,5 +211,5 @@ public class EnumerableExtensionsTests
     Assert.Equal(3, orderedResult[2].Id);
     Assert.Equal(2, orderedResult[3].Id);
     Assert.Equal(1, orderedResult[4].Id);
-  }  
+  }
 }

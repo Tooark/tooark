@@ -38,7 +38,7 @@ public static class QueryableExtensions
 internal static class InternalQueryable
 {
   private static bool IsCollection { get; set; } = false;
-  private static readonly List<string> ParameterLetter = ["a", "b", "c", "d", "e"];
+  private static readonly List<string> ParameterLetter = new() { "a", "b", "c", "d", "e" };
   private static readonly MethodInfo SelectMethod = typeof(Enumerable)
     .GetMethods(BindingFlags.Static | BindingFlags.Public)
     .First(m =>
