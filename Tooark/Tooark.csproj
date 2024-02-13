@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Tooark</PackageId>
-    <Version>1.2.0.1</Version>
+    <Version>1.2.0.2</Version>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
     <Company>Grupo Jacto</Company>
     <PackageDescription>Set of tools and functions for C# projects</PackageDescription>
@@ -23,5 +23,10 @@
 
   <ItemGroup>
     <None Include="..\Media\icon.jpg" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
   </ItemGroup>
 </Project>
