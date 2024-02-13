@@ -16,8 +16,19 @@ public static class TooarkDependencyInjection
   /// <returns>O IServiceCollection com os serviços do Tooark adicionados.</returns>
   public static IServiceCollection AddTooarkServices(this IServiceCollection services)
   {
-    // Registra o HttpClientService para ser usado com a interface IHttpClientService
-    services.AddHttpClient<IHttpClientService>(client => HttpClientServiceFactory.Create(client));
+    // Registra o HttpClientFactory para criar instâncias de HttpClient
+    services.AddHttpClient();
+
+    // Registra o IHttpClientService para ser criado pela fábrica
+    services.AddTransient<IHttpClientService>(provider =>
+    {
+      // Obtém o IHttpClientFactory injetado
+      var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+      // Cria um HttpClient
+      var httpClient = httpClientFactory.CreateClient();
+      // Usa a fábrica para criar uma instância de IHttpClientService
+      return HttpClientServiceFactory.Create(httpClient);
+    });
 
     return services;
   }
