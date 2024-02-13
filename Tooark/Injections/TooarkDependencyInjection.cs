@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Tooark.Services;
+using Tooark.Services.Factory;
 using Tooark.Services.Interface;
 
 namespace Tooark.Injections;
@@ -17,7 +17,7 @@ public static class TooarkDependencyInjection
   public static IServiceCollection AddTooarkServices(this IServiceCollection services)
   {
     // Registra o HttpClientService para ser usado com a interface IHttpClientService
-    services.AddHttpClient<IHttpClientService, HttpClientService>();
+    services.AddHttpClient<IHttpClientService>(client => HttpClientServiceFactory.Create(client));
 
     return services;
   }
