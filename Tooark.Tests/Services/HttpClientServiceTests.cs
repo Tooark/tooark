@@ -11,14 +11,14 @@ namespace Tooark.Tests.Services;
 
 public class HttpClientServiceTests
 {
-  private readonly HttpClientService _httpClientService;
+  private readonly IHttpClientService _httpClientService;
   private readonly Mock<HttpMessageHandler> _mockHandler;
 
   public HttpClientServiceTests()
   {
     _mockHandler = new Mock<HttpMessageHandler>();
     var httpClient = new HttpClient(_mockHandler.Object);
-    _httpClientService = new HttpClientService(httpClient);
+    _httpClientService = HttpClientServiceFactory.Create(httpClient);
   }
 
   [Fact]
