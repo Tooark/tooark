@@ -93,7 +93,7 @@ dotnet nuget add source https://nuget.pkg.github.com/Grupo-Jacto/index.json -n g
 </Target>
 ```
 
-2. No arquivo `Program.cs` adicione o código abaixo dentro do `builder.Services.AddSwaggerGen`
+2. No arquivo `Program.cs` adicione o código abaixo dentro do `builder.Services.AddSwaggerGen`.
 
 ```C#
 var tooarkXmlFile = "Tooark.xml";
@@ -105,7 +105,7 @@ if (File.Exists(tooarkXmlPath))
 }
 ```
 
-O resultado do trecho do código do `Program.cs`
+O resultado do trecho do código do `Program.cs`:
 
 ```C#
 builder.Services.AddSwaggerGen(c =>
