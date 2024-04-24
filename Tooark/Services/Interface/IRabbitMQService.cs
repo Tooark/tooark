@@ -1,3 +1,4 @@
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace Tooark.Services.Interface;
@@ -23,4 +24,10 @@ public interface IRabbitMQService
   /// <param name="queueName">Nome da fila.</param>
   /// <param name="consumer">Consumidor que irá processar as mensagens.</param>
   void ConsumeMessage(string queueName, EventingBasicConsumer consumer);
+
+  /// <summary>
+  /// Obtém o canal de comunicação com o RabbitMQ.
+  /// </summary>
+  /// <returns>O canal de comunicação com o RabbitMQ.</returns>
+  IModel GetChannel();
 }
