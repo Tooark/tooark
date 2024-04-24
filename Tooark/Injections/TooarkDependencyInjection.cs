@@ -6,8 +6,20 @@ using Tooark.Services.RabbitMQ;
 
 namespace Tooark.Injections;
 
+/// <summary>
+/// Classe de extensão para configurar e adicionar serviços específicos da Tooark ao contêiner de injeção de dependência.
+/// </summary>
 public static class TooarkDependencyInjection
 {
+  /// <summary>
+  /// Adiciona e configura os serviços da Tooark, incluindo serviços HTTP e RabbitMQ.
+  /// </summary>
+  /// <param name="services">A coleção de serviços para adicionar os serviços da Tooark.</param>
+  /// <param name="rabbitMQHostname">O hostname do servidor RabbitMQ.</param>
+  /// <param name="rabbitMQPort">A porta do servidor RabbitMQ.</param>
+  /// <param name="rabbitMQUserName">O nome de usuário para autenticação no RabbitMQ.</param>
+  /// <param name="rabbitMQPassword">A senha para autenticação no RabbitMQ.</param>
+  /// <returns>A coleção de serviços com os serviços da Tooark adicionados.</returns>
   public static IServiceCollection AddTooarkServices(
     this IServiceCollection services,
     string rabbitMQHostname = "localhost",
@@ -21,7 +33,13 @@ public static class TooarkDependencyInjection
     return services;
   }
 
-  public static IServiceCollection AddHttpClientService(this IServiceCollection services)
+  /// <summary>
+  /// Adiciona o serviço HttpClient ao contêiner de injeção de dependência.
+  /// </summary>
+  /// <param name="services">A coleção de serviços para adicionar o serviço HttpClient.</param>
+  /// <returns>A coleção de serviços com o serviço HttpClient adicionado.</returns>
+  public static IServiceCollection AddHttpClientService(
+    this IServiceCollection services)
   {
     services.AddHttpClient();
 
@@ -36,16 +54,25 @@ public static class TooarkDependencyInjection
     return services;
   }
 
+  /// <summary>
+  /// Adiciona e configura os serviços relacionados ao RabbitMQ ao contêiner de injeção de dependência.
+  /// </summary>
+  /// <param name="services">A coleção de serviços para adicionar os serviços RabbitMQ.</param>
+  /// <param name="hostname">O hostname do servidor RabbitMQ.</param>
+  /// <param name="port">A porta do servidor RabbitMQ.</param>
+  /// <param name="username">O nome de usuário para autenticação no RabbitMQ.</param>
+  /// <param name="password">A senha para autenticação no RabbitMQ.</param>
+  /// <returns>A coleção de serviços com os serviços RabbitMQ adicionados.</returns>
   public static IServiceCollection AddRabbitMQService(
     this IServiceCollection services,
-    string rabbitMQHostname = "localhost",
-    int rabbitMQPort = 5672,
-    string rabbitMQUserName = "guest",
-    string rabbitMQPassword = "guest")
+    string hostname = "localhost",
+    int port = 5672,
+    string username = "guest",
+    string password = "guest")
   {
     services.AddSingleton<RabbitMQConnectionService>(provider =>
     {
-      return new RabbitMQConnectionService(rabbitMQHostname, rabbitMQPort, rabbitMQUserName, rabbitMQPassword);
+      return new RabbitMQConnectionService(hostname, port, username, password);
     });
 
     services.AddSingleton<IRabbitMQService>(provider =>
@@ -53,6 +80,8 @@ public static class TooarkDependencyInjection
       var connService = provider.GetRequiredService<RabbitMQConnectionService>();
       return RabbitMQServiceFactory.Create(connService);
     });
+
+    services.AddHostedService<RabbitMQConsumerService>();
 
     return services;
   }
