@@ -22,6 +22,7 @@ public class HttpClientServiceTests
     _httpClientService = HttpClientServiceFactory.Create(httpClient);
   }
 
+  // Get Json Async retorna o objeto quando for bem-sucedido
   [Fact]
   public async Task GetFromJsonAsync_ReturnsObject_WhenSuccess()
   {
@@ -49,6 +50,7 @@ public class HttpClientServiceTests
     Assert.Equal("Test", result?.GetProperty("Name").GetString());
   }
 
+  // Get Json Async retorna o objeto Person quando for bem-sucedido
   [Fact]
   public async Task GetFromJsonAsync_ReturnsPersonObject_WhenSuccess()
   {
@@ -79,6 +81,7 @@ public class HttpClientServiceTests
     Assert.Equal(expectedResponse.Age, result.Age);
   }
 
+  // Get Json Async lança exceção de solicitação HTTP quando não encontrado
   [Fact]
   public async Task GetFromJsonAsync_ThrowsHttpRequestException_WhenNotFound()
   {
@@ -100,6 +103,7 @@ public class HttpClientServiceTests
     await Assert.ThrowsAsync<HttpRequestFailedException>(() => _httpClientService.GetFromJsonAsync<dynamic>(requestUri));
   }
 
+  // Get Json Async lança exceção de desserialização de Json quando Json inválido
   [Fact]
   public async Task GetFromJsonAsync_ThrowsJsonDeserializationException_WhenInvalidJson()
   {
@@ -125,6 +129,7 @@ public class HttpClientServiceTests
     Assert.IsType<JsonDeserializationException>(exception);
   }
 
+  // Post Json Async retorna mensagem de resposta HTTP quando bem-sucedido
   [Fact]
   public async Task PostAsJsonAsync_ReturnsHttpResponseMessage_WhenSuccess()
   {
@@ -151,6 +156,7 @@ public class HttpClientServiceTests
     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
   }
 
+  // Post Json Async retorna pessoa da mensagem de resposta Http quando for bem-sucedido
   [Fact]
   public async Task PostAsJsonAsync_ReturnsHttpResponseMessagePerson_WhenSuccess()
   {
@@ -179,6 +185,7 @@ public class HttpClientServiceTests
     Assert.Equal(HttpStatusCode.Created, response.StatusCode);
   }
 
+  // Put Json Async retorna mensagem de resposta HTTP quando bem sucedido
   [Fact]
   public async Task PutAsJsonAsync_ReturnsHttpResponseMessage_WhenSuccess()
   {
@@ -204,6 +211,7 @@ public class HttpClientServiceTests
     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
   }
 
+  // Put Json Async retorna pessoa da mensagem de resposta Http quando for bem-sucedido
   [Fact]
   public async Task PutAsJsonAsync_ReturnsHttpResponseMessagePerson_WhenSuccess()
   {
@@ -231,6 +239,7 @@ public class HttpClientServiceTests
     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
   }
 
+  // Delete Json Async retorna código de status de sucesso
   [Fact]
   public async Task DeleteAsJsonAsync_ReturnsSuccessStatusCode()
   {
@@ -255,6 +264,7 @@ public class HttpClientServiceTests
     Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
   }
 
+  // Patch Json Async retorna mensagem de resposta HTTP quando bem-sucedido
   [Fact]
   public async Task PatchAsJsonAsync_ReturnsHttpResponseMessage_WhenSuccess()
   {
@@ -280,6 +290,7 @@ public class HttpClientServiceTests
     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
   }
 
+  // Patch Json Async retorna pessoa da mensagem de resposta HTTP quando bem sucedido
   [Fact]
   public async Task PatchAsJsonAsync_ReturnsHttpResponseMessagePerson_WhenSuccess()
   {
