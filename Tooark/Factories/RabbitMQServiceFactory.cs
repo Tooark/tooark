@@ -1,7 +1,7 @@
-using Tooark.Services.Interface;
+using Tooark.Interfaces;
 using Tooark.Services.RabbitMQ;
 
-namespace Tooark.Services.Factory;
+namespace Tooark.Factories;
 
 /// <summary>
 /// Fábrica para criar instâncias de serviços RabbitMQ.

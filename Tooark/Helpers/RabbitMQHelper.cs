@@ -18,23 +18,36 @@ public static class RabbitMQHelper
   /// <param name="exclusive">Se a fila deve ser exclusiva.</param>
   /// <param name="autoDelete">Se a fila deve ser excluída automaticamente quando não estiver em uso.</param>
   public static void ConfigureFanoutDirect(
-   IModel channel,
-   string queueName,
-   string routingKey,
-   bool durable = true,
-   bool exclusive = false,
-   bool autoDelete = false)
+    IModel channel,
+    string queueName,
+    string routingKey,
+    bool durable = true,
+    bool exclusive = false,
+    bool autoDelete = false)
   {
     try
     {
-      var fanoutExchangeName = "exchange_fanout";
-      var directExchangeName = "exchange_direct";
+      if (channel != null)
+      {
+        ArgumentException.ThrowIfNullOrEmpty(queueName);
 
-      // Configura uma exchange do tipo fanout e uma fila associada
-      ConfigureExchangeQueue(channel, fanoutExchangeName, ExchangeType.Fanout, queueName, "", durable, exclusive, autoDelete);
+        var fanoutExchangeName = "exchange_fanout";
+        var directExchangeName = "exchange_direct";
 
-      // Configura uma exchange do tipo direct e uma fila associada
-      ConfigureExchangeQueue(channel, directExchangeName, ExchangeType.Direct, queueName, routingKey, durable, exclusive, autoDelete);
+        // Configura uma exchange do tipo fanout e uma fila associada
+        ConfigureExchangeQueue(channel, fanoutExchangeName, ExchangeType.Fanout, queueName, "", durable, exclusive, autoDelete);
+
+        // Configura uma exchange do tipo direct e uma fila associada
+        ConfigureExchangeQueue(channel, directExchangeName, ExchangeType.Direct, queueName, routingKey, durable, exclusive, autoDelete);
+      }
+      else
+      {
+        throw new ArgumentNullException(nameof(channel));
+      }
+    }
+    catch (ArgumentException ex)
+    {
+      throw new RabbitMQServiceException($"Variável {ex.ParamName} é nula.", ex);
     }
     catch (Exception ex)
     {
@@ -54,61 +67,52 @@ public static class RabbitMQHelper
   /// <param name="exclusive">Se a fila deve ser exclusiva.</param>
   /// <param name="autoDelete">Se a fila deve ser excluída automaticamente quando não estiver em uso.</param>
   public static void ConfigureExchangeQueue(
-   IModel channel,
-   string exchangeName,
-   string exchangeType,
-   string queueName,
-   string routingKey,
-   bool durable = true,
-   bool exclusive = false,
-   bool autoDelete = false)
+    IModel channel,
+    string exchangeName,
+    string exchangeType,
+    string queueName,
+    string routingKey = "",
+    bool durable = true,
+    bool exclusive = false,
+    bool autoDelete = false)
   {
-    if (channel is null)
+    if (channel != null)
+    {
+      ArgumentException.ThrowIfNullOrEmpty(exchangeName);
+      ArgumentException.ThrowIfNullOrEmpty(exchangeType);
+      ArgumentException.ThrowIfNullOrEmpty(queueName);
+
+      if (exchangeType != ExchangeType.Fanout && string.IsNullOrEmpty(routingKey))
+      {
+        throw new ArgumentNullException(nameof(routingKey));
+      }
+
+      try
+      {
+        // Configura a exchange
+        channel.ConfigureExchange(
+          exchangeName,
+          exchangeType,
+          durable,
+          autoDelete);
+
+        // Configura a fila e a vincula à exchange
+        channel.ConfigureQueue(
+          exchangeName,
+          queueName,
+          routingKey,
+          durable,
+          exclusive,
+          autoDelete);
+      }
+      catch (Exception ex)
+      {
+        throw new RabbitMQServiceException("Erro ao configurar fila e exchange.", ex);
+      }
+    }
+    else
     {
       throw new ArgumentNullException(nameof(channel));
-    }
-
-    if (string.IsNullOrEmpty(exchangeName))
-    {
-      throw new ArgumentException($"'{nameof(exchangeName)}' não pode ser nulo nem vazio.", nameof(exchangeName));
-    }
-
-    if (string.IsNullOrEmpty(exchangeType))
-    {
-      throw new ArgumentException($"'{nameof(exchangeType)}' não pode ser nulo nem vazio.", nameof(exchangeType));
-    }
-
-    if (string.IsNullOrEmpty(queueName))
-    {
-      throw new ArgumentException($"'{nameof(queueName)}' não pode ser nulo nem vazio.", nameof(queueName));
-    }
-
-    if (string.IsNullOrEmpty(routingKey))
-    {
-      throw new ArgumentException($"'{nameof(routingKey)}' não pode ser nulo nem vazio.", nameof(routingKey));
-    }
-
-    try
-    {
-      // Configura a exchange
-      channel.ConfigureExchange(
-        exchangeName,
-        exchangeType,
-        durable,
-        autoDelete);
-
-      // Configura a fila e a vincula à exchange
-      channel.ConfigureQueue(
-        exchangeName,
-        queueName,
-        routingKey,
-        durable,
-        exclusive,
-        autoDelete);
-    }
-    catch (Exception ex)
-    {
-      throw new RabbitMQServiceException("Erro ao configurar fila e exchange.", ex);
     }
   }
 
@@ -127,33 +131,28 @@ public static class RabbitMQHelper
     bool durable = true,
     bool autoDelete = false)
   {
-    if (channel is null)
+    if (channel != null)
+    {
+      ArgumentException.ThrowIfNullOrEmpty(exchangeName);
+      ArgumentException.ThrowIfNullOrEmpty(exchangeType);
+
+      try
+      {
+        // Declara a exchange com os parâmetros especificados
+        channel.ExchangeDeclare(
+          exchange: exchangeName,
+          type: exchangeType,
+          durable: durable,
+          autoDelete: autoDelete);
+      }
+      catch (Exception ex)
+      {
+        throw new RabbitMQServiceException("Erro ao configurar exchange.", ex);
+      }
+    }
+    else
     {
       throw new ArgumentNullException(nameof(channel));
-    }
-
-    if (string.IsNullOrEmpty(exchangeName))
-    {
-      throw new ArgumentException($"'{nameof(exchangeName)}' não pode ser nulo nem vazio.", nameof(exchangeName));
-    }
-
-    if (string.IsNullOrEmpty(exchangeType))
-    {
-      throw new ArgumentException($"'{nameof(exchangeType)}' não pode ser nulo nem vazio.", nameof(exchangeType));
-    }
-
-    try
-    {
-      // Declara a exchange com os parâmetros especificados
-      channel.ExchangeDeclare(
-        exchange: exchangeName,
-        type: exchangeType,
-        durable: durable,
-        autoDelete: autoDelete);
-    }
-    catch (Exception ex)
-    {
-      throw new RabbitMQServiceException("Erro ao configurar exchange.", ex);
     }
   }
 
@@ -176,44 +175,39 @@ public static class RabbitMQHelper
     bool exclusive = false,
     bool autoDelete = false)
   {
-    if (channel is null)
+    if (channel != null)
+    {
+      ArgumentException.ThrowIfNullOrEmpty(exchangeName);
+      ArgumentException.ThrowIfNullOrEmpty(queueName);
+
+      if (!exchangeName.Contains("fanout") && string.IsNullOrEmpty(routingKey))
+      {
+        throw new ArgumentNullException(nameof(routingKey));
+      }
+
+      try
+      {
+        // Declara a fila com os parâmetros especificados
+        channel.QueueDeclare(
+          queue: queueName,
+          durable: durable,
+          exclusive: exclusive,
+          autoDelete: autoDelete);
+
+        // Vincula a fila à exchange com a chave de roteamento especificada
+        channel.QueueBind(
+          queue: queueName,
+          exchange: exchangeName,
+          routingKey: routingKey);
+      }
+      catch (Exception ex)
+      {
+        throw new RabbitMQServiceException("Erro ao configurar fila.", ex);
+      }
+    }
+    else
     {
       throw new ArgumentNullException(nameof(channel));
-    }
-
-    if (string.IsNullOrEmpty(exchangeName))
-    {
-      throw new ArgumentException($"'{nameof(exchangeName)}' não pode ser nulo nem vazio.", nameof(exchangeName));
-    }
-
-    if (string.IsNullOrEmpty(queueName))
-    {
-      throw new ArgumentException($"'{nameof(queueName)}' não pode ser nulo nem vazio.", nameof(queueName));
-    }
-
-    if (string.IsNullOrEmpty(routingKey))
-    {
-      throw new ArgumentException($"'{nameof(routingKey)}' não pode ser nulo nem vazio.", nameof(routingKey));
-    }
-
-    try
-    {
-      // Declara a fila com os parâmetros especificados
-      channel.QueueDeclare(
-        queue: queueName,
-        durable: durable,
-        exclusive: exclusive,
-        autoDelete: autoDelete);
-
-      // Vincula a fila à exchange com a chave de roteamento especificada
-      channel.QueueBind(
-        queue: queueName,
-        exchange: exchangeName,
-        routingKey: routingKey);
-    }
-    catch (Exception ex)
-    {
-      throw new RabbitMQServiceException("Erro ao configurar fila.", ex);
     }
   }
 }

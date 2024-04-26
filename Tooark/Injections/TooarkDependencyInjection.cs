@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using Tooark.Services;
+using Tooark.Factories;
+using Tooark.Interfaces;
 using Tooark.Services.Factory;
 using Tooark.Services.Interface;
 using Tooark.Services.RabbitMQ;
@@ -11,6 +12,9 @@ namespace Tooark.Injections;
 /// </summary>
 public static class TooarkDependencyInjection
 {
+  private const string username = "guest";
+  private const string password = "guest";
+
   /// <summary>
   /// Adiciona e configura os serviços da Tooark, incluindo serviços HTTP e RabbitMQ.
   /// </summary>
@@ -24,8 +28,8 @@ public static class TooarkDependencyInjection
     this IServiceCollection services,
     string rabbitMQHostname = "localhost",
     int rabbitMQPort = 5672,
-    string rabbitMQUserName = "guest",
-    string rabbitMQPassword = "guest")
+    string rabbitMQUserName = username,
+    string rabbitMQPassword = password)
   {
     services.AddHttpClientService();
     services.AddRabbitMQService(rabbitMQHostname, rabbitMQPort, rabbitMQUserName, rabbitMQPassword);
@@ -58,26 +62,27 @@ public static class TooarkDependencyInjection
   /// Adiciona e configura os serviços relacionados ao RabbitMQ ao contêiner de injeção de dependência.
   /// </summary>
   /// <param name="services">A coleção de serviços para adicionar os serviços RabbitMQ.</param>
-  /// <param name="hostname">O hostname do servidor RabbitMQ.</param>
+  /// <param name="host">O hostname do servidor RabbitMQ.</param>
   /// <param name="port">A porta do servidor RabbitMQ.</param>
-  /// <param name="username">O nome de usuário para autenticação no RabbitMQ.</param>
-  /// <param name="password">A senha para autenticação no RabbitMQ.</param>
+  /// <param name="user">O nome de usuário para autenticação no RabbitMQ.</param>
+  /// <param name="pass">A senha para autenticação no RabbitMQ.</param>
   /// <returns>A coleção de serviços com os serviços RabbitMQ adicionados.</returns>
   public static IServiceCollection AddRabbitMQService(
     this IServiceCollection services,
-    string hostname = "localhost",
+    string host = "localhost",
     int port = 5672,
-    string username = "guest",
-    string password = "guest")
+    string user = username,
+    string pass = password)
   {
     services.AddSingleton<RabbitMQConnectionService>(provider =>
     {
-      return new RabbitMQConnectionService(hostname, port, username, password);
+      return new RabbitMQConnectionService(host, port, user, pass);
     });
 
     services.AddSingleton<IRabbitMQService>(provider =>
     {
       var connService = provider.GetRequiredService<RabbitMQConnectionService>();
+      
       return RabbitMQServiceFactory.Create(connService);
     });
 

@@ -51,12 +51,7 @@ public class RabbitMQConnectionService : IDisposable
   /// <returns>Um canal para interagir com o RabbitMQ.</returns>
   public IModel CreateChannel()
   {
-    if (_disposed)
-    {
-      throw new ObjectDisposedException(nameof(RabbitMQConnectionService));
-    }
-
-    return _connection.CreateModel();
+    return _disposed ? throw new ObjectDisposedException(nameof(RabbitMQConnectionService)) : _connection.CreateModel();
   }
 
   /// <summary>
