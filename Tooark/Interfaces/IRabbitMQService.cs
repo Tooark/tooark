@@ -1,7 +1,7 @@
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace Tooark.Services.Interface;
+namespace Tooark.Interfaces;
 
 public interface IRabbitMQService
 {

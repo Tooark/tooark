@@ -3,28 +3,20 @@ using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System.Text;
 using Tooark.Exceptions;
-using Tooark.Services.Interface;
-using Tooark.Services.RabbitMQ;
+using Tooark.Interfaces;
 
-namespace Tooark.Services;
+namespace Tooark.Services.RabbitMQ;
 
 /// <summary>
 /// Serviço para interagir com o RabbitMQ, permitindo publicar e consumir mensagens.
 /// </summary>
-internal class RabbitMQService : IRabbitMQService
+/// <remarks>
+/// Construtor recebe serviço de conexão RabbitMQ.
+/// </remarks>
+/// <param name="connectionService">Serviço de conexão com o RabbitMQ.</param>
+internal class RabbitMQService(RabbitMQConnectionService connectionService) : IRabbitMQService
 {
-  private readonly RabbitMQConnectionService _connectionService;
-  private readonly IModel _channel;
-
-  /// <summary>
-  /// Construtor recebe serviço de conexão RabbitMQ.
-  /// </summary>
-  /// <param name="connectionService">Serviço de conexão com o RabbitMQ.</param>
-  public RabbitMQService(RabbitMQConnectionService connectionService)
-  {
-    _connectionService = connectionService;
-    _channel = _connectionService.CreateChannel();
-  }
+  private readonly IModel _channel = connectionService.CreateChannel();
 
   /// <summary>
   /// Publica uma mensagem em um exchange do tipo 'fanout'.
@@ -36,8 +28,6 @@ internal class RabbitMQService : IRabbitMQService
 
     try
     {
-      using var _channel = _connectionService.CreateChannel();
-
       var body = Encoding.UTF8.GetBytes(message);
 
       _channel.BasicPublish(
@@ -50,14 +40,14 @@ internal class RabbitMQService : IRabbitMQService
     {
       throw new RabbitMQServiceException(
         "Não foi possível alcançar o broker do RabbitMQ.",
-        exchange,
+        $"Exchange: {exchange}",
         ex);
     }
     catch (Exception ex)
     {
       throw new RabbitMQServiceException(
         "Erro ao publicar mensagem.",
-        exchange,
+        $"Exchange: {exchange}",
         ex);
     }
   }
@@ -73,8 +63,6 @@ internal class RabbitMQService : IRabbitMQService
 
     try
     {
-      using var _channel = _connectionService.CreateChannel();
-
       var body = Encoding.UTF8.GetBytes(message);
 
       _channel.BasicPublish(
@@ -110,8 +98,6 @@ internal class RabbitMQService : IRabbitMQService
   {
     try
     {
-      using var _channel = _connectionService.CreateChannel();
-
       _channel.BasicConsume(
         queue: queueName,
         autoAck: false,
@@ -121,12 +107,14 @@ internal class RabbitMQService : IRabbitMQService
     {
       throw new RabbitMQServiceException(
         "Operação interrompida durante o consumo da mensagem.",
+        $"Queue: {queueName}",
         ex);
     }
     catch (Exception ex)
     {
       throw new RabbitMQServiceException(
         "Erro ao consumir mensagem.",
+        $"Queue: {queueName}",
         ex);
     }
   }

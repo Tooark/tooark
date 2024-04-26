@@ -1,31 +1,31 @@
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client.Events;
 using System.Text;
+using Tooark.Interfaces;
 using Tooark.Services.Interface;
 
-namespace Tooark.Services;
+namespace Tooark.Services.RabbitMQ;
 
 /// <summary>
 /// Serviço de background para consumir mensagens do RabbitMQ.
 /// </summary>
-public class RabbitMQConsumerService : BackgroundService
+/// <remarks>
+/// Inicializa uma nova instância do serviço de consumo RabbitMQ.
+/// </remarks>
+/// <param name="logger">Logger para registrar informações e erros.</param>
+/// <param name="rabbitMQService">Serviço para interação com o RabbitMQ.</param>
+/// <param name="queueName">Nome da fila de onde as mensagens serão consumidas.</param>
+/// <param name="processMessageFunc">Função para processar a mensagem recebida.</param>
+public class RabbitMQConsumerService(
+  ILogger<RabbitMQConsumerService> logger,
+  IRabbitMQService rabbitMQService,
+  string queueName, Action<string> processMessageFunc) : BackgroundService
 {
-  private readonly IRabbitMQService _rabbitMQService;
-  private readonly string _queueName;
-  private readonly Action<string> _processMessageFunc;
-
-  /// <summary>
-  /// Inicializa uma nova instância do serviço de consumo RabbitMQ.
-  /// </summary>
-  /// <param name="rabbitMQService">Serviço para interação com o RabbitMQ.</param>
-  /// <param name="queueName">Nome da fila de onde as mensagens serão consumidas.</param>
-  /// <param name="processMessageFunc">Função para processar a mensagem recebida.</param>
-  public RabbitMQConsumerService(IRabbitMQService rabbitMQService, string queueName, Action<string> processMessageFunc)
-  {
-    _rabbitMQService = rabbitMQService;
-    _queueName = queueName;
-    _processMessageFunc = processMessageFunc;
-  }
+  private readonly ILogger<RabbitMQConsumerService> _logger = logger;
+  private readonly IRabbitMQService _rabbitMQService = rabbitMQService;
+  private readonly string _queueName = queueName;
+  private readonly Action<string> _processMessageFunc = processMessageFunc;
 
   /// <summary>
   /// Executa o serviço de consumo em background.
@@ -52,9 +52,9 @@ public class RabbitMQConsumerService : BackgroundService
       }
       catch (Exception ex)
       {
-        Console.WriteLine("Erro ao processar a mensagem: {0}", ex.Message);
-        
-        // Rejeição da mensagem e reenfileiramento
+        _logger.LogError(ex, "Erro ao processar a mensagem: {Error}", ex.Message);
+
+        // Rejeição da mensagem e reenfileira
         _rabbitMQService.GetChannel().BasicNack(ea.DeliveryTag, false, true);
       }
     };
