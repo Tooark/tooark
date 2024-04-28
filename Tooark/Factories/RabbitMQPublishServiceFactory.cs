@@ -38,12 +38,6 @@ public class RabbitMQPublishServiceFactory : IRabbitMQPublishServiceFactory
       options.RecoveryInterval = 5;
     }
 
-    return new RabbitMQPublishService(
-      options.Hostname,
-      options.PortNumber,
-      options.Username,
-      options.Password,
-      options.AutomaticRecovery,
-      options.RecoveryInterval);
+    return new RabbitMQPublishService(options);
   }
 }

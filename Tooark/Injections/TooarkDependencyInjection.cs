@@ -76,7 +76,9 @@ public static class TooarkDependencyInjection
         HostName = options.Hostname,
         Port = options.PortNumber,
         UserName = options.Username,
-        Password = options.Password
+        Password = options.Password,
+        AutomaticRecoveryEnabled = options.AutomaticRecovery,
+        NetworkRecoveryInterval = TimeSpan.FromSeconds(options.RecoveryInterval)
       };
 
       var connection = connectionFactory.CreateConnection();
