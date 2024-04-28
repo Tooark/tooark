@@ -3,6 +3,7 @@ using RabbitMQ.Client.Exceptions;
 using System.Text;
 using Tooark.Exceptions;
 using Tooark.Interfaces;
+using Tooark.Options;
 
 namespace Tooark.Services.RabbitMQ;
 
@@ -18,30 +19,19 @@ internal class RabbitMQPublishService : IRabbitMQPublishService, IDisposable
   /// <summary>
   /// Construtor do RabbitMQPublishService.
   /// </summary>
-  /// <param name="hostname">Hostname do servidor RabbitMQ.</param>
-  /// <param name="port">Porta do servidor RabbitMQ.</param>
-  /// <param name="username">Nome de usuário para autenticação.</param>
-  /// <param name="password">Senha para autenticação.</param>
-  /// <param name="automaticRecovery">Habilita a recuperação automática de conexão.</param>
-  /// <param name="recoveryInterval">Intervalo de recuperação de conexão em segundos.</param>
-  internal RabbitMQPublishService(
-    string hostname,
-    int port,
-    string username,
-    string password,
-    bool automaticRecovery = true,
-    int recoveryInterval = 5)
+  /// <param name="options">Parâmetros para os serviços RabbitMQ.</param>
+  internal RabbitMQPublishService(RabbitMQOptions options)
   {
     try
     {
       var factory = new ConnectionFactory()
       {
-        HostName = hostname,
-        Port = port,
-        UserName = username,
-        Password = password,
-        AutomaticRecoveryEnabled = automaticRecovery,
-        NetworkRecoveryInterval = TimeSpan.FromSeconds(recoveryInterval),
+        HostName = options.Hostname,
+        Port = options.PortNumber,
+        UserName = options.Username,
+        Password = options.Password,
+        AutomaticRecoveryEnabled = options.AutomaticRecovery,
+        NetworkRecoveryInterval = TimeSpan.FromSeconds(options.RecoveryInterval),
       };
 
       _connection = factory.CreateConnection();
