@@ -1,26 +1,49 @@
 using Tooark.Interfaces;
+using Tooark.Options;
 using Tooark.Services.RabbitMQ;
 
 namespace Tooark.Factories;
 
 /// <summary>
-/// Fábrica para criar instâncias de serviços RabbitMQ.
+/// Fábrica para criar instâncias do RabbitMQService.
 /// </summary>
-public static class RabbitMQServiceFactory
+public class RabbitMQServiceFactory : IRabbitMQServiceFactory
 {
   /// <summary>
-  /// Cria uma nova instância de IRabbitMQService.
+  /// Cria uma nova instância de IRabbitMQService com os parâmetros especificados.
   /// </summary>
-  /// <param name="connectionService">O serviço de conexão com o RabbitMQ.</param>
-  /// <returns>Uma instância de IRabbitMQService.</returns>
-  /// <exception cref="ArgumentNullException">Lançado se o connectionService for nulo.</exception>
-  public static IRabbitMQService Create(RabbitMQConnectionService connectionService)
+  /// <param name="options">Parâmetros para os serviços RabbitMQ.</param>
+  /// <returns>Uma instância de IRabbitMQService configurada e pronta para uso.</returns>
+  /// <exception cref="ArgumentNullException">Lançado o argumento options obrigatório for nulo.</exception>
+  /// <exception cref="ArgumentException">Lançado se algum dos argumentos obrigatórios for nulo ou vazio.</exception>
+  /// <exception cref="ArgumentOutOfRangeException">Lançado se o valor de 'port' ou 'recoveryInterval' for zero.</exception>
+  public IRabbitMQService CreateRabbitMQService(RabbitMQOptions options)
   {
-    if (connectionService == null)
+    if (options == null)
     {
-      throw new ArgumentNullException(nameof(connectionService), "O serviço de conexão não pode ser nulo.");
+      throw new ArgumentNullException(nameof(options), "As opções do RabbitMQ não podem ser nulas.");
     }
 
-    return new RabbitMQService(connectionService);
+    ArgumentException.ThrowIfNullOrEmpty(options.Hostname);
+    ArgumentException.ThrowIfNullOrEmpty(options.Username);
+    ArgumentException.ThrowIfNullOrEmpty(options.Password);
+    
+    if (options.PortNumber <= 0)
+    {
+      options.PortNumber = 5672;
+    }
+
+    if (options.RecoveryInterval <= 0)
+    {
+      options.RecoveryInterval = 5;
+    }
+
+    return new RabbitMQService(
+      options.Hostname,
+      options.PortNumber,
+      options.Username,
+      options.Password,
+      options.AutomaticRecovery,
+      options.RecoveryInterval);
   }
 }

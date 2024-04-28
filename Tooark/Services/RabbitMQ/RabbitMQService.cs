@@ -1,5 +1,4 @@
 using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System.Text;
 using Tooark.Exceptions;
@@ -10,63 +9,68 @@ namespace Tooark.Services.RabbitMQ;
 /// <summary>
 /// Serviço para interagir com o RabbitMQ, permitindo publicar e consumir mensagens.
 /// </summary>
-/// <remarks>
-/// Construtor recebe serviço de conexão RabbitMQ.
-/// </remarks>
-/// <param name="connectionService">Serviço de conexão com o RabbitMQ.</param>
-internal class RabbitMQService(RabbitMQConnectionService connectionService) : IRabbitMQService
+internal class RabbitMQService : IRabbitMQService, IDisposable
 {
-  private readonly IModel _channel = connectionService.CreateChannel();
+  private readonly IConnection _connection;
+  private readonly IModel _channel;
+  private bool _disposed;
 
   /// <summary>
-  /// Publica uma mensagem em um exchange do tipo 'fanout'.
+  /// Construtor do RabbitMQService.
   /// </summary>
-  /// <param name="message">A mensagem a ser publicada.</param>
-  public void PublishMessage(string message)
+  /// <param name="hostname">Hostname do servidor RabbitMQ.</param>
+  /// <param name="port">Porta do servidor RabbitMQ.</param>
+  /// <param name="username">Nome de usuário para autenticação.</param>
+  /// <param name="password">Senha para autenticação.</param>
+  /// <param name="automaticRecovery">Habilita a recuperação automática de conexão.</param>
+  /// <param name="recoveryInterval">Intervalo de recuperação de conexão em segundos.</param>
+  internal RabbitMQService(
+    string hostname,
+    int port,
+    string username,
+    string password,
+    bool automaticRecovery = true,
+    int recoveryInterval = 5)
   {
-    string exchange = "exchange_fanout";
-
     try
     {
-      var body = Encoding.UTF8.GetBytes(message);
+      var factory = new ConnectionFactory()
+      {
+        HostName = hostname,
+        Port = port,
+        UserName = username,
+        Password = password,
+        AutomaticRecoveryEnabled = automaticRecovery,
+        NetworkRecoveryInterval = TimeSpan.FromSeconds(recoveryInterval),
+      };
 
-      _channel.BasicPublish(
-        exchange: exchange,
-        routingKey: "",
-        basicProperties: null,
-        body: body);
-    }
-    catch (BrokerUnreachableException ex)
-    {
-      throw new RabbitMQServiceException(
-        "Não foi possível alcançar o broker do RabbitMQ.",
-        $"Exchange: {exchange}",
-        ex);
+      _connection = factory.CreateConnection();
+      _channel = _connection.CreateModel();
     }
     catch (Exception ex)
     {
       throw new RabbitMQServiceException(
-        "Erro ao publicar mensagem.",
-        $"Exchange: {exchange}",
+        "Não foi possível estabelecer uma conexão com o servidor RabbitMQ.",
         ex);
     }
   }
 
   /// <summary>
-  /// Publica uma mensagem em um exchange do tipo 'direct' com uma chave de roteamento específica.
+  /// Publica uma mensagem em uma exchange especificada com uma chave de roteamento opcional.
+  /// Este método é utilizado internamente pelos métodos públicos de publicação para enviar mensagens ao RabbitMQ.
   /// </summary>
-  /// <param name="message">A mensagem a ser publicada.</param>
-  /// <param name="routingKey">A chave de roteamento para a mensagem.</param>
-  public void PublishMessage(string message, string routingKey)
+  /// <param name="message">A mensagem a ser publicada no RabbitMQ.</param>
+  /// <param name="exchangeName">O nome da exchange onde a mensagem será publicada.</param>
+  /// <param name="routingKey">A chave de roteamento para a mensagem. Opcional para exchanges do tipo fanout.</param>
+  /// <exception cref="RabbitMQServiceException">Lança uma exceção se não for possível alcançar o broker do RabbitMQ ou ocorrer um erro ao publicar a mensagem.</exception>
+  private void PublishMessageInternal(string message, string exchangeName, string routingKey = "")
   {
-    string exchange = "exchange_direct";
-
     try
     {
       var body = Encoding.UTF8.GetBytes(message);
 
       _channel.BasicPublish(
-        exchange: exchange,
+        exchange: exchangeName,
         routingKey: routingKey,
         basicProperties: null,
         body: body);
@@ -75,7 +79,7 @@ internal class RabbitMQService(RabbitMQConnectionService connectionService) : IR
     {
       throw new RabbitMQServiceException(
         "Não foi possível alcançar o broker do RabbitMQ.",
-        exchange,
+        exchangeName,
         routingKey,
         ex);
     }
@@ -83,49 +87,89 @@ internal class RabbitMQService(RabbitMQConnectionService connectionService) : IR
     {
       throw new RabbitMQServiceException(
         "Erro ao publicar mensagem.",
-        exchange,
+        exchangeName,
         routingKey,
         ex);
     }
   }
 
   /// <summary>
-  /// Consome mensagens de uma fila específica.
+  /// Publica uma mensagem no exchange_fanout.
   /// </summary>
-  /// <param name="queueName">O nome da fila de onde as mensagens serão consumidas.</param>
-  /// <param name="consumer">O consumidor que processará as mensagens recebidas.</param>
-  public void ConsumeMessage(string queueName, EventingBasicConsumer consumer)
+  /// <param name="message">Mensagem a ser publicada.</param>
+  public void PublishMessage(string message)
   {
-    try
-    {
-      _channel.BasicConsume(
-        queue: queueName,
-        autoAck: false,
-        consumer: consumer);
-    }
-    catch (BrokerUnreachableException ex)
-    {
-      throw new RabbitMQServiceException(
-        "Operação interrompida durante o consumo da mensagem.",
-        $"Queue: {queueName}",
-        ex);
-    }
-    catch (Exception ex)
-    {
-      throw new RabbitMQServiceException(
-        "Erro ao consumir mensagem.",
-        $"Queue: {queueName}",
-        ex);
-    }
+    PublishMessageInternal(message, "exchange_fanout");
+  }
+
+  /// <summary>
+  /// Publica uma mensagem no exchange_direct com uma chave de roteamento.
+  /// </summary>
+  /// <param name="message">Mensagem a ser publicada.</param>
+  /// <param name="routingKey">Chave de roteamento para o exchange_direct.</param>
+  public void PublishMessage(string message, string routingKey)
+  {
+    PublishMessageInternal(message, "exchange_direct", routingKey);
+  }
+
+  /// <summary>
+  /// Publica uma mensagem em uma exchange customizada, fornecida como parâmetro.
+  /// </summary>
+  /// <param name="message">Mensagem a ser publicada.</param>
+  /// <param name="routingKey">Chave de roteamento para o exchange_direct.</param>
+  /// <param name="exchangeName">Mensagem a ser publicada.</param>
+  public void PublishMessage(string message, string routingKey, string exchangeName)
+  {
+    PublishMessageInternal(message, exchangeName, routingKey);
   }
 
   /// <summary>
   /// Obtém o canal de comunicação com o RabbitMQ.
-  /// Este canal é usado para publicar e consumir mensagens do RabbitMQ.
   /// </summary>
-  /// <returns>O canal de comunicação com o RabbitMQ.</returns>
+  /// <returns>O canal de comunicação.</returns>
   public IModel GetChannel()
   {
     return _channel;
+  }
+
+  /// <summary>
+  /// Libera os recursos usados pelo serviço RabbitMQ.
+  /// </summary>
+  public void Dispose()
+  {
+    Dispose(true);
+    GC.SuppressFinalize(this);
+  }
+
+  /// <summary>
+  /// Libera os recursos não gerenciados usados pelo serviço RabbitMQ e, opcionalmente, libera os recursos gerenciados.
+  /// </summary>
+  /// <param name="disposing">true para liberar recursos gerenciados e não gerenciados; false para liberar apenas recursos não gerenciados.</param>
+  protected virtual void Dispose(bool disposing)
+  {
+    if (!_disposed)
+    {
+      if (disposing)
+      {
+        // Libera recursos gerenciados
+        if (_channel.IsOpen)
+        {
+          _channel.Close();
+        }
+        _connection.Close();
+      }
+
+      // Libera recursos não gerenciados se houver
+
+      _disposed = true;
+    }
+  }
+
+  /// <summary>
+  /// Destruidor da classe RabbitMQService.
+  /// </summary>
+  ~RabbitMQService()
+  {
+    Dispose(false);
   }
 }
