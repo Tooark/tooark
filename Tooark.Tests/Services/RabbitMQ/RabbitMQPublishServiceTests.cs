@@ -5,13 +5,13 @@ using Tooark.Options;
 
 namespace Tooark.Tests.Services.RabbitMQ;
 
-public class RabbitMQServiceTests
+public class RabbitMQPublishServiceTests
 {
-  private readonly Mock<IRabbitMQServiceFactory> _mockFactory;
-  private readonly Mock<IRabbitMQService> _mockService;
+  private readonly Mock<IRabbitMQPublishServiceFactory> _mockFactory;
+  private readonly Mock<IRabbitMQPublishService> _mockService;
   private readonly RabbitMQOptions _options;
 
-  public RabbitMQServiceTests()
+  public RabbitMQPublishServiceTests()
   {
     _options = new()
     {
@@ -21,11 +21,11 @@ public class RabbitMQServiceTests
       Password = "guest"
     };
 
-    _mockFactory = new Mock<IRabbitMQServiceFactory>();
-    _mockService = new Mock<IRabbitMQService>();
+    _mockFactory = new Mock<IRabbitMQPublishServiceFactory>();
+    _mockService = new Mock<IRabbitMQPublishService>();
 
     _mockFactory
-      .Setup(f => f.CreateRabbitMQService(_options))
+      .Setup(f => f.CreateRabbitMQPublishService(_options))
       .Returns(_mockService.Object);
   }
 
@@ -38,7 +38,7 @@ public class RabbitMQServiceTests
     _mockService.Setup(s => s.PublishMessage(message));
 
     // Act
-    var service = _mockFactory.Object.CreateRabbitMQService(_options);
+    var service = _mockFactory.Object.CreateRabbitMQPublishService(_options);
     service.PublishMessage(message);
 
     // Assert
@@ -55,7 +55,7 @@ public class RabbitMQServiceTests
     _mockService.Setup(s => s.PublishMessage(message, routingKey));
 
     // Act
-    var service = _mockFactory.Object.CreateRabbitMQService(_options);
+    var service = _mockFactory.Object.CreateRabbitMQPublishService(_options);
     service.PublishMessage(message, routingKey);
 
     // Assert
@@ -73,7 +73,7 @@ public class RabbitMQServiceTests
     _mockService.Setup(s => s.PublishMessage(message, routingKey, exchangeName));
 
     // Act
-    var service = _mockFactory.Object.CreateRabbitMQService(_options);
+    var service = _mockFactory.Object.CreateRabbitMQPublishService(_options);
     service.PublishMessage(message, routingKey, exchangeName);
 
     // Assert
@@ -82,7 +82,7 @@ public class RabbitMQServiceTests
 
   // Publicar mensagem quando o corretor inacessível lança RabbitMQServiceException
   [Fact]
-  public void PublishMessage_WhenBrokerUnreachable_ThrowsRabbitMQServiceException()
+  public void PublishMessage_WhenBrokerUnreachable_ThrowsRabbitMQPublishServiceException()
   {
     // Arrange
     var message = "Test message";
@@ -91,7 +91,7 @@ public class RabbitMQServiceTests
       .Throws(new RabbitMQServiceException("Broker unreachable"));
 
     // Act & Assert
-    var service = _mockFactory.Object.CreateRabbitMQService(_options);
+    var service = _mockFactory.Object.CreateRabbitMQPublishService(_options);
     var exception = Assert.Throws<RabbitMQServiceException>(() => service.PublishMessage(message));
     Assert.Equal("Broker unreachable", exception.Message);
   }

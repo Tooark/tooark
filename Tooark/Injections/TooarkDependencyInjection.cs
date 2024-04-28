@@ -1,5 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using RabbitMQ.Client;
 using Tooark.Factories;
+using Tooark.Helpers;
 using Tooark.Interfaces;
 using Tooark.Options;
 using Tooark.Services.Factory;
@@ -23,7 +26,7 @@ public static class TooarkDependencyInjection
     RabbitMQOptions rabbitMQOptions)
   {
     services.AddHttpClientService();
-    services.AddRabbitMQService(rabbitMQOptions);
+    services.AddRabbitMQPublishService(rabbitMQOptions);
 
     return services;
   }
@@ -55,16 +58,58 @@ public static class TooarkDependencyInjection
   /// <param name="services">A coleção de serviços para adicionar os serviços RabbitMQ.</param>
   /// <param name="options">Parâmetros para os serviços RabbitMQ.</param>
   /// <returns>A coleção de serviços com os serviços RabbitMQ adicionados.</returns>
-  public static IServiceCollection AddRabbitMQService(
+  public static IServiceCollection AddRabbitMQPublishService(
     this IServiceCollection services,
     RabbitMQOptions options)
   {
-    services.AddSingleton<IRabbitMQServiceFactory, RabbitMQServiceFactory>();
-    services.AddSingleton<IRabbitMQService>(provider =>
+    services.AddSingleton<IRabbitMQPublishServiceFactory, RabbitMQPublishServiceFactory>();
+    services.AddSingleton<IRabbitMQPublishService>(provider =>
     {
-      var factory = provider.GetRequiredService<IRabbitMQServiceFactory>();
-      return factory.CreateRabbitMQService(options);
+      var factory = provider.GetRequiredService<IRabbitMQPublishServiceFactory>();
+      return factory.CreateRabbitMQPublishService(options);
     });
+
+    services.AddSingleton<IModel>(provider =>
+    {
+      var connectionFactory = new ConnectionFactory
+      {
+        HostName = options.Hostname,
+        Port = options.PortNumber,
+        UserName = options.Username,
+        Password = options.Password
+      };
+
+      var connection = connectionFactory.CreateConnection();
+      var channel = connection.CreateModel();
+
+      // Configuração padrão do serviço exchange Fanout e Direct
+      RabbitMQHelper.ConfigureFanoutDirect(channel, options.QueueName, options.RoutingKey);
+
+      // Configuração customizada do serviço exchange, caso fornecidos
+      foreach (var custom in options.CustomExchange)
+      {
+        RabbitMQHelper.ConfigureExchangeQueue(
+          channel,
+          custom.NameExchange,
+          custom.TypeExchange,
+          custom.NameQueue,
+          custom.RoutingKey,
+          custom.Durable,
+          custom.Exclusive,
+          custom.AutoDelete);
+      }
+
+      // Registra a ação para fechar a conexão e o canal quando a aplicação for desligada
+      var lifetime = provider.GetRequiredService<IHostApplicationLifetime>();
+      lifetime.ApplicationStopping.Register(() =>
+      {
+        channel.Close();
+        connection.Close();
+      });
+
+      return channel;
+    });
+
 
     return services;
   }
