@@ -4,6 +4,20 @@ namespace Tooark.Tests.Exceptions;
 
 public class RabbitMQServiceExceptionTests
 {
+  // Construtor com exceção interna define mensagem
+  [Fact]
+  public void Constructor_WithInnerException_SetsMessage()
+  {
+    // Arrange
+    var message = "Test Message";
+
+    // Act
+    var exception = new RabbitMQServiceException(message);
+
+    // Assert
+    Assert.Equal(message, exception.Message);
+  }
+
   // Construtor com exceção interna define mensagem e exceção interna
   [Fact]
   public void Constructor_WithInnerException_SetsMessageAndInnerException()
