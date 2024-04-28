@@ -7,6 +7,16 @@ public class RabbitMQServiceException : Exception
 {
   /// <summary>
   /// Inicializa uma nova instância da classe RabbitMQServiceException com
+  /// uma mensagem de erro especificada.
+  /// </summary>
+  /// <param name="message">A mensagem de erro que explica o motivo da exceção.</param>
+  public RabbitMQServiceException(
+    string message
+  ) : base(message)
+  { }
+
+  /// <summary>
+  /// Inicializa uma nova instância da classe RabbitMQServiceException com
   /// uma mensagem de erro especificada e uma referência à exceção interna que é a causa desta exceção.
   /// </summary>
   /// <param name="message">A mensagem de erro que explica o motivo da exceção.</param>
