@@ -5,19 +5,19 @@ using Tooark.Services.RabbitMQ;
 namespace Tooark.Factories;
 
 /// <summary>
-/// Fábrica para criar instâncias do RabbitMQService.
+/// Fábrica para criar instâncias do RabbitMQPublishService.
 /// </summary>
-public class RabbitMQServiceFactory : IRabbitMQServiceFactory
+public class RabbitMQPublishServiceFactory : IRabbitMQPublishServiceFactory
 {
   /// <summary>
-  /// Cria uma nova instância de IRabbitMQService com os parâmetros especificados.
+  /// Cria uma nova instância de IRabbitMQPublishService com os parâmetros especificados.
   /// </summary>
   /// <param name="options">Parâmetros para os serviços RabbitMQ.</param>
-  /// <returns>Uma instância de IRabbitMQService configurada e pronta para uso.</returns>
+  /// <returns>Uma instância de IRabbitMQPublishService configurada e pronta para uso.</returns>
   /// <exception cref="ArgumentNullException">Lançado o argumento options obrigatório for nulo.</exception>
   /// <exception cref="ArgumentException">Lançado se algum dos argumentos obrigatórios for nulo ou vazio.</exception>
   /// <exception cref="ArgumentOutOfRangeException">Lançado se o valor de 'port' ou 'recoveryInterval' for zero.</exception>
-  public IRabbitMQService CreateRabbitMQService(RabbitMQOptions options)
+  public IRabbitMQPublishService CreateRabbitMQPublishService(RabbitMQOptions options)
   {
     if (options == null)
     {
@@ -38,7 +38,7 @@ public class RabbitMQServiceFactory : IRabbitMQServiceFactory
       options.RecoveryInterval = 5;
     }
 
-    return new RabbitMQService(
+    return new RabbitMQPublishService(
       options.Hostname,
       options.PortNumber,
       options.Username,

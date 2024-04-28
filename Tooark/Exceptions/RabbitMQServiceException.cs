@@ -1,7 +1,7 @@
 namespace Tooark.Exceptions;
 
 /// <summary>
-/// Representa uma exceção específica do serviço RabbitMQ.
+/// Representa uma exceção específica do RabbitMQService.
 /// </summary>
 public class RabbitMQServiceException : Exception
 {

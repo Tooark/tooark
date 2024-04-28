@@ -7,16 +7,16 @@ using Tooark.Interfaces;
 namespace Tooark.Services.RabbitMQ;
 
 /// <summary>
-/// Serviço para interagir com o RabbitMQ, permitindo publicar e consumir mensagens.
+/// Serviço para interagir com o RabbitMQ, permitindo publicar mensagens.
 /// </summary>
-internal class RabbitMQService : IRabbitMQService, IDisposable
+internal class RabbitMQPublishService : IRabbitMQPublishService, IDisposable
 {
   private readonly IConnection _connection;
   private readonly IModel _channel;
   private bool _disposed;
 
   /// <summary>
-  /// Construtor do RabbitMQService.
+  /// Construtor do RabbitMQPublishService.
   /// </summary>
   /// <param name="hostname">Hostname do servidor RabbitMQ.</param>
   /// <param name="port">Porta do servidor RabbitMQ.</param>
@@ -24,7 +24,7 @@ internal class RabbitMQService : IRabbitMQService, IDisposable
   /// <param name="password">Senha para autenticação.</param>
   /// <param name="automaticRecovery">Habilita a recuperação automática de conexão.</param>
   /// <param name="recoveryInterval">Intervalo de recuperação de conexão em segundos.</param>
-  internal RabbitMQService(
+  internal RabbitMQPublishService(
     string hostname,
     int port,
     string username,
@@ -166,9 +166,9 @@ internal class RabbitMQService : IRabbitMQService, IDisposable
   }
 
   /// <summary>
-  /// Destruidor da classe RabbitMQService.
+  /// Destruidor da classe RabbitMQPublishService.
   /// </summary>
-  ~RabbitMQService()
+  ~RabbitMQPublishService()
   {
     Dispose(false);
   }
