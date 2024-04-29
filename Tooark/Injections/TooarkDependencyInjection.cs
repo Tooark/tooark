@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using Tooark.Factories;
 using Tooark.Helpers;
@@ -7,6 +8,7 @@ using Tooark.Interfaces;
 using Tooark.Options;
 using Tooark.Services.Factory;
 using Tooark.Services.Interface;
+using Tooark.Services.RabbitMQ;
 
 namespace Tooark.Injections;
 
@@ -112,6 +114,28 @@ public static class TooarkDependencyInjection
       return channel;
     });
 
+
+    return services;
+  }
+
+  /// <summary>
+  /// Adiciona o serviço de consumo RabbitMQ como um serviço em background ao contêiner de injeção de dependência.
+  /// </summary>
+  /// <param name="services">O IServiceCollection ao qual o serviço será adicionado.</param>
+  /// <param name="options">As opções de configuração para o serviço RabbitMQ.</param>
+  /// <param name="processMessageFunc">A função de callback para processar as mensagens recebidas.</param>
+  /// <returns>O IServiceCollection para encadeamento de chamadas.</returns>
+  public static IServiceCollection AddRabbitMQConsumeBackgroundService(
+    this IServiceCollection services,
+    RabbitMQOptions options,
+    Action<string> processMessageFunc)
+  {
+    services.AddSingleton<RabbitMQConsumeService>(provider =>
+    {
+      var logger = provider.GetRequiredService<ILogger<RabbitMQConsumeService>>();
+
+      return new RabbitMQConsumeService(logger, options, processMessageFunc);
+    });
 
     return services;
   }

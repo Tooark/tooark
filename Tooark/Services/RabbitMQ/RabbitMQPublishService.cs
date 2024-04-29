@@ -146,11 +146,11 @@ internal class RabbitMQPublishService : IRabbitMQPublishService, IDisposable
         {
           _channel.Close();
         }
+
         _connection.Close();
       }
 
       // Libera recursos não gerenciados se houver
-
       _disposed = true;
     }
   }
