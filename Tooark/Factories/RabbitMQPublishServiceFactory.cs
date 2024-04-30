@@ -21,7 +21,7 @@ public class RabbitMQPublishServiceFactory : IRabbitMQPublishServiceFactory
   {
     if (options == null)
     {
-      throw new ArgumentNullException(nameof(options), "As opções do RabbitMQ não podem ser nulas.");
+      throw new ArgumentNullException(nameof(options), "O parâmetro de 'options' do RabbitMQPublishService não podem ser nulo.");
     }
 
     ArgumentException.ThrowIfNullOrEmpty(options.Hostname);

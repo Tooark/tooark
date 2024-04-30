@@ -3,7 +3,7 @@ using RabbitMQ.Client;
 namespace Tooark.Interfaces;
 
 /// <summary>
-/// Serviço para interagir com o RabbitMQ, permitindo publicar mensagens.
+/// Define uma interface para o RabbitMQService.
 /// </summary>
 public interface IRabbitMQPublishService
 {

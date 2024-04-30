@@ -130,11 +130,11 @@ public static class TooarkDependencyInjection
     RabbitMQOptions options,
     Action<string> processMessageFunc)
   {
-    services.AddSingleton<RabbitMQConsumeService>(provider =>
+    services.AddSingleton<IRabbitMQConsumeServiceFactory, RabbitMQConsumeServiceFactory>();
+    services.AddSingleton<IRabbitMQConsumeService>(provider =>
     {
-      var logger = provider.GetRequiredService<ILogger<RabbitMQConsumeService>>();
-
-      return new RabbitMQConsumeService(logger, options, processMessageFunc);
+      var factory = provider.GetRequiredService<IRabbitMQConsumeServiceFactory>();
+      return factory.CreateRabbitMQConsumeService(options, processMessageFunc);
     });
 
     return services;
