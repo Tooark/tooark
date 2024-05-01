@@ -1,3 +1,5 @@
+using RabbitMQ.Client;
+
 namespace Tooark.Interfaces;
 
 /// <summary>
@@ -5,6 +7,12 @@ namespace Tooark.Interfaces;
 /// </summary>
 public interface IRabbitMQConsumeService
 {
+  /// <summary>
+  /// Obtém o canal de comunicação com o RabbitMQ.
+  /// </summary>
+  /// <returns>O canal de comunicação.</returns>
+  IModel GetChannel();
+  
   /// <summary>
   /// Inicia o serviço de consumo RabbitMQ de forma assíncrona.
   /// </summary>

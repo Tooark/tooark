@@ -136,6 +136,38 @@ public static class TooarkDependencyInjection
       return factory.CreateRabbitMQConsumeService(options, processMessageFunc);
     });
 
+    services.AddHostedService<RabbitMQInitializeService>(provider =>
+    {
+      var consumeService = provider.GetRequiredService<IRabbitMQConsumeService>();
+      var channel = consumeService.GetChannel();
+
+      // Configuração padrão do serviço exchange Fanout e Direct
+      RabbitMQHelper.ConfigureFanoutDirect(channel, options.QueueName, options.RoutingKey);
+
+      // Configuração customizada do serviço exchange, caso fornecidos
+      foreach (var custom in options.CustomExchange)
+      {
+        RabbitMQHelper.ConfigureExchangeQueue(
+          channel,
+          custom.NameExchange,
+          custom.TypeExchange,
+          custom.NameQueue,
+          custom.RoutingKey,
+          custom.Durable,
+          custom.Exclusive,
+          custom.AutoDelete);
+      }
+
+      // Registra a ação para fechar a conexão e o canal quando a aplicação for desligada
+      var lifetime = provider.GetRequiredService<IHostApplicationLifetime>();
+      lifetime.ApplicationStopping.Register(() =>
+      {
+        channel.Close();
+      });
+
+      return new RabbitMQInitializeService(channel);
+    });
+
     return services;
   }
 }

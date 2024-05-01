@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using Tooark.Interfaces;
 using Tooark.Options;
 using Tooark.Services.RabbitMQ;

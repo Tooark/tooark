@@ -13,7 +13,7 @@ namespace Tooark.Services.RabbitMQ;
 /// Este serviço é responsável por estabelecer uma conexão com o RabbitMQ,
 /// declarar a fila e iniciar o consumo de mensagens.
 /// </summary>
-public class RabbitMQConsumeService : BackgroundService, IRabbitMQConsumeService
+internal class RabbitMQConsumeService : BackgroundService, IRabbitMQConsumeService
 {
   private readonly Action<string> _processMessageFunc;
   private readonly IModel _channel;
@@ -24,7 +24,7 @@ public class RabbitMQConsumeService : BackgroundService, IRabbitMQConsumeService
   /// </summary>
   /// <param name="options">Opções de configuração para o RabbitMQ.</param>
   /// <param name="processMessageFunc">Função de callback para processar mensagens recebidas.</param>
-  public RabbitMQConsumeService(RabbitMQOptions options, Action<string> processMessageFunc)
+  internal RabbitMQConsumeService(RabbitMQOptions options, Action<string> processMessageFunc)
   {
     if (options == null || processMessageFunc == null)
     {
@@ -94,6 +94,15 @@ public class RabbitMQConsumeService : BackgroundService, IRabbitMQConsumeService
     _channel.BasicConsume(queue: _queueName, autoAck: false, consumer: consumer);
 
     return Task.CompletedTask;
+  }
+
+  /// <summary>
+  /// Obtém o canal de comunicação com o RabbitMQ.
+  /// </summary>
+  /// <returns>O canal de comunicação.</returns>
+  public IModel GetChannel()
+  {
+    return _channel;
   }
 
   /// <summary>
