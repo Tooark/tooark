@@ -21,14 +21,14 @@ public static class TooarkDependencyInjection
   /// Adiciona e configura os serviços da Tooark, incluindo serviços HTTP e RabbitMQ.
   /// </summary>
   /// <param name="services">A coleção de serviços para adicionar os serviços da Tooark.</param>
-  /// <param name="rabbitMQOptions">Parâmetros para os serviços RabbitMQ.</param>
+  /// <param name="options">Parâmetros para os serviços RabbitMQ.</param>
   /// <returns>A coleção de serviços com os serviços da Tooark adicionados.</returns>
   public static IServiceCollection AddTooarkServices(
     this IServiceCollection services,
-    RabbitMQOptions rabbitMQOptions)
+    RabbitMQOptions options)
   {
     services.AddHttpClientService();
-    services.AddRabbitMQPublishService(rabbitMQOptions);
+    services.AddRabbitMQPublishService(options);
 
     return services;
   }
@@ -71,7 +71,7 @@ public static class TooarkDependencyInjection
       return factory.CreateRabbitMQPublishService(options);
     });
 
-    services.AddSingleton<IModel>(provider =>
+    services.AddHostedService<RabbitMQInitializeService>(provider =>
     {
       var connectionFactory = new ConnectionFactory
       {
@@ -111,9 +111,8 @@ public static class TooarkDependencyInjection
         connection.Close();
       });
 
-      return channel;
+      return new RabbitMQInitializeService(channel);
     });
-
 
     return services;
   }
