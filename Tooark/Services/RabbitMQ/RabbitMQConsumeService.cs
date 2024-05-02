@@ -3,7 +3,6 @@ using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Tooark.Exceptions;
-using Tooark.Interfaces;
 using Tooark.Options;
 
 namespace Tooark.Services.RabbitMQ;
@@ -13,7 +12,7 @@ namespace Tooark.Services.RabbitMQ;
 /// Este serviço é responsável por estabelecer uma conexão com o RabbitMQ,
 /// declarar a fila e iniciar o consumo de mensagens.
 /// </summary>
-internal class RabbitMQConsumeService : BackgroundService, IRabbitMQConsumeService
+public class RabbitMQConsumeService : BackgroundService
 {
   private readonly Action<string> _processMessageFunc;
   private readonly IModel _channel;
@@ -24,7 +23,7 @@ internal class RabbitMQConsumeService : BackgroundService, IRabbitMQConsumeServi
   /// </summary>
   /// <param name="options">Opções de configuração para o RabbitMQ.</param>
   /// <param name="processMessageFunc">Função de callback para processar mensagens recebidas.</param>
-  internal RabbitMQConsumeService(RabbitMQOptions options, Action<string> processMessageFunc)
+  public RabbitMQConsumeService(RabbitMQOptions options, Action<string> processMessageFunc)
   {
     if (options == null || processMessageFunc == null)
     {
@@ -94,34 +93,5 @@ internal class RabbitMQConsumeService : BackgroundService, IRabbitMQConsumeServi
     _channel.BasicConsume(queue: _queueName, autoAck: false, consumer: consumer);
 
     return Task.CompletedTask;
-  }
-
-  /// <summary>
-  /// Obtém o canal de comunicação com o RabbitMQ.
-  /// </summary>
-  /// <returns>O canal de comunicação.</returns>
-  public IModel GetChannel()
-  {
-    return _channel;
-  }
-
-  /// <summary>
-  /// Inicia o serviço de consumo RabbitMQ de forma assíncrona.
-  /// </summary>
-  /// <param name="cancellationToken">Um token de cancelamento que pode ser usado para enviar um sinal de cancelamento para o serviço.</param>
-  public async Task StartServiceAsync(CancellationToken cancellationToken)
-  {
-    // Inicia o serviço de consumo
-    await base.StartAsync(cancellationToken);
-  }
-
-  /// <summary>
-  /// Para o serviço de consumo RabbitMQ de forma assíncrona.
-  /// </summary>
-  /// <param name="cancellationToken">Um token de cancelamento que pode ser usado para enviar um sinal de cancelamento para o serviço.</param>
-  public async Task StopServiceAsync(CancellationToken cancellationToken)
-  {
-    // Para o serviço de consumo
-    await base.StopAsync(cancellationToken);
   }
 }
