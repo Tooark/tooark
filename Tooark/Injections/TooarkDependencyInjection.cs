@@ -129,17 +129,21 @@ public static class TooarkDependencyInjection
     RabbitMQOptions options,
     Action<string> processMessageFunc)
   {
-    services.AddSingleton<IRabbitMQConsumeServiceFactory, RabbitMQConsumeServiceFactory>();
-    services.AddSingleton<IRabbitMQConsumeService>(provider =>
-    {
-      var factory = provider.GetRequiredService<IRabbitMQConsumeServiceFactory>();
-      return factory.CreateRabbitMQConsumeService(options, processMessageFunc);
-    });
-
+    services.AddHostedService(provider => new RabbitMQConsumeService(options, processMessageFunc));
     services.AddHostedService<RabbitMQInitializeService>(provider =>
     {
-      var consumeService = provider.GetRequiredService<IRabbitMQConsumeService>();
-      var channel = consumeService.GetChannel();
+      var connectionFactory = new ConnectionFactory
+      {
+        HostName = options.Hostname,
+        Port = options.PortNumber,
+        UserName = options.Username,
+        Password = options.Password,
+        AutomaticRecoveryEnabled = options.AutomaticRecovery,
+        NetworkRecoveryInterval = TimeSpan.FromSeconds(options.RecoveryInterval)
+      };
+
+      var connection = connectionFactory.CreateConnection();
+      var channel = connection.CreateModel();
 
       // Configuração padrão do serviço exchange Fanout e Direct
       RabbitMQHelper.ConfigureFanoutDirect(channel, options.QueueName, options.RoutingKey);
@@ -163,6 +167,7 @@ public static class TooarkDependencyInjection
       lifetime.ApplicationStopping.Register(() =>
       {
         channel.Close();
+        connection.Close();
       });
 
       return new RabbitMQInitializeService(channel);
