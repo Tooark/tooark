@@ -53,17 +53,17 @@ internal class RabbitMQPublishService : IRabbitMQPublishService, IDisposable
   /// <param name="exchangeName">O nome da exchange onde a mensagem será publicada.</param>
   /// <param name="routingKey">A chave de roteamento para a mensagem. Opcional para exchanges do tipo fanout.</param>
   /// <exception cref="RabbitMQServiceException">Lança uma exceção se não for possível alcançar o broker do RabbitMQ ou ocorrer um erro ao publicar a mensagem.</exception>
-  private void PublishMessageInternal(string message, string exchangeName, string routingKey = "")
+  private async Task PublishMessageInternal(string message, string exchangeName, string routingKey = "")
   {
     try
     {
       var body = Encoding.UTF8.GetBytes(message);
 
-      _channel.BasicPublish(
+      await Task.Run(() =>_channel.BasicPublish(
         exchange: exchangeName,
         routingKey: routingKey,
         basicProperties: null,
-        body: body);
+        body: body));
     }
     catch (BrokerUnreachableException ex)
     {
@@ -87,9 +87,9 @@ internal class RabbitMQPublishService : IRabbitMQPublishService, IDisposable
   /// Publica uma mensagem no exchange_fanout.
   /// </summary>
   /// <param name="message">Mensagem a ser publicada.</param>
-  public void PublishMessage(string message)
+  public async Task PublishMessage(string message)
   {
-    PublishMessageInternal(message, "exchange_fanout");
+    await PublishMessageInternal(message, "exchange_fanout");
   }
 
   /// <summary>
@@ -97,9 +97,9 @@ internal class RabbitMQPublishService : IRabbitMQPublishService, IDisposable
   /// </summary>
   /// <param name="message">Mensagem a ser publicada.</param>
   /// <param name="routingKey">Chave de roteamento para o exchange_direct.</param>
-  public void PublishMessage(string message, string routingKey)
+  public async Task PublishMessage(string message, string routingKey)
   {
-    PublishMessageInternal(message, "exchange_direct", routingKey);
+    await PublishMessageInternal(message, "exchange_direct", routingKey);
   }
 
   /// <summary>
@@ -108,18 +108,9 @@ internal class RabbitMQPublishService : IRabbitMQPublishService, IDisposable
   /// <param name="message">Mensagem a ser publicada.</param>
   /// <param name="routingKey">Chave de roteamento para o exchange_direct.</param>
   /// <param name="exchangeName">Mensagem a ser publicada.</param>
-  public void PublishMessage(string message, string routingKey, string exchangeName)
+  public async Task PublishMessage(string message, string routingKey, string exchangeName)
   {
-    PublishMessageInternal(message, exchangeName, routingKey);
-  }
-
-  /// <summary>
-  /// Obtém o canal de comunicação com o RabbitMQ.
-  /// </summary>
-  /// <returns>O canal de comunicação.</returns>
-  public IModel GetChannel()
-  {
-    return _channel;
+    await PublishMessageInternal(message, exchangeName, routingKey);
   }
 
   /// <summary>
