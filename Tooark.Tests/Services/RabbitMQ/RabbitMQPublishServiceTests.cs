@@ -82,7 +82,7 @@ public class RabbitMQPublishServiceTests
 
   // Publicar mensagem quando o corretor inacessível lança RabbitMQServiceException
   [Fact]
-  public void PublishMessage_WhenBrokerUnreachable_ThrowsRabbitMQPublishServiceException()
+  public async Task PublishMessage_WhenBrokerUnreachable_ThrowsRabbitMQPublishServiceException()
   {
     // Arrange
     var message = "Test message";
@@ -92,7 +92,7 @@ public class RabbitMQPublishServiceTests
 
     // Act & Assert
     var service = _mockFactory.Object.CreateRabbitMQPublishService(_options);
-    var exception = Assert.Throws<RabbitMQServiceException>(() => service.PublishMessage(message));
+    var exception = await Assert.ThrowsAsync<RabbitMQServiceException>(() => service.PublishMessage(message));
     Assert.Equal("Broker unreachable", exception.Message);
   }
 }
