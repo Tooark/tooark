@@ -21,7 +21,7 @@ public class RabbitMQMessageDtoTests
 
     // Assert
     Assert.Contains($"\"Title\":\"{title}\"", jsonStringInt);
-    Assert.Contains($"\"Data\":{value}", jsonStringInt);
+    Assert.Contains($"\"Message\":\"{value}\"", jsonStringInt);
   }
 
   // RabbitMQMessageDto converte em string json, retorna json válido com tipo string
@@ -40,7 +40,7 @@ public class RabbitMQMessageDtoTests
 
     // Assert
     Assert.Contains($"\"Title\":\"{title}\"", jsonStringString);
-    Assert.Contains($"\"Data\":\"{value}\"", jsonStringString);
+    Assert.Contains($"\"Message\":\"\\\"{value}\\\"\"", jsonStringString);
   }
 
   // RabbitMQMessageDto converte em string json, retorna json válido com tipo boolean
@@ -57,15 +57,15 @@ public class RabbitMQMessageDtoTests
 
     // Assert
     Assert.Contains($"\"Title\":\"{title}\"", jsonStringBool);
-    Assert.Contains($"\"Data\":{value.ToString().ToLower()}", jsonStringBool);
+    Assert.Contains($"\"Message\":\"{value.ToString().ToLower()}\"", jsonStringBool);
   }
 
   // RabbitMQMessageDto converte de string json, retorna objeto int válido
   [Theory]
-  [InlineData("{\"Title\":\"TestTitle\",\"Data\":12345}", 12345)]
-  [InlineData("{\"Title\":\"TestTitle\",\"Data\":67890}", 67890)]
-  [InlineData("{\"Title\":\"TestTitle\",\"Data\":-1032}", -1032)]
-  [InlineData("{\"Title\":\"TestTitle\",\"Data\":-9867}", -9867)]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"12345\"}", 12345)]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"67890\"}", 67890)]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"-1032\"}", -1032)]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"-9867\"}", -9867)]
   public void RabbitMQMessageDto_ConvertFromJSONString_ReturnsValidObjectInt(string value, int valid)
   {
     // Arrange
@@ -76,15 +76,15 @@ public class RabbitMQMessageDtoTests
 
     // Assert
     Assert.Equal("TestTitle", messageDto.Title);
-    Assert.Equal(valid, messageDto.Data);
+    Assert.Equal($"{valid}", messageDto.Message);
   }
-  
+
   // RabbitMQMessageDto converte de string json, retorna objeto string válido
   [Theory]
-  [InlineData("{\"Title\":\"TestTitle\",\"Data\":\"abc\"}", "abc")]
-  [InlineData("{\"Title\":\"TestTitle\",\"Data\":\"def\"}", "def")]
-  [InlineData("{\"Title\":\"TestTitle\",\"Data\":\"ghi\"}", "ghi")]
-  [InlineData("{\"Title\":\"TestTitle\",\"Data\":\"jkl\"}", "jkl")]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"\\\"abc\\\"\"}", "abc")]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"\\\"def\\\"\"}", "def")]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"\\\"ghi\\\"\"}", "ghi")]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"\\\"jkl\\\"\"}", "jkl")]
   public void RabbitMQMessageDto_ConvertFromJSONString_ReturnsValidObjectString(string value, string valid)
   {
     // Arrange
@@ -95,14 +95,14 @@ public class RabbitMQMessageDtoTests
 
     // Assert
     Assert.Equal("TestTitle", messageDto.Title);
-    Assert.Equal(valid, messageDto.Data);
+    Assert.Equal($"\"{valid}\"", messageDto.Message);
   }
 
   // RabbitMQMessageDto converte de string json, retorna objeto boolean válido
   [Theory]
-  [InlineData("{\"Title\":\"TestTitle\",\"Data\":true}", true)]
-  [InlineData("{\"Title\":\"TestTitle\",\"Data\":false}", false)]
-  public void RabbitMQMessageDto_ConvertFromJSONString_ReturnsValidObjectBoolean(string value, bool valid)
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"true\"}", "true")]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"false\"}", "false")]
+  public void RabbitMQMessageDto_ConvertFromJSONString_ReturnsValidObjectBoolean(string value, string valid)
   {
     // Arrange
     string jsonString = value;
@@ -112,7 +112,7 @@ public class RabbitMQMessageDtoTests
 
     // Assert
     Assert.Equal("TestTitle", messageDto.Title);
-    Assert.Equal(valid, messageDto.Data);
+    Assert.Equal($"{valid}", messageDto.Message);
   }
 
   // RabbitMQMessageDto as opções de serialização são consistentes
@@ -128,7 +128,7 @@ public class RabbitMQMessageDtoTests
 
     // Assert
     Assert.Equal(messageDto.Title, deserializedMessageDto.Title);
-    Assert.Equal(messageDto.Data, deserializedMessageDto.Data);
+    Assert.Equal(messageDto.Message, deserializedMessageDto.Message);
   }
 
   // RabbitMQMessageDto desserializar json inválido lança exceção json
@@ -136,7 +136,7 @@ public class RabbitMQMessageDtoTests
   public void RabbitMQMessageDto_DeserializeInvalidJSON_ThrowsJsonException()
   {
     // Arrange
-    string invalidJsonString = "{\"Title\":\"TestTitle\",\"Data\":}";
+    string invalidJsonString = "{\"Title\":\"TestTitle\",\"Message\":}";
 
     // Act & Assert
     Assert.Throws<JsonException>(() => (RabbitMQMessageDto<string>)invalidJsonString);
@@ -151,5 +151,34 @@ public class RabbitMQMessageDtoTests
 
     // Act & Assert
     Assert.Throws<JsonException>(() => (RabbitMQMessageDto<string>)invalidJsonString);
+  }
+
+  // GetData retorna dados desserializados quando a mensagem é válida Json
+  [Fact]
+  public void GetData_ReturnsDeserializedData_WhenMessageIsValidJson()
+  {
+    // Arrange
+    string title = "TestTitle";
+    string data = "TestData";
+    var messageDto = new RabbitMQMessageDto<string>(title, data);
+
+    // Act
+    string result = messageDto.GetData();
+
+    // Assert
+    Assert.Equal("TestData", result);
+  }
+
+  // GetData lança exceção de operação inválida quando a mensagem é json inválida
+  [Fact]
+  public void GetData_ThrowsInvalidOperationException_WhenMessageIsInvalidJson()
+  {
+    // Arrange
+    string title = "TestTitle";
+    string invalidData = null!;
+    var messageDto = new RabbitMQMessageDto<string>(title, invalidData);
+
+    // Act & Assert
+    Assert.Throws<InvalidOperationException>(() => messageDto.GetData());
   }
 }
