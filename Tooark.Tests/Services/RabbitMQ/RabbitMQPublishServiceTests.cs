@@ -2,6 +2,7 @@ using Moq;
 using Tooark.Exceptions;
 using Tooark.Interfaces;
 using Tooark.Options;
+using Tooark.Tests.Moq.Model.Person;
 
 namespace Tooark.Tests.Services.RabbitMQ;
 
@@ -93,6 +94,73 @@ public class RabbitMQPublishServiceTests
     // Act & Assert
     var service = _mockFactory.Object.CreateRabbitMQPublishService(_options);
     var exception = await Assert.ThrowsAsync<RabbitMQServiceException>(() => service.PublishMessage(message));
+    Assert.Equal("Broker unreachable", exception.Message);
+  }
+
+  // Publicar mensagem com Message Object publicada corretamente
+  [Fact]
+  public void PublishMessage_WithMessageObject_PublishesCorrectly()
+  {
+    // Arrange
+    var message = new Person("abc", 123);
+    _mockService.Setup(s => s.PublishMessage(message, "person"));
+
+    // Act
+    var service = _mockFactory.Object.CreateRabbitMQPublishService(_options);
+    service.PublishMessage(message, "person");
+
+    // Assert
+    _mockService.Verify(s => s.PublishMessage(message, "person"), Times.Once);
+  }
+
+  // Publicar mensagem com Message Object e RoutingKey publica corretamente
+  [Fact]
+  public void PublishMessage_WithMessageObjectAndRoutingKey_PublishesCorrectly()
+  {
+    // Arrange
+    var message = new Person("abc", 123);
+    var routingKey = "test-routing";
+    _mockService.Setup(s => s.PublishMessage(message, "person", routingKey));
+
+    // Act
+    var service = _mockFactory.Object.CreateRabbitMQPublishService(_options);
+    service.PublishMessage(message, "person", routingKey);
+
+    // Assert
+    _mockService.Verify(s => s.PublishMessage(message, "person", routingKey), Times.Once);
+  }
+
+  // Publicar mensagem com Message Object, RoutingKey e ExchangeName publica corretamente
+  [Fact]
+  public void PublishMessage_WithMessageObjectAndRoutingKeyAndExchangeName_PublishesCorrectly()
+  {
+    // Arrange
+    var message = new Person("abc", 123);
+    var routingKey = "test-routing";
+    var exchangeName = "test-exchange";
+    _mockService.Setup(s => s.PublishMessage(message, "person", routingKey, exchangeName));
+
+    // Act
+    var service = _mockFactory.Object.CreateRabbitMQPublishService(_options);
+    service.PublishMessage(message, "person", routingKey, exchangeName);
+
+    // Assert
+    _mockService.Verify(s => s.PublishMessage(message, "person", routingKey, exchangeName), Times.Once);
+  }
+
+  // Publicar mensagem quando o corretor inacessível lança RabbitMQServiceException T
+  [Fact]
+  public async Task PublishMessage_WhenBrokerUnreachable_ThrowsRabbitMQPublishServiceTException()
+  {
+    // Arrange
+    var message = new Person("abc", 123);
+    _mockService
+      .Setup(s => s.PublishMessage(message, "person"))
+      .Throws(new RabbitMQServiceException("Broker unreachable"));
+
+    // Act & Assert
+    var service = _mockFactory.Object.CreateRabbitMQPublishService(_options);
+    var exception = await Assert.ThrowsAsync<RabbitMQServiceException>(() => service.PublishMessage(message, "person"));
     Assert.Equal("Broker unreachable", exception.Message);
   }
 }
