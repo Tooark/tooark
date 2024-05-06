@@ -19,6 +19,13 @@ public class RabbitMQMessageDto<T>(string title, T data)
     Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
   };
 
+  private static dynamic MessageData(string messageString)
+  {
+    return
+      JsonSerializer.Deserialize<dynamic>(messageString, Options) ??
+      throw new InvalidOperationException("A mensagem não pode ser desserializada para o tipo RabbitMQMessageDto<T>.");
+  }
+
   /// <summary>
   /// Obtém o título da mensagem.
   /// </summary>
@@ -43,9 +50,7 @@ public class RabbitMQMessageDto<T>(string title, T data)
   /// <returns>O objeto RabbitMQMessageDto desserializado.</returns>
   public static implicit operator RabbitMQMessageDto<T>(string messageString)
   {
-    var messageData =
-      JsonSerializer.Deserialize<dynamic>(messageString, Options) ??
-      throw new InvalidOperationException("A mensagem não pode ser desserializada para o tipo RabbitMQMessageDto<T>.");
+    var messageData = MessageData(messageString);
 
     var title = messageData.GetProperty("Title").GetString();
     var message = JsonSerializer.Deserialize<T>(messageData.GetProperty("Message").GetString(), Options);
