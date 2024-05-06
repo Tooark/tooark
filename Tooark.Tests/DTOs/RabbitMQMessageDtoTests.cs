@@ -1,10 +1,20 @@
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Tooark.DTOs;
+using Tooark.Tests.Moq.Model.Person;
 
 namespace Tooark.Tests.DTOs;
 
 public class RabbitMQMessageDtoTests
 {
+  private static readonly JsonSerializerOptions Options = new()
+  {
+    ReferenceHandler = ReferenceHandler.Preserve,
+    WriteIndented = false,
+    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+  };
+
   // RabbitMQMessageDto converte em string json, retorna json válido com tipo int
   [Theory]
   [InlineData("Test1", 12345)]
@@ -60,6 +70,27 @@ public class RabbitMQMessageDtoTests
     Assert.Contains($"\"Message\":\"{value.ToString().ToLower()}\"", jsonStringBool);
   }
 
+  // RabbitMQMessageDto converte em string json, retorna json válido com tipo objeto Person
+  [Theory]
+  [InlineData("abc", 123)]
+  [InlineData("def", 456)]
+  [InlineData("ghi", 789)]
+  [InlineData("jkl", -10)]
+  public void RabbitMQMessageDto_ConvertToJSONString_ReturnsValidJSON_WithBooleanPerson(string name, int age)
+  {
+    // Arrange
+    var person = new Person(name, age);
+    string personString = JsonSerializer.Serialize(person, Options);
+
+    // Act
+    string messageDto = new RabbitMQMessageDto<Person>("TestTitle", person);
+    string messageValid = JsonSerializer.Serialize(personString, Options);
+
+    // Assert
+    Assert.Contains($"\"Title\":\"TestTitle\"", messageDto);
+    Assert.Contains($"\"Message\":{messageValid}", messageDto);
+  }
+
   // RabbitMQMessageDto converte de string json, retorna objeto int válido
   [Theory]
   [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"12345\"}", 12345)]
@@ -70,13 +101,14 @@ public class RabbitMQMessageDtoTests
   {
     // Arrange
     string jsonInt = value;
+    string validString = JsonSerializer.Serialize(valid, Options);
 
     // Act
     RabbitMQMessageDto<int> messageDto = jsonInt;
 
     // Assert
     Assert.Equal("TestTitle", messageDto.Title);
-    Assert.Equal($"{valid}", messageDto.Message);
+    Assert.Equal(validString, messageDto.Message);
   }
 
   // RabbitMQMessageDto converte de string json, retorna objeto string válido
@@ -89,30 +121,53 @@ public class RabbitMQMessageDtoTests
   {
     // Arrange
     string jsonString = value;
+    string validString = JsonSerializer.Serialize(valid, Options);
 
     // Act
     RabbitMQMessageDto<string> messageDto = jsonString;
 
     // Assert
     Assert.Equal("TestTitle", messageDto.Title);
-    Assert.Equal($"\"{valid}\"", messageDto.Message);
+    Assert.Equal(validString, messageDto.Message);
   }
+
 
   // RabbitMQMessageDto converte de string json, retorna objeto boolean válido
   [Theory]
-  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"true\"}", "true")]
-  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"false\"}", "false")]
-  public void RabbitMQMessageDto_ConvertFromJSONString_ReturnsValidObjectBoolean(string value, string valid)
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"true\"}", true)]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"false\"}", false)]
+  public void RabbitMQMessageDto_ConvertFromJSONString_ReturnsValidObjectBoolean(string value, bool valid)
   {
     // Arrange
     string jsonString = value;
+    string validString = JsonSerializer.Serialize(valid, Options);
 
     // Act
     RabbitMQMessageDto<bool> messageDto = jsonString;
 
     // Assert
     Assert.Equal("TestTitle", messageDto.Title);
-    Assert.Equal($"{valid}", messageDto.Message);
+    Assert.Equal(validString, messageDto.Message);
+  }
+
+  // RabbitMQMessageDto converte de string json, retorna objeto Person válido
+  [Theory]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"{\\\"Name\\\":\\\"abc\\\",\\\"Age\\\":123}\"}", "abc", 123)]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"{\\\"Name\\\":\\\"def\\\",\\\"Age\\\":456}\"}", "def", 456)]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"{\\\"Name\\\":\\\"ghi\\\",\\\"Age\\\":789}\"}", "ghi", 789)]
+  [InlineData("{\"Title\":\"TestTitle\",\"Message\":\"{\\\"Name\\\":\\\"jkl\\\",\\\"Age\\\":-10}\"}", "jkl", -10)]
+  public void RabbitMQMessageDto_ConvertFromJSONString_ReturnsValidObjectPerson(string value, string validName, int validAge)
+  {
+    // Arrange
+    string jsonString = value;
+    var validPerson = JsonSerializer.Serialize(new Person(validName, validAge), Options);
+
+    // Act
+    RabbitMQMessageDto<Person> messageDto = jsonString;
+
+    // Assert
+    Assert.Equal("TestTitle", messageDto.Title);
+    Assert.Equal(validPerson, messageDto.Message);
   }
 
   // RabbitMQMessageDto as opções de serialização são consistentes
