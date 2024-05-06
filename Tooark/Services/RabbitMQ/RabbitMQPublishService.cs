@@ -1,6 +1,7 @@
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using System.Text;
+using Tooark.DTOs;
 using Tooark.Exceptions;
 using Tooark.Interfaces;
 using Tooark.Options;
@@ -59,7 +60,7 @@ internal class RabbitMQPublishService : IRabbitMQPublishService, IDisposable
     {
       var body = Encoding.UTF8.GetBytes(message);
 
-      await Task.Run(() =>_channel.BasicPublish(
+      await Task.Run(() => _channel.BasicPublish(
         exchange: exchangeName,
         routingKey: routingKey,
         basicProperties: null,
@@ -110,6 +111,48 @@ internal class RabbitMQPublishService : IRabbitMQPublishService, IDisposable
   /// <param name="exchangeName">Mensagem a ser publicada.</param>
   public async Task PublishMessage(string message, string routingKey, string exchangeName)
   {
+    await PublishMessageInternal(message, exchangeName, routingKey);
+  }
+
+  /// <summary>
+  /// Publica uma mensagem no exchange_fanout.
+  /// </summary>
+  /// <typeparam name="T">O tipo de dados que a mensagem carrega.</typeparam>
+  /// <param name="messageObject">Mensagem a ser publicada.</param>
+  /// <param name="title">Titulo da mensagem a ser publicada.</param>
+  public async Task PublishMessage<T>(T messageObject, string title)
+  {
+    string message = new RabbitMQMessageDto<T>(title, messageObject);
+
+    await PublishMessageInternal(message, "exchange_fanout");
+  }
+
+  /// <summary>
+  /// Publica uma mensagem no exchange_direct com uma chave de roteamento.
+  /// </summary>
+  /// <typeparam name="T">O tipo de dados que a mensagem carrega.</typeparam>
+  /// <param name="messageObject">Mensagem a ser publicada.</param>
+  /// <param name="title">Titulo da mensagem a ser publicada.</param>
+  /// <param name="routingKey">Chave de roteamento para o exchange_direct.</param>
+  public async Task PublishMessage<T>(T messageObject, string title, string routingKey)
+  {
+    string message = new RabbitMQMessageDto<T>(title, messageObject);
+
+    await PublishMessageInternal(message, "exchange_direct", routingKey);
+  }
+
+  /// <summary>
+  /// Publica uma mensagem em uma exchange customizada, fornecida como parâmetro.
+  /// </summary>
+  /// <typeparam name="T">O tipo de dados que a mensagem carrega.</typeparam>
+  /// <param name="messageObject">Mensagem a ser publicada.</param>
+  /// <param name="title">Titulo da mensagem a ser publicada.</param>
+  /// <param name="routingKey">Chave de roteamento para o exchange_direct.</param>
+  /// <param name="exchangeName">Mensagem a ser publicada.</param>
+  public async Task PublishMessage<T>(T messageObject, string title, string routingKey, string exchangeName)
+  {
+    string message = new RabbitMQMessageDto<T>(title, messageObject);
+
     await PublishMessageInternal(message, exchangeName, routingKey);
   }
 
