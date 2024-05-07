@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Tooark.Exceptions;
@@ -14,6 +15,7 @@ namespace Tooark.Services.RabbitMQ;
 /// </summary>
 public class RabbitMQConsumeService : BackgroundService
 {
+  private readonly ILogger<RabbitMQConsumeService> _logger;
   private readonly Action<string> _processMessageFunc;
   private readonly IModel _channel;
   private readonly string _queueName;
@@ -22,9 +24,15 @@ public class RabbitMQConsumeService : BackgroundService
   /// Inicializa uma nova instância do serviço RabbitMQConsumeService.
   /// </summary>
   /// <param name="options">Opções de configuração para o RabbitMQ.</param>
+  /// <param name="logger">Logger para registrar informações e erros.</param>
   /// <param name="processMessageFunc">Função de callback para processar mensagens recebidas.</param>
-  public RabbitMQConsumeService(RabbitMQOptions options, Action<string> processMessageFunc)
+  public RabbitMQConsumeService(
+    RabbitMQOptions options,
+    ILogger<RabbitMQConsumeService> logger,
+    Action<string> processMessageFunc)
   {
+    _logger = logger;
+
     if (options == null || processMessageFunc == null)
     {
       throw new RabbitMQServiceException(
@@ -77,16 +85,33 @@ public class RabbitMQConsumeService : BackgroundService
 
     consumer.Received += (moduleHandle, eventArgs) =>
     {
+      var body = eventArgs.Body.ToArray();
+      var message = Encoding.UTF8.GetString(body);
+      var deliveryTag = eventArgs.DeliveryTag;
+
       try
       {
-        var body = eventArgs.Body.ToArray();
-        var message = Encoding.UTF8.GetString(body);
-
         _processMessageFunc(message);
+
+        _channel.BasicAck(deliveryTag, multiple: false);
+      }
+      catch (RabbitMQServiceException ex)
+      {
+        _logger.LogWarning(
+          ex,
+          "Falha ao processar mensagem:\n{Message}",
+          ex.Message);
+
+        _channel.BasicNack(deliveryTag, multiple: false, requeue: true);
       }
       catch (Exception ex)
       {
-        throw new RabbitMQServiceException("Erro ao consumir a mensagem", ex);
+        _logger.LogError(
+          ex,
+          "Erro ao processar mensagem:\n{Message}",
+          ex.Message);
+
+        _channel.BasicNack(deliveryTag, multiple: false, requeue: true);
       }
     };
 
