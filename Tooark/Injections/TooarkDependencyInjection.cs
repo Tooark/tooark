@@ -129,7 +129,13 @@ public static class TooarkDependencyInjection
     RabbitMQOptions options,
     Action<string> processMessageFunc)
   {
-    services.AddHostedService(provider => new RabbitMQConsumeService(options, processMessageFunc));
+    services.AddHostedService<RabbitMQConsumeService>(provider =>
+    {
+      var logger = provider.GetRequiredService<ILogger<RabbitMQConsumeService>>();
+      
+      return new RabbitMQConsumeService(options, logger, processMessageFunc);
+    });
+
     services.AddHostedService<RabbitMQInitializeService>(provider =>
     {
       var connectionFactory = new ConnectionFactory
