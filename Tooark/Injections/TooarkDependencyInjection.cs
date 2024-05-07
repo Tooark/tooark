@@ -122,16 +122,17 @@ public static class TooarkDependencyInjection
   /// </summary>
   /// <param name="services">O IServiceCollection ao qual o serviço será adicionado.</param>
   /// <param name="options">As opções de configuração para o serviço RabbitMQ.</param>
-  /// <param name="processMessageFunc">A função de callback para processar as mensagens recebidas.</param>
+  /// <param name="processMessageFuncFactory">Fábrica de função de callback para processar as mensagens recebidas.</param>
   /// <returns>O IServiceCollection para encadeamento de chamadas.</returns>
   public static IServiceCollection AddRabbitMQConsumeBackgroundService(
     this IServiceCollection services,
     RabbitMQOptions options,
-    Action<string> processMessageFunc)
+    Func<IServiceProvider, Action<string>> processMessageFuncFactory)
   {
     services.AddHostedService<RabbitMQConsumeService>(provider =>
     {
       var logger = provider.GetRequiredService<ILogger<RabbitMQConsumeService>>();
+      var processMessageFunc = processMessageFuncFactory(provider);
       
       return new RabbitMQConsumeService(options, logger, processMessageFunc);
     });
