@@ -25,10 +25,14 @@ public static class TooarkDependencyInjection
   /// <returns>A coleção de serviços com os serviços da Tooark adicionados.</returns>
   public static IServiceCollection AddTooarkServices(
     this IServiceCollection services,
-    RabbitMQOptions options)
+    RabbitMQOptions? options)
   {
     services.AddHttpClientService();
-    services.AddRabbitMQPublishService(options);
+
+    if (options != null)
+    {
+      services.AddRabbitMQPublishService(options);
+    }
 
     return services;
   }
@@ -133,7 +137,7 @@ public static class TooarkDependencyInjection
     {
       var logger = provider.GetRequiredService<ILogger<RabbitMQConsumeService>>();
       var processMessageFunc = processMessageFuncFactory(provider);
-      
+
       return new RabbitMQConsumeService(options, logger, processMessageFunc);
     });
 
