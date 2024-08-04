@@ -126,3 +126,14 @@ builder.Services.AddSwaggerGen(c =>
 >
 > - `[version-using-tooark]` <= Versão do pacote que esta utilizando
 > - `[version-dotnet-tooark]` <= Versão do dotnet do pacote que esta utilizando
+
+---
+
+## Colaboradores
+
+Os seguintes colaboradores estão trabalhando no microsserviço:
+
+| <img src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/62472c0ead6b7e006aa6225d/1adc1b60-182e-4cd2-9cad-668c8bf02ed0/128" width=150> |
+| :---: |
+| **Paulo Freitas** |
+| <paulo.freitas@grupojacto.com.br> |
