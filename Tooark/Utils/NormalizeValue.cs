@@ -46,7 +46,7 @@ internal static partial class InternalUtil
     }
 
     // Converte para minúsculas
-    value = value.ToLowerInvariant();
+    value = value.ToUpperInvariant();
 
     // StringBuilder para construir o valor normalizado
     var normalizedValue = new System.Text.StringBuilder();
@@ -117,7 +117,7 @@ internal static partial class InternalUtil
     }
 
     // Converte para minúsculas
-    value = value.ToLowerInvariant();
+    value = value.ToUpperInvariant();
 
     // Remove espaços
     value = SpaceRegex().Replace(value, "");
