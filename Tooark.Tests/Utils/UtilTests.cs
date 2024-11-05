@@ -7,20 +7,33 @@ public class LanguagesTests
 {
   // Testa se o valor padrão da linguagem é "en-US"
   [Fact]
-  public void Default_ShouldBe_enUS()
-  { 
+  public void DefaultLanguage_ShouldBeEnUS()
+  {
     // Assert
     Assert.Equal("en-US", Languages.Default);
   }
 
   // Testa se a propriedade Current reflete corretamente a cultura atual
   [Fact]
-  public void Current_ShouldMatch_CurrentCulture()
+  public void CurrentLanguage_ShouldBeCurrentCulture()
+  {
+    Assert.Equal(CultureInfo.CurrentCulture.Name, Languages.Current);
+  }
+
+  // Testa se a cultura atual é alterada corretamente
+  [Theory]
+  [InlineData("en-US")]
+  [InlineData("es-ES")]
+  [InlineData("jp-JP")]
+  [InlineData("pt-BR")]
+  [InlineData("pt-PT")]
+  public void SetCulture_ShouldChangeCurrentCulture(string newCulture)
   {
     // Act
-    CultureInfo.CurrentCulture = new CultureInfo("pt-BR");
-    
+    Languages.SetCulture(newCulture);
+
     // Assert
-    Assert.Equal("pt-BR", Languages.Current);
+    Assert.Equal(newCulture, CultureInfo.CurrentCulture.Name);
+    Assert.Equal(newCulture, Languages.Current);
   }
 }
