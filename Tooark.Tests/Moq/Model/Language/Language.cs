@@ -1,6 +1,6 @@
 namespace Tooark.Tests.Moq.Model.Language;
 
-public class Language
+public class MLanguage
 {
   public string LanguageCode { get; set; } = null!;
   public string Name { get; set; } = null!;
@@ -8,12 +8,12 @@ public class Language
   public string Description { get; set; } = null!;
 }
 
-public class LanguageOnlyLanguageCode
+public class MLanguageOnlyLanguageCode
 {
   public string LanguageCode { get; set; } = null!;
 }
 
-public class LanguageOnlyName
+public class MLanguageOnlyName
 {
   public string Name { get; set; } = null!;
 }
