@@ -25,7 +25,7 @@ public class NormalizeValueTests
   {
     // Arrange
     string input = "Hello World";
-    string expected = "helloworld";
+    string expected = "HELLOWORLD";
 
     // Act
     string actual = Util.NormalizeValue(input);
@@ -40,7 +40,7 @@ public class NormalizeValueTests
   {
     // Arrange
     string input = "HELLO WORLD";
-    string expected = "helloworld";
+    string expected = "HELLOWORLD";
 
     // Act
     string actual = Util.NormalizeValue(input);
@@ -55,7 +55,7 @@ public class NormalizeValueTests
   {
     // Arrange
     string input = "Ça va? Je m'appelle Tooark.";
-    string expected = "cavajemappelletooark";
+    string expected = "CAVAJEMAPPELLETOOARK";
 
     // Act
     string actual = Util.NormalizeValue(input);
@@ -70,7 +70,7 @@ public class NormalizeValueTests
   {
     // Arrange
     string input = "Hello, I'm Tooark! 123.";
-    string expected = "helloimtooark123";
+    string expected = "HELLOIMTOOARK123";
 
     // Act
     string actual = Util.NormalizeValue(input);
@@ -79,52 +79,60 @@ public class NormalizeValueTests
     Assert.Equal(expected, actual);
   }
 
-  // Uma lista de 100 testes com valores de entrada e resultados esperados gerados aleatoriamente
+  // Uma lista de 48 testes com valores de entrada e resultados esperados gerados aleatoriamente
   [Theory]
+  [InlineData(null, "")]
+  [InlineData("", "")]
   [InlineData(" ", "")]
-  [InlineData("çñÿâäàåáãéêëèïîìíôöòóðõüûùú", "cnyaaaaaaeeeeiiiioooooouuuu")]
-  [InlineData("123 abc ÇÑÝÂÄÀÅÁÃÉÊËÈÏÎÌÍÔÖÒÓÐÕÜÛÙÚ", "123abccnyaaaaaaeeeeiiiioooooouuuu")]
-  [InlineData("Olá, eu sou o Tooark!", "olaeusouotooark")]
-  [InlineData("¿Qué tal? Me llamo Tooark.", "quetalmellamotooark")]
-  [InlineData("Wie geht's? Ich heiße Tooark.", "wiegehtsichheietooark")]
-  [InlineData("こんにちは、私はTooarkです。", "tooark")]
-  [InlineData("你好，我叫Tooark。", "tooark")]
-  [InlineData("안녕하세요, 저는 Tooark입니다.", "tooark")]
-  [InlineData("Привет, я Tooark.", "tooark")]
-  [InlineData("Cześć, nazywam się Tooark.", "czenazywamsitooark")]
-  [InlineData("Hello, I'm Tooark.", "helloimtooark")]
-  [InlineData("Γεια σας, είμαι ο Tooark.", "tooark")]
-  [InlineData("Bună, eu sunt Tooark.", "buneusunttooark")]
-  [InlineData("Sveiki, aš esu Tooark.", "sveikiaesutooark")]
-  [InlineData("Здравейте, аз съм Tooark.", "tooark")]
-  [InlineData("Sawubona, ngiyi-Tooark.", "sawubonangiyitooark")]
-  [InlineData("Shwmae, fi yw Tooark.", "shwmaefiywtooark")]
-  [InlineData("สวัสดีครับ ผมชื่อ Tooark", "tooark")]
-  [InlineData("नमस्ते, मेरा नाम Tooark है।", "tooark")]
-  [InlineData("नमस्कार, माझे नाव Tooark आहे.", "tooark")]
-  [InlineData("નમસ્તે, મારું નામ Tooark છે.", "tooark")]
-  [InlineData("ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ, ਮੇਰਾ ਨਾਮ Tooark ਹੈ.", "tooark")]
-  [InlineData("வணக்கம், என் பெயர் Tooark.", "tooark")]
-  [InlineData("నమస్కారం, నా పేరు Tooark.", "tooark")]
-  [InlineData("ನಮಸ್ಕಾರ, ನನ್ನ ಹೆಸರು Tooark.", "tooark")]
-  [InlineData("നമസ്കാരം, എന്റെ പേര് Tooark.", "tooark")]
-  [InlineData("হ্যালো, আমার নাম Tooark.", "tooark")]
-  [InlineData("sdùVWMäwúý", "sduvwmawuy")]
-  [InlineData("ûëlbsSô1óv", "uelbsso1ov")]
-  [InlineData("33dòïêgDQR", "33doiegdqr")]
-  [InlineData("0óaïJnYëMí", "0oaijnyemi")]
-  [InlineData(" Nð 139 Qli ", "no139qli")]
-  [InlineData("ÿm0oeTEmbã", "ym0oetemba")]
-  [InlineData("äCjqåqjVZq", "acjqaqjvzq")]
-  [InlineData("Tf4îJåzàge", "tf4ijazage")]
-  [InlineData("ù1nCÿ0ú7éW", "u1ncy0u7ew")]
-  [InlineData("òî7gåP0siH", "oi7gap0sih")]
-  [InlineData("SB8làbhûH1", "sb8labhuh1")]
-  [InlineData(" âdçd51KU8 ", "adcd51ku8")]
-  public void NormalizeValue_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters_RandomString(string input, string expected)
+  [InlineData("  ", "")]
+  [InlineData("Hello World", "HELLOWORLD")]
+  [InlineData("Ç Ñ Ÿ Ý Â Ä À Å Á Ã", "CNYYAAAAAA")]
+  [InlineData("É Ê Ë È Ï Î Ì Í Ô Ö Ò Ó Õ Ü Û Ù Ú", "EEEEIIIIOOOOOUUUU")]
+  [InlineData("123 ABC", "123ABC")]
+  [InlineData("!@#$%^&*()_+", "")]
+  [InlineData("çñÿâäàåáãéêëèïîìíôöòóðõüûùú", "CNYAAAAAAEEEEIIIIOOOOOUUUU")]
+  [InlineData("123 abc ÇÑÝÂÄÀÅÁÃÉÊËÈÏÎÌÍÔÖÒÓÐÕÜÛÙÚ", "123ABCCNYAAAAAAEEEEIIIIOOOOOUUUU")]
+  [InlineData("Olá, eu sou o Tooark!", "OLAEUSOUOTOOARK")]
+  [InlineData("¿Qué tal? Me llamo Tooark.", "QUETALMELLAMOTOOARK")]
+  [InlineData("Wie geht's? Ich heiße Tooark.", "WIEGEHTSICHHEIETOOARK")]
+  [InlineData("こんにちは、私はTooarkです。", "TOOARK")]
+  [InlineData("你好，我叫Tooark。", "TOOARK")]
+  [InlineData("안녕하세요, 저는 Tooark입니다.", "TOOARK")]
+  [InlineData("Привет, я Tooark.", "TOOARK")]
+  [InlineData("Cześć, nazywam się Tooark.", "CZENAZYWAMSITOOARK")]
+  [InlineData("Hello, I'm Tooark.", "HELLOIMTOOARK")]
+  [InlineData("Γεια σας, είμαι ο Tooark.", "TOOARK")]
+  [InlineData("Bună, eu sunt Tooark.", "BUNEUSUNTTOOARK")]
+  [InlineData("Sveiki, aš esu Tooark.", "SVEIKIAESUTOOARK")]
+  [InlineData("Здравейте, аз съм Tooark.", "TOOARK")]
+  [InlineData("Sawubona, ngiyi-Tooark.", "SAWUBONANGIYITOOARK")]
+  [InlineData("Shwmae, fi yw Tooark.", "SHWMAEFIYWTOOARK")]
+  [InlineData("สวัสดีครับ ผมชื่อ Tooark", "TOOARK")]
+  [InlineData("नमस्ते, मेरा नाम Tooark है।", "TOOARK")]
+  [InlineData("नमस्कार, माझे नाव Tooark आहे.", "TOOARK")]
+  [InlineData("નમસ્તે, મારું નામ Tooark છે.", "TOOARK")]
+  [InlineData("ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ, ਮੇਰਾ ਨਾਮ Tooark ਹੈ.", "TOOARK")]
+  [InlineData("வணக்கம், என் பெயர் Tooark.", "TOOARK")]
+  [InlineData("నమస్కారం, నా పేరు Tooark.", "TOOARK")]
+  [InlineData("ನಮಸ್ಕಾರ, ನನ್ನ ಹೆಸರು Tooark.", "TOOARK")]
+  [InlineData("നമസ്കാരം, എന്റെ പേര് Tooark.", "TOOARK")]
+  [InlineData("হ্যালো, আমার নাম Tooark.", "TOOARK")]
+  [InlineData("sdùVWMäwúý", "SDUVWMAWUY")]
+  [InlineData("ûëlbsSô1óv", "UELBSSO1OV")]
+  [InlineData("33dòïêgDQR", "33DOIEGDQR")]
+  [InlineData("0óaïJnYëMí", "0OAIJNYEMI")]
+  [InlineData(" Nð 139 Qli ", "N139QLI")]
+  [InlineData("ÿm0oeTEmbã", "YM0OETEMBA")]
+  [InlineData("äCjqåqjVZq", "ACJQAQJVZQ")]
+  [InlineData("Tf4îJåzàge", "TF4IJAZAGE")]
+  [InlineData("ù1nCÿ0ú7éW", "U1NCY0U7EW")]
+  [InlineData("òî7gåP0siH", "OI7GAP0SIH")]
+  [InlineData("SB8làbhûH1", "SB8LABHUH1")]
+  [InlineData(" âdçd51KU8 ", "ADCD51KU8")]
+  public void NormalizeValue_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters_RandomString(string? input, string expected)
   {
     // Act
-    string actual = Util.NormalizeValue(input);
+    string actual = Util.NormalizeValue(input!);
 
     // Assert
     Assert.Equal(expected, actual, ignoreCase: false);
@@ -151,7 +159,7 @@ public class NormalizeValueTests
   {
     // Arrange
     string input = "Hello World";
-    string expected = "helloworld";
+    string expected = "HELLOWORLD";
 
     // Act
     string actual = Util.NormalizeValueRegex(input);
@@ -166,7 +174,7 @@ public class NormalizeValueTests
   {
     // Arrange
     string input = "HELLO WORLD";
-    string expected = "helloworld";
+    string expected = "HELLOWORLD";
 
     // Act
     string actual = Util.NormalizeValueRegex(input);
@@ -181,7 +189,7 @@ public class NormalizeValueTests
   {
     // Arrange
     string input = "Ça va? Je m'appelle Tooark.";
-    string expected = "cavajemappelletooark";
+    string expected = "CAVAJEMAPPELLETOOARK";
 
     // Act
     string actual = Util.NormalizeValueRegex(input);
@@ -196,7 +204,7 @@ public class NormalizeValueTests
   {
     // Arrange
     string input = "Hello, I'm Tooark! 123.";
-    string expected = "helloimtooark123";
+    string expected = "HELLOIMTOOARK123";
 
     // Act
     string actual = Util.NormalizeValueRegex(input);
@@ -205,52 +213,60 @@ public class NormalizeValueTests
     Assert.Equal(expected, actual);
   }
 
-  // Uma lista de 100 testes com valores de entrada e resultados esperados gerados aleatoriamente
+  // Uma lista de 48 testes com valores de entrada e resultados esperados gerados aleatoriamente
   [Theory]
+  [InlineData(null, "")]
+  [InlineData("", "")]
   [InlineData(" ", "")]
-  [InlineData("çñÿâäàåáãéêëèïîìíôöòóðõüûùú", "cnyaaaaaaeeeeiiiioooooouuuu")]
-  [InlineData("123 abc ÇÑÝÂÄÀÅÁÃÉÊËÈÏÎÌÍÔÖÒÓÐÕÜÛÙÚ", "123abccnyaaaaaaeeeeiiiioooooouuuu")]
-  [InlineData("Olá, eu sou o Tooark!", "olaeusouotooark")]
-  [InlineData("¿Qué tal? Me llamo Tooark.", "quetalmellamotooark")]
-  [InlineData("Wie geht's? Ich heiße Tooark.", "wiegehtsichheietooark")]
-  [InlineData("こんにちは、私はTooarkです。", "tooark")]
-  [InlineData("你好，我叫Tooark。", "tooark")]
-  [InlineData("안녕하세요, 저는 Tooark입니다.", "tooark")]
-  [InlineData("Привет, я Tooark.", "tooark")]
-  [InlineData("Cześć, nazywam się Tooark.", "czenazywamsitooark")]
-  [InlineData("Hello, I'm Tooark.", "helloimtooark")]
-  [InlineData("Γεια σας, είμαι ο Tooark.", "tooark")]
-  [InlineData("Bună, eu sunt Tooark.", "buneusunttooark")]
-  [InlineData("Sveiki, aš esu Tooark.", "sveikiaesutooark")]
-  [InlineData("Здравейте, аз съм Tooark.", "tooark")]
-  [InlineData("Sawubona, ngiyi-Tooark.", "sawubonangiyitooark")]
-  [InlineData("Shwmae, fi yw Tooark.", "shwmaefiywtooark")]
-  [InlineData("สวัสดีครับ ผมชื่อ Tooark", "tooark")]
-  [InlineData("नमस्ते, मेरा नाम Tooark है।", "tooark")]
-  [InlineData("नमस्कार, माझे नाव Tooark आहे.", "tooark")]
-  [InlineData("નમસ્તે, મારું નામ Tooark છે.", "tooark")]
-  [InlineData("ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ, ਮੇਰਾ ਨਾਮ Tooark ਹੈ.", "tooark")]
-  [InlineData("வணக்கம், என் பெயர் Tooark.", "tooark")]
-  [InlineData("నమస్కారం, నా పేరు Tooark.", "tooark")]
-  [InlineData("ನಮಸ್ಕಾರ, ನನ್ನ ಹೆಸರು Tooark.", "tooark")]
-  [InlineData("നമസ്കാരം, എന്റെ പേര് Tooark.", "tooark")]
-  [InlineData("হ্যালো, আমার নাম Tooark.", "tooark")]
-  [InlineData("sdùVWMäwúý", "sduvwmawuy")]
-  [InlineData("ûëlbsSô1óv", "uelbsso1ov")]
-  [InlineData("33dòïêgDQR", "33doiegdqr")]
-  [InlineData("0óaïJnYëMí", "0oaijnyemi")]
-  [InlineData(" Nð 139 Qli ", "no139qli")]
-  [InlineData("ÿm0oeTEmbã", "ym0oetemba")]
-  [InlineData("äCjqåqjVZq", "acjqaqjvzq")]
-  [InlineData("Tf4îJåzàge", "tf4ijazage")]
-  [InlineData("ù1nCÿ0ú7éW", "u1ncy0u7ew")]
-  [InlineData("òî7gåP0siH", "oi7gap0sih")]
-  [InlineData("SB8làbhûH1", "sb8labhuh1")]
-  [InlineData(" âdçd51KU8 ", "adcd51ku8")]
-  public void NormalizeValueRegex_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters_RandomString(string input, string expected)
+  [InlineData("  ", "")]
+  [InlineData("Hello World", "HELLOWORLD")]
+  [InlineData("Ç Ñ Ÿ Ý Â Ä À Å Á Ã", "CNYYAAAAAA")]
+  [InlineData("É Ê Ë È Ï Î Ì Í Ô Ö Ò Ó Õ Ü Û Ù Ú", "EEEEIIIIOOOOOUUUU")]
+  [InlineData("123 ABC", "123ABC")]
+  [InlineData("!@#$%^&*()_+", "")]
+  [InlineData("çñÿâäàåáãéêëèïîìíôöòóðõüûùú", "CNYAAAAAAEEEEIIIIOOOOOUUUU")]
+  [InlineData("123 abc ÇÑÝÂÄÀÅÁÃÉÊËÈÏÎÌÍÔÖÒÓÐÕÜÛÙÚ", "123ABCCNYAAAAAAEEEEIIIIOOOOOUUUU")]
+  [InlineData("Olá, eu sou o Tooark!", "OLAEUSOUOTOOARK")]
+  [InlineData("¿Qué tal? Me llamo Tooark.", "QUETALMELLAMOTOOARK")]
+  [InlineData("Wie geht's? Ich heiße Tooark.", "WIEGEHTSICHHEIETOOARK")]
+  [InlineData("こんにちは、私はTooarkです。", "TOOARK")]
+  [InlineData("你好，我叫Tooark。", "TOOARK")]
+  [InlineData("안녕하세요, 저는 Tooark입니다.", "TOOARK")]
+  [InlineData("Привет, я Tooark.", "TOOARK")]
+  [InlineData("Cześć, nazywam się Tooark.", "CZENAZYWAMSITOOARK")]
+  [InlineData("Hello, I'm Tooark.", "HELLOIMTOOARK")]
+  [InlineData("Γεια σας, είμαι ο Tooark.", "TOOARK")]
+  [InlineData("Bună, eu sunt Tooark.", "BUNEUSUNTTOOARK")]
+  [InlineData("Sveiki, aš esu Tooark.", "SVEIKIAESUTOOARK")]
+  [InlineData("Здравейте, аз съм Tooark.", "TOOARK")]
+  [InlineData("Sawubona, ngiyi-Tooark.", "SAWUBONANGIYITOOARK")]
+  [InlineData("Shwmae, fi yw Tooark.", "SHWMAEFIYWTOOARK")]
+  [InlineData("สวัสดีครับ ผมชื่อ Tooark", "TOOARK")]
+  [InlineData("नमस्ते, मेरा नाम Tooark है।", "TOOARK")]
+  [InlineData("नमस्कार, माझे नाव Tooark आहे.", "TOOARK")]
+  [InlineData("નમસ્તે, મારું નામ Tooark છે.", "TOOARK")]
+  [InlineData("ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ, ਮੇਰਾ ਨਾਮ Tooark ਹੈ.", "TOOARK")]
+  [InlineData("வணக்கம், என் பெயர் Tooark.", "TOOARK")]
+  [InlineData("నమస్కారం, నా పేరు Tooark.", "TOOARK")]
+  [InlineData("ನಮಸ್ಕಾರ, ನನ್ನ ಹೆಸರು Tooark.", "TOOARK")]
+  [InlineData("നമസ്കാരം, എന്റെ പേര് Tooark.", "TOOARK")]
+  [InlineData("হ্যালো, আমার নাম Tooark.", "TOOARK")]
+  [InlineData("sdùVWMäwúý", "SDUVWMAWUY")]
+  [InlineData("ûëlbsSô1óv", "UELBSSO1OV")]
+  [InlineData("33dòïêgDQR", "33DOIEGDQR")]
+  [InlineData("0óaïJnYëMí", "0OAIJNYEMI")]
+  [InlineData(" Nð 139 Qli ", "N139QLI")]
+  [InlineData("ÿm0oeTEmbã", "YM0OETEMBA")]
+  [InlineData("äCjqåqjVZq", "ACJQAQJVZQ")]
+  [InlineData("Tf4îJåzàge", "TF4IJAZAGE")]
+  [InlineData("ù1nCÿ0ú7éW", "U1NCY0U7EW")]
+  [InlineData("òî7gåP0siH", "OI7GAP0SIH")]
+  [InlineData("SB8làbhûH1", "SB8LABHUH1")]
+  [InlineData(" âdçd51KU8 ", "ADCD51KU8")]
+  public void NormalizeValueRegex_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters_RandomString(string? input, string expected)
   {
     // Act
-    string actual = Util.NormalizeValueRegex(input);
+    string actual = Util.NormalizeValueRegex(input!);
 
     // Assert
     Assert.Equal(expected, actual, ignoreCase: false);

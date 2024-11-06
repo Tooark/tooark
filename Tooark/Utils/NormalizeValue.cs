@@ -58,7 +58,7 @@ internal static partial class InternalUtil
         continue;
 
       // Verifica se o caractere é um número ou letra minúscula
-      if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z'))
+      if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z'))
       {
         normalizedValue.Append(c);
       }
@@ -67,34 +67,33 @@ internal static partial class InternalUtil
         // Substitui caracteres especiais por caracteres sem acentuação
         switch (c)
         {
-          case 'ç': normalizedValue.Append('c'); break;
-          case 'ñ': normalizedValue.Append('n'); break;
-          case 'ÿ':
-          case 'ý': normalizedValue.Append('y'); break;
-          case 'â':
-          case 'ä':
-          case 'à':
-          case 'å':
-          case 'á':
-          case 'ã': normalizedValue.Append('a'); break;
-          case 'é':
-          case 'ê':
-          case 'ë':
-          case 'è': normalizedValue.Append('e'); break;
-          case 'ï':
-          case 'î':
-          case 'ì':
-          case 'í': normalizedValue.Append('i'); break;
-          case 'ô':
-          case 'ö':
-          case 'ò':
-          case 'ó':
-          case 'ð':
-          case 'õ': normalizedValue.Append('o'); break;
-          case 'ü':
-          case 'û':
-          case 'ù':
-          case 'ú': normalizedValue.Append('u'); break;
+          case 'Ç': normalizedValue.Append('C'); break;
+          case 'Ñ': normalizedValue.Append('N'); break;
+          case 'Ÿ':
+          case 'Ý': normalizedValue.Append('Y'); break;
+          case 'Â':
+          case 'Ä':
+          case 'À':
+          case 'Å':
+          case 'Á':
+          case 'Ã': normalizedValue.Append('A'); break;
+          case 'É':
+          case 'Ê':
+          case 'Ë':
+          case 'È': normalizedValue.Append('E'); break;
+          case 'Ï':
+          case 'Î':
+          case 'Ì':
+          case 'Í': normalizedValue.Append('I'); break;
+          case 'Ô':
+          case 'Ö':
+          case 'Ò':
+          case 'Ó':
+          case 'Õ': normalizedValue.Append('O'); break;
+          case 'Ü':
+          case 'Û':
+          case 'Ù':
+          case 'Ú': normalizedValue.Append('U'); break;
 
           default: break; // Ignora outros caracteres
         }
@@ -123,14 +122,14 @@ internal static partial class InternalUtil
     value = SpaceRegex().Replace(value, "");
 
     // Substitui caracteres especiais por caracteres sem acentuação
-    value = CRegex().Replace(value, "c");
-    value = NRegex().Replace(value, "n");
-    value = YRegex().Replace(value, "y");
-    value = ARegex().Replace(value, "a");
-    value = ERegex().Replace(value, "e");
-    value = IRegex().Replace(value, "i");
-    value = ORegex().Replace(value, "o");
-    value = URegex().Replace(value, "u");
+    value = CRegex().Replace(value, "C");
+    value = NRegex().Replace(value, "N");
+    value = YRegex().Replace(value, "Y");
+    value = ARegex().Replace(value, "A");
+    value = ERegex().Replace(value, "E");
+    value = IRegex().Replace(value, "I");
+    value = ORegex().Replace(value, "O");
+    value = URegex().Replace(value, "U");
 
     // Remove caracteres diferente de números ou letras minúsculas
     value = AcceptRegex().Replace(value, "");
@@ -143,30 +142,30 @@ internal static partial class InternalUtil
   [GeneratedRegex(@"\s", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex SpaceRegex();
   // Caracteres especiais substituir para c
-  [GeneratedRegex("[ç]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
+  [GeneratedRegex("[Ç]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex CRegex();
   // Caracteres especiais substituir para n
-  [GeneratedRegex("[ñ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
+  [GeneratedRegex("[Ñ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex NRegex();
   // Caracteres especiais substituir para y
-  [GeneratedRegex("[ÿý]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
+  [GeneratedRegex("[ŸÝ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex YRegex();
   // Caracteres especiais substituir para a
-  [GeneratedRegex("[âäàåáã]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
+  [GeneratedRegex("[ÂÄÀÅÁÃ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex ARegex();
   // Caracteres especiais substituir para e
-  [GeneratedRegex("[éêëè]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
+  [GeneratedRegex("[ÉÊËÈ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex ERegex();
   // Caracteres especiais substituir para i
-  [GeneratedRegex("[ïîìí]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
+  [GeneratedRegex("[ÏÎÌÍ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex IRegex();
   // Caracteres especiais substituir para o
-  [GeneratedRegex("[ôöòóðõ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
+  [GeneratedRegex("[ÔÖÒÓÕ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex ORegex();
   // Caracteres especiais substituir para u
-  [GeneratedRegex("[üûùú]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
+  [GeneratedRegex("[ÜÛÙÚ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex URegex();
   // Caracteres que não são numéricos e letras minúsculas para ser removido
-  [GeneratedRegex("[^0-9a-z]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
+  [GeneratedRegex("[^0-9A-Z]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex AcceptRegex();
 }
