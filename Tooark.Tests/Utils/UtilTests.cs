@@ -33,7 +33,34 @@ public class LanguagesTests
     Languages.SetCulture(newCulture);
 
     // Assert
-    Assert.Equal(newCulture, CultureInfo.CurrentCulture.Name);
     Assert.Equal(newCulture, Languages.Current);
+    Assert.Equal(newCulture, CultureInfo.CurrentCulture.Name);
+    Assert.Equal(newCulture, CultureInfo.CurrentUICulture.Name);
+    Assert.Equal(newCulture, CultureInfo.DefaultThreadCurrentCulture?.Name);
+    Assert.Equal(newCulture, CultureInfo.DefaultThreadCurrentUICulture?.Name);
+  }
+
+  // Testa se a cultura atual é alterada corretamente com um objeto CultureInfo
+  [Theory]
+  [InlineData("en-US")]
+  [InlineData("es-ES")]
+  [InlineData("jp-JP")]
+  [InlineData("pt-BR")]
+  [InlineData("pt-PT")]
+  public void SetCulture_WithCultureInfo_SetsCurrentCulture(string newCulture)
+  {
+    // Arrange
+    var culture = new CultureInfo(newCulture);
+
+    // Act
+
+    Languages.SetCulture(culture);
+
+    // Assert
+    Assert.Equal(culture.Name, Languages.Current);
+    Assert.Equal(culture, CultureInfo.CurrentCulture);
+    Assert.Equal(culture, CultureInfo.CurrentUICulture);
+    Assert.Equal(culture, CultureInfo.DefaultThreadCurrentCulture);
+    Assert.Equal(culture, CultureInfo.DefaultThreadCurrentUICulture);
   }
 }
