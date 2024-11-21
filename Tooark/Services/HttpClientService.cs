@@ -2,7 +2,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Tooark.Exceptions;
-using Tooark.Services.Interface;
+using Tooark.Interfaces;
 
 namespace Tooark.Services;
 

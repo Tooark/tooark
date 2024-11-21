@@ -1,6 +1,7 @@
-using Tooark.Services.Interface;
+using Tooark.Interfaces;
+using Tooark.Services;
 
-namespace Tooark.Services.Factory;
+namespace Tooark.Factories;
 
 /// <summary>
 /// Fornece métodos para criar instâncias de IHttpClientService.

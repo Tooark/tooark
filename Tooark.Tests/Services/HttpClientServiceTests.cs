@@ -4,8 +4,8 @@ using System.Text.Json;
 using Moq;
 using Moq.Protected;
 using Tooark.Exceptions;
-using Tooark.Services.Factory;
-using Tooark.Services.Interface;
+using Tooark.Factories;
+using Tooark.Interfaces;
 using Tooark.Tests.Moq.Model.Person;
 
 namespace Tooark.Tests.Services;
