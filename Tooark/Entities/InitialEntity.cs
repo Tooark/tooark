@@ -46,7 +46,14 @@ public abstract class InitialEntity : BaseEntity
   {
     if (CreatedBy == Guid.Empty)
     {
-      CreatedBy = createdBy;
+      if (createdBy != Guid.Empty)
+      {
+        CreatedBy = createdBy;
+      }
+      else
+      {
+        throw new ArgumentException("IdentifierEmpty;CreatedBy");
+      }
     }
     else
     {
