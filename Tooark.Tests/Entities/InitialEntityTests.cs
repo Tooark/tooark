@@ -35,6 +35,18 @@ public class InitialEntityTests
     Assert.Equal(createdBy, entity.CreatedBy);
   }
 
+  // Testa se SetCreatedBy lança uma exceção ao tentar atribuir um Guid vazio
+  [Fact]
+  public void SetCreatedBy_WithGuidEmpty_ShouldThrowArgumentException()
+  {
+    // Arrange
+    var entity = new TestInitialEntity();
+
+    // Act & Assert
+    var exception = Assert.Throws<ArgumentException>(() => entity.SetCreatedBy(Guid.Empty));
+    Assert.Equal("IdentifierEmpty;CreatedBy", exception.Message);
+  }
+
   // Testa se SetCreatedBy lança uma exceção ao tentar alterar o criador
   [Fact]
   public void SetCreatedBy_WithNonEmptyGuid_ShouldThrowInvalidOperationException()

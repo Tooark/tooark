@@ -32,7 +32,7 @@ public abstract class BaseEntity
   {
     if (id == Guid.Empty)
     {
-      throw new ArgumentException("IdentifierEmpty");
+      throw new ArgumentException("IdentifierEmpty;Id");
     }
 
     Id = id;
