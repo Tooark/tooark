@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using Tooark.Services.Factory;
-using Tooark.Services.Interface;
+using Tooark.Factories;
+using Tooark.Interfaces;
 
 namespace Tooark.Injections;
 

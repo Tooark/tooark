@@ -1,7 +1,7 @@
 namespace Tooark.Exceptions;
 
 /// <summary>
-/// Representa uma exceção que é lançada quando ocorre um erro durante a deserialização de JSON.
+/// Representa uma exceção que é lançada quando ocorre um erro durante a desserialização de JSON.
 /// </summary>
 public class JsonDeserializationException : Exception
 {
