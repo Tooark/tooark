@@ -43,6 +43,6 @@ public class BaseEntityTests
 
     // Act & Assert
     var exception = Assert.Throws<ArgumentException>(() => entity.SetId(Guid.Empty));
-    Assert.Equal("IdentifierEmpty", exception.Message);
+    Assert.Equal("IdentifierEmpty;Id", exception.Message);
   }
 }

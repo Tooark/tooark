@@ -11,14 +11,13 @@ public class EnumerableExtensionsTests
   public EnumerableExtensionsTests()
   {
     _categories =
-    new()
-    {
+    [
       TestDataGenerator.CreateCategory(1),
       TestDataGenerator.CreateCategory(2),
       TestDataGenerator.CreateCategory(3),
       TestDataGenerator.CreateCategory(4),
       TestDataGenerator.CreateCategory(5)
-    };
+    ];
   }
 
   public static class TestDataGenerator
@@ -31,7 +30,7 @@ public class EnumerableExtensionsTests
       var category = new Category
       {
         Id = sequence,
-        Type = "Type " + new string(Encoding.Default.GetChars(new byte[] { (byte)valueChar })),
+        Type = "Type " + new string(Encoding.Default.GetChars([(byte)valueChar])),
         Description = includeOptional ? "Description " + valueChar : null,
         CreatedAt = DateTime.UtcNow.AddDays(valueChar),
         SubCategory = includeOptional ? CreateSubCategory(sequence) : null,
@@ -76,10 +75,10 @@ public class EnumerableExtensionsTests
   [Fact]
   public void OrderByProperty_WithSimpleType_OrdersAscendingCorrectly()
   {
-    var queryable = _categories.AsEnumerable();
-    var orderedResult = queryable.OrderByProperty("Type").ToList();
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty("Type").ToList();
 
-
+    // Assert
     Assert.Equal("Type I", orderedResult[0].Type);
     Assert.Equal("Type K", orderedResult[1].Type);
     Assert.Equal("Type N", orderedResult[2].Type);
@@ -91,9 +90,10 @@ public class EnumerableExtensionsTests
   [Fact]
   public void OrderByProperty_WithSimpleType_OrdersDescendingCorrectly()
   {
-    var queryable = _categories.AsEnumerable();
-    var orderedResult = queryable.OrderByProperty("Type", false).ToList();
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty("Type", false).ToList();
 
+    // Assert
     Assert.Equal("Type R", orderedResult[0].Type);
     Assert.Equal("Type P", orderedResult[1].Type);
     Assert.Equal("Type N", orderedResult[2].Type);
@@ -105,9 +105,10 @@ public class EnumerableExtensionsTests
   [Fact]
   public void OrderByProperty_WithNullValues_OrdersAscendingCorrectly()
   {
-    var queryable = _categories.AsEnumerable();
-    var orderedResult = queryable.OrderByProperty("Description").ToList();
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty("Description").ToList();
 
+    // Assert
     Assert.Null(orderedResult[0].Description);
     Assert.Null(orderedResult[1].Description);
     Assert.Null(orderedResult[2].Description);
@@ -119,9 +120,10 @@ public class EnumerableExtensionsTests
   [Fact]
   public void OrderByProperty_WithNullValues_OrdersDescendingCorrectly()
   {
-    var queryable = _categories.AsEnumerable();
-    var orderedResult = queryable.OrderByProperty("Description", false).ToList();
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty("Description", false).ToList();
 
+    // Assert
     Assert.Equal("Description 75", orderedResult[0].Description);
     Assert.Equal("Description 73", orderedResult[1].Description);
     Assert.Null(orderedResult[2].Description);
@@ -129,13 +131,36 @@ public class EnumerableExtensionsTests
     Assert.Null(orderedResult[4].Description);
   }
 
+  // Teste para Ordenação Ascendente com Condição
+  [Fact]
+  public void OrderByProperty_WithCondition_OrdersAscendingCorrectly()
+  {
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty("Type", propertyEquals: "Id", valueEquals: 1).ToList();
+
+    // Assert
+    Assert.Equal("Type I", orderedResult[0].Type);
+  }
+
+  // Teste para Ordenação Descendente com Condição
+  [Fact]
+  public void OrderByProperty_WithCondition_OrdersDescendingCorrectly()
+  {
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty("Type", false, propertyEquals: "Id", valueEquals: 1).ToList();
+
+    // Assert
+    Assert.Equal("Type R", orderedResult[0].Type);
+  }
+
   // Teste para Ordenação Ascendente de Propriedades Complexas
   [Fact]
   public void OrderByProperty_WithComplexType_OrdersAscendingCorrectly()
   {
-    var queryable = _categories.AsEnumerable();
-    var orderedResult = queryable.OrderByProperty("SubCategory.Name", true).ToList();
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty("SubCategory.Name", true).ToList();
 
+    // Assert
     Assert.Null(orderedResult[0].SubCategory?.Name);
     Assert.Null(orderedResult[1].SubCategory?.Name);
     Assert.Null(orderedResult[2].SubCategory?.Name);
@@ -147,9 +172,10 @@ public class EnumerableExtensionsTests
   [Fact]
   public void OrderByProperty_WithComplexType_OrdersDescendingCorrectly()
   {
-    var queryable = _categories.AsEnumerable();
-    var orderedResult = queryable.OrderByProperty("SubCategory.Name", false).ToList();
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty("SubCategory.Name", false).ToList();
 
+    // Assert
     Assert.Equal("Name 4", orderedResult[0].SubCategory?.Name);
     Assert.Equal("Name 2", orderedResult[1].SubCategory?.Name);
     Assert.Null(orderedResult[2].SubCategory?.Name);
@@ -161,9 +187,10 @@ public class EnumerableExtensionsTests
   [Fact]
   public void OrderByProperty_WithComplexCollection_OrdersAscendingCorrectly()
   {
-    var queryable = _categories.AsEnumerable();
-    var orderedResult = queryable.OrderByProperty("ListSubCategory.Name", true, "Type", 1).ToList();
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty("ListSubCategory.Name", true, "Type", 1).ToList();
 
+    // Assert
     Assert.Null(orderedResult[0].ListSubCategory?.FirstOrDefault(x => x.Type == 1)?.Name);
     Assert.Null(orderedResult[1].ListSubCategory?.FirstOrDefault(x => x.Type == 1)?.Name);
     Assert.Null(orderedResult[2].ListSubCategory?.FirstOrDefault(x => x.Type == 1)?.Name);
@@ -175,9 +202,10 @@ public class EnumerableExtensionsTests
   [Fact]
   public void OrderByProperty_WithComplexCollection_OrdersDescendingCorrectly()
   {
-    var queryable = _categories.AsEnumerable();
-    var orderedResult = queryable.OrderByProperty("ListSubCategory.Name", false, "Type", 1).ToList();
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty("ListSubCategory.Name", false, "Type", 1).ToList();
 
+    // Assert
     Assert.Equal("Name 14", orderedResult[0].ListSubCategory?.FirstOrDefault(x => x.Type == 1)?.Name);
     Assert.Equal("Name 10", orderedResult[1].ListSubCategory?.FirstOrDefault(x => x.Type == 1)?.Name);
     Assert.Null(orderedResult[2].ListSubCategory?.FirstOrDefault(x => x.Type == 1)?.Name);
@@ -189,9 +217,10 @@ public class EnumerableExtensionsTests
   [Fact]
   public void OrderByProperty_WithUnknownProperty_OrdersAscendingCorrectly()
   {
-    var queryable = _categories.AsEnumerable();
-    var orderedResult = queryable.OrderByProperty("Unknown").ToList();
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty("Unknown").ToList();
 
+    // Assert
     Assert.Equal(1, orderedResult[0].Id);
     Assert.Equal(2, orderedResult[1].Id);
     Assert.Equal(3, orderedResult[2].Id);
@@ -203,13 +232,44 @@ public class EnumerableExtensionsTests
   [Fact]
   public void OrderByProperty_WithUnknownProperty_OrdersDescendingCorrectly()
   {
-    var queryable = _categories.AsEnumerable();
-    var orderedResult = queryable.OrderByProperty("Unknown", false).ToList();
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty("Unknown", false).ToList();
 
+    // Assert
     Assert.Equal(5, orderedResult[0].Id);
     Assert.Equal(4, orderedResult[1].Id);
     Assert.Equal(3, orderedResult[2].Id);
     Assert.Equal(2, orderedResult[3].Id);
     Assert.Equal(1, orderedResult[4].Id);
   }
+
+  // Teste para Ordenação com Campo Null
+  [Fact]
+  public void OrderByProperty_WithNullProperty_ListSize()
+  {
+    // Arrange & Act
+    var orderedResult = _categories.OrderByProperty(null).ToList();
+
+    // Assert
+    Assert.Equal(5, orderedResult.Count);
+  }
+
+  // Teste para Ordenação lista Vazia
+  [Fact]
+  public void OrderByProperty_WithEmptyList_ListEmpty()
+  {
+    var _listNullCategory = new List<Category>();
+    var orderedResult = _listNullCategory.OrderByProperty("Type").ToList();
+
+    Assert.Empty(orderedResult);
+  }
+
+  // // Teste para Ordenação Descendente com Campo Null
+  // [Fact]
+  // public void OrderByProperty_WithNullProperty_OrdersDescendingCorrectly()
+  // {
+    
+
+  //     Assert.Throws<ArgumentException>(() => _categories.OrderByProperty("InvalidProperty").ToList());
+  // }
 }

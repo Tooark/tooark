@@ -1,4 +1,4 @@
-namespace Tooark.Services.Interface;
+namespace Tooark.Interfaces;
 
 /// <summary>
 /// Define um contrato para serviços de cliente HTTP para enviar solicitações HTTP e receber respostas HTTP de um recurso identificado por um URI.

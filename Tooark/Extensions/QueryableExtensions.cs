@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
+using Tooark.Utils;
 
 namespace Tooark.Extensions;
 
@@ -38,7 +39,7 @@ public static class QueryableExtensions
 internal static class InternalQueryable
 {
   private static bool IsCollection { get; set; } = false;
-  private static readonly List<string> ParameterLetter = new() { "a", "b", "c", "d", "e" };
+  
   private static readonly MethodInfo SelectMethod = typeof(Enumerable)
     .GetMethods(BindingFlags.Static | BindingFlags.Public)
     .First(m =>
@@ -136,7 +137,7 @@ internal static class InternalQueryable
       if (IsCollectionProperty(nextExpression))
       {
         var elementType = nextPropertyInfo.PropertyType.GetGenericArguments()[0];
-        ParameterExpression collectionParameterExpression = Expression.Parameter(elementType, ParameterLetter[index]);
+        ParameterExpression collectionParameterExpression = Expression.Parameter(elementType, Util.SequentialString(index));
 
         index++;
         var (collectionExpression, _) = GetExpressionProperty(collectionParameterExpression, parts[index]);
@@ -144,7 +145,7 @@ internal static class InternalQueryable
         if (collectionExpression != null)
         {
           // Cria uma lambda para equals
-          LambdaExpression? lambdaEquals = GetLambdaEquals(collectionParameterExpression, ParameterLetter[index], propertyEquals, valueEquals);
+          LambdaExpression? lambdaEquals = GetLambdaEquals(collectionParameterExpression, Util.SequentialString(index), propertyEquals, valueEquals);
 
           var mountExpression = MountCollection(nextExpression, collectionParameterExpression, collectionExpression, elementType, lambdaEquals);
 
@@ -166,7 +167,7 @@ internal static class InternalQueryable
 
     if (expression == null)
     {
-      throw new ArgumentException($"Property not found on type '{parameterExpression.Type.Name}'");
+      throw new ArgumentException($"PropertyNotFound;{parameterExpression.Type.Name}");
     }
 
     return expression;
@@ -329,7 +330,7 @@ internal static class InternalQueryable
     return collectionProperty;
   }
 
-  private static Expression MountCollection(
+  private static MethodCallExpression MountCollection(
     Expression expression,
     ParameterExpression collectionParameter,
     Expression collectionExpression,

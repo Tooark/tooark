@@ -6,6 +6,7 @@ namespace Tooark.Attributes;
 /// <summary>
 /// Atributo de validação para verificar a complexidade de um endereço de email.
 /// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 public partial class EmailComplexityAttribute : ValidationAttribute
 {
   /// <summary>

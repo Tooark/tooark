@@ -36,20 +36,6 @@ public class DetailedEntityTests
     Assert.Equal(createdBy, entity.UpdatedBy);
   }
 
-  // Testa se SetCreatedBy lança uma exceção ao tentar alterar o criador
-  [Fact]
-  public void SetCreatedBy_WithNonEmptyGuid_ShouldThrowInvalidOperationException()
-  {
-    // Arrange
-    var entity = new TestDetailedEntity();
-    var createdBy = Guid.NewGuid();
-    entity.SetCreatedBy(createdBy);
-
-    // Act & Assert
-    var exception = Assert.Throws<InvalidOperationException>(() => entity.SetCreatedBy(Guid.NewGuid()));
-    Assert.Equal("ChangeNotAllowed;CreatedBy", exception.Message);
-  }
-
   // Testa se SetUpdatedBy atualiza o atualizador e a data de atualização
   [Fact]
   public void SetUpdatedBy_WithValidGuid_ShouldUpdateUpdatedByAndUpdatedAt()
@@ -64,5 +50,31 @@ public class DetailedEntityTests
     // Assert
     Assert.Equal(updatedBy, entity.UpdatedBy);
     Assert.True((DateTime.UtcNow - entity.UpdatedAt).TotalSeconds < 1);
+  }
+
+  // Testa se SetCreatedBy lança uma exceção ao tentar alterar o criador
+  [Fact]
+  public void SetCreatedBy_WithNonEmptyGuid_ShouldThrowInvalidOperationException()
+  {
+    // Arrange
+    var entity = new TestDetailedEntity();
+    var createdBy = Guid.NewGuid();
+    entity.SetCreatedBy(createdBy);
+
+    // Act & Assert
+    var exception = Assert.Throws<InvalidOperationException>(() => entity.SetCreatedBy(Guid.NewGuid()));
+    Assert.Equal("ChangeNotAllowed;CreatedBy", exception.Message);
+  }
+
+  // Testa se SetUpdatedBy lança uma exceção ao tentar atribuir um Guid vazio
+  [Fact]
+  public void SetUpdatedBy_WithGuidEmpty_ShouldThrowArgumentException()
+  {
+    // Arrange
+    var entity = new TestDetailedEntity();
+
+    // Act & Assert
+    var exception = Assert.Throws<ArgumentException>(() => entity.SetUpdatedBy(Guid.Empty));
+    Assert.Equal("IdentifierEmpty;UpdateBy", exception.Message);
   }
 }
