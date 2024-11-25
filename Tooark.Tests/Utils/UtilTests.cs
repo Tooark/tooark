@@ -29,7 +29,7 @@ public class LanguagesTests
   [InlineData("pt-PT")]
   public void SetCulture_ShouldChangeCurrentCulture(string newCulture)
   {
-    // Act
+    // Arrange & Act
     Languages.SetCulture(newCulture);
 
     // Assert
@@ -53,7 +53,6 @@ public class LanguagesTests
     var culture = new CultureInfo(newCulture);
 
     // Act
-
     Languages.SetCulture(culture);
 
     // Assert

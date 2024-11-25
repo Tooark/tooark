@@ -85,6 +85,7 @@ internal static partial class InternalUtil
   internal static string GetTitle<T>(IList<T> listValue, string? languageCode = null!)
   {
     languageCode ??= Languages.Current;
+
     return GetLanguageCode(listValue, "Title", languageCode);
   }
 

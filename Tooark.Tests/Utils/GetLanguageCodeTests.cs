@@ -59,6 +59,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal(expectedName, result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetName retorna o nome da linguagem correspondente à cultura definida
@@ -78,6 +81,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal(expectedName, result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetTitle retorna o titulo da linguagem correspondente à linguagem do parâmetro
@@ -94,6 +100,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal(expectedName, result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetTitle retorna o titulo da linguagem correspondente à cultura definida
@@ -113,6 +122,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal(expectedName, result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetDescription retorna o descrição da linguagem correspondente à linguagem do parâmetro
@@ -129,6 +141,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal(expectedName, result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetDescription retorna o descrição da linguagem correspondente à cultura definida
@@ -148,6 +163,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal(expectedName, result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetName retorna o nome da linguagem padrão (en-US) linguagem do parâmetro não está na lista
@@ -162,6 +180,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal("Name in English", result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetName retorna o nome da linguagem padrão (en-US) linguagem do parâmetro não está na lista
@@ -173,6 +194,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal("Name in English", result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetName retorna uma string vazia quando a lista de linguagens está vazia
@@ -187,6 +211,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal(string.Empty, result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetTitle retorna o nome da linguagem padrão (en-US) linguagem do parâmetro não está na lista
@@ -201,17 +228,23 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal("Title in English", result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetTitle retorna o nome da linguagem padrão (en-US) linguagem do parâmetro não está na lista
   [Fact]
   public void GetTitle_ShouldReturnTitleDefault_WhenCultureInList()
   {
-    // Act
+    // Arrange & Act
     var result = GetTitle(_testItems, "de-DE");
 
     // Assert
     Assert.Equal("Title in English", result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetTitle retorna uma string vazia quando a lista de linguagens está vazia
@@ -226,6 +259,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal(string.Empty, result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetDescription retorna o nome da linguagem padrão (en-US) linguagem do parâmetro não está na lista
@@ -240,6 +276,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal("Description in English", result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetDescription retorna o nome da linguagem padrão (en-US) linguagem do parâmetro não está na lista
@@ -251,6 +290,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal("Description in English", result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetDescription retorna uma string vazia quando a lista de linguagens está vazia
@@ -265,6 +307,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal(string.Empty, result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetLanguageCode retorna a propriedade correspondente à linguagem do parâmetro
@@ -281,6 +326,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal(expectedName, languageCodeResult);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetLanguageCode retorna a propriedade correspondente à cultura definida
@@ -300,6 +348,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal(expectedName, languageCodeResult);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
 
@@ -315,6 +366,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal("Name in English", result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetLanguageCode retorna o nome da linguagem padrão (en-US) linguagem do parâmetro não está na lista
@@ -326,6 +380,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal("Name in English", result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetLanguageCode retorna uma string vazia quando a lista de linguagens está vazia
@@ -340,10 +397,10 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal(string.Empty, result);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
-
-
-
 
   // Testa se o método GetLanguageCode lança uma exceção quando a propriedade LanguageCode não existe na lista de linguagens
   [Fact]
@@ -363,6 +420,9 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal("PropertyNotExist;LanguageCode", exception.Message);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 
   // Testa se o método GetLanguageCode lança uma exceção quando a propriedade Name não existe na lista de linguagens
@@ -374,5 +434,8 @@ public class GetLanguageCodeTests
 
     // Assert
     Assert.Equal("PropertyNotExist;Person", exception.Message);
+
+    // Cleanup
+    Languages.SetCulture(Languages.Default);
   }
 }
