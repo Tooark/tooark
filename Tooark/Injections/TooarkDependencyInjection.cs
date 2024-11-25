@@ -1,4 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
+using Tooark.Extensions;
 using Tooark.Factories;
 using Tooark.Interfaces;
 
@@ -16,7 +18,8 @@ public static class TooarkDependencyInjection
   /// <returns>A coleção de serviços com os serviços da Tooark adicionados.</returns>
   public static IServiceCollection AddTooarkServices(this IServiceCollection services)
   {
-    services.AddHttpClientService();
+    services.AddHttpClientService();    
+    services.AddJsonStringLocalizer();
 
     return services;
   }
@@ -26,8 +29,7 @@ public static class TooarkDependencyInjection
   /// </summary>
   /// <param name="services">A coleção de serviços para adicionar o serviço HttpClient.</param>
   /// <returns>A coleção de serviços com o serviço HttpClient adicionado.</returns>
-  public static IServiceCollection AddHttpClientService(
-    this IServiceCollection services)
+  public static IServiceCollection AddHttpClientService(this IServiceCollection services)
   {
     services.AddHttpClient();
 
@@ -37,6 +39,24 @@ public static class TooarkDependencyInjection
       var httpClient = httpClientFactory.CreateClient();
 
       return HttpClientServiceFactory.Create(httpClient);
+    });
+
+    return services;
+  }
+
+  /// <summary>
+  /// Adiciona o serviço JsonStringLocalizer ao contêiner de injeção de dependência.
+  /// </summary>
+  /// <param name="services">A coleção de serviços para adicionar o serviço JsonStringLocalizer.</param>
+  /// <returns>A coleção de serviços com o serviço JsonStringLocalizer adicionado.</returns>
+  public static IServiceCollection AddJsonStringLocalizer(this IServiceCollection services)
+  {
+    services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
+    services.AddTransient<IStringLocalizer>(provider =>
+    {
+      var factory = provider.GetRequiredService<IStringLocalizerFactory>();
+
+      return factory.Create(typeof(JsonStringLocalizerExtension));
     });
 
     return services;

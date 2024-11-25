@@ -16,8 +16,52 @@ namespace Tooark.Extensions;
 /// <seealso cref="IStringLocalizer"/>
 public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Dictionary<string, string>? resourceAdditionalPaths = null) : IStringLocalizer
 {
-  private readonly IDistributedCache _distributedCache = distributedCache;
-  private readonly Dictionary<string, string>? _resourceAdditionalPaths = resourceAdditionalPaths ?? [];
+  private readonly InternalJsonStringLocalizer _internalLocalizer = new(distributedCache, resourceAdditionalPaths);
+
+  /// <summary>
+  /// Obtém uma string localizada com base no nome fornecido.
+  /// </summary>
+  /// <param name="name">O nome (key) da string localizada a ser obtida.</param>
+  /// <returns>
+  /// Uma instância de <see cref="LocalizedString"/> contendo a string localizada, ou o nome fornecido para busca.
+  /// </returns>
+  /// <exception cref="JsonException">
+  /// Lançada se houver um erro ao analisar o arquivo JSON.
+  /// </exception>
+  public LocalizedString this[string name]
+  {
+    get
+    {
+      // Obtém a string localizada
+      string value = GetLocalizedString(name);
+
+      // Retorna a string localizada ou o nome fornecido para busca
+      return new LocalizedString(name, value ?? name, value == null);
+    }
+  }
+
+  /// <summary>
+  /// Obtém uma string localizada formatada com base no nome fornecido e nos argumentos.
+  /// </summary>
+  /// <param name="name">O nome da string localizada.</param>
+  /// <param name="arguments">Os argumentos a serem formatados na string localizada.</param>
+  /// <returns>
+  /// Um objeto <see cref="LocalizedString"/> que contém a string localizada formatada com os argumentos fornecidos.
+  /// Se o recurso não for encontrado, retorna o <see cref="LocalizedString"/> original.
+  /// </returns>
+  public LocalizedString this[string name, params object[] arguments]
+  {
+    get
+    {
+      // Obtém a string localizada
+      var actualValue = this[name];
+
+      // Retorna a string localizada formatada com os argumentos fornecidos
+      return actualValue.ResourceNotFound
+        ? actualValue
+        : new LocalizedString(name, string.Format(actualValue.Value, arguments), false);
+    }
+  }
 
   /// <summary>
   /// Obtém uma string localizada com base na key fornecida, suporta parâmetro de idioma.
@@ -31,6 +75,49 @@ public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Di
   /// Lançada se houver um erro ao analisar o arquivo JSON.
   /// </exception>
   public string GetLocalizedString(string key, string? cultureSelect = null)
+  {
+    return _internalLocalizer.GetLocalizedString(key, cultureSelect);
+  }
+
+  /// <summary>
+  /// Recupera todas as strings localizadas de um arquivo JSON para a cultura especificada.
+  /// </summary>
+  /// <param name="includeParentCultures">Se verdadeiro, a cultura atual é usada. Caso contrário, a cultura padrão é usada.</param>
+  /// <returns>Uma coleção enumerável de <see cref="LocalizedString"/> contendo todas as strings localizadas.</returns>
+  /// <exception cref="FileNotFoundException">Lançada se o arquivo JSON para a cultura especificada não for encontrado.</exception>
+  /// <exception cref="JsonException">Lançada se houver um erro ao analisar o arquivo JSON.</exception>
+  public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
+  {
+    return _internalLocalizer.GetAllStrings(includeParentCultures);
+  }
+}
+
+/// <summary>
+/// Classe interna localizador de strings que obtém as strings localizadas de arquivos JSON.
+/// </summary>
+/// <param name="distributedCache">O cache distribuído a ser usado pelos localizadores.</param>
+/// <param name="resourceAdditionalPaths">Caminhos adicionais para arquivos JSON de recursos.</param>
+/// <remarks>
+/// Este localizador de strings obtém as strings localizadas de arquivos JSON.
+/// </remarks>
+/// <seealso cref="IStringLocalizer"/>
+internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, Dictionary<string, string>? resourceAdditionalPaths)
+{
+  private readonly IDistributedCache _distributedCache = distributedCache;
+  private readonly Dictionary<string, string>? _resourceAdditionalPaths = resourceAdditionalPaths;
+
+  /// <summary>
+  /// Obtém uma string localizada com base na key fornecida, suporta parâmetro de idioma.
+  /// </summary>
+  /// <param name="key">A key da string localizada a ser obtida.</param>
+  /// <param name="cultureSelect">O código da cultura para selecionar o arquivo JSON apropriado. Se nulo ou vazio, a cultura atual é usada.</param>
+  /// <returns>
+  /// Uma instância de <see cref="LocalizedString"/> contendo a string localizada, ou a key fornecida para busca.
+  /// </returns>
+  /// <exception cref="JsonException">
+  /// Lançada se houver um erro ao analisar o arquivo JSON.
+  /// </exception>
+  internal string GetLocalizedString(string key, string? cultureSelect = null)
   {
     // Obtém o código de idioma atual
     string culture = GetCulture(cultureSelect);
@@ -83,6 +170,41 @@ public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Di
 
     // Retorna a chave se a string não for encontrada
     return key;
+  }
+
+  /// <summary>
+  /// Recupera todas as strings localizadas de um arquivo JSON para a cultura especificada.
+  /// </summary>
+  /// <param name="includeParentCultures">Se verdadeiro, a cultura atual é usada. Caso contrário, a cultura padrão é usada.</param>
+  /// <returns>Uma coleção enumerável de <see cref="LocalizedString"/> contendo todas as strings localizadas.</returns>
+  /// <exception cref="FileNotFoundException">Lançada se o arquivo JSON para a cultura especificada não for encontrado.</exception>
+  /// <exception cref="JsonException">Lançada se houver um erro ao analisar o arquivo JSON.</exception>
+  internal IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
+  {
+    // Obtém o código de idioma atual
+    string culture = includeParentCultures ? Languages.Current : Languages.Default;
+
+    // Definir caminho para arquivos JSON
+    string defaultFilePath = GetDefaultFilePath(culture);
+    string additionalFilePath = GetAdditionalFilePath(culture);
+
+    // Verifica se o arquivo existe
+    if (FileExists(defaultFilePath, additionalFilePath))
+    {
+      var defaultJson = ReadJsonFile(defaultFilePath);
+
+      // Lendo texto do arquivo JSON adicional, se existir
+      var additionalJson = !string.IsNullOrEmpty(additionalFilePath) ? ReadJsonFile(additionalFilePath) : null;
+
+      // Mesclando os dois JSONs, dando prioridade ao JSON adicional
+      var combinedJson = MergeJson(defaultJson, additionalJson);
+
+      // Retorna todas as strings localizadas
+      foreach (var property in combinedJson.RootElement.EnumerateObject())
+      {
+        yield return new LocalizedString(property.Name, property.Value.GetString()!, false);
+      }
+    }
   }
 
   /// <summary>
@@ -233,85 +355,5 @@ public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Di
 
     // Retorna o JSON mesclado
     return JsonDocument.Parse(mergedJson);
-  }
-
-  /// <summary>
-  /// Obtém uma string localizada com base no nome fornecido.
-  /// </summary>
-  /// <param name="name">O nome (key) da string localizada a ser obtida.</param>
-  /// <returns>
-  /// Uma instância de <see cref="LocalizedString"/> contendo a string localizada, ou o nome fornecido para busca.
-  /// </returns>
-  /// <exception cref="JsonException">
-  /// Lançada se houver um erro ao analisar o arquivo JSON.
-  /// </exception>
-  public LocalizedString this[string name]
-  {
-    get
-    {
-      // Obtém a string localizada
-      string value = GetLocalizedString(name);
-
-      // Retorna a string localizada ou o nome fornecido para busca
-      return new LocalizedString(name, value ?? name, value == null);
-    }
-  }
-
-  /// <summary>
-  /// Obtém uma string localizada formatada com base no nome fornecido e nos argumentos.
-  /// </summary>
-  /// <param name="name">O nome da string localizada.</param>
-  /// <param name="arguments">Os argumentos a serem formatados na string localizada.</param>
-  /// <returns>
-  /// Um objeto <see cref="LocalizedString"/> que contém a string localizada formatada com os argumentos fornecidos.
-  /// Se o recurso não for encontrado, retorna o <see cref="LocalizedString"/> original.
-  /// </returns>
-  public LocalizedString this[string name, params object[] arguments]
-  {
-    get
-    {
-      // Obtém a string localizada
-      var actualValue = this[name];
-
-      // Retorna a string localizada formatada com os argumentos fornecidos
-      return actualValue.ResourceNotFound
-        ? actualValue
-        : new LocalizedString(name, string.Format(actualValue.Value, arguments), false);
-    }
-  }
-
-  /// <summary>
-  /// Recupera todas as strings localizadas de um arquivo JSON para a cultura especificada.
-  /// </summary>
-  /// <param name="includeParentCultures">Se verdadeiro, a cultura atual é usada. Caso contrário, a cultura padrão é usada.</param>
-  /// <returns>Uma coleção enumerável de <see cref="LocalizedString"/> contendo todas as strings localizadas.</returns>
-  /// <exception cref="FileNotFoundException">Lançada se o arquivo JSON para a cultura especificada não for encontrado.</exception>
-  /// <exception cref="JsonException">Lançada se houver um erro ao analisar o arquivo JSON.</exception>
-  public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
-  {
-    // Obtém o código de idioma atual
-    string culture = GetCulture(null);
-
-    // Definir caminho para arquivos JSON
-    string defaultFilePath = GetDefaultFilePath(culture);
-    string additionalFilePath = GetAdditionalFilePath(culture);
-
-    // Verifica se o arquivo existe
-    if (FileExists(defaultFilePath, additionalFilePath))
-    {
-      var defaultJson = ReadJsonFile(defaultFilePath);
-
-      // Lendo texto do arquivo JSON adicional, se existir
-      var additionalJson = !string.IsNullOrEmpty(additionalFilePath) ? ReadJsonFile(additionalFilePath) : null;
-
-      // Mesclando os dois JSONs, dando prioridade ao JSON adicional
-      var combinedJson = MergeJson(defaultJson, additionalJson);
-
-      // Retorna todas as strings localizadas
-      foreach (var property in combinedJson.RootElement.EnumerateObject())
-      {
-        yield return new LocalizedString(property.Name, property.Value.GetString()!, false);
-      }
-    }
   }
 }
