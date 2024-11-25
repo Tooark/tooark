@@ -83,16 +83,16 @@ internal class HttpClientService(HttpClient httpClient) : IHttpClientService
         }
         else
         {
-          throw new HttpRequestException($"Response empty with status code {response.StatusCode}.");
+          throw new HttpRequestException($"ResponseEmpty;{response.StatusCode}");
         }
       }
 
       errorContent = await response.Content.ReadAsStringAsync();
-      throw new HttpRequestException($"Request failed with status code {response.StatusCode} and content: {errorContent}");
+      throw new HttpRequestException($"RequestFailed;{response.StatusCode};{errorContent}");
     }
     catch (JsonException jsonEx)
     {
-      throw new JsonDeserializationException("An error occurred while deserializing the JSON response.", jsonEx);
+      throw new JsonDeserializationException("DeserializingError", jsonEx);
     }
     catch (HttpRequestException httpEx)
     {
