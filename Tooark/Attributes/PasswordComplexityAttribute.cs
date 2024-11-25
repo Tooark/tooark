@@ -5,35 +5,24 @@ namespace Tooark.Attributes;
 /// <summary>
 /// Atributo de validação que verifica se uma senha atende a critérios específicos de complexidade.
 /// </summary>
-public class PasswordComplexityAttribute : ValidationAttribute
+/// <param name="useLowercase">Exige carácter minúsculo. Padrão: true.</param>
+/// <param name="useUppercase">Exige carácter maiúsculo. Padrão: true.</param>
+/// <param name="useNumbers">Exige carácter numérico. Padrão: true.</param>
+/// <param name="useSymbols">Exige carácter especial. Padrão: true.</param>
+/// <param name="passwordLength">Tamanho mínimo da senha. Padrão: 8.</param>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+public class PasswordComplexityAttribute(
+bool useLowercase = true,
+bool useUppercase = true,
+bool useNumbers = true,
+bool useSymbols = true,
+int passwordLength = 8) : ValidationAttribute
 {
-  private readonly bool UseLowercase;
-  private readonly bool UseUppercase;
-  private readonly bool UseNumbers;
-  private readonly bool UseSymbols;
-  private readonly int PasswordLength;
-
-  /// <summary>
-  /// Inicializa construtor da class.
-  /// </summary>
-  /// <param name="useLowercase">Exige carácter minúsculo. Padrão: true.</param>
-  /// <param name="useUppercase">Exige carácter maiúsculo. Padrão: true.</param>
-  /// <param name="useNumbers">Exige carácter numérico. Padrão: true.</param>
-  /// <param name="useSymbols">Exige carácter especial. Padrão: true.</param>
-  /// <param name="passwordLength">Tamanho mínimo da senha. Padrão: 8.</param>
-  public PasswordComplexityAttribute(
-  bool useLowercase = true,
-  bool useUppercase = true,
-  bool useNumbers = true,
-  bool useSymbols = true,
-  int passwordLength = 8)
-  {
-    UseLowercase = useLowercase;
-    UseUppercase = useUppercase;
-    UseNumbers = useNumbers;
-    UseSymbols = useSymbols;
-    PasswordLength = passwordLength;
-  }
+  private readonly bool UseLowercase = useLowercase;
+  private readonly bool UseUppercase = useUppercase;
+  private readonly bool UseNumbers = useNumbers;
+  private readonly bool UseSymbols = useSymbols;
+  private readonly int PasswordLength = passwordLength;
 
   /// <summary>
   /// Valida se o valor fornecido atende aos critérios de complexidade da senha.

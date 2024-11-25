@@ -26,21 +26,23 @@ public static partial class Util
     /// Propriedade que obtém o código de idioma atual do ambiente de execução.
     /// </summary>
     public static string Current { get => _currentCulture; }
-    
+
     /// <summary>
     /// Define a cultura atual para a aplicação.
     /// </summary>
     /// <param name="culture">O nome da cultura a ser definida, exemplo: "en-US" ou "pt-BR".</param>
     public static void SetCulture(string culture)
     {
-      CultureInfo.CurrentCulture = new CultureInfo(culture);
-      CultureInfo.CurrentUICulture = new CultureInfo(culture);
-      CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(culture);
-      CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(culture);
+      var newCulture = new CultureInfo(culture);
+
+      CultureInfo.CurrentCulture = newCulture;
+      CultureInfo.CurrentUICulture = newCulture;
+      CultureInfo.DefaultThreadCurrentCulture = newCulture;
+      CultureInfo.DefaultThreadCurrentUICulture = newCulture;
 
       _currentCulture = culture;
     }
-    
+
     /// <summary>
     /// Define a cultura atual para a aplicação.
     /// </summary>
