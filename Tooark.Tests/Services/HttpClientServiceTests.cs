@@ -12,24 +12,25 @@ namespace Tooark.Tests.Services;
 
 public class HttpClientServiceTests
 {
+  private readonly Mock<HttpMessageHandler> _httpMessageHandlerMock;
   private readonly IHttpClientService _httpClientService;
-  private readonly Mock<HttpMessageHandler> _mockHandler;
+  private readonly HttpClient _httpClient;
 
   public HttpClientServiceTests()
   {
-    _mockHandler = new Mock<HttpMessageHandler>();
-    var httpClient = new HttpClient(_mockHandler.Object);
-    _httpClientService = HttpClientServiceFactory.Create(httpClient);
+    _httpMessageHandlerMock = new Mock<HttpMessageHandler>();
+    _httpClient = new HttpClient(_httpMessageHandlerMock.Object);
+    _httpClientService = HttpClientServiceFactory.Create(_httpClient);
   }
 
-  // Get Json Async retorna o objeto quando for bem-sucedido
+  // GetfromJsonAsync retorna objeto dinâmico quando bem-sucedido
   [Fact]
   public async Task GetFromJsonAsync_ReturnsObject_WhenSuccess()
   {
     // Arrange
     var requestUri = "https://api.example.com/data";
     var expectedObject = new { Name = "Test" };
-    _mockHandler
+    _httpMessageHandlerMock
       .Protected()
       .Setup<Task<HttpResponseMessage>>(
         "SendAsync",
@@ -50,7 +51,111 @@ public class HttpClientServiceTests
     Assert.Equal("Test", result?.GetProperty("Name").GetString());
   }
 
-  // Get Json Async retorna o objeto Person quando for bem-sucedido
+  // PostAsJsonAsync retorna objeto dinâmico quando bem-sucedido
+  [Fact]
+  public async Task PostAsJsonAsync_ReturnsObject_WhenSuccess()
+  {
+    // Arrange
+    var requestUri = "https://api.example.com/data";
+    _httpMessageHandlerMock
+      .Protected()
+      .Setup<Task<HttpResponseMessage>>(
+        "SendAsync",
+        ItExpr.IsAny<HttpRequestMessage>(),
+        ItExpr.IsAny<CancellationToken>()
+      )
+      .ReturnsAsync(new HttpResponseMessage
+      {
+        StatusCode = HttpStatusCode.OK
+      });
+
+    // Act
+    var result = await _httpClientService.PostAsJsonAsync(requestUri, "");
+
+    // Assert
+    Assert.NotNull(result);
+    Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+  }
+
+  // PutAsJsonAsync retorna objeto dinâmico quando bem-sucedido
+  [Fact]
+  public async Task PutAsJsonAsync_ReturnsObject_WhenSuccess()
+  {
+    // Arrange
+    var requestUri = "https://api.example.com/data";
+    _httpMessageHandlerMock
+      .Protected()
+      .Setup<Task<HttpResponseMessage>>(
+        "SendAsync",
+        ItExpr.IsAny<HttpRequestMessage>(),
+        ItExpr.IsAny<CancellationToken>()
+      )
+      .ReturnsAsync(new HttpResponseMessage
+      {
+        StatusCode = HttpStatusCode.OK
+      });
+
+    // Act
+    var result = await _httpClientService.PutAsJsonAsync(requestUri, "");
+
+    // Assert
+    Assert.NotNull(result);
+    Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+  }
+
+  // DeleteAsJsonAsync retorna objeto dinâmico quando bem-sucedido
+  [Fact]
+  public async Task DeleteAsJsonAsync_ReturnsObject_WhenSuccess()
+  {
+    // Arrange
+    var requestUri = "https://api.example.com/data";
+    _httpMessageHandlerMock
+      .Protected()
+      .Setup<Task<HttpResponseMessage>>(
+        "SendAsync",
+        ItExpr.IsAny<HttpRequestMessage>(),
+        ItExpr.IsAny<CancellationToken>()
+      )
+      .ReturnsAsync(new HttpResponseMessage
+      {
+        StatusCode = HttpStatusCode.OK
+      });
+
+    // Act
+    var result = await _httpClientService.DeleteAsJsonAsync(requestUri);
+
+    // Assert
+    Assert.NotNull(result);
+    Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+  }
+
+  // PatchAsJsonAsync retorna objeto dinâmico quando bem-sucedido
+  [Fact]
+  public async Task PatchAsJsonAsync_ReturnsObject_WhenSuccess()
+  {
+    // Arrange
+    var requestUri = "https://api.example.com/data";
+    _httpMessageHandlerMock
+      .Protected()
+      .Setup<Task<HttpResponseMessage>>(
+        "SendAsync",
+        ItExpr.IsAny<HttpRequestMessage>(),
+        ItExpr.IsAny<CancellationToken>()
+      )
+      .ReturnsAsync(new HttpResponseMessage
+      {
+        StatusCode = HttpStatusCode.OK
+      });
+
+    // Act
+    var result = await _httpClientService.PatchAsJsonAsync(requestUri, "");
+
+    // Assert
+    Assert.NotNull(result);
+    Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+  }
+
+  // GetFromJsonAsync retorna o objeto Person quando for bem-sucedido
   [Fact]
   public async Task GetFromJsonAsync_ReturnsPersonObject_WhenSuccess()
   {
@@ -58,7 +163,7 @@ public class HttpClientServiceTests
     var requestUri = "https://api.example.com/data";
     var expectedResponse = new Person("Teste", 20);
 
-    _mockHandler
+    _httpMessageHandlerMock
       .Protected()
       .Setup<Task<HttpResponseMessage>>(
         "SendAsync",
@@ -81,13 +186,13 @@ public class HttpClientServiceTests
     Assert.Equal(expectedResponse.Age, result.Age);
   }
 
-  // Get Json Async lança exceção de solicitação HTTP quando não encontrado
+  // GetFromJsonAsync lança exceção de solicitação HTTP quando não encontrado
   [Fact]
   public async Task GetFromJsonAsync_ThrowsHttpRequestException_WhenNotFound()
   {
     // Arrange
     var requestUri = "https://api.example.com/data";
-    _mockHandler
+    _httpMessageHandlerMock
       .Protected()
       .Setup<Task<HttpResponseMessage>>(
         "SendAsync",
@@ -103,13 +208,13 @@ public class HttpClientServiceTests
     await Assert.ThrowsAsync<HttpRequestFailedException>(() => _httpClientService.GetFromJsonAsync<dynamic>(requestUri));
   }
 
-  // Get Json Async lança exceção de desserialização de Json quando Json inválido
+  // GetFromJsonAsync lança exceção de desserialização de Json quando Json inválido
   [Fact]
   public async Task GetFromJsonAsync_ThrowsJsonDeserializationException_WhenInvalidJson()
   {
     // Arrange
     var requestUri = "https://api.example.com/data";
-    _mockHandler
+    _httpMessageHandlerMock
       .Protected()
       .Setup<Task<HttpResponseMessage>>(
         "SendAsync",
@@ -136,7 +241,7 @@ public class HttpClientServiceTests
     // Arrange
     var requestUri = "https://api.example.com/data";
     var postData = new { Name = "Test" };
-    _mockHandler
+    _httpMessageHandlerMock
       .Protected()
       .Setup<Task<HttpResponseMessage>>(
         "SendAsync",
@@ -164,7 +269,7 @@ public class HttpClientServiceTests
     var requestUri = "https://api.example.com/data";
     var postData = new Person("Teste", 20);
     var mockResponseContent = new StringContent(JsonSerializer.Serialize(postData), Encoding.UTF8, "application/json");
-    _mockHandler
+    _httpMessageHandlerMock
       .Protected()
       .Setup<Task<HttpResponseMessage>>(
         "SendAsync",
@@ -192,7 +297,7 @@ public class HttpClientServiceTests
     // Arrange
     var requestUri = "https://api.example.com/resource";
     var content = new { Data = "Sample" };
-    _mockHandler
+    _httpMessageHandlerMock
       .Protected()
       .Setup<Task<HttpResponseMessage>>(
         "SendAsync",
@@ -219,7 +324,7 @@ public class HttpClientServiceTests
     var requestUri = "https://api.example.com/resource";
     var content = new Person("Teste", 20);
     var mockResponseContent = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
-    _mockHandler
+    _httpMessageHandlerMock
       .Protected()
       .Setup<Task<HttpResponseMessage>>(
         "SendAsync",
@@ -245,7 +350,7 @@ public class HttpClientServiceTests
   {
     // Arrange
     var requestUri = "https://api.example.com/resource";
-    _mockHandler
+    _httpMessageHandlerMock
       .Protected()
       .Setup<Task<HttpResponseMessage>>(
         "SendAsync",
@@ -271,7 +376,7 @@ public class HttpClientServiceTests
     // Arrange
     var requestUri = "https://api.example.com/resource";
     var content = new { Data = "Sample" };
-    _mockHandler
+    _httpMessageHandlerMock
       .Protected()
       .Setup<Task<HttpResponseMessage>>(
         "SendAsync",
@@ -298,7 +403,7 @@ public class HttpClientServiceTests
     var requestUri = "https://api.example.com/resource";
     var content = new Person("Teste", 20);
     var mockResponseContent = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
-    _mockHandler
+    _httpMessageHandlerMock
       .Protected()
       .Setup<Task<HttpResponseMessage>>(
         "SendAsync",
@@ -316,5 +421,45 @@ public class HttpClientServiceTests
 
     // Assert
     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+  }
+
+  [Fact]
+  public async Task SendAsync_ShouldThrowJsonDeserializationException_OnJsonException()
+  {
+    // Arrange
+    var responseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+    {
+      Content = new StringContent("Invalid JSON")
+    };
+
+    _httpMessageHandlerMock.Protected()
+      .Setup<Task<HttpResponseMessage>>(
+        "SendAsync",
+        ItExpr.IsAny<HttpRequestMessage>(),
+        ItExpr.IsAny<CancellationToken>())
+      .ReturnsAsync(responseMessage);
+
+    // Act & Assert
+    await Assert.ThrowsAsync<JsonDeserializationException>(() => _httpClientService.GetFromJsonAsync<object>("http://test.com"));
+  }
+
+  [Fact]
+  public async Task SendAsync_ShouldThrowHttpRequestFailedException_OnHttpRequestException()
+  {
+    // Arrange
+    var responseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest)
+    {
+      Content = new StringContent("Bad Request")
+    };
+
+    _httpMessageHandlerMock.Protected()
+      .Setup<Task<HttpResponseMessage>>(
+        "SendAsync",
+        ItExpr.IsAny<HttpRequestMessage>(),
+        ItExpr.IsAny<CancellationToken>())
+      .ReturnsAsync(responseMessage);
+
+    // Act & Assert
+    await Assert.ThrowsAsync<HttpRequestFailedException>(() => _httpClientService.GetFromJsonAsync<object>("http://test.com"));
   }
 }
