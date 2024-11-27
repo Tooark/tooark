@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Tooark.Extensions;
@@ -15,11 +16,12 @@ public static class TooarkDependencyInjection
   /// Adiciona e configura os serviços da Tooark, incluindo serviços HTTP e RabbitMQ.
   /// </summary>
   /// <param name="services">A coleção de serviços para adicionar os serviços da Tooark.</param>
+  /// <param name="resourceAdditionalPaths">Dicionário com caminhos adicionais para arquivos JSON de recursos.</param>
   /// <returns>A coleção de serviços com os serviços da Tooark adicionados.</returns>
-  public static IServiceCollection AddTooarkServices(this IServiceCollection services)
+  public static IServiceCollection AddTooarkServices(this IServiceCollection services, Dictionary<string, string>? resourceAdditionalPaths = null)
   {
-    services.AddHttpClientService();    
-    services.AddJsonStringLocalizer();
+    services.AddHttpClientService();
+    services.AddJsonStringLocalizer(resourceAdditionalPaths);
 
     return services;
   }
@@ -48,10 +50,18 @@ public static class TooarkDependencyInjection
   /// Adiciona o serviço JsonStringLocalizer ao contêiner de injeção de dependência.
   /// </summary>
   /// <param name="services">A coleção de serviços para adicionar o serviço JsonStringLocalizer.</param>
+  /// /// <param name="resourceAdditionalPaths">Dicionário com caminhos adicionais para arquivos JSON de recursos.</param>
   /// <returns>A coleção de serviços com o serviço JsonStringLocalizer adicionado.</returns>
-  public static IServiceCollection AddJsonStringLocalizer(this IServiceCollection services)
+  public static IServiceCollection AddJsonStringLocalizer(this IServiceCollection services, Dictionary<string, string>? resourceAdditionalPaths = null)
   {
     services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
+    services.AddSingleton<IStringLocalizerFactory>(provider =>
+      new JsonStringLocalizerFactory(
+        provider.GetRequiredService<IDistributedCache>(),
+        resourceAdditionalPaths
+      )
+    );
+
     services.AddTransient<IStringLocalizer>(provider =>
     {
       var factory = provider.GetRequiredService<IStringLocalizerFactory>();
