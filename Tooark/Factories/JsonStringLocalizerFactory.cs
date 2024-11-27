@@ -8,10 +8,12 @@ namespace Tooark.Factories;
 /// Classe de fábrica para criar instâncias de <see cref="JsonStringLocalizerExtension"/>.
 /// </summary>
 /// <param name="distributedCache">O cache distribuído a ser usado pelos localizadores.</param>
+/// <param name="resourceAdditionalPaths">Caminhos adicionais para arquivos JSON de recursos.</param>
 /// <seealso cref="IStringLocalizerFactory"/>
-public class JsonStringLocalizerFactory(IDistributedCache distributedCache) : IStringLocalizerFactory
+public class JsonStringLocalizerFactory(IDistributedCache distributedCache, Dictionary<string, string>? resourceAdditionalPaths = null) : IStringLocalizerFactory
 {
   private readonly IDistributedCache _distributedCache = distributedCache;
+  private readonly Dictionary<string, string>? _resourceAdditionalPaths = resourceAdditionalPaths;
 
   /// <summary>
   /// Cria um novo <see cref="JsonStringLocalizerExtension"/> para o tipo de recurso especificado.
@@ -22,7 +24,7 @@ public class JsonStringLocalizerFactory(IDistributedCache distributedCache) : IS
   /// </returns>
   public IStringLocalizer Create(Type resourceSource)
   {
-    return new JsonStringLocalizerExtension(_distributedCache);
+    return new JsonStringLocalizerExtension(_distributedCache, _resourceAdditionalPaths);
   }
 
   /// <summary>
@@ -35,6 +37,6 @@ public class JsonStringLocalizerFactory(IDistributedCache distributedCache) : IS
   /// </returns>
   public IStringLocalizer Create(string baseName, string location)
   {
-    return new JsonStringLocalizerExtension(_distributedCache);
+    return new JsonStringLocalizerExtension(_distributedCache, _resourceAdditionalPaths);
   }
 }
