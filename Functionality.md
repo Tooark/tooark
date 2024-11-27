@@ -49,6 +49,24 @@ Email email = new Email("_teste@example.com");
 Console.WriteLine(email.IsValid); // Output: False
 ```
 
+### Localização de Strings
+
+A classe `JsonStringLocalizerExtension` oferece métodos para obter strings localizadas a partir de arquivos JSON. [Link da tabela](/Resources.md) com as chaves e valores de localização.
+
+**Exemplo de uso:**
+
+```csharp
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Localization;
+using Tooark.Extensions;
+
+var distributedCache = new Mock<IDistributedCache>().Object;
+var localizer = new JsonStringLocalizerExtension(distributedCache);
+
+string localizedString = localizer["Hello"];
+Console.WriteLine(localizedString); // Output: Olá (dependendo do arquivo JSON de localização)
+```
+
 ### Serviços HTTP
 
 A interface `IHttpClientService` e a classe `HttpClientService` fornecem métodos para realizar requisições HTTP de forma simplificada.
