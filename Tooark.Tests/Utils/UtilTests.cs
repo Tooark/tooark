@@ -17,7 +17,9 @@ public class LanguagesTests
   [Fact]
   public void CurrentLanguage_ShouldBeCurrentCulture()
   {
+    // Assert
     Assert.Equal(CultureInfo.CurrentCulture.Name, Languages.Current);
+    Assert.Equal(CultureInfo.CurrentCulture, Languages.CurrentCulture);
   }
 
   // Testa se a cultura atual é alterada corretamente
@@ -34,6 +36,7 @@ public class LanguagesTests
 
     // Assert
     Assert.Equal(newCulture, Languages.Current);
+    Assert.Equal(newCulture, Languages.CurrentCulture.Name);
     Assert.Equal(newCulture, CultureInfo.CurrentCulture.Name);
     Assert.Equal(newCulture, CultureInfo.CurrentUICulture.Name);
     Assert.Equal(newCulture, CultureInfo.DefaultThreadCurrentCulture?.Name);
@@ -57,6 +60,7 @@ public class LanguagesTests
 
     // Assert
     Assert.Equal(culture.Name, Languages.Current);
+    Assert.Equal(culture, Languages.CurrentCulture);
     Assert.Equal(culture, CultureInfo.CurrentCulture);
     Assert.Equal(culture, CultureInfo.CurrentUICulture);
     Assert.Equal(culture, CultureInfo.DefaultThreadCurrentCulture);
