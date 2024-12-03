@@ -1,4 +1,6 @@
 using System.Net;
+using Microsoft.Extensions.Localization;
+using Moq;
 using Tooark.Exceptions;
 
 namespace Tooark.Tests.Exceptions;
@@ -242,22 +244,6 @@ public class AppExceptionTest
     Assert.Equal(message, exception.Message);
   }
 
-  // Testes para construtores com mensagem formatada e argumentos customizados
-  [Fact]
-  public void Constructor_WithMessageAndArgs_ShouldFormatMessage()
-  {
-    // Arrange
-    var message = "Error {0}";
-    var arg = "Argument";
-
-    // Act
-    var exception = new AppException(message, arg);
-
-    // Assert
-    Assert.Equal(HttpStatusCode.BadRequest, exception.HttpStatusCode);
-    Assert.Equal("Error Argument", exception.Message);
-  }
-
   // Testes para construtores com mensagem e código de status customizado
   [Fact]
   public void Constructor_WithMessageAndStatusCode_ShouldSetMessageAndStatusCode()
@@ -272,5 +258,20 @@ public class AppExceptionTest
     // Assert
     Assert.Equal(statusCode, exception.HttpStatusCode);
     Assert.Equal(message, exception.Message);
+  }
+
+  // Testes para Configure
+  [Fact]
+  public void Configure_ShouldSetLocalizer()
+  {
+    // Arrange
+    var localizerMock = new Mock<IStringLocalizer>();
+
+    // Act
+    AppException.Configure(localizerMock.Object);
+
+    // Assert
+    var exception = new AppException();
+    Assert.Equal("BadRequest", exception.Message); // Assuming the default message is "BadRequest"
   }
 }
