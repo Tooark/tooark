@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using Tooark.Exceptions;
 using Tooark.Extensions;
 using Tooark.Factories;
 using Tooark.Interfaces;
@@ -22,6 +23,7 @@ public static class TooarkDependencyInjection
   {
     services.AddHttpClientService();
     services.AddJsonStringLocalizer(resourceAdditionalPaths);
+    services.AddAppExceptionLocalizer();
 
     return services;
   }
@@ -67,6 +69,23 @@ public static class TooarkDependencyInjection
       var factory = provider.GetRequiredService<IStringLocalizerFactory>();
 
       return factory.Create(typeof(JsonStringLocalizerExtension));
+    });
+
+    return services;
+  }
+
+  /// <summary>
+  /// Adiciona o serviço AppExceptionLocalizer ao contêiner de injeção de dependência.
+  /// </summary>
+  /// <param name="services">A coleção de serviços para adicionar o serviço AppExceptionLocalizer.</param>
+  /// <returns>A coleção de serviços com o serviço AppExceptionLocalizer adicionado.</returns>
+  public static IServiceCollection AddAppExceptionLocalizer(this IServiceCollection services)
+  {
+    services.AddSingleton<IStringLocalizer<AppException>>(provider =>
+    {
+      var factory = provider.GetRequiredService<IStringLocalizerFactory>();
+
+      return (IStringLocalizer<AppException>)factory.Create(typeof(AppException));
     });
 
     return services;

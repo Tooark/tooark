@@ -1,6 +1,5 @@
-using System.Globalization;
 using System.Net;
-using static Tooark.Utils.Util;
+using Microsoft.Extensions.Localization;
 
 namespace Tooark.Exceptions;
 
@@ -10,47 +9,52 @@ namespace Tooark.Exceptions;
 public class AppException : Exception
 {
   /// <summary>
-  /// Código de status da exceção. O padrão é BadRequest (400).
+  /// Localizador de strings.
   /// </summary>
-  public HttpStatusCode HttpStatusCode { get; set; } = HttpStatusCode.BadRequest;
+  private static IStringLocalizer _localizer;
 
   /// <summary>
-  /// Criar uma exceção padrão BadRequest (400).
+  /// Código de status da exceção
   /// </summary>
-  public AppException() : base("BadRequest") { }
+  public HttpStatusCode HttpStatusCode { get; set; }
 
   /// <summary>
-  /// Criar uma exceção com a mensagem.
+  /// Configura o localizador de strings.
   /// </summary>
-  /// <param name="message"></param>
-  public AppException(string message) : base(message) { }
+  /// <param name="localizer">Localizador de strings.</param>
+  public static void Configure(IStringLocalizer localizer)
+  {
+    _localizer = localizer;
+  }
 
   /// <summary>
-  /// Criar uma exceção com a mensagem e os argumentos.
+  /// Criar uma exceção BadRequest (400) com a mensagem padrão.
   /// </summary>
-  /// <param name="message"></param>
-  /// <param name="args"></param>
-  public AppException(string message, params object[] args) : base(string.Format(CultureInfo.CurrentCulture, message, args)) { }
+  /// <returns>Exceção BadRequest.</returns>
+  public AppException() : base(_localizer?["BadRequest"] ?? "BadRequest")
+  {
+    HttpStatusCode = HttpStatusCode.BadRequest;
+  }
+
+  /// <summary>
+  /// Criar uma exceção BadRequest (400) com a mensagem.
+  /// </summary>
+  /// <param name="message">Mensagem da exceção.</param>
+  /// <returns>Exceção BadRequest.</returns>
+  public AppException(string message) : base(_localizer?[message] ?? message)
+  {
+    HttpStatusCode = HttpStatusCode.BadRequest;
+  }
 
   /// <summary>
   /// Criar uma exceção com a mensagem e o código de status.
   /// </summary>
-  /// <param name="message"></param>
-  /// <param name="statusCode"></param>
-  public AppException(string message, HttpStatusCode statusCode) : base(message)
+  /// <param name="message">Mensagem da exceção.</param>
+  /// <param name="statusCode">Código de status da exceção.</param>
+  /// <returns>Exceção com a mensagem e o código de status.</returns>
+  public AppException(string message, HttpStatusCode statusCode) : base(_localizer?[message] ?? message)
   {
     HttpStatusCode = statusCode;
-  }
-
-  /// <summary>
-  /// Criar uma exceção com o código de status e a mensagem.
-  /// </summary>
-  /// <param name="statusCode">Código de status da exceção.</param>
-  /// <param name="message">Mensagem da exceção.</param>
-  /// <returns>Exceção com o código de status e a mensagem.</returns>
-  private static AppException CreateException(HttpStatusCode statusCode, string message)
-  {
-    return new AppException(message) { HttpStatusCode = statusCode };
   }
 
   /// <summary>
@@ -60,7 +64,7 @@ public class AppException : Exception
   /// <returns>Exceção BadRequest.</returns>
   public static AppException BadRequest(string message = "BadRequest")
   {
-    return CreateException(HttpStatusCode.BadRequest, message);
+    return new AppException(message, HttpStatusCode.BadRequest);
   }
 
   /// <summary>
@@ -70,7 +74,7 @@ public class AppException : Exception
   /// <returns>Exceção Unauthorized.</returns>
   public static AppException Unauthorized(string message = "Unauthorized")
   {
-    return CreateException(HttpStatusCode.Unauthorized, message);
+    return new AppException(message, HttpStatusCode.Unauthorized);
   }
 
   /// <summary>
@@ -80,7 +84,7 @@ public class AppException : Exception
   /// <returns>Exceção Forbidden.</returns>
   public static AppException Forbidden(string message = "Forbidden")
   {
-    return CreateException(HttpStatusCode.Forbidden, message);
+    return new AppException(message, HttpStatusCode.Forbidden);
   }
 
   /// <summary>
@@ -90,7 +94,7 @@ public class AppException : Exception
   /// <returns>Exceção NotFound.</returns>
   public static AppException NotFound(string message = "NotFound")
   {
-    return CreateException(HttpStatusCode.NotFound, message);
+    return new AppException(message, HttpStatusCode.NotFound);
   }
 
   /// <summary>
@@ -100,7 +104,17 @@ public class AppException : Exception
   /// <returns>Exceção Conflict.</returns>
   public static AppException Conflict(string message = "Conflict")
   {
-    return CreateException(HttpStatusCode.Conflict, message);
+    return new AppException(message, HttpStatusCode.Conflict);
+  }
+
+  /// <summary>
+  /// Criar uma exceção PayloadTooLarge (413).
+  /// </summary>
+  /// <param name="message">Mensagem da exceção.</param>
+  /// <returns>Exceção PayloadTooLarge.</returns>
+  public static AppException PayloadTooLarge(string message = "PayloadTooLarge")
+  {
+    return new AppException(message, HttpStatusCode.RequestEntityTooLarge);
   }
 
   /// <summary>
@@ -110,7 +124,7 @@ public class AppException : Exception
   /// <returns>Exceção InternalServerError.</returns>
   public static AppException InternalServerError(string message = "InternalServerError")
   {
-    return CreateException(HttpStatusCode.InternalServerError, message);
+    return new AppException(message, HttpStatusCode.InternalServerError);
   }
 
   /// <summary>
@@ -120,6 +134,6 @@ public class AppException : Exception
   /// <returns>Exceção ServiceUnavailable.</returns>
   public static AppException ServiceUnavailable(string message = "ServiceUnavailable")
   {
-    return CreateException(HttpStatusCode.ServiceUnavailable, message);
+    return new AppException(message, HttpStatusCode.ServiceUnavailable);
   }
 }
