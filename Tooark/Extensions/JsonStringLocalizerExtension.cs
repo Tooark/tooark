@@ -66,7 +66,7 @@ public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Di
   /// <summary>
   /// Obtém uma string localizada com base na key fornecida, suporta parâmetro de idioma.
   /// </summary>
-  /// <param name="key">A key da string localizada a ser obtida.</param>
+  /// <param name="keyParameter">A key da string localizada a ser obtida.</param>
   /// <param name="cultureSelect">O código da cultura para selecionar o arquivo JSON apropriado. Se nulo ou vazio, a cultura atual é usada.</param>
   /// <returns>
   /// Uma instância de <see cref="LocalizedString"/> contendo a string localizada, ou a key fornecida para busca.
@@ -74,9 +74,9 @@ public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Di
   /// <exception cref="JsonException">
   /// Lançada se houver um erro ao analisar o arquivo JSON.
   /// </exception>
-  public string GetLocalizedString(string key, string? cultureSelect = null)
+  public string GetLocalizedString(string keyParameter, string? cultureSelect = null)
   {
-    return _internalLocalizer.GetLocalizedString(key, cultureSelect);
+    return _internalLocalizer.GetLocalizedString(keyParameter, cultureSelect);
   }
 
   /// <summary>
@@ -109,7 +109,7 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
   /// <summary>
   /// Obtém uma string localizada com base na key fornecida, suporta parâmetro de idioma.
   /// </summary>
-  /// <param name="key">A key da string localizada a ser obtida.</param>
+  /// <param name="keyParameter">A key da string localizada a ser obtida.</param>
   /// <param name="cultureSelect">O código da cultura para selecionar o arquivo JSON apropriado. Se nulo ou vazio, a cultura atual é usada.</param>
   /// <returns>
   /// Uma instância de <see cref="LocalizedString"/> contendo a string localizada, ou a key fornecida para busca.
@@ -117,7 +117,7 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
   /// <exception cref="JsonException">
   /// Lançada se houver um erro ao analisar o arquivo JSON.
   /// </exception>
-  internal string GetLocalizedString(string key, string? cultureSelect = null)
+  internal string GetLocalizedString(string keyParameter, string? cultureSelect = null)
   {
     // Obtém o código de idioma atual
     string culture = GetCulture(cultureSelect);
@@ -129,34 +129,49 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
     // Verifica se o arquivo existe
     if (FileExists(defaultFilePath, additionalFilePath))
     {
+      // Verifica se a chave contém parâmetros
+      var listInfo = keyParameter.Split(";");
+
       // Declara a chave do cache e o valor do cache para o cache distribuído
-      string cacheKey = GetCacheKey(culture, key);
+      string cacheKey = GetCacheKey(culture, listInfo[0]);
       string? cacheValue = _distributedCache.GetString(cacheKey);
 
       // Se a string não for nula/vazia, retorne o valor já armazenado em cache
       if (!string.IsNullOrEmpty(cacheValue))
       {
+        // Substitui a key pela string localizada no cache
+        listInfo[0] = cacheValue;
+
         // Retorna a string encontrada no cache
-        return cacheValue;
+        return ReplaceParameters(listInfo);
       }
 
       // Se a string for nula, procuramos a propriedade nos arquivos JSON
-      string result = GetJsonValue(key, defaultFilePath, additionalFilePath);
+      string value = GetJsonValue(listInfo[0], defaultFilePath, additionalFilePath);
 
       // Se encontrarmos a propriedade dentro do arquivo JSON, atualizamos o cache com esse resultado
-      if (!string.IsNullOrEmpty(result))
+      if (!string.IsNullOrEmpty(value))
       {
         // Atualiza o cache com a string encontrada
-        _distributedCache.SetString(cacheKey, result);
+        _distributedCache.SetString(cacheKey, value);
       }
-      else if (cultureSelect == null)
+      else
       {
-        // Se cultureSelect for nulo, tente encontrar a string na cultura padrão
-        return GetLocalizedString(key, Languages.Default);
+        if (cultureSelect == null)
+        {
+          // Se cultureSelect for nulo, tente encontrar a string na cultura padrão
+          return GetLocalizedString(keyParameter, Languages.Default);
+        }
+
+        // Retorna a chave se a string não for encontrada
+        return keyParameter;
       }
 
+      // Substitui a key pela string localizada
+      listInfo[0] = value;
+
       // Retorna a string encontrada
-      return result;
+      return ReplaceParameters(listInfo);
     }
     else
     {
@@ -164,12 +179,12 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
       if (cultureSelect == null)
       {
         // Se o arquivo JSON padrão não existir, tente encontrar a string na cultura padrão
-        return GetLocalizedString(key, Languages.Default);
+        return GetLocalizedString(keyParameter, Languages.Default);
       }
     }
 
     // Retorna a chave se a string não for encontrada
-    return key;
+    return keyParameter;
   }
 
   /// <summary>
@@ -301,6 +316,24 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
 
     // Se a propriedade não for encontrada, retorne valor padrão do tipo
     return default!;
+  }
+
+  /// <summary>
+  /// Substitui os parâmetros na string localizada.
+  /// </summary>
+  /// <param name="keyParameters">Lista com a string e parâmetros para serem substituídos</param>
+  /// <returns>A string localizada com os parâmetros substituídos.</returns>
+  /// <exception cref="FormatException">Lançada se houver um erro ao substituir os parâmetros na string localizada.</exception>
+  private static string ReplaceParameters(string[] keyParameters)
+  {
+    // Se houver apenas um elemento retorna sem formatação
+    if (keyParameters.Length == 1)
+    {
+      return keyParameters[0];
+    }
+
+    // Retorna a string localizada com os parâmetros substituídos
+    return string.Format(keyParameters[0], keyParameters[1..]);
   }
 
   /// <summary>
