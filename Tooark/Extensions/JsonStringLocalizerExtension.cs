@@ -33,7 +33,7 @@ public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Di
     get
     {
       // Obtém a string localizada
-      string value = GetLocalizedString(name);
+      string value = _internalLocalizer.GetLocalizedString(name);
 
       // Retorna a string localizada ou o nome fornecido para busca
       return new LocalizedString(name, value ?? name, value == null);
@@ -61,22 +61,6 @@ public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Di
         ? actualValue
         : new LocalizedString(name, string.Format(actualValue.Value, arguments), false);
     }
-  }
-
-  /// <summary>
-  /// Obtém uma string localizada com base na key fornecida, suporta parâmetro de idioma.
-  /// </summary>
-  /// <param name="keyParameter">A key da string localizada a ser obtida.</param>
-  /// <param name="cultureSelect">O código da cultura para selecionar o arquivo JSON apropriado. Se nulo ou vazio, a cultura atual é usada.</param>
-  /// <returns>
-  /// Uma instância de <see cref="LocalizedString"/> contendo a string localizada, ou a key fornecida para busca.
-  /// </returns>
-  /// <exception cref="JsonException">
-  /// Lançada se houver um erro ao analisar o arquivo JSON.
-  /// </exception>
-  public string GetLocalizedString(string keyParameter, string? cultureSelect = null)
-  {
-    return _internalLocalizer.GetLocalizedString(keyParameter, cultureSelect);
   }
 
   /// <summary>
