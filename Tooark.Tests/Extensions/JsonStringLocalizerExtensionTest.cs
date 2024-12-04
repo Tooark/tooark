@@ -72,7 +72,7 @@ public class JsonStringLocalizerExtensionTest
     var lastTwoItems = result.TakeLast(2).ToList();
 
     // Assert
-    Assert.True(result.Count() > 0);
+    Assert.True(result.Any());
     Assert.Collection(lastTwoItems,
       item => Assert.Equal("Hello", item.Value),
       item => Assert.Equal("World", item.Value));
