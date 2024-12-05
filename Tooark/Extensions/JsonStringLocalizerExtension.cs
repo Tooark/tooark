@@ -114,7 +114,7 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
     if (FileExists(defaultFilePath, additionalFilePath))
     {
       // Verifica se a chave contém parâmetros
-      var listInfo = keyParameter.Split(";");
+      var listInfo = keyParameter.Split(';');
 
       // Declara a chave do cache e o valor do cache para o cache distribuído
       string cacheKey = GetCacheKey(culture, listInfo[0]);
@@ -289,13 +289,16 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
     // Lendo texto do arquivo JSON adicional, se existir
     var additionalJson = !string.IsNullOrEmpty(additionalFilePath) ? ReadJsonFile(additionalFilePath) : null;
 
-    // Mesclando os dois JSONs, dando prioridade ao JSON adicional
-    var combinedJson = MergeJson(defaultJson, additionalJson);
-
-    // Se a propriedade for encontrada, retorne o valor da propriedade
-    if (combinedJson.RootElement.TryGetProperty(propertyName, out var jsonElement))
+    // Se a propriedade for encontrada no JSON adicional, retorne o valor da propriedade
+    if (additionalJson != null && additionalJson.RootElement.TryGetProperty(propertyName, out var additionalJsonElement))
     {
-      return jsonElement.GetString()!;
+      return additionalJsonElement.GetString()!;
+    }
+
+    // Se a propriedade for encontrada no JSON padrão, retorne o valor da propriedade
+    if (defaultJson.RootElement.TryGetProperty(propertyName, out var defaultJsonElement))
+    {
+      return defaultJsonElement.GetString()!;
     }
 
     // Se a propriedade não for encontrada, retorne valor padrão do tipo
