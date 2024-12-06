@@ -51,10 +51,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste se this[string name] retorna a chave buscada por não encontrar a key
@@ -69,10 +65,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetro e os resources padrões
@@ -88,10 +80,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetro, cultura não existente e os resources padrões
@@ -106,10 +94,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetros e os resources padrões
@@ -125,10 +109,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetros, cultura não existente e os resources padrões
@@ -143,10 +123,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com argumento e os resources padrões
@@ -163,10 +139,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com argumentos e os resources padrões
@@ -183,10 +155,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste se this[string name] retorna uma string localizada utilizando apenas a key e os resources adicionais
@@ -202,10 +170,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste se this[string name] retorna a chave buscada por não encontrar a adicionais
@@ -220,10 +184,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetro e os resources adicionais
@@ -239,10 +199,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetro, cultura não existente e os resources adicionais
@@ -257,10 +213,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetros e os resources adicionais
@@ -276,10 +228,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetros, cultura não existente e os resources adicionais
@@ -294,10 +242,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com argumento e os resources adicionais
@@ -314,10 +258,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com argumentos e os resources adicionais
@@ -334,10 +274,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se carregou todos arquivos e se as duas últimas strings são as esperadas
@@ -353,10 +289,6 @@ public class JsonStringLocalizerExtensionTest
     Assert.Collection(lastTwoItems,
       item => Assert.Equal("Hello, {0}!", item.Value),
       item => Assert.Equal("Hello, {0} {1} {2}!", item.Value));
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se carregou todos arquivos e se as duas últimas strings são as esperadas
@@ -372,10 +304,6 @@ public class JsonStringLocalizerExtensionTest
     Assert.Collection(lastTwoItems,
       item => Assert.Equal("World, {0}!", item.Value),
       item => Assert.Equal("World, {0} {1} {2}!", item.Value));
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste se this[string name] retorna uma string localizada utilizando apenas a key e os resources padrões
@@ -391,10 +319,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste se this[string name] retorna a chave buscada por não encontrar a key
@@ -409,10 +333,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetro e os resources padrões
@@ -428,10 +348,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetro, cultura não existente e os resources padrões
@@ -446,10 +362,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetros e os resources padrões
@@ -465,10 +377,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
  // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetros, cultura não existente e os resources padrões
@@ -483,10 +391,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com argumento e os resources padrões
@@ -503,10 +407,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com argumentos e os resources padrões
@@ -523,10 +423,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste se this[string name] retorna uma string localizada utilizando apenas a key e os resources adicionais
@@ -542,10 +438,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste se this[string name] retorna a chave buscada por não encontrar a adicionais
@@ -560,10 +452,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetro e os resources adicionais
@@ -579,10 +467,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetro, cultura não existente e os resources adicionais
@@ -597,10 +481,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetros e os resources adicionais
@@ -616,10 +496,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetros, cultura não existente e os resources adicionais
@@ -634,10 +510,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com argumento e os resources adicionais
@@ -654,10 +526,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com argumentos e os resources adicionais
@@ -674,10 +542,6 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(localizedValue, result.Value);
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se carregou todos arquivos e se as duas últimas strings são as esperadas
@@ -693,10 +557,6 @@ public class JsonStringLocalizerExtensionTest
     Assert.Collection(lastTwoItems,
       item => Assert.Equal("Hello, {0}!", item.Value),
       item => Assert.Equal("Hello, {0} {1} {2}!", item.Value));
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 
   // Teste para verificar se carregou todos arquivos e se as duas últimas strings são as esperadas
@@ -712,9 +572,5 @@ public class JsonStringLocalizerExtensionTest
     Assert.Collection(lastTwoItems,
       item => Assert.Equal("World, {0}!", item.Value),
       item => Assert.Equal("World, {0} {1} {2}!", item.Value));
-
-    // Cleanup
-    // File.Delete(_filePath);
-    // File.Delete(_filePathDefault);
   }
 }
