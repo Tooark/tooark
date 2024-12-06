@@ -131,8 +131,10 @@ public class StringExtensionsTests
   [InlineData(" âdçd51KU8 ", "ADCD51KU8")]
   public void ToNormalize_ReturnsExpectedResult(string input, string expected)
   {
+    // Arrange & Act
     string result = input.ToNormalize();
 
+    // Assert
     Assert.Equal(expected, result);
   }
 
@@ -263,8 +265,60 @@ public class StringExtensionsTests
   [InlineData(" âdçd51KU8 ", "ADCD51KU8")]
   public void ToNormalizeRegex_ReturnsExpectedResult(string input, string expected)
   {
+    // Arrange & Act
     string result = input.ToNormalizeRegex();
 
+    // Assert
     Assert.Equal(expected, result);
+  }
+
+  // Um método de teste para verificar se a função ToPascalCase converte SnakeCase para PascalCase
+  [Theory]
+  [InlineData("_", "")]
+  [InlineData("t", "T")]
+  [InlineData("_t", "T")]
+  [InlineData("t_", "T")]
+  [InlineData("_hello_tooark", "HelloTooark")]
+  [InlineData("hello_tooark_", "HelloTooark")]
+  [InlineData("hello__tooark", "HelloTooark")]
+  [InlineData("_hello_package_tooark", "HelloPackageTooark")]
+  [InlineData("hello_package_tooark_", "HelloPackageTooark")]
+  [InlineData("hello__package_tooark", "HelloPackageTooark")]
+  public void ToPascalCase_ShouldConvertSnakeCaseToPascalCase(string input, string expected)
+  {
+    // Arrange & Act
+    string result = input.ToPascalCase();
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Um método de teste para verificar se a função ToPascalCase retorna string vazia quando a entrada é uma string vazia
+  [Fact]
+  public void ToPascalCase_ShouldHandleEmptyString()
+  {
+    // Arrange
+    string input = "";
+    string expected = "";
+
+    // Act
+    string result = input.ToPascalCase();
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Um método de teste para verificar se a função ToPascalCase retorna string nula quando a entrada é nula
+  [Fact]
+  public void ToPascalCase_ShouldHandleNullString()
+  {
+    // Arrange
+    string input = null!;
+
+    // Act
+    string result = input.ToPascalCase();
+
+    // Assert
+    Assert.Null(result);
   }
 }
