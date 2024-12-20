@@ -274,4 +274,23 @@ public class AppExceptionTest
     var exception = new AppException();
     Assert.Equal("BadRequest", exception.Message); // Assuming the default message is "BadRequest"
   }
+
+  // Testes para BadRequest com chave existente no resource
+  [Fact]
+  public void BadRequest_WithExistingResourceKey_ShouldReturnLocalizedMessage()
+  {
+    // Arrange
+    var localizerMock = new Mock<IStringLocalizer>();
+    var resourceKey = "ExistingResourceKey";
+    var localizedMessage = "Localized message for existing resource key";
+    localizerMock.Setup(l => l[resourceKey]).Returns(new LocalizedString(resourceKey, localizedMessage));
+    AppException.Configure(localizerMock.Object);
+
+    // Act
+    var exception = AppException.BadRequest(resourceKey);
+
+    // Assert
+    Assert.Equal(HttpStatusCode.BadRequest, exception.HttpStatusCode);
+    Assert.Equal(localizedMessage, exception.Message);
+  }
 }
