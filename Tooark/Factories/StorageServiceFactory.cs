@@ -3,6 +3,10 @@ using Microsoft.Extensions.Options;
 using Tooark.Interfaces;
 using Tooark.Options;
 using Tooark.Services.Storage;
+using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Storage.V1;
+using Amazon.S3;
+using Amazon;
 
 namespace Tooark.Factories;
 
@@ -24,6 +28,34 @@ public static class StorageServiceFactory
       throw new ArgumentNullException(nameof(bucketOptions));
     }
 
-    return new StorageService(bucketOptions, new LoggerFactory().CreateLogger<StorageService>());
+    // Cria o StorageClient para o Google Cloud Storage
+    GoogleCredential? googleCredential = null;
+    StorageClient? storageClient = null;
+
+    if (bucketOptions.Value.GCPPath != null)
+    {
+      googleCredential = GoogleCredential.FromFile(bucketOptions.Value.GCPPath);
+    }
+    else if (bucketOptions.Value.GCP != null)
+    {
+      googleCredential = GoogleCredential.FromJsonParameters(bucketOptions.Value.GCP);
+    }    
+
+    if(googleCredential != null)
+    {
+      storageClient = StorageClient.Create(googleCredential);
+    }
+
+    // Cria o AmazonS3Client para o AWS S3
+    var awsCredentials = bucketOptions.Value.AWS;
+    var region = bucketOptions.Value.AWSRegion ?? RegionEndpoint.USEast1;
+    AmazonS3Client? s3Client = null;
+
+    if (awsCredentials != null)
+    {
+      s3Client = new AmazonS3Client(awsCredentials, region);
+    }
+
+    return new StorageService(bucketOptions, new LoggerFactory().CreateLogger<StorageService>(), storageClient, s3Client);
   }
 }

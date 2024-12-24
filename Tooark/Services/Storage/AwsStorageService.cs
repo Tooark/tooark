@@ -27,6 +27,12 @@ internal partial class StorageService
     S3CannedACL cannedACL
   )
   {
+    // Verifica se o cliente S3 foi configurado
+    if (_s3Client == null)
+    {
+      throw AppException.InternalServerError("FileUploadNotConfigured");
+    }
+    
     try
     {
       // Carrega os dados para upload do arquivo
@@ -35,7 +41,7 @@ internal partial class StorageService
         InputStream = fileStream,
         Key = nameFile,
         BucketName = bucketName,
-        CannedACL = cannedACL
+        CannedACL = cannedACL != S3CannedACL.NoACL ? cannedACL : S3CannedACL.Private
       };
 
       // Realiza o upload do arquivo
@@ -107,6 +113,12 @@ internal partial class StorageService
     string bucketName
   )
   {
+    // Verifica se o cliente S3 foi configurado
+    if (_s3Client == null)
+    {
+      throw AppException.InternalServerError("FileUploadNotConfigured");
+    }
+
     try
     {
       var deleteObjectRequest = new DeleteObjectRequest
@@ -162,6 +174,12 @@ internal partial class StorageService
     string? versionId = null
   )
   {
+    // Verifica se o cliente S3 foi configurado
+    if (_s3Client == null)
+    {
+      throw AppException.InternalServerError("FileUploadNotConfigured");
+    }
+
     try
     {
       // Carrega os dados para download do arquivo
