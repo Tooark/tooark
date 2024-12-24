@@ -1,7 +1,4 @@
-using Amazon;
-using Amazon.Runtime;
 using Amazon.S3;
-using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -14,18 +11,37 @@ using Tooark.Options;
 
 namespace Tooark.Services.Storage;
 
+/// <summary>
+/// Serviço de armazenamento de arquivos.
+/// </summary>
 internal partial class StorageService : IStorageService
 {
   private readonly ILogger<StorageService> _logger;
   private readonly IOptions<BucketOptions> _bucketOptions;
-  private readonly StorageClient _storageClient;
-  private readonly AmazonS3Client _s3Client;
+  private readonly StorageClient? _storageClient;
+  private readonly AmazonS3Client? _s3Client;
   private readonly string _bucketName;
   private readonly long _fileSize;
 
+  /// <summary>
+  /// Inicializa uma nova instância de <see cref="StorageService"/>.
+  /// </summary>
+  /// <param name="bucketOptions">As opções de bucket para configurar o serviço de armazenamento.</param>
+  /// <param name="logger">O logger a ser usado pelo serviço.</param>
+  /// <param name="storageClient">O cliente Google Storage a ser usado pelo serviço.</param>
+  /// <param name="s3Client">O cliente Amazon S3 a ser usado pelo serviço.</param>
+  /// <exception cref="ArgumentNullException">Caso as opções do bucket sejam nulas.</exception>
+  /// <exception cref="ArgumentException">Caso o nome do arquivo seja nulo ou vazio.</exception>
+  /// <exception cref="ArgumentException">Caso o nome do bucket seja nulo ou vazio.</exception>
+  /// <exception cref="AppException">Caso o tamanho do arquivo seja maior que o permitido.</exception>
+  /// <exception cref="AppException">Caso o provedor de armazenamento em nuvem seja inválido.</exception>
+  /// <exception cref="AppException">Caso ocorra um erro ao enviar o arquivo.</exception>
+  /// <exception cref="AppException">Caso os parâmetros do arquivo para upload seja inválido.</exception>
   internal StorageService(
     IOptions<BucketOptions> bucketOptions,
-    ILogger<StorageService> logger
+    ILogger<StorageService> logger,
+    StorageClient? storageClient,
+    AmazonS3Client? s3Client
   )
   {
     _logger = logger;
@@ -39,25 +55,15 @@ internal partial class StorageService : IStorageService
     _bucketName = bucketOptions.Value.BucketName;
     _fileSize = bucketOptions.Value.FileSize < 0 ? 1024 : bucketOptions.Value.FileSize;
 
-    GoogleCredential? _googleCredential = null;
-
-    // Se o caminho do arquivo de credenciais não for nulo carrega as credenciais a partir do arquivo
-    if (_bucketOptions.Value.GCPPath != null)
+    if (storageClient != null)
     {
-      _googleCredential = GoogleCredential.FromFile(_bucketOptions.Value.GCPPath);
-    }
-    else if (_bucketOptions.Value.GCP != null) // Se as credenciais forem passadas por JSON carrega as credenciais a partir do JSON
-    {
-      _googleCredential = GoogleCredential.FromJsonParameters(_bucketOptions.Value.GCP);
+      _storageClient = storageClient;
     }
 
-    _storageClient = StorageClient.Create(_googleCredential);
-
-    BasicAWSCredentials? credentials = _bucketOptions.Value.AWS;
-
-    RegionEndpoint region = _bucketOptions.Value.AWSRegion ?? RegionEndpoint.USEast1;
-
-    _s3Client = new AmazonS3Client(credentials, region);
+    if (s3Client != null)
+    {
+      _s3Client = s3Client;
+    }
   }
 
   /// <summary>

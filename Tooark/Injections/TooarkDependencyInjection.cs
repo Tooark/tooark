@@ -24,6 +24,7 @@ public static class TooarkDependencyInjection
     services.AddHttpClientService();
     services.AddJsonStringLocalizer(resourceAdditionalPaths);
     services.AddAppExceptionLocalizer();
+    services.AddStorageService();
 
     return services;
   }

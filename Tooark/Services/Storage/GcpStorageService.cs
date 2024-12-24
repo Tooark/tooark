@@ -25,6 +25,12 @@ internal partial class StorageService
     string? contentType = null
   )
   {
+    // Verifica se o StorageClient foi configurado
+    if (_storageClient == null)
+    {
+      throw AppException.InternalServerError("FileUploadNotConfigured");
+    }
+
     try
     {
       // Realiza o upload do arquivo
@@ -82,6 +88,12 @@ internal partial class StorageService
     string bucketName
   )
   {
+    // Verifica se o StorageClient foi configurado
+    if (_storageClient == null)
+    {
+      throw AppException.InternalServerError("FileUploadNotConfigured");
+    }
+
     try
     {
       // Deleta o arquivo
@@ -130,6 +142,12 @@ internal partial class StorageService
     string bucketName
   )
   {
+    // Verifica se o StorageClient foi configurado
+    if (_storageClient == null)
+    {
+      throw AppException.InternalServerError("FileUploadNotConfigured");
+    }
+    
     try
     {
       // Cria um novo Stream
