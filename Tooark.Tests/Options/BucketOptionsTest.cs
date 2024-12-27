@@ -49,9 +49,10 @@ public class BucketOptionsTest
     // Act & Assert
     Assert.Null(bucketOptions.AWS);
     Assert.Null(bucketOptions.GCP);
-    Assert.Null(bucketOptions.AWSRegion);
-    Assert.Null(bucketOptions.GCPPath);
+    Assert.Equal("", bucketOptions.BucketName);
+    Assert.Equal(1024, bucketOptions.FileSize);
     Assert.Equal(CloudProvider.None, bucketOptions.CloudProvider);
+    Assert.Equal(RegionEndpoint.USEast1, bucketOptions.AWSRegion);
     Assert.Equal(S3CannedACL.Private, bucketOptions.AWSAcl);
   }
 
@@ -108,7 +109,7 @@ public class BucketOptionsTest
   {
     // Arrange
     var bucketOptions = new BucketOptions();
-    RegionEndpoint awsRegion = RegionEndpoint.USEast1;
+    RegionEndpoint awsRegion = RegionEndpoint.USWest1;
 
     // Act
     bucketOptions.AWSRegion = awsRegion;
@@ -130,20 +131,5 @@ public class BucketOptionsTest
 
     // Assert
     Assert.Equal(awsAcl, bucketOptions.AWSAcl);
-  }
-
-  // Testes com propriedade GCPPath
-  [Fact]
-  public void GCPPath_ShouldBeSetAndGetCorrectly()
-  {
-    // Arrange
-    var bucketOptions = new BucketOptions();
-    var gcpPath = "/path/to/gcp/credentials.json";
-
-    // Act
-    bucketOptions.GCPPath = gcpPath;
-
-    // Assert
-    Assert.Equal(gcpPath, bucketOptions.GCPPath);
   }
 }

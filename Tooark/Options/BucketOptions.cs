@@ -14,7 +14,7 @@ public class BucketOptions
   /// <summary>
   /// Seção do arquivo de configuração
   /// </summary>
-  public readonly string Section = "Bucket";
+  public const string Section = "Bucket";
 
   /// <summary>
   /// Nome do bucket
@@ -24,11 +24,15 @@ public class BucketOptions
   /// <summary>
   /// Tamanho máximo do arquivo
   /// </summary>
-  public long FileSize { get; set; } = 0;
+  /// <value>1024</value>
+  /// <remarks>Valor padrão é 1024. Medida em kb</remarks>
+  public long FileSize { get; set; } = 1024;
 
   /// <summary>
   /// Tipo de cloud (AWS ou GCP).
   /// </summary>
+  /// <value>CloudProvider.None</value>
+  /// <remarks>Valor padrão é None</remarks>
   public CloudProvider CloudProvider { get; set; } = CloudProvider.None;
 
   /// <summary>
@@ -44,15 +48,14 @@ public class BucketOptions
   /// <summary>
   /// Região da AWS.
   /// </summary>
-  public RegionEndpoint? AWSRegion { get; set; }
+  /// <value>RegionEndpoint.USEast1</value>
+  /// <remarks>Valor padrão é USEast1</remarks>
+  public RegionEndpoint? AWSRegion { get; set; } = RegionEndpoint.USEast1;
 
   /// <summary>
   /// ACL dos arquivos na AWS.
   /// </summary>
+  /// <value>S3CannedACL.Private</value>
+  /// <remarks>Valor padrão é Private</remarks>
   public S3CannedACL AWSAcl { get; set; } = S3CannedACL.Private;
-
-  /// <summary>
-  /// Credenciais do GCP em Arquivo.
-  /// </summary>
-  public string? GCPPath { get; set; }
 }
