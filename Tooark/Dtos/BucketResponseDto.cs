@@ -3,7 +3,7 @@ namespace Tooark.Dtos;
 /// <summary>
 /// Classe de resposta do serviço de armazenamento.
 /// </summary>
-public class StorageResponseDto
+public class BucketResponseDto
 {
   /// <summary>
   /// Id do arquivo.

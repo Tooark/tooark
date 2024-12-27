@@ -2,11 +2,11 @@ using Tooark.Dtos;
 
 namespace Tooark.Tests.Dtos;
 
-public class StorageResponseDtoTest
+public class BucketResponseDtoTest
 {
-  // Testa se as propriedades da classe StorageResponseDto estão sendo setadas corretamente
+  // Testa se as propriedades da classe BucketResponseDto estão sendo setadas corretamente
   [Fact]
-  public void StorageResponseDto_Should_Set_Properties_Correctly()
+  public void BucketResponseDto_Should_Set_Properties_Correctly()
   {
     // Arrange
     var id = "123";
@@ -16,7 +16,7 @@ public class StorageResponseDtoTest
     var bucketLink = "http://example.com/bucket/file.txt";
 
     // Act
-    var dto = new StorageResponseDto
+    var dto = new BucketResponseDto
     {
       Id = id,
       FileName = fileName,
