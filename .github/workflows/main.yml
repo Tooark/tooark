@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -32,6 +33,21 @@ jobs:
 
     - name: Create the package
       run: dotnet pack --configuration Release /p:NoWarn="1591"
+
+    - name: Extract version from .csproj
+      id: extract_version
+      run: |
+        VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" Tooark/Tooark.csproj)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: Create and push tag
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git tag -a "v${{ env.VERSION }}" -m "Release version ${{ env.VERSION }}"
+        git push origin "v${{ env.VERSION }}"
 
     - name: Publish the package to GPR
       run: dotnet nuget push Tooark/bin/Release/*.nupkg --source "https://nuget.pkg.github.com/Grupo-Jacto" --api-key ${{secrets.GITHUB_TOKEN}}
