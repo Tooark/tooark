@@ -2,7 +2,7 @@
 
 ## Introdução
 
-Este pacote fornece uma implementação de `IStringLocalizer` que utiliza arquivos JSON para localizar strings. A seguir, você encontrará a documentação dos métodos e funções, bem como instruções de configuração e exemplos de uso.
+Este pacote fornece uma implementação de `IStringLocalizer` que utiliza arquivos JSON para localizar strings. A seguir, você encontrará a documentação dos métodos e funções, bem como instruções de configuração e exemplos de uso. Recursos disponíveis: [Resources](./Resources.md).
 
 ## Métodos e Funções
 
