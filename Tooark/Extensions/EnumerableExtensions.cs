@@ -161,7 +161,7 @@ internal static class InternalEnumerable
 
     if (expression == null)
     {
-      throw new ArgumentException($"PropertyNotFound;{parameterExpression.Type.Name}");
+      throw new ArgumentException($"NotFoundProperty;{parameterExpression.Type.Name}");
     }
 
     return expression;

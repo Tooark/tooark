@@ -125,12 +125,12 @@ internal static partial class InternalUtil
 
     if (languageCodeProperty == null)
     {
-      throw new InvalidOperationException($"PropertyNotExist;LanguageCode");
+      throw new InvalidOperationException($"NotFoundProperty;LanguageCode");
     }
 
     if (nameProperty == null)
     {
-      throw new InvalidOperationException($"PropertyNotExist;{property}");
+      throw new InvalidOperationException($"NotFoundProperty;{property}");
     }
 
     var currentLanguageItem = listValue.FirstOrDefault(x => (string)languageCodeProperty.GetValue(x)! == currentLanguageCode) ??
