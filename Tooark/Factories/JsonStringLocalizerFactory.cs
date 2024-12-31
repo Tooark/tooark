@@ -8,12 +8,25 @@ namespace Tooark.Factories;
 /// Classe de fábrica para criar instâncias de <see cref="JsonStringLocalizerExtension"/>.
 /// </summary>
 /// <param name="distributedCache">O cache distribuído a ser usado pelos localizadores.</param>
-/// <param name="resourceAdditionalPaths">Caminhos adicionais para arquivos JSON de recursos.</param>
+/// <param name="resourceAdditionalPaths">Caminhos adicionais para arquivos JSON de recursos. Parâmetro opcional.</param>
+/// <param name="fileStream">O fluxo de arquivo JSON de recursos. Parâmetro opcional.</param>
 /// <seealso cref="IStringLocalizerFactory"/>
-public class JsonStringLocalizerFactory(IDistributedCache distributedCache, Dictionary<string, string>? resourceAdditionalPaths = null) : IStringLocalizerFactory
+public class JsonStringLocalizerFactory(IDistributedCache distributedCache, Dictionary<string, string>? resourceAdditionalPaths = null, Stream? fileStream = null) : IStringLocalizerFactory
 {
+  /// <summary>
+  /// O cache distribuído a ser usado pelos localizadores.
+  /// </summary>
   private readonly IDistributedCache _distributedCache = distributedCache;
+
+  /// <summary>
+  /// Caminhos adicionais para arquivos JSON de recursos.
+  /// </summary>
   private readonly Dictionary<string, string>? _resourceAdditionalPaths = resourceAdditionalPaths;
+
+  /// <summary>
+  /// O fluxo de arquivo JSON de recursos.
+  /// </summary>
+  private readonly Stream? _fileStream = fileStream;
 
   /// <summary>
   /// Cria um novo <see cref="JsonStringLocalizerExtension"/> para o tipo de recurso especificado.
@@ -24,7 +37,7 @@ public class JsonStringLocalizerFactory(IDistributedCache distributedCache, Dict
   /// </returns>
   public IStringLocalizer Create(Type resourceSource)
   {
-    return new JsonStringLocalizerExtension(_distributedCache, _resourceAdditionalPaths);
+    return new JsonStringLocalizerExtension(_distributedCache, _resourceAdditionalPaths, _fileStream);
   }
 
   /// <summary>
@@ -37,6 +50,6 @@ public class JsonStringLocalizerFactory(IDistributedCache distributedCache, Dict
   /// </returns>
   public IStringLocalizer Create(string baseName, string location)
   {
-    return new JsonStringLocalizerExtension(_distributedCache, _resourceAdditionalPaths);
+    return new JsonStringLocalizerExtension(_distributedCache, _resourceAdditionalPaths, _fileStream);
   }
 }

@@ -1,8 +1,10 @@
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Localization;
 using Moq;
 using Tooark.Extensions;
 using Tooark.Factories;
+using Tooark.Tests.Moq.Util;
 using static Tooark.Utils.Util;
 
 namespace Tooark.Tests.Extensions;
@@ -25,14 +27,33 @@ public class JsonStringLocalizerExtensionTest
     _filePathDefault = $"Resources/{_culture}.default.json";
     _filePath = $"Resources/{_culture}.json";
 
-    File.WriteAllText(_filePathDefault, "{\"hello\": \"Hello\", \"param\": \"Hello, {0}!\", \"multiParam\": \"Hello, {0} {1} {2}!\"}");
-    File.WriteAllText(_filePath, "{\"world\": \"World\", \"paramAdditional\": \"World, {0}!\", \"multiParamAdditional\": \"World, {0} {1} {2}!\"}");
+    var defaultResourceContent = "{\"hello\": \"Hello\", \"param\": \"Hello, {0}!\", \"multiParam\": \"Hello, {0} {1} {2}!\"}";
+    var additionalResourceContent = "{\"world\": \"World\", \"paramAdditional\": \"World, {0}!\", \"multiParamAdditional\": \"World, {0} {1} {2}!\"}";
 
-    _localizer = new JsonStringLocalizerExtension(_mockDistributedCache.Object, []);
-    _additionalLocalizer = new JsonStringLocalizerExtension(_mockDistributedCache.Object, new() { { _culture, _filePath } });
+    // Cria os arquivos de recursos
+    if (!File.Exists(_filePathDefault))
+    {
+      File.WriteAllText(_filePathDefault, defaultResourceContent);
+    }
 
-    var factory = new JsonStringLocalizerFactory(_mockDistributedCache.Object, []);
-    var factoryAdditional = new JsonStringLocalizerFactory(_mockDistributedCache.Object, new() { { _culture, _filePath } });
+    // Cria os arquivos de recursos
+    if(!File.Exists(_filePath))
+    {
+      File.WriteAllText(_filePath, additionalResourceContent);
+    }
+
+    var mockFileProvider = new Mock<IFileProvider>();
+    mockFileProvider.Setup(p => p.GetFileInfo(_filePathDefault)).Returns(new MockFileInfo(defaultResourceContent));
+    mockFileProvider.Setup(p => p.GetFileInfo(_filePath)).Returns(new MockFileInfo(additionalResourceContent));
+
+    var defaultResourceStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(defaultResourceContent));
+    var additionalResourceStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(additionalResourceContent));
+
+    _localizer = new JsonStringLocalizerExtension(_mockDistributedCache.Object, null, defaultResourceStream);
+    _additionalLocalizer = new JsonStringLocalizerExtension(_mockDistributedCache.Object, new() { { _culture, _filePath } }, additionalResourceStream);
+
+    var factory = new JsonStringLocalizerFactory(_mockDistributedCache.Object, [], defaultResourceStream);
+    var factoryAdditional = new JsonStringLocalizerFactory(_mockDistributedCache.Object, new() { { _culture, _filePath } }, additionalResourceStream);
 
     _stringLocalizer = factory.Create(typeof(JsonStringLocalizerExtensionTest));
     _stringAdditionalLocalizer = factoryAdditional.Create(typeof(JsonStringLocalizerExtensionTest));
@@ -379,7 +400,7 @@ public class JsonStringLocalizerExtensionTest
     Assert.Equal(localizedValue, result.Value);
   }
 
- // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetros, cultura não existente e os resources padrões
+  // Teste para verificar se o método this[string name] retorna uma string localizada com parâmetros, cultura não existente e os resources padrões
   [Fact]
   public void StringDefaultResource_Indexer_WithMultiParameterAndKeyNotExist_ShouldReturnKey()
   {
