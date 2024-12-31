@@ -20,6 +20,17 @@ Restaure configurações do projeto .NET
 
 ---
 
+## Documentações
+
+- [Validação de tipos de arquivo suportados](./ValidFile.md)
+- [IStringLocalizer](./JsonStringLocalizer.md)
+- [Resources disponíveis](./Resources.md)
+- [HttpClientService](./HttpClientService.md)
+- [Serviço de Bucket](./BucketService.md)
+- [AppException](./AppException.md)
+
+---
+
 ## Configurar package source para o Nuget utilizar também o GitHub Package
 
 ### Opção 1: Editar arquivo 'Nuget.Config' global
