@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Localization;
 using static Tooark.Utils.Util;
 
@@ -9,14 +10,18 @@ namespace Tooark.Extensions;
 /// Localizador de strings que obtém as strings localizadas de arquivos JSON.
 /// </summary>
 /// <param name="distributedCache">O cache distribuído a ser usado pelos localizadores.</param>
-/// <param name="resourceAdditionalPaths">Caminhos adicionais para arquivos JSON de recursos.</param>
+/// <param name="resourceAdditionalPaths">Caminhos adicionais para arquivos JSON de recursos. Parâmetro opcional.</param>
+/// <param name="fileStream">O provedor de arquivos para arquivos JSON de recursos. Parâmetro opcional.</param>
 /// <remarks>
 /// Este localizador de strings obtém as strings localizadas de arquivos JSON.
 /// </remarks>
 /// <seealso cref="IStringLocalizer"/>
-public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Dictionary<string, string>? resourceAdditionalPaths = null) : IStringLocalizer
+public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Dictionary<string, string>? resourceAdditionalPaths = null, Stream? fileStream = null) : IStringLocalizer
 {
-  private readonly InternalJsonStringLocalizer _internalLocalizer = new(distributedCache, resourceAdditionalPaths);
+  /// <summary>
+  /// Localizador de strings interno que obtém as strings localizadas de arquivos JSON.
+  /// </summary>
+  private readonly InternalJsonStringLocalizer _internalLocalizer = new(distributedCache, resourceAdditionalPaths, fileStream);
 
   /// <summary>
   /// Obtém uma string localizada com base no nome fornecido.
@@ -33,7 +38,7 @@ public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Di
     get
     {
       // Obtém a string localizada
-      string value = GetLocalizedString(name);
+      string value = _internalLocalizer.GetLocalizedString(name);
 
       // Retorna a string localizada ou o nome fornecido para busca
       return new LocalizedString(name, value ?? name, value == null);
@@ -64,22 +69,6 @@ public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Di
   }
 
   /// <summary>
-  /// Obtém uma string localizada com base na key fornecida, suporta parâmetro de idioma.
-  /// </summary>
-  /// <param name="key">A key da string localizada a ser obtida.</param>
-  /// <param name="cultureSelect">O código da cultura para selecionar o arquivo JSON apropriado. Se nulo ou vazio, a cultura atual é usada.</param>
-  /// <returns>
-  /// Uma instância de <see cref="LocalizedString"/> contendo a string localizada, ou a key fornecida para busca.
-  /// </returns>
-  /// <exception cref="JsonException">
-  /// Lançada se houver um erro ao analisar o arquivo JSON.
-  /// </exception>
-  public string GetLocalizedString(string key, string? cultureSelect = null)
-  {
-    return _internalLocalizer.GetLocalizedString(key, cultureSelect);
-  }
-
-  /// <summary>
   /// Recupera todas as strings localizadas de um arquivo JSON para a cultura especificada.
   /// </summary>
   /// <param name="includeParentCultures">Se verdadeiro, a cultura atual é usada. Caso contrário, a cultura padrão é usada.</param>
@@ -96,20 +85,22 @@ public class JsonStringLocalizerExtension(IDistributedCache distributedCache, Di
 /// Classe interna localizador de strings que obtém as strings localizadas de arquivos JSON.
 /// </summary>
 /// <param name="distributedCache">O cache distribuído a ser usado pelos localizadores.</param>
-/// <param name="resourceAdditionalPaths">Caminhos adicionais para arquivos JSON de recursos.</param>
+/// <param name="resourceAdditionalPaths">Caminhos adicionais para arquivos JSON de recursos. Parâmetro opcional.</param>
+/// <param name="fileStream">O provedor de arquivos para arquivos JSON de recursos. Parâmetro opcional.</param>
 /// <remarks>
 /// Este localizador de strings obtém as strings localizadas de arquivos JSON.
 /// </remarks>
 /// <seealso cref="IStringLocalizer"/>
-internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, Dictionary<string, string>? resourceAdditionalPaths)
+internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, Dictionary<string, string>? resourceAdditionalPaths, Stream? fileStream)
 {
   private readonly IDistributedCache _distributedCache = distributedCache;
   private readonly Dictionary<string, string>? _resourceAdditionalPaths = resourceAdditionalPaths;
+  private readonly Stream? _fileStream = fileStream;
 
   /// <summary>
   /// Obtém uma string localizada com base na key fornecida, suporta parâmetro de idioma.
   /// </summary>
-  /// <param name="key">A key da string localizada a ser obtida.</param>
+  /// <param name="keyParameter">A key da string localizada a ser obtida.</param>
   /// <param name="cultureSelect">O código da cultura para selecionar o arquivo JSON apropriado. Se nulo ou vazio, a cultura atual é usada.</param>
   /// <returns>
   /// Uma instância de <see cref="LocalizedString"/> contendo a string localizada, ou a key fornecida para busca.
@@ -117,7 +108,7 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
   /// <exception cref="JsonException">
   /// Lançada se houver um erro ao analisar o arquivo JSON.
   /// </exception>
-  internal string GetLocalizedString(string key, string? cultureSelect = null)
+  internal string GetLocalizedString(string keyParameter, string? cultureSelect = null)
   {
     // Obtém o código de idioma atual
     string culture = GetCulture(cultureSelect);
@@ -129,34 +120,49 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
     // Verifica se o arquivo existe
     if (FileExists(defaultFilePath, additionalFilePath))
     {
+      // Verifica se a chave contém parâmetros
+      var listInfo = keyParameter.Split(';');
+
       // Declara a chave do cache e o valor do cache para o cache distribuído
-      string cacheKey = GetCacheKey(culture, key);
+      string cacheKey = GetCacheKey(culture, listInfo[0]);
       string? cacheValue = _distributedCache.GetString(cacheKey);
 
       // Se a string não for nula/vazia, retorne o valor já armazenado em cache
       if (!string.IsNullOrEmpty(cacheValue))
       {
+        // Substitui a key pela string localizada no cache
+        listInfo[0] = cacheValue;
+
         // Retorna a string encontrada no cache
-        return cacheValue;
+        return ReplaceParameters(listInfo);
       }
 
       // Se a string for nula, procuramos a propriedade nos arquivos JSON
-      string result = GetJsonValue(key, defaultFilePath, additionalFilePath);
+      string value = GetJsonValue(listInfo[0], defaultFilePath, additionalFilePath);
 
       // Se encontrarmos a propriedade dentro do arquivo JSON, atualizamos o cache com esse resultado
-      if (!string.IsNullOrEmpty(result))
+      if (!string.IsNullOrEmpty(value))
       {
         // Atualiza o cache com a string encontrada
-        _distributedCache.SetString(cacheKey, result);
+        _distributedCache.SetString(cacheKey, value);
       }
-      else if (cultureSelect == null)
+      else
       {
-        // Se cultureSelect for nulo, tente encontrar a string na cultura padrão
-        return GetLocalizedString(key, Languages.Default);
+        if (cultureSelect == null)
+        {
+          // Se cultureSelect for nulo, tente encontrar a string na cultura padrão
+          return GetLocalizedString(keyParameter, Languages.Default);
+        }
+
+        // Retorna a chave se a string não for encontrada
+        return keyParameter;
       }
 
+      // Substitui a key pela string localizada
+      listInfo[0] = value;
+
       // Retorna a string encontrada
-      return result;
+      return ReplaceParameters(listInfo);
     }
     else
     {
@@ -164,12 +170,12 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
       if (cultureSelect == null)
       {
         // Se o arquivo JSON padrão não existir, tente encontrar a string na cultura padrão
-        return GetLocalizedString(key, Languages.Default);
+        return GetLocalizedString(keyParameter, Languages.Default);
       }
     }
 
     // Retorna a chave se a string não for encontrada
-    return key;
+    return keyParameter;
   }
 
   /// <summary>
@@ -191,13 +197,17 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
     // Verifica se o arquivo existe
     if (FileExists(defaultFilePath, additionalFilePath))
     {
+      // Lendo texto do arquivo JSON padrão
       var defaultJson = ReadJsonFile(defaultFilePath);
 
       // Lendo texto do arquivo JSON adicional, se existir
       var additionalJson = !string.IsNullOrEmpty(additionalFilePath) ? ReadJsonFile(additionalFilePath) : null;
 
+      // Lendo texto do arquivo JSON do stream, se existir
+      var streamJson = _fileStream != null ? ConvertStreamToJson(_fileStream) : null;
+
       // Mesclando os dois JSONs, dando prioridade ao JSON adicional
-      var combinedJson = MergeJson(defaultJson, additionalJson);
+      var combinedJson = MergeJson(defaultJson, additionalJson, streamJson);
 
       // Retorna todas as strings localizadas
       foreach (var property in combinedJson.RootElement.EnumerateObject())
@@ -275,7 +285,7 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
   /// <returns>O valor da propriedade JSON.</returns>
   /// <exception cref="JsonException">Lançada se houver um erro ao analisar o arquivo JSON.</exception>
   /// <exception cref="FileNotFoundException">Lançada se o arquivo JSON não for encontrado.</exception>
-  private static string GetJsonValue(string propertyName, string defaultFilePath, string additionalFilePath)
+  private string GetJsonValue(string propertyName, string defaultFilePath, string additionalFilePath)
   {
     // Verifica se a propriedade e o caminho do arquivo são nulos, retorne valor padrão do tipo
     if (propertyName == null || defaultFilePath == null)
@@ -290,17 +300,47 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
     // Lendo texto do arquivo JSON adicional, se existir
     var additionalJson = !string.IsNullOrEmpty(additionalFilePath) ? ReadJsonFile(additionalFilePath) : null;
 
-    // Mesclando os dois JSONs, dando prioridade ao JSON adicional
-    var combinedJson = MergeJson(defaultJson, additionalJson);
+    // Lendo texto do arquivo JSON do stream, se existir
+    var streamJson = _fileStream != null ? ConvertStreamToJson(_fileStream) : null;
 
-    // Se a propriedade for encontrada, retorne o valor da propriedade
-    if (combinedJson.RootElement.TryGetProperty(propertyName, out var jsonElement))
+    // Se a propriedade for encontrada no JSON do stream, retorne o valor da propriedade
+    if (streamJson != null && streamJson.RootElement.TryGetProperty(propertyName, out var streamJsonElement))
     {
-      return jsonElement.GetString()!;
+      return streamJsonElement.GetString()!;
+    }
+
+    // Se a propriedade for encontrada no JSON adicional, retorne o valor da propriedade
+    if (additionalJson != null && additionalJson.RootElement.TryGetProperty(propertyName, out var additionalJsonElement))
+    {
+      return additionalJsonElement.GetString()!;
+    }
+
+    // Se a propriedade for encontrada no JSON padrão, retorne o valor da propriedade
+    if (defaultJson.RootElement.TryGetProperty(propertyName, out var defaultJsonElement))
+    {
+      return defaultJsonElement.GetString()!;
     }
 
     // Se a propriedade não for encontrada, retorne valor padrão do tipo
     return default!;
+  }
+
+  /// <summary>
+  /// Substitui os parâmetros na string localizada.
+  /// </summary>
+  /// <param name="keyParameters">Lista com a string e parâmetros para serem substituídos</param>
+  /// <returns>A string localizada com os parâmetros substituídos.</returns>
+  /// <exception cref="FormatException">Lançada se houver um erro ao substituir os parâmetros na string localizada.</exception>
+  private static string ReplaceParameters(string[] keyParameters)
+  {
+    // Se houver apenas um elemento retorna sem formatação
+    if (keyParameters.Length == 1)
+    {
+      return keyParameters[0];
+    }
+
+    // Retorna a string localizada com os parâmetros substituídos
+    return string.Format(keyParameters[0], keyParameters[1..]);
   }
 
   /// <summary>
@@ -314,6 +354,19 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
   {
     // Lendo texto do arquivo JSON
     using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+    // Verifica se o stream é nulo ou vazio
+    if (fileStream == null || fileStream.Length == 0)
+    {
+      return default!;
+    }
+
+    // Reseta a posição do stream para garantir que ele seja lido do início
+    if (fileStream.CanSeek)
+    {
+      fileStream.Seek(0, SeekOrigin.Begin);
+    }
+
     using var streamReader = new StreamReader(fileStream);
 
     // Retorna o arquivo JSON
@@ -323,13 +376,14 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
   /// <summary>
   ///  Mescla dois JSONs em um único JSON.
   /// </summary>
-  /// <param name="defaultJson"></param>
-  /// <param name="additionalJson"></param>
+  /// <param name="defaultJson">O JSON padrão.</param>
+  /// <param name="additionalJson">O JSON adicional. Parâmetro opcional.</param>
+  /// <param name="streamJson">O JSON do stream. Parâmetro opcional.</param>
   /// <returns>Um JSON mesclado.</returns>
-  private static JsonDocument MergeJson(JsonDocument defaultJson, JsonDocument? additionalJson)
+  private static JsonDocument MergeJson(JsonDocument defaultJson, JsonDocument? additionalJson, JsonDocument? streamJson = null)
   {
     // Se o JSON adicional for nulo, retorne o JSON padrão
-    if (additionalJson == null)
+    if (additionalJson == null && streamJson == null)
     {
       // Retorna o JSON padrão
       return defaultJson;
@@ -344,10 +398,24 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
       merged[property.Name] = property.Value;
     }
 
-    // Adiciona todas as propriedades do JSON adicional ao dicionário
-    foreach (var property in additionalJson.RootElement.EnumerateObject())
+    // Se o JSON adicional não for nulo, adicione todas as propriedades do JSON adicional ao dicionário
+    if (additionalJson != null)
     {
-      merged[property.Name] = property.Value;
+      // Adiciona todas as propriedades do JSON adicional ao dicionário
+      foreach (var property in additionalJson.RootElement.EnumerateObject())
+      {
+        merged[property.Name] = property.Value;
+      }
+    }
+
+    // Se o JSON do stream não for nulo, adicione todas as propriedades do JSON adicional vindas do stream ao dicionário
+    if (streamJson != null)
+    {
+      // Adiciona todas as propriedades do JSON adicional vindas do stream ao dicionário
+      foreach (var property in streamJson.RootElement.EnumerateObject())
+      {
+        merged[property.Name] = property.Value;
+      }
     }
 
     // Serializa o dicionário mesclado em um JSON
@@ -355,5 +423,35 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
 
     // Retorna o JSON mesclado
     return JsonDocument.Parse(mergedJson);
+  }
+
+  /// <summary>
+  /// Converte um stream em um documento JSON.
+  /// </summary>
+  /// <param name="stream">O stream a ser convertido em um documento JSON.</param>
+  /// <returns>Um documento JSON.</returns>
+  private static JsonDocument ConvertStreamToJson(Stream? stream)
+  {
+    if (stream == null || stream.Length == 0)
+    {
+      return default!;
+    }
+
+    // Reseta a posição do stream para garantir que ele seja lido do início
+    if (stream.CanSeek)
+    {
+      stream.Seek(0, SeekOrigin.Begin);
+    }
+
+    // Lendo texto do stream
+    using var memoryStream = new MemoryStream();
+    stream.CopyTo(memoryStream);
+    memoryStream.Seek(0, SeekOrigin.Begin);
+
+    // Lendo texto do stream
+    using var reader = new StreamReader(memoryStream);
+
+    // Retorna o stream convertido em JSON
+    return JsonDocument.Parse(reader.ReadToEnd());
   }
 }

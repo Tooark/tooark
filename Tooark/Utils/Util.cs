@@ -15,7 +15,7 @@ public static partial class Util
     /// <summary>
     /// Campo privado que armazena o código de idioma atual. 
     /// </summary>
-    private static string _currentCulture = CultureInfo.CurrentCulture.Name;
+    private static CultureInfo _currentCulture = CultureInfo.CurrentCulture;
 
     /// <summary>
     /// O código de idioma padrão usado na aplicação.
@@ -25,7 +25,12 @@ public static partial class Util
     /// <summary>
     /// Propriedade que obtém o código de idioma atual do ambiente de execução.
     /// </summary>
-    public static string Current { get => _currentCulture; }
+    public static string Current { get => _currentCulture.Name; }
+
+    /// <summary>
+    /// Propriedade que obtém a cultura atual do ambiente de execução.
+    /// </summary>
+    public static CultureInfo CurrentCulture { get => _currentCulture; }
 
     /// <summary>
     /// Define a cultura atual para a aplicação.
@@ -40,7 +45,7 @@ public static partial class Util
       CultureInfo.DefaultThreadCurrentCulture = newCulture;
       CultureInfo.DefaultThreadCurrentUICulture = newCulture;
 
-      _currentCulture = culture;
+      _currentCulture = newCulture;
     }
 
     /// <summary>
@@ -54,7 +59,7 @@ public static partial class Util
       CultureInfo.DefaultThreadCurrentCulture = culture;
       CultureInfo.DefaultThreadCurrentUICulture = culture;
 
-      _currentCulture = culture.Name;
+      _currentCulture = culture;
     }
   }
 }
