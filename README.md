@@ -28,6 +28,7 @@ Restaure configurações do projeto .NET
 - [HttpClientService](./HttpClientService.md)
 - [Serviço de Bucket](./BucketService.md)
 - [AppException](./AppException.md)
+- [Conversão de arquivo e Extração de extensão](./ConvertFile.md)
 
 ---
 
