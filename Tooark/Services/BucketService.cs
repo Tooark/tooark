@@ -30,7 +30,14 @@ public class BucketService : IBucketService
   /// </summary>
   private readonly BucketOptions _bucketOptions;
 
+  /// <summary>
+  /// Cliente AWS S3.
+  /// </summary>
   private readonly IAmazonS3? _awsClient;
+
+  /// <summary>
+  /// Cliente Google Cloud Storage.
+  /// </summary>
   private readonly StorageClient? _gcpClient;
 
   /// <summary>
