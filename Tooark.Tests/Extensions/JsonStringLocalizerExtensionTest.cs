@@ -27,8 +27,8 @@ public class JsonStringLocalizerExtensionTest
     _filePathDefault = $"Resources/{_culture}.default.json";
     _filePath = $"Resources/{_culture}.json";
 
-    var defaultResourceContent = "{\"hello\": \"Hello\", \"param\": \"Hello, {0}!\", \"multiParam\": \"Hello, {0} {1} {2}!\", \"test\": \"Teste\"}";
-    var additionalResourceContent = "{\"world\": \"World\", \"paramAdditional\": \"World, {0}!\", \"multiParamAdditional\": \"World, {0} {1} {2}!\"}";
+    var defaultResourceContent = "{\"a\": \"Hello\", \"b\": \"Teste\", \"c\": \"Hello, {0}!\", \"d\": \"Hello, {0} {1} {2}!\"}";
+    var additionalResourceContent = "{\"j\": \"World\", \"k\": \"World, {0}!\", \"l\": \"World, {0} {1} {2}!\"}";
 
     // Cria os arquivos de recursos
     if (!File.Exists(_filePathDefault))
@@ -64,7 +64,7 @@ public class JsonStringLocalizerExtensionTest
   public void DefaultResource_Indexer_WithKeyOnly_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "hello";
+    string key = "a";
     string localizedValue = "Hello";
 
     // Act
@@ -93,7 +93,7 @@ public class JsonStringLocalizerExtensionTest
   public void DefaultResource_Indexer_WithSingleParameter_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "param;Tooark";
+    string key = "c;Tooark";
     string localizedValue = "Hello, Tooark!";
 
     // Act
@@ -122,7 +122,7 @@ public class JsonStringLocalizerExtensionTest
   public void DefaultResource_Indexer_WithMultiParameter_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "multiParam;Package;Nuget;Tooark";
+    string key = "d;Package;Nuget;Tooark";
     string localizedValue = "Hello, Package Nuget Tooark!";
 
     // Act
@@ -151,7 +151,7 @@ public class JsonStringLocalizerExtensionTest
   public void DefaultResource_Indexer_WithSingleParameterAndReplace_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "param;test";
+    string key = "c;b";
     string localizedValue = "Hello, Teste!";
 
     // Act
@@ -166,7 +166,7 @@ public class JsonStringLocalizerExtensionTest
   public void DefaultResource_Indexer_WithSingleArgument_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "param";
+    string key = "c";
     string argument = "Tooark";
     string localizedValue = "Hello, Tooark!";
 
@@ -182,7 +182,7 @@ public class JsonStringLocalizerExtensionTest
   public void DefaultResource_Indexer_WithMultiArgument_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "multiParam";
+    string key = "d";
     string[] arguments = ["Package", "Nuget", "Tooark"];
     string localizedValue = "Hello, Package Nuget Tooark!";
 
@@ -198,7 +198,7 @@ public class JsonStringLocalizerExtensionTest
   public void AdditionalResource_Indexer_WithKeyOnly_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "world";
+    string key = "j";
     string localizedValue = "World";
 
     // Act
@@ -227,7 +227,7 @@ public class JsonStringLocalizerExtensionTest
   public void AdditionalResource_Indexer_WithSingleParameter_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "paramAdditional;Tooark";
+    string key = "k;Tooark";
     string localizedValue = "World, Tooark!";
 
     // Act
@@ -256,7 +256,7 @@ public class JsonStringLocalizerExtensionTest
   public void AdditionalResource_Indexer_WithMultiParameter_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "multiParamAdditional;Package;Nuget;Tooark";
+    string key = "l;Package;Nuget;Tooark";
     string localizedValue = "World, Package Nuget Tooark!";
 
     // Act
@@ -285,7 +285,7 @@ public class JsonStringLocalizerExtensionTest
   public void AdditionalResource_Indexer_WithSingleArgument_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "paramAdditional";
+    string key = "k";
     string argument = "Tooark";
     string localizedValue = "World, Tooark!";
 
@@ -301,7 +301,7 @@ public class JsonStringLocalizerExtensionTest
   public void AdditionalResource_Indexer_WithMultiArgument_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "multiParamAdditional";
+    string key = "l";
     string[] arguments = ["Package", "Nuget", "Tooark"];
     string localizedValue = "World, Package Nuget Tooark!";
 
@@ -347,7 +347,7 @@ public class JsonStringLocalizerExtensionTest
   public void StringDefaultResource_Indexer_WithKeyOnly_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "hello";
+    string key = "a";
     string localizedValue = "Hello";
 
     // Act
@@ -376,7 +376,7 @@ public class JsonStringLocalizerExtensionTest
   public void StringDefaultResource_Indexer_WithSingleParameter_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "param;Tooark";
+    string key = "c;Tooark";
     string localizedValue = "Hello, Tooark!";
 
     // Act
@@ -405,7 +405,7 @@ public class JsonStringLocalizerExtensionTest
   public void StringDefaultResource_Indexer_WithMultiParameter_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "multiParam;Package;Nuget;Tooark";
+    string key = "d;Package;Nuget;Tooark";
     string localizedValue = "Hello, Package Nuget Tooark!";
 
     // Act
@@ -434,7 +434,7 @@ public class JsonStringLocalizerExtensionTest
   public void StringDefaultResource_Indexer_WithSingleArgument_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "param";
+    string key = "c";
     string argument = "Tooark";
     string localizedValue = "Hello, Tooark!";
 
@@ -450,7 +450,7 @@ public class JsonStringLocalizerExtensionTest
   public void StringDefaultResource_Indexer_WithMultiArgument_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "multiParam";
+    string key = "d";
     string[] arguments = ["Package", "Nuget", "Tooark"];
     string localizedValue = "Hello, Package Nuget Tooark!";
 
@@ -466,7 +466,7 @@ public class JsonStringLocalizerExtensionTest
   public void StringAdditionalResource_Indexer_WithKeyOnly_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "world";
+    string key = "j";
     string localizedValue = "World";
 
     // Act
@@ -495,7 +495,7 @@ public class JsonStringLocalizerExtensionTest
   public void StringAdditionalResource_Indexer_WithSingleParameter_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "paramAdditional;Tooark";
+    string key = "k;Tooark";
     string localizedValue = "World, Tooark!";
 
     // Act
@@ -524,7 +524,7 @@ public class JsonStringLocalizerExtensionTest
   public void StringAdditionalResource_Indexer_WithMultiParameter_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "multiParamAdditional;Package;Nuget;Tooark";
+    string key = "l;Package;Nuget;Tooark";
     string localizedValue = "World, Package Nuget Tooark!";
 
     // Act
@@ -553,7 +553,7 @@ public class JsonStringLocalizerExtensionTest
   public void StringAdditionalResource_Indexer_WithSingleArgument_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "paramAdditional";
+    string key = "k";
     string argument = "Tooark";
     string localizedValue = "World, Tooark!";
 
@@ -569,7 +569,7 @@ public class JsonStringLocalizerExtensionTest
   public void StringAdditionalResource_Indexer_WithMultiArgument_ShouldReturnLocalizedString()
   {
     // Arrange
-    string key = "multiParamAdditional";
+    string key = "l";
     string[] arguments = ["Package", "Nuget", "Tooark"];
     string localizedValue = "World, Package Nuget Tooark!";
 
