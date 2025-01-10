@@ -349,8 +349,16 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
       return keyParameters[0];
     }
 
-    // Retorna a string localizada com os parâmetros substituídos
-    return string.Format(keyParameters[0], keyParameters[1..]);
+    try
+    {
+      // Retorna a string localizada com os parâmetros substituídos
+      return string.Format(keyParameters[0], keyParameters[1..]);
+    }
+    catch (FormatException)
+    {
+      // Se houver um erro de formatação, retorna a string original sem formatação
+      return keyParameters?.ToString() ?? string.Empty;
+    }
   }
 
   /// <summary>
