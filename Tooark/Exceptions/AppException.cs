@@ -11,7 +11,7 @@ public class AppException : Exception
   /// <summary>
   /// Localizador de strings.
   /// </summary>
-  private static IStringLocalizer _localizer;
+  private static IStringLocalizer? _localizer;
 
   /// <summary>
   /// Código de status da exceção

@@ -33,7 +33,7 @@ int passwordLength = 8) : ValidationAttribute
   {
     if (value == null)
     {
-      ErrorMessage = "RequiredField;Password";
+      ErrorMessage = "Field.Required;Password";
       return false;
     }
 
@@ -41,7 +41,7 @@ int passwordLength = 8) : ValidationAttribute
 
     if (!CheckValid(password))
     {
-      ErrorMessage = "InvalidField;Password";
+      ErrorMessage = "Field.Invalid;Password";
       return false;
     }
 

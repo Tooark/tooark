@@ -64,7 +64,7 @@ public class EmailTests
 
     // Act & Assert
     var exception = Assert.Throws<ArgumentException>(() => new Email(invalidEmail!));
-    Assert.Equal("InvalidField;Email", exception.Message);
+    Assert.Equal("Field.Invalid;Email", exception.Message);
   }
 
   // Testa se o construtor da classe Email lança uma exceção de argumento inválido a partir de um endereço de email nulo
@@ -76,7 +76,7 @@ public class EmailTests
 
     // Act & Assert
     var exception = Assert.Throws<ArgumentException>(() => new Email(nullEmail));
-    Assert.Equal("InvalidField;Email", exception.Message);
+    Assert.Equal("Field.Invalid;Email", exception.Message);
   }
 
   // Testa se o construtor da classe Email lança uma exceção de argumento inválido a partir de um endereço de email vazio
@@ -88,7 +88,7 @@ public class EmailTests
 
     // Act & Assert
     var exception = Assert.Throws<ArgumentException>(() => new Email(emptyEmail));
-    Assert.Equal("InvalidField;Email", exception.Message);
+    Assert.Equal("Field.Invalid;Email", exception.Message);
   }
 
   // Testa se o operador implícito de conversão de string para Email funciona corretamente
