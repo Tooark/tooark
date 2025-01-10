@@ -27,7 +27,7 @@ public class JsonStringLocalizerExtensionTest
     _filePathDefault = $"Resources/{_culture}.default.json";
     _filePath = $"Resources/{_culture}.json";
 
-    var defaultResourceContent = "{\"hello\": \"Hello\", \"param\": \"Hello, {0}!\", \"multiParam\": \"Hello, {0} {1} {2}!\"}";
+    var defaultResourceContent = "{\"hello\": \"Hello\", \"param\": \"Hello, {0}!\", \"multiParam\": \"Hello, {0} {1} {2}!\", \"test\": \"Teste\"}";
     var additionalResourceContent = "{\"world\": \"World\", \"paramAdditional\": \"World, {0}!\", \"multiParamAdditional\": \"World, {0} {1} {2}!\"}";
 
     // Cria os arquivos de recursos
@@ -37,7 +37,7 @@ public class JsonStringLocalizerExtensionTest
     }
 
     // Cria os arquivos de recursos
-    if(!File.Exists(_filePath))
+    if (!File.Exists(_filePath))
     {
       File.WriteAllText(_filePath, additionalResourceContent);
     }
@@ -144,6 +144,21 @@ public class JsonStringLocalizerExtensionTest
 
     // Assert
     Assert.Equal(key, result.Value);
+  }
+
+  // Teste para verificar se o método this[string name] retorna uma string localizada com argumento e com o replace dos valores dos parâmetros
+  [Fact]
+  public void DefaultResource_Indexer_WithSingleParameterAndReplace_ShouldReturnLocalizedString()
+  {
+    // Arrange
+    string key = "param;test";
+    string localizedValue = "Hello, Teste!";
+
+    // Act
+    var result = _localizer[key];
+
+    // Assert
+    Assert.Equal(localizedValue, result.Value);
   }
 
   // Teste para verificar se o método this[string name] retorna uma string localizada com argumento e os resources padrões

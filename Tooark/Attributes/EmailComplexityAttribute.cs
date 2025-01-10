@@ -27,7 +27,7 @@ public partial class EmailComplexityAttribute : ValidationAttribute
   {
     if (value == null)
     {
-      ErrorMessage = "RequiredField;Email";
+      ErrorMessage = "Field.Required;Email";
       return false;
     }
 
@@ -37,7 +37,7 @@ public partial class EmailComplexityAttribute : ValidationAttribute
     // Utilize uma expressão regular para validar o formato do email.
     if (!new EmailAddressAttribute().IsValid(email) || !regex.IsMatch(email))
     {
-      ErrorMessage = "InvalidField;Email";
+      ErrorMessage = "Field.Invalid;Email";
       return false;
     }
 

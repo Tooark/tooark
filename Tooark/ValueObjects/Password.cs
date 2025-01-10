@@ -25,7 +25,7 @@ public partial class Password : ValueObject
   {
     if (string.IsNullOrWhiteSpace(value) || !IsValidPassword(value, useLowercase, useUppercase, useNumbers, useSymbols, passwordLength))
     {
-      throw new ArgumentException("InvalidField;Password");
+      throw new ArgumentException("Field.Invalid;Password");
     }
 
     _value = value;

@@ -28,7 +28,7 @@ public class PasswordTests
 
     // Act & Assert
     var exception = Assert.Throws<ArgumentException>(() => new Password(invalidPassword));
-    Assert.Equal("InvalidField;Password", exception.Message);
+    Assert.Equal("Field.Invalid;Password", exception.Message);
   }
 
   // Testa o construtor da classe Password com uma senha vazia
@@ -40,7 +40,7 @@ public class PasswordTests
 
     // Act & Assert
     var exception = Assert.Throws<ArgumentException>(() => new Password(emptyPassword));
-    Assert.Equal("InvalidField;Password", exception.Message);
+    Assert.Equal("Field.Invalid;Password", exception.Message);
   }
 
   // Testa o operador implícito de conversão de string para Password
@@ -105,7 +105,7 @@ public class PasswordTests
     {
       // Act & Assert para senha inválida
       var exception = Assert.Throws<ArgumentException>(() => new Password(passwordValue, useLowercase, useUppercase, useNumbers, useSymbols, passwordLength));
-      Assert.Equal("InvalidField;Password", exception.Message);
+      Assert.Equal("Field.Invalid;Password", exception.Message);
     }
   }
 }

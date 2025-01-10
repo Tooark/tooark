@@ -8,6 +8,9 @@ namespace Tooark.ValueObjects;
 /// </summary>
 public partial class Email : ValueObject
 {
+  /// <summary>
+  /// Valor privado do email.
+  /// </summary>
   private readonly string _value;
 
   /// <summary>
@@ -23,7 +26,7 @@ public partial class Email : ValueObject
   {
     if (string.IsNullOrWhiteSpace(value) || !new EmailAddressAttribute().IsValid(value) || !IsValidEmail(value))
     {
-      throw new ArgumentException("InvalidField;Email");
+      throw new ArgumentException("Field.Invalid;Email");
     }
 
     value = value.ToLower().Trim();

@@ -123,6 +123,16 @@ internal class InternalJsonStringLocalizer(IDistributedCache distributedCache, D
       // Verifica se a chave contém parâmetros
       var listInfo = keyParameter.Split(';');
 
+      // Executa o loop para substituir os parâmetros na string localizada
+      for (int i = 1; i < listInfo.Length; i++)
+      {
+        // Recupera o parâmetro da string localizada
+        var getParam = GetJsonValue(listInfo[i], defaultFilePath, additionalFilePath);
+
+        // Substitui os parâmetros na string localizada
+        listInfo[i] = getParam ?? listInfo[i];
+      }
+
       // Declara a chave do cache e o valor do cache para o cache distribuído
       string cacheKey = GetCacheKey(culture, listInfo[0]);
       string? cacheValue = _distributedCache.GetString(cacheKey);
