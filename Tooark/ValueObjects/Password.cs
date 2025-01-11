@@ -5,12 +5,16 @@ namespace Tooark.ValueObjects;
 /// </summary>
 public class Password : ValueObject
 {
+  /// <summary>
+  /// O valor privado da senha.
+  /// </summary>
   private readonly string _value;
 
   /// <summary>
   /// Obtém o valor da senha.
   /// </summary>
   public string Value { get => _value; }
+  
 
   /// <summary>
   /// Inicializa uma nova instância da classe Password com os critérios de complexidade especificados.
@@ -51,6 +55,13 @@ public class Password : ValueObject
       useSymbols && !password.Any(ch => !char.IsLetterOrDigit(ch))
     );
   }
+
+
+  /// <summary>
+  /// Sobrescrita do método <see cref="object.ToString"/> para retornar o valor da senha.
+  /// </summary>
+  /// <returns>Uma string que representa o valor da senha.</returns>
+  public override string ToString() => _value;
 
   /// <summary>
   /// Define uma conversão implícita de um objeto Password para uma string.
