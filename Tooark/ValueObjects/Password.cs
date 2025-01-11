@@ -3,7 +3,7 @@ namespace Tooark.ValueObjects;
 /// <summary>
 /// Representa uma senha válida com complexidade especificada.
 /// </summary>
-public partial class Password : ValueObject
+public class Password : ValueObject
 {
   private readonly string _value;
 
