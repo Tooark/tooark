@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using Tooark.Exceptions;
 
 namespace Tooark.ValueObjects;
 
@@ -27,7 +28,7 @@ public partial class Email : ValueObject
   {
     if (string.IsNullOrWhiteSpace(value) || !new EmailAddressAttribute().IsValid(value) || !IsValidEmail(value))
     {
-      throw new ArgumentException("Field.Invalid;Email");
+      throw AppException.BadRequest("Field.Invalid;Email");
     }
 
     value = value.ToLower().Trim();
