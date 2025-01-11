@@ -1,3 +1,4 @@
+using Tooark.Exceptions;
 using Tooark.ValueObjects;
 
 namespace Tooark.Tests.ValueObjects;
@@ -21,26 +22,41 @@ public class PasswordTests
 
   // Testa o construtor da classe Password com uma senha inválida
   [Fact]
-  public void Constructor_InvalidPassword_ShouldThrowArgumentException()
+  public void Constructor_InvalidPassword_ShouldThrowAppException()
   {
     // Arrange
     var invalidPassword = "senha"; // Não atende aos critérios de complexidade
 
     // Act & Assert
-    var exception = Assert.Throws<ArgumentException>(() => new Password(invalidPassword));
+    var exception = Assert.Throws<AppException>(() => new Password(invalidPassword));
     Assert.Equal("Field.Invalid;Password", exception.Message);
   }
 
   // Testa o construtor da classe Password com uma senha vazia
   [Fact]
-  public void Constructor_EmptyPassword_ShouldThrowArgumentException()
+  public void Constructor_EmptyPassword_ShouldThrowAppException()
   {
     // Arrange
     var emptyPassword = "";
 
     // Act & Assert
-    var exception = Assert.Throws<ArgumentException>(() => new Password(emptyPassword));
+    var exception = Assert.Throws<AppException>(() => new Password(emptyPassword));
     Assert.Equal("Field.Invalid;Password", exception.Message);
+  }
+
+  // Testa se o método ToString retorna o valor da senha
+  [Fact]
+  public void ToString_ShouldReturnValue()
+  {
+    // Arrange
+    var validPassword = "Senha@123";
+
+    // Act
+    var password = new Password(validPassword);
+    var result = password.ToString();
+
+    // Assert
+    Assert.Equal(validPassword, result);
   }
 
   // Testa o operador implícito de conversão de string para Password
@@ -104,7 +120,7 @@ public class PasswordTests
     else
     {
       // Act & Assert para senha inválida
-      var exception = Assert.Throws<ArgumentException>(() => new Password(passwordValue, useLowercase, useUppercase, useNumbers, useSymbols, passwordLength));
+      var exception = Assert.Throws<AppException>(() => new Password(passwordValue, useLowercase, useUppercase, useNumbers, useSymbols, passwordLength));
       Assert.Equal("Field.Invalid;Password", exception.Message);
     }
   }
