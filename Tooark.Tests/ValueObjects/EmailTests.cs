@@ -1,3 +1,4 @@
+using Tooark.Exceptions;
 using Tooark.ValueObjects;
 
 namespace Tooark.Tests.ValueObjects;
@@ -57,38 +58,53 @@ public class EmailTests
   [InlineData("test@")] // Domínio ausente
   [InlineData("")] // Email vazio
   [InlineData(null)] // Email nulo
-  public void Constructor_ThrowsArgumentException_WhenGivenInvalidAddress(string? email)
+  public void Constructor_ThrowsAppException_WhenGivenInvalidAddress(string? email)
   {
     // Arrange
     var invalidEmail = email;
 
     // Act & Assert
-    var exception = Assert.Throws<ArgumentException>(() => new Email(invalidEmail!));
+    var exception = Assert.Throws<AppException>(() => new Email(invalidEmail!));
     Assert.Equal("Field.Invalid;Email", exception.Message);
   }
 
   // Testa se o construtor da classe Email lança uma exceção de argumento inválido a partir de um endereço de email nulo
   [Fact]
-  public void Constructor_ThrowsArgumentException_WhenGivenNullAddress()
+  public void Constructor_ThrowsAppException_WhenGivenNullAddress()
   {
     // Arrange
     string nullEmail = null!;
 
     // Act & Assert
-    var exception = Assert.Throws<ArgumentException>(() => new Email(nullEmail));
+    var exception = Assert.Throws<AppException>(() => new Email(nullEmail));
     Assert.Equal("Field.Invalid;Email", exception.Message);
   }
 
   // Testa se o construtor da classe Email lança uma exceção de argumento inválido a partir de um endereço de email vazio
   [Fact]
-  public void Constructor_ThrowsArgumentException_WhenGivenEmptyAddress()
+  public void Constructor_ThrowsAppException_WhenGivenEmptyAddress()
   {
     // Arrange
     var emptyEmail = "";
 
     // Act & Assert
-    var exception = Assert.Throws<ArgumentException>(() => new Email(emptyEmail));
+    var exception = Assert.Throws<AppException>(() => new Email(emptyEmail));
     Assert.Equal("Field.Invalid;Email", exception.Message);
+  }
+
+  // Testa se o método ToString retorna o valor do endereço de email
+  [Fact]
+  public void ToString_ShouldReturnValue()
+  {
+    // Arrange
+    var validEmail = "test@example.com";
+
+    // Act
+    var email = new Email(validEmail);
+    var result = email.ToString();
+
+    // Assert
+    Assert.Equal(validEmail, result);
   }
 
   // Testa se o operador implícito de conversão de string para Email funciona corretamente
