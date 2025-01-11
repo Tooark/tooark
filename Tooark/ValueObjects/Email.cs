@@ -18,6 +18,7 @@ public partial class Email : ValueObject
   /// </summary>
   public string Value { get => _value; }
 
+
   /// <summary>
   /// Inicializa uma nova instância da classe Email com o valor especificado.
   /// </summary>
@@ -33,6 +34,7 @@ public partial class Email : ValueObject
 
     _value = value;
   }
+
 
   /// <summary>
   /// Valida o formato do email.
@@ -51,6 +53,13 @@ public partial class Email : ValueObject
     RegexOptions.IgnoreCase,
     matchTimeoutMilliseconds: 250)]
   private static partial Regex EmailRegex();
+
+
+  /// <summary>
+  /// Sobrescrita do método <see cref="object.ToString"/> para retornar o valor do email.
+  /// </summary>
+  /// <returns>Uma string que representa o valor do email.</returns>
+  public override string ToString() => _value;
 
   /// <summary>
   /// Define uma conversão implícita de um objeto Email para uma string.
