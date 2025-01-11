@@ -1,3 +1,5 @@
+using Tooark.Exceptions;
+
 namespace Tooark.ValueObjects;
 
 /// <summary>
@@ -29,7 +31,7 @@ public class Password : ValueObject
   {
     if (string.IsNullOrWhiteSpace(value) || !IsValidPassword(value, useLowercase, useUppercase, useNumbers, useSymbols, passwordLength))
     {
-      throw new ArgumentException("Field.Invalid;Password");
+      throw AppException.BadRequest("Field.Invalid;Password");
     }
 
     _value = value;
