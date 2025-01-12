@@ -167,7 +167,7 @@ internal static class InternalQueryable
 
     if (expression == null)
     {
-      throw new ArgumentException($"NotFoundProperty;{parameterExpression.Type.Name}");
+      throw new ArgumentException($"NotFound.Property;{parameterExpression.Type.Name}");
     }
 
     return expression;
