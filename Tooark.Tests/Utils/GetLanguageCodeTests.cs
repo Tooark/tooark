@@ -419,7 +419,7 @@ public class GetLanguageCodeTests
     var exception = Assert.Throws<InvalidOperationException>(() => GetLanguageCode(list, "Name"));
 
     // Assert
-    Assert.Equal("NotFoundProperty;LanguageCode", exception.Message);
+    Assert.Equal("NotFound.Property;LanguageCode", exception.Message);
 
     // Cleanup
     Languages.SetCulture(Languages.Default);
@@ -433,7 +433,7 @@ public class GetLanguageCodeTests
     var exception = Assert.Throws<InvalidOperationException>(() => GetLanguageCode(_testItems, "Person"));
 
     // Assert
-    Assert.Equal("NotFoundProperty;Person", exception.Message);
+    Assert.Equal("NotFound.Property;Person", exception.Message);
 
     // Cleanup
     Languages.SetCulture(Languages.Default);
