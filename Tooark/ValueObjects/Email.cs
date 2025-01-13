@@ -26,13 +26,16 @@ public partial class Email : ValueObject
   /// <param name="value">O valor do email a ser validado.</param>
   public Email(string value)
   {
+    // Verifica se o email é nulo, vazio ou inválido.
     if (string.IsNullOrWhiteSpace(value) || !new EmailAddressAttribute().IsValid(value) || !IsValidEmail(value))
     {
       throw AppException.BadRequest("Field.Invalid;Email");
     }
 
-    value = value.ToLower().Trim();
+    // Normaliza o email para minúsculas e remove espaços em branco.
+    value = value.ToLowerInvariant().Trim();
 
+    // Define o valor do email.
     _value = value;
   }
 
@@ -46,9 +49,14 @@ public partial class Email : ValueObject
   {
     // Utilize uma expressão regular para validar o formato do email.
     var regex = EmailRegex();
+
+    // Verifica se o email atende ao formato especificado.
     return regex.IsMatch(email);
   }
 
+  /// <summary>
+  /// Obtém a expressão regular para validar o formato do email.
+  /// </summary>
   [GeneratedRegex(
     @"^[a-zA-Z0-9]+[a-zA-Z0-9_.-]*[a-zA-Z0-9]+@[a-zA-Z0-9]+[a-zA-Z0-9.-]*[a-zA-Z0-9]+\.[a-zA-Z0-9]+[a-zA-Z0-9.]*[a-zA-Z0-9]$",
     RegexOptions.IgnoreCase,
