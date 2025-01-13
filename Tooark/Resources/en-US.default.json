@@ -49,6 +49,8 @@
   "OK": "OK",
   "Password": "Password",
   "PayloadTooLarge": "Payload too large",
+  "Record.Exists": "Record already exists.",
+  "Record.ExistsHelp": "Record already exists. {0}.",
   "RequestFailed": "Request failed",
   "ResponseEmpty": "Response is empty",
   "ServiceUnavailable": "Service unavailable",

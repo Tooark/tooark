@@ -49,6 +49,8 @@
   "OK": "OK",
   "Password": "Contraseña",
   "PayloadTooLarge": "Solicitud demasiado grande",
+  "Record.Exists": "El registro ya existe.",
+  "Record.ExistsHelp": "El registro ya existe. {0}.",
   "RequestFailed": "La solicitud falló",
   "ResponseEmpty": "La respuesta está vacía",
   "ServiceUnavailable": "Servicio no disponible",
