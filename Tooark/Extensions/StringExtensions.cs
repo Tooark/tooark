@@ -15,7 +15,7 @@ public static class StringExtensions
   public static string ToNormalize(this string value)
   {
     // Chama o método interno para normalizar a string
-    return InternalString.ToNormalize(value);
+    return InternalString.ToNormalizeString(value);
   }
 
   /// <summary>
@@ -26,7 +26,7 @@ public static class StringExtensions
   public static string ToNormalizeRegex(this string value)
   {
     // Chama o método interno para normalizar a string usando regex
-    return InternalString.ToNormalizeRegex(value);
+    return InternalString.ToNormalizeStringRegex(value);
   }
 
   /// <summary>
@@ -51,7 +51,7 @@ internal static partial class InternalString
   /// </summary>
   /// <param name="value">A string a ser normalizada.</param>
   /// <returns>Uma string normalizada.</returns>
-  internal static string ToNormalize(this string value)
+  internal static string ToNormalizeString(this string value)
   {
     return NormalizeValue(value);
   }
@@ -61,7 +61,7 @@ internal static partial class InternalString
   /// </summary>
   /// <param name="value">A string a ser normalizada.</param>
   /// <returns>Uma string normalizada.</returns>
-  internal static string ToNormalizeRegex(this string value)
+  internal static string ToNormalizeStringRegex(this string value)
   {
     return NormalizeValueRegex(value);
   }
