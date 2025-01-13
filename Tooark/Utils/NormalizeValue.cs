@@ -14,7 +14,7 @@ public static partial class Util
   /// <returns>Uma string contendo o valor normalizado.</returns>
   public static string NormalizeValue(string value)
   {
-    return InternalUtil.NormalizeValue(value);
+    return InternalUtil.NormalizeString(value);
   }
 
   /// <summary>
@@ -24,7 +24,7 @@ public static partial class Util
   /// <returns>Uma string contendo o valor normalizado.</returns>
   public static string NormalizeValueRegex(string value)
   {
-    return InternalUtil.NormalizeValueRegex(value);
+    return InternalUtil.NormalizeStringRegex(value);
   }
 }
 
@@ -38,7 +38,7 @@ internal static partial class InternalUtil
   /// </summary>
   /// <param name="value">O valor a ser normalizado.</param>
   /// <returns>Uma string contendo o valor normalizado.</returns>
-  internal static string NormalizeValue(string value)
+  internal static string NormalizeString(string value)
   {
     if (value == null)
     {
@@ -108,7 +108,7 @@ internal static partial class InternalUtil
   /// </summary>
   /// <param name="value">O valor a ser normalizado.</param>
   /// <returns>Uma string contendo o valor normalizado.</returns>
-  internal static string NormalizeValueRegex(string value)
+  internal static string NormalizeStringRegex(string value)
   {
     if (value == null)
     {
