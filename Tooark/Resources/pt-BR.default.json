@@ -50,7 +50,7 @@
   "Password": "Senha",
   "PayloadTooLarge": "Requisição muito grande",
   "Record.Exists": "Registro já existe.",
-  "Record.ExistsHelp": "Registro já existe. {0}.",
+  "Record.ExistsHelp": "Registro já existe: {0}.",
   "RequestFailed": "A solicitação falhou.",
   "ResponseEmpty": "A resposta está vazia.",
   "ServiceUnavailable": "Serviço indisponível",
