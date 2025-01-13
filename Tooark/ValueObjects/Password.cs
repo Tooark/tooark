@@ -29,11 +29,13 @@ public class Password : ValueObject
   /// <param name="passwordLength">Tamanho mínimo da senha. Padrão: 8.</param>
   public Password(string value, bool useLowercase = true, bool useUppercase = true, bool useNumbers = true, bool useSymbols = true, int passwordLength = 8)
   {
+    // Verifica se a senha é nula ou vazia, ou se não atende aos critérios de complexidade.
     if (string.IsNullOrWhiteSpace(value) || !IsValidPassword(value, useLowercase, useUppercase, useNumbers, useSymbols, passwordLength))
     {
       throw AppException.BadRequest("Field.Invalid;Password");
     }
 
+    // Define o valor da senha.
     _value = value;
   }
 
@@ -49,6 +51,7 @@ public class Password : ValueObject
   /// <returns>Verdadeiro se a senha for válida, falso caso contrário.</returns>
   private static bool IsValidPassword(string password, bool useLowercase, bool useUppercase, bool useNumbers, bool useSymbols, int passwordLength)
   {
+    // Verifica se a senha atende aos critérios de complexidade.
     return !(
       password.Length < passwordLength ||
       useLowercase && !password.Any(char.IsLower) ||
