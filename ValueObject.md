@@ -4,7 +4,19 @@ Este documento fornece uma visão geral dos ValueObjects disponíveis no projeto
 
 ## ValueObjects Disponíveis
 
-### 1. Email
+### Documento
+
+Representa um documento válido.
+
+#### Exemplo de Uso
+
+```csharp
+var document = new Documento("123456789", "cpf");
+Console.WriteLine(document.Number); // Saída: 123456789
+Console.WriteLine(document.Type); // Saída: CPF
+```
+
+### Email
 
 Representa um email válido.
 
@@ -15,29 +27,18 @@ var email = new Email("exemplo@dominio.com");
 Console.WriteLine(email.Value); // Saída: exemplo@dominio.com
 ```
 
-### 2. Password
+### EmailDomain
 
-Representa uma senha válida com complexidade especificada.
-
-#### Exemplo de Uso
-
-```csharp
-var password = new Password("SenhaForte123!");
-Console.WriteLine(password.Value); // Saída: SenhaForte123!
-```
-
-### 3. Url
-
-Representa uma URL válida.
+Representa um domínio de email válido.
 
 #### Exemplo de Uso
 
 ```csharp
-var url = new Url("https://www.exemplo.com");
-Console.WriteLine(url.Value); // Saída: https://www.exemplo.com
+var emailDomain = new EmailDomain("@domain.com");
+Console.WriteLine(emailDomain.Value); // Saída: @domain.com
 ```
 
-### 4. LanguageCode
+### LanguageCode
 
 Representa o código de um idioma.
 
@@ -48,7 +49,29 @@ var languageCode = new LanguageCode("pt-BR");
 Console.WriteLine(languageCode.Code); // Saída: pt-BR
 ```
 
-### 5. FtpProtocol
+### Password
+
+Representa uma senha válida com complexidade especificada.
+
+#### Exemplo de Uso
+
+```csharp
+var password = new Password("SenhaForte123!");
+Console.WriteLine(password.Value); // Saída: SenhaForte123!
+```
+
+### Url
+
+Representa uma URL válida.
+
+#### Exemplo de Uso
+
+```csharp
+var url = new Url("https://www.exemplo.com");
+Console.WriteLine(url.Value); // Saída: https://www.exemplo.com
+```
+
+### FtpProtocol
 
 Representa um protocolo FTP.
 
@@ -59,7 +82,7 @@ var ftpProtocol = new FtpProtocol("ftp://exemplo.com");
 Console.WriteLine(ftpProtocol.Value); // Saída: ftp://exemplo.com
 ```
 
-### 6. HttpProtocol
+### HttpProtocol
 
 Representa um protocolo HTTP.
 
@@ -70,7 +93,7 @@ var httpProtocol = new HttpProtocol("http://exemplo.com");
 Console.WriteLine(httpProtocol.Value); // Saída: http://exemplo.com
 ```
 
-### 7. ImapProtocol
+### ImapProtocol
 
 Representa um protocolo IMAP/POP3.
 
@@ -81,7 +104,7 @@ var imapProtocol = new ImapProtocol("imap://exemplo.com");
 Console.WriteLine(imapProtocol.Value); // Saída: imap://exemplo.com
 ```
 
-### 8. SmtpProtocol
+### SmtpProtocol
 
 Representa um protocolo SMTP.
 
@@ -92,7 +115,7 @@ var smtpProtocol = new SmtpProtocol("smtp://exemplo.com");
 Console.WriteLine(smtpProtocol.Value); // Saída: smtp://exemplo.com
 ```
 
-### 9. WsProtocol
+### WsProtocol
 
 Representa um protocolo WebSocket.
 
