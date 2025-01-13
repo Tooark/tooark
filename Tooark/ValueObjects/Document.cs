@@ -16,7 +16,7 @@ public class Document(string number, string? type = null)
   /// <summary>
   /// Valor privado do tipo do documento.
   /// </summary>
-  private readonly string _type = string.IsNullOrEmpty(type) ? type.ToNormalize() : type;
+  private readonly string _type = !string.IsNullOrEmpty(type) ? type.ToNormalize() : type;
 
   /// <summary>
   /// Valor do número do documento.
