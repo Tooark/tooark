@@ -278,7 +278,5 @@ public class NotificationTests
 
     // Assert
     Assert.Equal("Notifications.NotificationNull", notification.Notifications.First().Message);
-  }
-
-  
+  }  
 }
