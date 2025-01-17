@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>Tooark.Notifications</PackageId>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <Company>Tooark</Company>
+    <PackageDescription>Package for managing notifications and alerts</PackageDescription>
+    <Description>Library for creating, managing and sending notifications and alerts</Description>
+    <PackageIcon>icon.jpg</PackageIcon>
+    <PackageTags>toolkit</PackageTags>
+    <Title>Tooark</Title>
+    <Summary>Notification and alert management</Summary>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Media\icon.jpg" Pack="true" PackagePath="\" />
+    <None Update="Resources\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
