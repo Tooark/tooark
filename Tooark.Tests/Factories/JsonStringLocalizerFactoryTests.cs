@@ -5,12 +5,12 @@ using Tooark.Factories;
 
 namespace Tooark.Tests.Factories;
 
-public class JsonStringLocalizerFactoryTest
+public class JsonStringLocalizerFactoryTests
 {
   private readonly Mock<IDistributedCache> _distributedCacheMock;
   private readonly JsonStringLocalizerFactory _factory;
 
-  public JsonStringLocalizerFactoryTest()
+  public JsonStringLocalizerFactoryTests()
   {
     _distributedCacheMock = new Mock<IDistributedCache>();
     _factory = new JsonStringLocalizerFactory(_distributedCacheMock.Object);
@@ -21,7 +21,7 @@ public class JsonStringLocalizerFactoryTest
   public void Create_WithTypeResourceSource_ReturnsJsonStringLocalizer()
   {
     // Arrange
-    var resourceSource = typeof(JsonStringLocalizerFactoryTest);
+    var resourceSource = typeof(JsonStringLocalizerFactoryTests);
 
     // Act
     var localizer = _factory.Create(resourceSource);

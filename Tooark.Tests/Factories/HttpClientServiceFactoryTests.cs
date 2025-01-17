@@ -3,7 +3,7 @@ using Tooark.Interfaces;
 
 namespace Tooark.Tests.Factories;
 
-public class HttpClientServiceFactoryTest
+public class HttpClientServiceFactoryTests
 {
   // Testa se o método Create retorna uma instância de HttpClientService
   [Fact]

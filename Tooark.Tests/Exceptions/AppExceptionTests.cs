@@ -5,7 +5,7 @@ using Tooark.Exceptions;
 
 namespace Tooark.Tests.Exceptions;
 
-public class AppExceptionTest
+public class AppExceptionTests
 {
   // Testes para BadRequest
   [Fact]

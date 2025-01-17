@@ -2,7 +2,7 @@ using Tooark.Options;
 
 namespace Tooark.Tests.Options;
 
-public class LocalizerOptionsTest
+public class LocalizerOptionsTests
 {
   // Testes recursos adicionais nulos quando não definidos
   [Fact]

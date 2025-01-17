@@ -2,7 +2,7 @@ using Tooark.Enums;
 
 namespace Tooark.Tests.Enums;
 
-public class ECloudProviderTest
+public class ECloudProviderTests
 {
   [Fact]
   public void CloudProvider_AWS_ShouldBeDefined()

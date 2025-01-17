@@ -2,7 +2,7 @@ using Tooark.Utils;
 
 namespace Tooark.Tests.Utils;
 
-public class GenerateStringTest
+public class GenerateStringTests
 {
   // Testa se SequentialString retorna a string esperada
   [Theory]

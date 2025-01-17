@@ -7,7 +7,7 @@ using Tooark.Options;
 
 namespace Tooark.Tests.Options;
 
-public class BucketOptionsTest
+public class BucketOptionsTests
 {
   // Testes com propriedades AWS
   [Fact]
