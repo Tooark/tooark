@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Tests", "Tooark.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Benchmarks", "Tooark.Benchmarks\Tooark.Benchmarks.csproj", "{4A8CE443-6ABB-409A-867F-1C94F18E2B06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Notifications", "Tooark.Notifications\Tooark.Notifications.csproj", "{FBB9BB5D-F8C7-415C-99FB-C8154C839323}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{4A8CE443-6ABB-409A-867F-1C94F18E2B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A8CE443-6ABB-409A-867F-1C94F18E2B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A8CE443-6ABB-409A-867F-1C94F18E2B06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBB9BB5D-F8C7-415C-99FB-C8154C839323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBB9BB5D-F8C7-415C-99FB-C8154C839323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBB9BB5D-F8C7-415C-99FB-C8154C839323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBB9BB5D-F8C7-415C-99FB-C8154C839323}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
