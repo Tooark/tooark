@@ -4,6 +4,21 @@
         <name>Tooark.Notifications</name>
     </assembly>
     <members>
+        <member name="T:Tooark.Notifications.Messages.NotificationErrorMessages">
+            <summary>
+            Mensagens de erro para notificações.
+            </summary>
+        </member>
+        <member name="F:Tooark.Notifications.Messages.NotificationErrorMessages.MessageIsNullOrEmpty">
+            <summary>
+            Mensagem de erro para quando a mensagem da notificação é nula ou vazia.
+            </summary>
+        </member>
+        <member name="F:Tooark.Notifications.Messages.NotificationErrorMessages.NotificationIsNull">
+            <summary>
+            Mensagem de erro para quando a notificação é nula.
+            </summary>
+        </member>
         <member name="T:Tooark.Notifications.Notification">
             <summary>
             Representa um objeto de notificações.

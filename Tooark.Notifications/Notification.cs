@@ -1,4 +1,6 @@
-﻿namespace Tooark.Notifications;
+﻿using Tooark.Notifications.Messages;
+
+namespace Tooark.Notifications;
 
 /// <summary>
 /// Representa um objeto de notificações.
@@ -73,7 +75,11 @@ public abstract class Notification
     }
     else
     {
-      throw new ArgumentNullException(nameof(notification));
+      // Cria uma nova instância de NotificationItem
+      var newNotification = GetNotificationInstance(NotificationErrorMessages.NotificationIsNull);
+
+      // Adiciona a nova instância à lista de notificações
+      _notifications.Add(newNotification);
     }
   }
 
@@ -93,7 +99,8 @@ public abstract class Notification
     // Verifica se a mensagem é nula ou vazia
     if (string.IsNullOrEmpty(message))
     {
-      throw new ArgumentNullException(nameof(message));
+      // Atribui a mensagem de message nula ou vazia
+      message = NotificationErrorMessages.MessageIsNullOrEmpty;
     }
 
     // Cria uma nova instância de NotificationItem
@@ -138,7 +145,11 @@ public abstract class Notification
     }
     else
     {
-      throw new ArgumentNullException(nameof(notification));
+      // Cria uma nova instância de NotificationItem
+      var newNotification = GetNotificationInstance(NotificationErrorMessages.NotificationIsNull);
+
+      // Adiciona a nova instância à lista de notificações
+      _notifications.Add(newNotification);
     }
   }
 
