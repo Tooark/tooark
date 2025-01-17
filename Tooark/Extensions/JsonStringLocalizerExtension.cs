@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Localization;
 using static Tooark.Utils.Util;
 
