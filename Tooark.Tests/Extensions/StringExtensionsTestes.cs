@@ -129,10 +129,10 @@ public class StringExtensionsTests
   [InlineData("òî7gåP0siH", "OI7GAP0SIH")]
   [InlineData("SB8làbhûH1", "SB8LABHUH1")]
   [InlineData(" âdçd51KU8 ", "ADCD51KU8")]
-  public void ToNormalize_ReturnsExpectedResult(string input, string expected)
+  public void ToNormalize_ReturnsExpectedResult(string? input, string expected)
   {
     // Arrange & Act
-    string result = input.ToNormalize();
+    string result = input!.ToNormalize();
 
     // Assert
     Assert.Equal(expected, result);
@@ -263,10 +263,10 @@ public class StringExtensionsTests
   [InlineData("òî7gåP0siH", "OI7GAP0SIH")]
   [InlineData("SB8làbhûH1", "SB8LABHUH1")]
   [InlineData(" âdçd51KU8 ", "ADCD51KU8")]
-  public void ToNormalizeRegex_ReturnsExpectedResult(string input, string expected)
+  public void ToNormalizeRegex_ReturnsExpectedResult(string? input, string expected)
   {
     // Arrange & Act
-    string result = input.ToNormalizeRegex();
+    string result = input!.ToNormalizeRegex();
 
     // Assert
     Assert.Equal(expected, result);
