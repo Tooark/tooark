@@ -2,7 +2,7 @@ using Tooark.Notifications.Messages;
 
 namespace Tooark.Tests.Notifications.Messages;
 
-public class NotificationErrorMessagesTest
+public class NotificationErrorMessagesTests
 {
   // Teste para as mensagens de erro quando a mensagem é nula ou vazia
   [Fact]

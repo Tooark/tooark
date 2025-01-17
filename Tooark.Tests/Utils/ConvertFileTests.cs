@@ -4,7 +4,7 @@ using Tooark.Utils;
 
 namespace Tooark.Tests.Utils;
 
-public class ConvertFileTest
+public class ConvertFileTests
 {
   [Fact]
   public void ConvertBase64ToMemoryStream_ValidBase64String_ReturnsMemoryStream()

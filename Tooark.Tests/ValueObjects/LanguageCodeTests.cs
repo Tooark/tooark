@@ -3,7 +3,7 @@ using Tooark.Exceptions;
 
 namespace Tooark.Tests.ValueObjects;
 
-public class LanguageCodeTest
+public class LanguageCodeTests
 {
   // Teste de construtor com código válido
   [Fact]

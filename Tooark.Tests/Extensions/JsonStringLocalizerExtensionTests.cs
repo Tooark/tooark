@@ -9,7 +9,7 @@ using static Tooark.Utils.Util;
 
 namespace Tooark.Tests.Extensions;
 
-public class JsonStringLocalizerExtensionTest
+public class JsonStringLocalizerExtensionTests
 {
   private readonly Mock<IDistributedCache> _mockDistributedCache;
   private readonly JsonStringLocalizerExtension _localizer;
@@ -20,7 +20,7 @@ public class JsonStringLocalizerExtensionTest
   private readonly string _filePathDefault;
   private readonly string _filePath;
 
-  public JsonStringLocalizerExtensionTest()
+  public JsonStringLocalizerExtensionTests()
   {
     _mockDistributedCache = new Mock<IDistributedCache>();
     _culture = Languages.Current;
@@ -55,8 +55,8 @@ public class JsonStringLocalizerExtensionTest
     var factory = new JsonStringLocalizerFactory(_mockDistributedCache.Object, [], defaultResourceStream);
     var factoryAdditional = new JsonStringLocalizerFactory(_mockDistributedCache.Object, new() { { _culture, _filePath } }, additionalResourceStream);
 
-    _stringLocalizer = factory.Create(typeof(JsonStringLocalizerExtensionTest));
-    _stringAdditionalLocalizer = factoryAdditional.Create(typeof(JsonStringLocalizerExtensionTest));
+    _stringLocalizer = factory.Create(typeof(JsonStringLocalizerExtensionTests));
+    _stringAdditionalLocalizer = factoryAdditional.Create(typeof(JsonStringLocalizerExtensionTests));
   }
 
   // Teste se this[string name] retorna uma string localizada utilizando apenas a key e os resources padrões

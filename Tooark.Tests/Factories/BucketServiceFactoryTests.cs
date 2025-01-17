@@ -10,7 +10,7 @@ using Tooark.Services;
 
 namespace Tooark.Tests.Factories
 {
-  public class BucketServiceFactoryTest
+  public class BucketServiceFactoryTests
   {
     // Teste para criar uma instância de BucketService
     [Fact]

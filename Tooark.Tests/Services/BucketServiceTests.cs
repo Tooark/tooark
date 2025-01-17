@@ -16,7 +16,7 @@ using Tooark.Tests.Moq.Dto;
 
 namespace Tooark.Tests.Services;
 
-public class BucketServiceTest
+public class BucketServiceTests
 {
   private readonly Mock<ILogger<BucketService>> _loggerMock;
 
@@ -32,7 +32,7 @@ public class BucketServiceTest
   private readonly BucketOptions _awsBucketOptions;
   private readonly BucketOptions _gcpBucketOptions;
 
-  public BucketServiceTest()
+  public BucketServiceTests()
   {
     _loggerMock = new Mock<ILogger<BucketService>>();
     _awsOptionsMock = new Mock<IOptions<BucketOptions>>();

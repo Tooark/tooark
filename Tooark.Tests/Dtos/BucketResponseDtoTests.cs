@@ -2,7 +2,7 @@ using Tooark.Dtos;
 
 namespace Tooark.Tests.Dtos;
 
-public class BucketResponseDtoTest
+public class BucketResponseDtoTests
 {
   // Testa se as propriedades da classe BucketResponseDto estão sendo setadas corretamente
   [Fact]

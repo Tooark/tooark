@@ -4,7 +4,7 @@ using static Tooark.Utils.Util;
 
 namespace Tooark.Tests.Utils;
 
-public class ValidFileTest
+public class ValidFileTests
 {
   // Teste de arquivo de imagem válido
   [Fact]
