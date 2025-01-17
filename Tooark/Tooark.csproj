@@ -5,13 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Tooark</PackageId>
-    <Version>1.9.0</Version>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
     <Company>Grupo Jacto</Company>
     <PackageDescription>Set of tools and functions for C# projects</PackageDescription>
     <Description>Set of tools and functions for C# projects</Description>
-    <RepositoryUrL>https://github.com/Grupo-Jacto/tooark</RepositoryUrL>
-    <PackageProjectUrl>https://github.com/Grupo-Jacto/tooark</PackageProjectUrl>
     <PackageIcon>icon.jpg</PackageIcon>
     <PackageTags>toolkit</PackageTags>
     <Title>Tooark</Title>
@@ -37,5 +34,9 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
   </ItemGroup>
 </Project>
