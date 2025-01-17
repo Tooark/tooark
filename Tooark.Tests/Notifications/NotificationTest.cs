@@ -217,65 +217,67 @@ public class NotificationTests
     Assert.Single(notification.Messages);
   }  
 
-  // Testa a exceção ao adicionar NotificationItem nula
+  // Testa o retorno da mensagem padrão ao adicionar notificação nula
   [Fact]
-  public void Should_Throw_Exception_When_Adding_Null_NotificationItem()
+  public void Should_ReturnMessageDefaultNotificationNull_WhenAddingNullNotificationItem()
   {
     // Arrange
     var notification = new TestNotification();
 
     // Act
-    var exception = Assert.Throws<ArgumentNullException>(() => notification.AddNotification((NotificationItem)null!));
+    notification.AddNotification((NotificationItem)null!);
 
     // Assert
-    Assert.Equal("Value cannot be null. (Parameter 'notification')", exception.Message);
+    Assert.Equal("Notifications.NotificationNull", notification.Notifications.First().Message);
   }
 
-  // Testa a exceção ao adicionar mensagem nula ou vazia
+  // Testa o retorno da mensagem padrão ao adicionar notificação com mensagem nula ou vazia
   [Fact]
-  public void Should_Throw_Exception_When_Adding_Null_Or_Empty_Message()
+  public void Should_ReturnMessageDefaultMessageNullEmpty_WhenAddingNullOrEmptyMessage()
   {
     // Arrange
-    var notification = new TestNotification();
+    var notificationNull = new TestNotification();
+    var notificationEmpty = new TestNotification();
 
     // Act
-    var exceptionNull = Assert.Throws<ArgumentNullException>(() => notification.AddNotification((string)null!));
-    var exceptionEmpty = Assert.Throws<ArgumentNullException>(() => notification.AddNotification(""));
+    notificationNull.AddNotification((string)null!);
+    notificationEmpty.AddNotification("");
 
     // Assert
-    Assert.Equal("Value cannot be null. (Parameter 'message')", exceptionNull.Message);
-    Assert.Equal("Value cannot be null. (Parameter 'message')", exceptionEmpty.Message);
+    Assert.Equal("Notifications.MessageNullEmpty", notificationNull.Notifications.First().Message);
+    Assert.Equal("Notifications.MessageNullEmpty", notificationEmpty.Notifications.First().Message);
   }
 
-  // Testa a exceção ao adicionar notificação com mensagem nula ou vazia
+  // Testa o retorno da mensagem padrão ao adicionar notificação com mensagem nula ou vazia com Type Property
   [Fact]
-  public void Should_Throw_Exception_When_Adding_Notification_With_Null_Or_Empty_Message_And_Property()
+  public void Should_ReturnMessageDefaultMessageNullEmpty_WhenAddingNotificationWithNullOrEmptyMessageAndProperty()
   {
     // Arrange
-    var notification = new TestNotification();
+    var notificationNull = new TestNotification();
+    var notificationEmpty = new TestNotification();
     var property = typeof(TestNotification);
 
     // Act
-    var exceptionNull = Assert.Throws<ArgumentNullException>(() => notification.AddNotification(property, null!));
-    var exceptionEmpty = Assert.Throws<ArgumentNullException>(() => notification.AddNotification(property, ""));
+    notificationNull.AddNotification(property, null!);
+    notificationEmpty.AddNotification(property, "");
 
     // Assert
-    Assert.Equal("Value cannot be null. (Parameter 'message')", exceptionNull.Message);
-    Assert.Equal("Value cannot be null. (Parameter 'message')", exceptionEmpty.Message);
+    Assert.Equal("Notifications.MessageNullEmpty", notificationNull.Notifications.First().Message);
+    Assert.Equal("Notifications.MessageNullEmpty", notificationEmpty.Notifications.First().Message);
   }
 
   // Testa a exceção ao adicionar notificação nula
   [Fact]
-  public void Should_Throw_Exception_When_Adding_Null_Notification()
+  public void Should_Throw_Exception_WhenAddingNullNotification()
   {
     // Arrange
     var notification = new TestNotification();
 
     // Act
-    var exception = Assert.Throws<ArgumentNullException>(() => notification.AddNotifications((Notification)null!));
+    notification.AddNotifications((Notification)null!);
 
     // Assert
-    Assert.Equal("Value cannot be null. (Parameter 'notification')", exception.Message);
+    Assert.Equal("Notifications.NotificationNull", notification.Notifications.First().Message);
   }
 
   
