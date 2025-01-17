@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <Version>2.0.0</Version>
+    <RepositoryUrL>https://github.com/Tooark/tooark</RepositoryUrL>
+    <PackageProjectUrl>https://github.com/Tooark/tooark</PackageProjectUrl>
+  </PropertyGroup>
+</Project>
