@@ -10,7 +10,7 @@ O namespace `Tooark.Notifications` fornece uma estrutura para criar e gerenciar 
 
 Representa a estrutura de uma notificação.
 
-#### Propriedades
+#### Propriedades da Instância Item de Notificação
 
 - `Key`: A chave da notificação.
 - `Message`: A mensagem da notificação.
@@ -30,7 +30,7 @@ var notification2 = new NotificationItem("ChaveExemplo", "Mensagem de exemplo co
 
 Representa uma classe abstrata que gerencia uma lista de notificações.
 
-#### Propriedades
+#### Propriedades da Instância Notificação
 
 - `Notifications`: Retorna a lista de notificações.
 - `IsValid`: Retorna True se a lista de notificações estiver vazia.
