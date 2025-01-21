@@ -298,6 +298,7 @@ public static class ValidationErrorMessages
   /// </summary>
   /// <remarks>
   /// O valor da propriedade {0} não é nulo, vazio ou espaço em branco.
+  /// </remarks>
   /// <param name="property">Propriedade da validação.</param>
   /// <returns>Mensagem de erro.</returns>
   public static string IsNullOrWhiteSpace(string property) => $"Validation.IsNotNullOrWhiteSpace;{PropertyNormalize(property)}";

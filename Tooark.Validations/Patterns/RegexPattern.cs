@@ -123,6 +123,11 @@ public class RegexPattern
   /// Padrão de Senha Complexa.
   /// </summary>
   public readonly static string Password = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&*()\-_+\=\[\]{}\/?;:.>,<|\\]).{8,}$";
+
+  /// <summary>
+  /// Padrão de Cultura para Internacionalização.
+  /// </summary>
+  public readonly static string Culture = @"^[a-z]{2}-[A-Z]{2}$";
   #endregion
 
   #region Protocols

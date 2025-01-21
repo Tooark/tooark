@@ -258,7 +258,6 @@ public partial class Contract
   /// Verifica se o valor é igual ao valor mínimo do tipo. Com mensagem padrão.
   /// </summary>
   /// <param name="value">Valor a ser validado.</param>
-  /// <param name="comparer">Valor a ser comparado.</param>
   /// <param name="property">Propriedade a ser validada.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract IsMin(double value, string property) =>
@@ -268,7 +267,6 @@ public partial class Contract
   /// Verifica se o valor é igual ao valor mínimo do tipo.
   /// </summary>
   /// <param name="value">Valor a ser validado.</param>
-  /// <param name="comparer">Valor a ser comparado.</param>
   /// <param name="property">Propriedade a ser validada.</param>
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
@@ -281,7 +279,6 @@ public partial class Contract
   /// Verifica se o valor é não igual ao valor mínimo do tipo. Com mensagem padrão.
   /// </summary>
   /// <param name="value">Valor a ser validado.</param>
-  /// <param name="comparer">Valor a ser comparado.</param>
   /// <param name="property">Propriedade a ser validada.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract IsNotMin(double value, string property) =>
@@ -291,7 +288,6 @@ public partial class Contract
   /// Verifica se o valor é não igual ao valor mínimo do tipo.
   /// </summary>
   /// <param name="value">Valor a ser validado.</param>
-  /// <param name="comparer">Valor a ser comparado.</param>
   /// <param name="property">Propriedade a ser validada.</param>
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
@@ -304,7 +300,6 @@ public partial class Contract
   /// Verifica se o valor é igual ao valor máximo do tipo. Com mensagem padrão.
   /// </summary>
   /// <param name="value">Valor a ser validado.</param>
-  /// <param name="comparer">Valor a ser comparado.</param>
   /// <param name="property">Propriedade a ser validada.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract IsMax(double value, string property) =>
@@ -314,7 +309,6 @@ public partial class Contract
   /// Verifica se o valor é igual ao valor máximo do tipo.
   /// </summary>
   /// <param name="value">Valor a ser validado.</param>
-  /// <param name="comparer">Valor a ser comparado.</param>
   /// <param name="property">Propriedade a ser validada.</param>
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
@@ -327,7 +321,6 @@ public partial class Contract
   /// Verifica se o valor é não igual ao valor máximo do tipo. Com mensagem padrão.
   /// </summary>
   /// <param name="value">Valor a ser validado.</param>
-  /// <param name="comparer">Valor a ser comparado.</param>
   /// <param name="property">Propriedade a ser validada.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract IsNotMax(double value, string property) =>
@@ -337,7 +330,6 @@ public partial class Contract
   /// Verifica se o valor é não igual ao valor máximo do tipo.
   /// </summary>
   /// <param name="value">Valor a ser validado.</param>
-  /// <param name="comparer">Valor a ser comparado.</param>
   /// <param name="property">Propriedade a ser validada.</param>
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>

@@ -334,6 +334,28 @@ public class RegexPatternTest
     Assert.Equal(expected, result);
   }
 
+  // Teste de padrão Culture.
+  [Theory]
+  [InlineData("aa-AA", true)]
+  [InlineData("pt-BR", true)]
+  [InlineData("pt-br", false)]
+  [InlineData("PT-br", false)]
+  [InlineData("PT-BR", false)]
+  [InlineData("12-12", false)]
+  [InlineData("ptbr", false)]
+  [InlineData("ptBR", false)]
+  [InlineData("PTBR", false)]
+  [InlineData("pt", false)]
+  [InlineData("PT", false)]
+  public void TestCulturePattern(string input, bool expected)
+  {
+    // Arrange & Act
+    var result = Regex.IsMatch(input, RegexPattern.Culture);
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
   // Teste de padrão de URL.
   [Theory]
   [InlineData("ftp://example.com", true)]

@@ -11,7 +11,6 @@ public partial class Contract
   /// <summary>
   /// Função para converter para string.
   /// </summary>
-  /// <typeparam name="T">Tipo a ser convertido.</typeparam>
   /// <param name="value">Valor a ser convertido.</param>
   /// <returns>Valor convertido.</returns>
   private static string ConvertToString(int value) => Convert.ToString(value) ?? "";

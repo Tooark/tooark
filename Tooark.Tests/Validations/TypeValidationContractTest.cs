@@ -417,4 +417,50 @@ public class TypeValidationContractTest
     // Assert
     Assert.Empty(contract.Notifications);
   }
+
+  // Teste para validar se o valor corresponde ao padrão e cria notificação, com valor que não corresponde
+  [Theory]  
+  [InlineData("pt-br")]
+  [InlineData("PT-br")]
+  [InlineData("PT-BR")]
+  [InlineData("12-12")]
+  [InlineData("ptbr")]
+  [InlineData("ptBR")]
+  [InlineData("PTBR")]
+  [InlineData("pt")]
+  [InlineData("PT")]
+  [InlineData("")]
+  [InlineData(null)]
+  public void IsCulture_ShouldAddNotification_WhenValueNotIsCulture(string? valueParam)
+  {
+    // Arrange
+    var property = "TestProperty";
+    var contract = new Contract();
+    string value = valueParam!;
+
+    // Act
+    contract.IsCulture(value, property);
+
+    // Assert
+    Assert.Single(contract.Notifications);
+    Assert.Equal(property, contract.Notifications.First().Key);
+  }
+
+  // Teste para validar se o valor corresponde ao padrão e não cria notificação, com valor que corresponde
+  [Theory]
+  [InlineData("aa-AA")]
+  [InlineData("pt-BR")]
+  public void IsCulture_ShouldNotAddNotification_WhenValueIsCulture(string valueParam)
+  {
+    // Arrange
+    var property = "TestProperty";
+    var contract = new Contract();
+    string value = valueParam;
+
+    // Act
+    contract.IsCulture(value, property);
+
+    // Assert
+    Assert.Empty(contract.Notifications);
+  }
 }

@@ -217,4 +217,25 @@ public partial class Contract
   public Contract IsPassword(string value, string property, string message) =>
     Match(value, RegexPattern.Password, property, message);
   #endregion
+
+  #region IsCulture
+  /// <summary>
+  /// Verifica se o valor corresponde ao formato do idioma para Cultura. Com mensagem padrão.
+  /// </summary>
+  /// <param name="value">Valor a ser validado.</param>
+  /// <param name="property">Propriedade a ser validada.</param>
+  /// <returns>Contrato de validação.</returns>
+  public Contract IsCulture(string value, string property) =>
+    IsCulture(value, property, ValidationErrorMessages.IsValid(property, "Culture"));
+
+  /// <summary>
+  /// Verifica se o valor corresponde ao formato do idioma para Cultura.
+  /// </summary>
+  /// <param name="value">Valor a ser validado.</param>
+  /// <param name="property">Propriedade a ser validada.</param>
+  /// <param name="message">Mensagem de erro.</param>
+  /// <returns>Contrato de validação.</returns>
+  public Contract IsCulture(string value, string property, string message) =>
+    Match(value, RegexPattern.Culture, property, message);
+  #endregion
 }
