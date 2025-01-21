@@ -1,5 +1,7 @@
 # Tooark.Notifications
 
+## Descrição
+
 O namespace `Tooark.Notifications` fornece uma estrutura para criar e gerenciar notificações.
 
 ## Classes
