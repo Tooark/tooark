@@ -43,7 +43,6 @@ public partial class Contract : Notification
   /// <param name="returnAwait">Retorno aguardado da comparação.</param>
   /// <param name="property">Propriedade a ser validada.</param>
   /// <param name="message">Mensagem de erro.</param>
-  /// <param name="condition">Condição a ser validada.</param>
   /// <returns>Contrato de validação.</returns>
   private Contract ValidateNull<T>(T? value, bool returnAwait, string property, string message)
   {

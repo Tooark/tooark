@@ -12,10 +12,10 @@ public partial class Contract
   /// <summary>
   /// Função para validar condição de correspondência.
   /// </summary>
-  /// <param name="value">Valor a ser validado.</param>
-  /// <param name="pattern">Padrão a ser comparado.</param>
-  /// <param name="options">Opções de regex para Case Sensitive.</param>
-  /// <param name="timeout">Tempo limite para validação. Em milissegundos.</param>
+  /// <remarks>value: Valor a ser validado.</remarks>
+  /// <remarks>pattern: Padrão a ser comparado.</remarks>
+  /// <remarks>options: Opções de regex para Case Sensitive.</remarks>
+  /// <remarks>timeout: Tempo limite para validação. Em milissegundos.</remarks>
   /// <returns>Função de validação.</returns>
   private readonly Func<string, string, RegexOptions, int, bool> MatchFunc = (value, pattern, options, timeout) =>
     Regex.IsMatch(value ?? "", pattern, options, TimeSpan.FromMilliseconds(timeout));
