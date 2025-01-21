@@ -69,3 +69,11 @@ var keys = myNotification.Keys; // ["Error"]
 var messages = myNotification.Messages; // ["Ocorreu um erro."]
 var notifications = myNotification.Notifications; // [NotificationItem("Error", "Ocorreu um erro.")]
 ```
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Notifications](https://github.com/Tooark/tooark).
+
+## Licença
+
+Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](../LICENSE) para mais detalhes.
