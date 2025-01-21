@@ -221,6 +221,17 @@ var contract = new Contract()
     .IsLowerOrEquals(value, comparer, property, "O valor deve ser menor ou igual ao valor comparado.")
 ```
 
+### Validação de Tipo
+
+```csharp
+string value = "abc";
+string zipCode = "10000-000";
+string property = "Tipos";
+var contract = new Contract()
+    .IsLetterLower(value, property, "O valor deve ser apenas letras minúsculas.")
+    .IsZipCode(value, property, "O valor deve ser um CEP.")
+```
+
 ## Métodos Disponíveis
 
 A biblioteca `Tooark.Validations` oferece uma ampla gama de métodos de validação, incluindo, mas não se limitando a:
