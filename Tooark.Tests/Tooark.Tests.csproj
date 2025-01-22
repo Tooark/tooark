@@ -29,6 +29,7 @@
     <ProjectReference Include="..\Tooark\Tooark.csproj" />
     <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
     <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
+    <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
   </ItemGroup>
 
 </Project>

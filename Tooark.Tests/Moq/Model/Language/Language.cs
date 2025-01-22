@@ -6,6 +6,7 @@ public class MLanguage
   public string Name { get; set; } = null!;
   public string Title { get; set; } = null!;
   public string Description { get; set; } = null!;
+  public string Other { get; set; } = null!;
 }
 
 public class MLanguageOnlyLanguageCode
