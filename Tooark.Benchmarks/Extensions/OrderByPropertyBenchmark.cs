@@ -10,8 +10,8 @@ namespace Tooark.Benchmarks.Extensions;
 [MemoryDiagnoser]
 public class OrderByPropertyBenchmark
 {
-  static readonly List<Category> _categories = new()
-  {
+  static readonly List<Category> _categories =
+  [
     GenerateCategoryData.CreateCategory(1),
     GenerateCategoryData.CreateCategory(2),
     GenerateCategoryData.CreateCategory(3),
@@ -27,7 +27,7 @@ public class OrderByPropertyBenchmark
     GenerateCategoryData.CreateCategory(13),
     GenerateCategoryData.CreateCategory(14),
     GenerateCategoryData.CreateCategory(15)
-  };
+  ];
 
   [Benchmark(Baseline = true)]
   public void QueryableSimple()

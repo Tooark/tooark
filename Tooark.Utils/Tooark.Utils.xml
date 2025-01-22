@@ -108,7 +108,7 @@
             <param name="fileSize">Tamanho máximo do arquivo em bytes. Parâmetro opcional. Valor padrão é 5242880 bytes (5MB).</param>
             <returns>Retorna verdadeiro se o arquivo for um video válido.</returns>
         </member>
-        <member name="M:Tooark.Utils.FileValid.IsOther(Microsoft.AspNetCore.Http.IFormFile,System.Int64,System.String[])">
+        <member name="M:Tooark.Utils.FileValid.IsCustom(Microsoft.AspNetCore.Http.IFormFile,System.Int64,System.String[])">
             <summary>
             Verifica se o arquivo é valido para extensões personalizadas.
             </summary>
@@ -163,7 +163,7 @@
             <param name="fileSize">Tamanho máximo do arquivo em bytes. Parâmetro opcional. Valor padrão é 5242880 bytes (5MB).</param>
             <returns>Retorna verdadeiro se o arquivo for um video válido.</returns>
         </member>
-        <member name="M:Tooark.Utils.InternalFileValid.IsOther(Microsoft.AspNetCore.Http.IFormFile,System.Int64,System.String[])">
+        <member name="M:Tooark.Utils.InternalFileValid.IsCustom(Microsoft.AspNetCore.Http.IFormFile,System.Int64,System.String[])">
             <summary>
             Verifica se o arquivo é valido para extensões personalizadas.
             </summary>
