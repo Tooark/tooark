@@ -74,6 +74,20 @@ public class FileConvertTests
     Assert.True(result.Length > 0);
   }
 
+  // Teste para o método ToMemoryStream(IFormFile) com um IFormFile nulo.
+  [Fact]
+  public void ToMemoryStream_NullIFormFile_ReturnsNull()
+  {
+    // Arrange
+    IFormFile? nullFile = null;
+
+    // Act
+    MemoryStream? result = FileConvert.ToMemoryStream(nullFile!);
+
+    // Assert
+    Assert.Null(result);
+  }
+
   // Teste para o método Extension(string) com uma string base64 válida.
   [Fact]
   public void Extension_ValidBase64String_ReturnsExtension()
@@ -138,5 +152,35 @@ public class FileConvertTests
 
     // Assert
     Assert.Equal("PDF", result);
+  }
+
+  // Teste para o método Extension(IFormFile) com um IFormFile nulo.
+  [Fact]
+  public void Extension_NullIFormFile_ReturnsNull()
+  {
+    // Arrange
+    IFormFile? nullFile = null;
+
+    // Act
+    string? result = FileConvert.Extension(nullFile!);
+
+    // Assert
+    Assert.Null(result);
+  }
+
+  // Teste para o método Extension(IFormFile) com um IFormFile sem extensão.
+  [Fact]
+  public void Extension_IFormFileWithoutExtension_ReturnsNull()
+  {
+    // Arrange
+    var mockFile = new Mock<IFormFile>();
+    var fileName = "testfile"; // No extension
+    mockFile.Setup(_ => _.FileName).Returns(fileName);
+
+    // Act
+    string? result = FileConvert.Extension(mockFile.Object);
+
+    // Assert
+    Assert.Null(result);
   }
 }
