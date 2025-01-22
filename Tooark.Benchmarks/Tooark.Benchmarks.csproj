@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tooark\Tooark.csproj" />
+    <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
   </ItemGroup>
 
 </Project>
