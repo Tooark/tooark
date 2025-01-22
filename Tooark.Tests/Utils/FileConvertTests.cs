@@ -4,50 +4,54 @@ using Tooark.Utils;
 
 namespace Tooark.Tests.Utils;
 
-public class ConvertFileTests
+public class FileConvertTests
 {
+  // Teste para o método ToMemoryStream(string) com uma string base64 válida.
   [Fact]
-  public void ConvertBase64ToMemoryStream_ValidBase64String_ReturnsMemoryStream()
+  public void ToMemoryStream_ValidBase64String_ReturnsMemoryStream()
   {
     // Arrange
     string base64String = "data:application/pdf;base64,JVBERi0xLjMKJcfs"; // Example base64 string
 
     // Act
-    MemoryStream? result = Util.ConvertBase64ToMemoryStream(base64String);
+    MemoryStream? result = FileConvert.ToMemoryStream(base64String);
 
     // Assert
     Assert.NotNull(result);
     Assert.True(result.Length > 0);
   }
 
+  // Teste para o método ToMemoryStream(string) com uma string base64 inválida.
   [Fact]
-  public void ConvertBase64ToMemoryStream_InvalidBase64String_ReturnsNull()
+  public void ToMemoryStream_InvalidBase64String_ReturnsNull()
   {
     // Arrange
     string invalidBase64String = "invalid base64 string";
 
     // Act
-    MemoryStream? result = Util.ConvertBase64ToMemoryStream(invalidBase64String);
+    MemoryStream? result = FileConvert.ToMemoryStream(invalidBase64String);
 
     // Assert
     Assert.Null(result);
   }
 
+  // Teste para o método ToMemoryStream(string) com uma string vazia.
   [Fact]
-  public void ConvertBase64ToMemoryStream_EmptyString_ReturnsNull()
+  public void ToMemoryStream_EmptyString_ReturnsNull()
   {
     // Arrange
     string emptyString = "";
 
     // Act
-    MemoryStream? result = Util.ConvertBase64ToMemoryStream(emptyString);
+    MemoryStream? result = FileConvert.ToMemoryStream(emptyString);
 
     // Assert
     Assert.Null(result);
   }
 
+  // Teste para o método ToMemoryStream(IFormFile) com um IFormFile válido.
   [Fact]
-  public void ConvertBase64ToMemoryStream_FromIFormFile_ReturnsMemoryStream()
+  public void ToMemoryStream_FromIFormFile_ReturnsMemoryStream()
   {
     // Arrange
     var mockFile = new Mock<IFormFile>();
@@ -63,54 +67,58 @@ public class ConvertFileTests
     mockFile.Setup(_ => _.Length).Returns(ms.Length);
 
     // Act
-    MemoryStream? result = Util.ConvertBase64ToMemoryStream(mockFile.Object);
+    MemoryStream? result = FileConvert.ToMemoryStream(mockFile.Object);
 
     // Assert
     Assert.NotNull(result);
     Assert.True(result.Length > 0);
   }
 
+  // Teste para o método Extension(string) com uma string base64 válida.
   [Fact]
-  public void ExtractExtension_ValidBase64String_ReturnsExtension()
+  public void Extension_ValidBase64String_ReturnsExtension()
   {
     // Arrange
     string base64String = "data:application/pdf;base64,JVBERi0xLjMKJcfs"; // Example base64 string
 
     // Act
-    string? result = Util.ExtractExtension(base64String);
+    string? result = FileConvert.Extension(base64String);
 
     // Assert
-    Assert.Equal("pdf", result);
+    Assert.Equal("PDF", result);
   }
 
+  // Teste para o método Extension(string) com uma string base64 inválida.
   [Fact]
-  public void ExtractExtension_InvalidBase64String_ReturnsNull()
+  public void Extension_InvalidBase64String_ReturnsNull()
   {
     // Arrange
     string invalidBase64String = "invalid base64 string";
 
     // Act
-    string? result = Util.ExtractExtension(invalidBase64String);
+    string? result = FileConvert.Extension(invalidBase64String);
 
     // Assert
     Assert.Null(result);
   }
 
+  // Teste para o método Extension(string) com uma string vazia.
   [Fact]
-  public void ExtractExtension_EmptyString_ReturnsNull()
+  public void Extension_EmptyString_ReturnsNull()
   {
     // Arrange
     string emptyString = "";
 
     // Act
-    string? result = Util.ExtractExtension(emptyString);
+    string? result = FileConvert.Extension(emptyString);
 
     // Assert
     Assert.Null(result);
   }
 
+  // Teste para o método Extension(IFormFile) com um IFormFile válido.
   [Fact]
-  public void ExtractExtension_FromIFormFile_ReturnsExtension()
+  public void Extension_FromIFormFile_ReturnsExtension()
   {
     // Arrange
     var mockFile = new Mock<IFormFile>();
@@ -126,9 +134,9 @@ public class ConvertFileTests
     mockFile.Setup(_ => _.Length).Returns(ms.Length);
 
     // Act
-    string? result = Util.ExtractExtension(mockFile.Object);
+    string? result = FileConvert.Extension(mockFile.Object);
 
     // Assert
-    Assert.Equal("pdf", result);
+    Assert.Equal("PDF", result);
   }
 }

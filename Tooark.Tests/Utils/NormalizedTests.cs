@@ -2,78 +2,78 @@ using Tooark.Utils;
 
 namespace Tooark.Tests.Utils;
 
-public class NormalizeValueTests
+public class NormalizeTests
 {
-  // Um método de teste para verificar se a função NormalizeValue retorna uma string vazia se a entrada for nula ou vazia
+  // Um método de teste para verificar se a função Value retorna uma string vazia se a entrada for nula ou vazia
   [Fact]
-  public void NormalizeValue_ShouldReturnEmptyString_WhenInputIsNullEmpty()
+  public void Value_ShouldReturnEmptyString_WhenInputIsNullEmpty()
   {
     // Arrange
     string input = null!;
     string expected = "";
 
     // Act
-    string actual = Util.NormalizeValue(input);
+    string actual = Normalize.Value(input);
 
     // Assert
     Assert.Equal(expected, actual);
   }
 
-  // Um método de teste para verificar se a função NormalizeValue remove os espaços da entrada
+  // Um método de teste para verificar se a função Value remove os espaços da entrada
   [Fact]
-  public void NormalizeValue_ShouldRemoveSpaces_WhenInputHasSpaces()
+  public void Value_ShouldRemoveSpaces_WhenInputHasSpaces()
   {
     // Arrange
     string input = "Hello World";
     string expected = "HELLOWORLD";
 
     // Act
-    string actual = Util.NormalizeValue(input);
+    string actual = Normalize.Value(input);
 
     // Assert
     Assert.Equal(expected, actual);
   }
 
-  // Um método de teste para verificar se a função NormalizeValue converte a entrada para minúsculas
+  // Um método de teste para verificar se a função Value converte a entrada para minúsculas
   [Fact]
-  public void NormalizeValue_ShouldConvertToLowercase_WhenInputHasUppercase()
+  public void Value_ShouldConvertToLowercase_WhenInputHasUppercase()
   {
     // Arrange
     string input = "HELLO WORLD";
     string expected = "HELLOWORLD";
 
     // Act
-    string actual = Util.NormalizeValue(input);
+    string actual = Normalize.Value(input);
 
     // Assert
     Assert.Equal(expected, actual);
   }
 
-  // Um método de teste para verificar se a função NormalizeValue substitui os caracteres especiais por caracteres sem acentuação
+  // Um método de teste para verificar se a função Value substitui os caracteres especiais por caracteres sem acentuação
   [Fact]
-  public void NormalizeValue_ShouldReplaceSpecialCharacters_WhenInputHasSpecialCharacters()
+  public void Value_ShouldReplaceSpecialCharacters_WhenInputHasSpecialCharacters()
   {
     // Arrange
     string input = "Ça va? Je m'appelle Tooark.";
     string expected = "CAVAJEMAPPELLETOOARK";
 
     // Act
-    string actual = Util.NormalizeValue(input);
+    string actual = Normalize.Value(input);
 
     // Assert
     Assert.Equal(expected, actual);
   }
 
-  // Um método de teste para verificar se a função NormalizeValue ignora os caracteres que não são números ou letras minúsculas
+  // Um método de teste para verificar se a função Value ignora os caracteres que não são números ou letras minúsculas
   [Fact]
-  public void NormalizeValue_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters()
+  public void Value_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters()
   {
     // Arrange
     string input = "Hello, I'm Tooark! 123.";
     string expected = "HELLOIMTOOARK123";
 
     // Act
-    string actual = Util.NormalizeValue(input);
+    string actual = Normalize.Value(input);
 
     // Assert
     Assert.Equal(expected, actual);
@@ -129,85 +129,85 @@ public class NormalizeValueTests
   [InlineData("òî7gåP0siH", "OI7GAP0SIH")]
   [InlineData("SB8làbhûH1", "SB8LABHUH1")]
   [InlineData(" âdçd51KU8 ", "ADCD51KU8")]
-  public void NormalizeValue_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters_RandomString(string? input, string expected)
+  public void Value_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters_RandomString(string? input, string expected)
   {
     // Act
-    string actual = Util.NormalizeValue(input!);
+    string actual = Normalize.Value(input!);
 
     // Assert
     Assert.Equal(expected, actual, ignoreCase: false);
   }
 
-  // Um método de teste para verificar se a função NormalizeValueRegex retorna uma string vazia se a entrada for nula ou vazia
+  // Um método de teste para verificar se a função ValueRegex retorna uma string vazia se a entrada for nula ou vazia
   [Fact]
-  public void NormalizeValueRegex_ShouldReturnEmptyString_WhenInputIsNullEmpty()
+  public void ValueRegex_ShouldReturnEmptyString_WhenInputIsNullEmpty()
   {
     // Arrange
     string input = null!;
     string expected = "";
 
     // Act
-    string actual = Util.NormalizeValueRegex(input);
+    string actual = Normalize.ValueRegex(input);
 
     // Assert
     Assert.Equal(expected, actual);
   }
 
-  // Um método de teste para verificar se a função NormalizeValueRegex remove os espaços da entrada
+  // Um método de teste para verificar se a função ValueRegex remove os espaços da entrada
   [Fact]
-  public void NormalizeValueRegex_ShouldRemoveSpaces_WhenInputHasSpaces()
+  public void ValueRegex_ShouldRemoveSpaces_WhenInputHasSpaces()
   {
     // Arrange
     string input = "Hello World";
     string expected = "HELLOWORLD";
 
     // Act
-    string actual = Util.NormalizeValueRegex(input);
+    string actual = Normalize.ValueRegex(input);
 
     // Assert
     Assert.Equal(expected, actual);
   }
 
-  // Um método de teste para verificar se a função NormalizeValueRegex converte a entrada para minúsculas
+  // Um método de teste para verificar se a função ValueRegex converte a entrada para minúsculas
   [Fact]
-  public void NormalizeValueRegex_ShouldConvertToLowercase_WhenInputHasUppercase()
+  public void ValueRegex_ShouldConvertToLowercase_WhenInputHasUppercase()
   {
     // Arrange
     string input = "HELLO WORLD";
     string expected = "HELLOWORLD";
 
     // Act
-    string actual = Util.NormalizeValueRegex(input);
+    string actual = Normalize.ValueRegex(input);
 
     // Assert
     Assert.Equal(expected, actual);
   }
 
-  // Um método de teste para verificar se a função NormalizeValueRegex substitui os caracteres especiais por caracteres sem acentuação
+  // Um método de teste para verificar se a função ValueRegex substitui os caracteres especiais por caracteres sem acentuação
   [Fact]
-  public void NormalizeValueRegex_ShouldReplaceSpecialCharacters_WhenInputHasSpecialCharacters()
+  public void ValueRegex_ShouldReplaceSpecialCharacters_WhenInputHasSpecialCharacters()
   {
     // Arrange
     string input = "Ça va? Je m'appelle Tooark.";
     string expected = "CAVAJEMAPPELLETOOARK";
 
     // Act
-    string actual = Util.NormalizeValueRegex(input);
+    string actual = Normalize.ValueRegex(input);
 
     // Assert
     Assert.Equal(expected, actual);
   }
 
-  // Um método de teste para verificar se a função NormalizeValueRegex ignora os caracteres que não são números ou letras minúsculas
+  // Um método de teste para verificar se a função ValueRegex ignora os caracteres que não são números ou letras minúsculas
   [Fact]
-  public void NormalizeValueRegex_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters()
+  public void ValueRegex_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters()
   {
     // Arrange
     string input = "Hello, I'm Tooark! 123.";
     string expected = "HELLOIMTOOARK123";
 
     // Act
-    string actual = Util.NormalizeValueRegex(input);
+    string actual = Normalize.ValueRegex(input);
 
     // Assert
     Assert.Equal(expected, actual);
@@ -263,10 +263,10 @@ public class NormalizeValueTests
   [InlineData("òî7gåP0siH", "OI7GAP0SIH")]
   [InlineData("SB8làbhûH1", "SB8LABHUH1")]
   [InlineData(" âdçd51KU8 ", "ADCD51KU8")]
-  public void NormalizeValueRegex_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters_RandomString(string? input, string expected)
+  public void ValueRegex_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters_RandomString(string? input, string expected)
   {
     // Act
-    string actual = Util.NormalizeValueRegex(input!);
+    string actual = Normalize.ValueRegex(input!);
 
     // Assert
     Assert.Equal(expected, actual, ignoreCase: false);

@@ -5,7 +5,7 @@ using Moq;
 using Tooark.Extensions;
 using Tooark.Factories;
 using Tooark.Tests.Moq.Util;
-using static Tooark.Utils.Util;
+using Tooark.Utils;
 
 namespace Tooark.Tests.Extensions;
 
@@ -23,7 +23,7 @@ public class JsonStringLocalizerExtensionTests
   public JsonStringLocalizerExtensionTests()
   {
     _mockDistributedCache = new Mock<IDistributedCache>();
-    _culture = Languages.Current;
+    _culture = Language.Current;
     _filePathDefault = $"Resources/{_culture}.default.json";
     _filePath = $"Resources/{_culture}.json";
 
