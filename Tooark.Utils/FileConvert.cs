@@ -160,11 +160,11 @@ internal static class InternalFileConvert
       if (!string.IsNullOrEmpty(extension))
       {
         // Remove o ponto da extensão
-        extension = extension[1..];
+        return extension[1..].ToUpperInvariant();
       }
 
-      // Retorna a extensão do arquivo
-      return extension.ToUpperInvariant();
+      // Retorna nulo caso a extensão seja nula ou vazia
+      return null;
     }
 
     // Retorna nulo caso o arquivo seja inválido
