@@ -26,7 +26,7 @@ public class FileConvertTests
   public void ToMemoryStream_InvalidBase64String_ReturnsNull()
   {
     // Arrange
-    string invalidBase64String = "invalid base64 string";
+    string invalidBase64String = "invalid base64, string";
 
     // Act
     MemoryStream? result = FileConvert.ToMemoryStream(invalidBase64String);
@@ -93,7 +93,7 @@ public class FileConvertTests
   public void Extension_InvalidBase64String_ReturnsNull()
   {
     // Arrange
-    string invalidBase64String = "invalid base64 string";
+    string invalidBase64String = "invalid base64, string";
 
     // Act
     string? result = FileConvert.Extension(invalidBase64String);

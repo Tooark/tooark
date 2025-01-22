@@ -482,5 +482,8 @@ appsettings.*.json
 # Folder sonarqube
 .sonarqube/
 
+# Folder scripts
+scripts/
+
 # Arquivo de documentação
-Tooark.xml
+*.xml
