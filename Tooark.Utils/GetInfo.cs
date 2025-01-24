@@ -51,6 +51,21 @@ public static class GetInfo
   }
 
   /// <summary>
+  /// Obtém as palavras-chave localizadas de uma lista de objetos.
+  /// </summary>
+  /// <remarks>
+  /// O método tenta obter as palavras-chave no idioma solicitado. Se não encontrar, tenta obter no idioma padrão da aplicação.
+  /// Se não encontrar, retorna o primeiro item da lista.
+  /// </remarks>
+  /// <param name="list">A lista de objetos.</param>
+  /// <param name="languageCode">O código de idioma. Parâmetro opcional. Padrão é o idioma atual.</param>
+  /// <returns>As palavras-chave localizadas.</returns>
+  public static string Keywords<T>(IList<T> list, string? languageCode = null)
+  {
+    return InternalGetInfo.Keywords(list, languageCode);
+  }
+
+  /// <summary>
   /// Obtém um valor localizado de uma propriedade em uma lista de objetos.
   /// </summary>
   /// <typeparam name="T">O tipo de objeto na lista.</typeparam>
@@ -98,7 +113,7 @@ internal static class InternalGetInfo
   /// Obtém o título localizado de uma lista de objetos.
   /// </summary>
   /// <remarks>
-  /// O método tenta obter o nome no idioma solicitado. Se não encontrar, tenta obter no idioma padrão da aplicação.
+  /// O método tenta obter o título no idioma solicitado. Se não encontrar, tenta obter no idioma padrão da aplicação.
   /// Se não encontrar, retorna o primeiro item da lista.
   /// </remarks>
   /// <param name="list">A lista de objetos.</param>
@@ -117,7 +132,7 @@ internal static class InternalGetInfo
   /// Obtém a descrição localizado de uma lista de objetos.
   /// </summary>
   /// <remarks>
-  /// O método tenta obter o nome no idioma solicitado. Se não encontrar, tenta obter no idioma padrão da aplicação.
+  /// O método tenta obter a descrição no idioma solicitado. Se não encontrar, tenta obter no idioma padrão da aplicação.
   /// Se não encontrar, retorna o primeiro item da lista.
   /// </remarks>
   /// <param name="list">A lista de objetos.</param>
@@ -132,6 +147,25 @@ internal static class InternalGetInfo
     return GetLanguageCode(list, "Description", languageCode);
   }
 
+  /// <summary>
+  /// Obtém as palavras-chave localizadas de uma lista de objetos.
+  /// </summary>
+  /// <remarks>
+  /// O método tenta obter as palavras-chave no idioma solicitado. Se não encontrar, tenta obter no idioma padrão da aplicação.
+  /// Se não encontrar, retorna o primeiro item da lista.
+  /// </remarks>
+  /// <param name="list">A lista de objetos.</param>
+  /// <param name="languageCode">O código de idioma. Parâmetro opcional. Padrão é o idioma atual.</param>
+  /// <returns>As palavras-chave localizadas.</returns>
+  internal static string Keywords<T>(IList<T> list, string? languageCode = null!)
+  {
+    // Se o código de idioma for nulo, usa o idioma atual.
+    languageCode ??= Language.Current;
+
+    // Retorna as palavras-chave localizadas no idioma solicitado.
+    return GetLanguageCode(list, "Keywords", languageCode);
+  }
+    
   /// <summary>
   /// Obtém um valor de uma propriedade localizado de uma lista de objetos.
   /// </summary>
