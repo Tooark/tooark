@@ -15,6 +15,7 @@ public class GetInfoTests
       Name = "Name in English",
       Title = "Title in English",
       Description = "Description in English",
+      Keywords = "Keywords in English",
       Other = "Other in en-US"
     },
     new()
@@ -23,7 +24,8 @@ public class GetInfoTests
       Name = "Nombre en Español",
       Title = "Título en Español",
       Description = "Descripción en Español",
-      Other = "Other in es-ES"
+      Keywords = "Palabras clave en Español", 
+      Other = "Otros en es-ES"
     },
     new()
     {
@@ -31,7 +33,8 @@ public class GetInfoTests
       Name = "Nom en Français",
       Title = "Titre en Français",
       Description = "Description en Français",
-      Other = "Other in fr-FR"
+      Keywords = "Mots-clés en Français",
+      Other = "Autre en fr-FR"
     },
     new()
     {
@@ -39,7 +42,8 @@ public class GetInfoTests
       Name = "日本語での名前",
       Title = "日本語タイトル",
       Description = "日本語での説明",
-      Other = "Other in jp-JP"
+      Keywords = "日本語のキーワード",
+      Other = "その他 日本語"
     },
     new()
     {
@@ -47,7 +51,8 @@ public class GetInfoTests
       Name = "Nome em Português",
       Title = "Titulo em Português",
       Description = "Descrição em Português",
-      Other = "Other in pt-BR"
+      Keywords = "Palavra-Chave em Português",
+      Other = "Outro em pt-BR"
      }
   ];
 
@@ -99,13 +104,29 @@ public class GetInfoTests
     Assert.Equal(expectedName, result);
   }
 
+  // Testa se o método Keywords retorna as palavras-chave no idioma correspondente ao idioma do parâmetro
+  [Theory]
+  [InlineData("en-US", "Keywords in English")]
+  [InlineData("es-ES", "Palabras clave en Español")]
+  [InlineData("fr-FR", "Mots-clés en Français")]
+  [InlineData("jp-JP", "日本語のキーワード")]
+  [InlineData("pt-BR", "Palavra-Chave em Português")]
+  public void Keywords_ShouldReturnKeywords_BasedOnLanguageCode(string languageCode, string expectedName)
+  {
+    // Arrange & Act
+    var result = GetInfo.Keywords(_testItems, languageCode);
+
+    // Assert
+    Assert.Equal(expectedName, result);
+  }
+
   // Testa se o método Custom retorna a propriedade correspondente ao idioma do parâmetro
   [Theory]
   [InlineData("en-US", "Other in en-US")]
-  [InlineData("es-ES", "Other in es-ES")]
-  [InlineData("fr-FR", "Other in fr-FR")]
-  [InlineData("jp-JP", "Other in jp-JP")]
-  [InlineData("pt-BR", "Other in pt-BR")]
+  [InlineData("es-ES", "Otros en es-ES")]
+  [InlineData("fr-FR", "Autre en fr-FR")]
+  [InlineData("jp-JP", "その他 日本語")]
+  [InlineData("pt-BR", "Outro em pt-BR")]
   public void Custom_ShouldReturnProperty_BasedOnLanguageCode(string languageCode, string expectedName)
   {
     // Arrange & Act
@@ -199,13 +220,41 @@ public class GetInfoTests
     }
   }
 
+  // Testa se o método Keywords retorna as palavras-chave no idioma correspondente ao cultura definida
+  [Theory]
+  [InlineData("en-US", "Keywords in English")]
+  [InlineData("es-ES", "Palabras clave en Español")]
+  [InlineData("fr-FR", "Mots-clés en Français")]
+  [InlineData("jp-JP", "日本語のキーワード")]
+  [InlineData("pt-BR", "Palavra-Chave em Português")]
+  public void Keywords_ShouldReturnKeywords_SetCurrentLanguageCode(string languageCode, string expectedName)
+  {
+    // Arrange
+    var originalCulture = CultureInfo.CurrentCulture;
+    Language.SetCulture(languageCode);
+
+    try
+    {
+      // Act
+      var result = GetInfo.Keywords(_testItems);
+
+      // Assert
+      Assert.Equal(expectedName, result);
+    }
+    finally
+    {
+      // Cleanup
+      Language.SetCulture(originalCulture);
+    }
+  }
+
   // Testa se o método Custom retorna a propriedade correspondente ao cultura definida
   [Theory]
   [InlineData("en-US", "Other in en-US")]
-  [InlineData("es-ES", "Other in es-ES")]
-  [InlineData("fr-FR", "Other in fr-FR")]
-  [InlineData("jp-JP", "Other in jp-JP")]
-  [InlineData("pt-BR", "Other in pt-BR")]
+  [InlineData("es-ES", "Otros en es-ES")]
+  [InlineData("fr-FR", "Autre en fr-FR")]
+  [InlineData("jp-JP", "その他 日本語")]
+  [InlineData("pt-BR", "Outro em pt-BR")]
   public void Custom_ShouldReturnProperty_SetCurrentLanguageCode(string languageCode, string expectedName)
   {
     // Arrange
@@ -296,6 +345,29 @@ public class GetInfoTests
     }
   }
 
+  // Testa se o método Keywords retorna as palavras-chave no padrão (en-US) idioma do parâmetro não está na lista
+  [Fact]
+  public void Keywords_ShouldReturnKeywordsDefault_WhenParameterNotInList()
+  {
+    // Arrange
+    var originalCulture = CultureInfo.CurrentCulture;
+    Language.SetCulture("de-DE");
+
+    try
+    {
+      // Act
+      var result = GetInfo.Keywords(_testItems);
+
+      // Assert
+      Assert.Equal("Keywords in English", result);
+    }
+    finally
+    {
+      // Cleanup
+      Language.SetCulture(originalCulture);
+    }
+  }
+
   // Testa se o método Custom retorna o nome no idioma padrão (en-US) idioma do parâmetro não está na lista
   [Fact]
   public void Custom_ShouldReturnNameDefault_WhenParameterNotInList()
@@ -352,6 +424,17 @@ public class GetInfoTests
     Assert.Equal("Description in English", result);
   }
 
+  // Testa se o método Keywords retorna as palavras-chave no idioma padrão (en-US) idioma do parâmetro não está na lista
+  [Fact]
+  public void Keywords_ShouldReturnKeywordsDefault_WhenCultureInList()
+  {
+    // Arrange & Act
+    var result = GetInfo.Keywords(_testItems, "de-DE");
+
+    // Assert
+    Assert.Equal("Keywords in English", result);
+  }
+
   // Testa se o método Custom retorna o nome no idioma padrão (en-US) idioma do parâmetro não está na lista
   [Fact]
   public void Custom_ShouldReturnNameDefault_WhenCultureInList()
@@ -400,6 +483,20 @@ public class GetInfoTests
 
     // Act
     var result = GetInfo.Description(list);
+
+    // Assert
+    Assert.Equal(string.Empty, result);
+  }
+
+  // Testa se o método Keywords retorna uma string vazia quando a lista de linguagens está vazia
+  [Fact]
+  public void Keywords_ReturnsEmptyStringWhenListIsEmpty()
+  {
+    // Arrange
+    var list = new List<MLanguage>();
+
+    // Act
+    var result = GetInfo.Keywords(list);
 
     // Assert
     Assert.Equal(string.Empty, result);
