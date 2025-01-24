@@ -182,8 +182,9 @@ internal static class InternalGetInfo
                list.FirstOrDefault(x => (string)languageCodeProperty.GetValue(x)! == defaultLanguageCode) ??
                list.FirstOrDefault();
 
-    return item != null ?
-      (string)property.GetValue(item)! :
-      string.Empty;
+    // Retorna o valor da propriedade especificada. Se não encontrar, retorna uma string vazia.
+    return EqualityComparer<T>.Default.Equals(item, default) ?
+      string.Empty :
+      (string)property.GetValue(item)!;
   }
 }

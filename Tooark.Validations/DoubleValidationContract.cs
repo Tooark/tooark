@@ -9,6 +9,11 @@ public partial class Contract
 {
   #region Formatters
   /// <summary>
+  /// Valor de comparação para double com precisão de 10^-10 (0.0000000001).
+  /// </summary>
+  private static readonly double doubleEpsilon = 1e-10;
+
+  /// <summary>
   /// Função para formatar para tipo double.
   /// </summary>
   /// <param name="value">Valor a ser formatado.</param>
@@ -271,7 +276,7 @@ public partial class Contract
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract IsMin(double value, string property, string message) =>
-    Validate(value, double.MinValue, property, message, (v, c) => v != c);
+    Validate(value, double.MinValue, property, message, (v, c) => Math.Abs(v - c) >= doubleEpsilon);
   #endregion
 
   #region IsNotMin
@@ -292,7 +297,7 @@ public partial class Contract
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract IsNotMin(double value, string property, string message) =>
-    Validate(value, double.MinValue, property, message, (v, c) => v == c);
+    Validate(value, double.MinValue, property, message, (v, c) => Math.Abs(v - c) < doubleEpsilon);
   #endregion
 
   #region IsMax
@@ -313,7 +318,7 @@ public partial class Contract
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract IsMax(double value, string property, string message) =>
-    Validate(value, double.MaxValue, property, message, (v, c) => v != c);
+    Validate(value, double.MaxValue, property, message, (v, c) => Math.Abs(v - c) >= doubleEpsilon);
   #endregion
 
   #region IsNotMax
@@ -334,7 +339,7 @@ public partial class Contract
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract IsNotMax(double value, string property, string message) =>
-    Validate(value, double.MaxValue, property, message, (v, c) => v == c);
+    Validate(value, double.MaxValue, property, message, (v, c) => Math.Abs(v - c) < doubleEpsilon);
   #endregion
 
   #region AreEquals
@@ -359,7 +364,7 @@ public partial class Contract
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract AreEquals<T>(double value, T comparer, string property, string message) where T : IConvertible =>
-    Validate(value, comparer, property, message, (v, c) => v != c);
+    Validate(value, comparer, property, message, (v, c) => Math.Abs(v - c) >= doubleEpsilon);
   #endregion
 
   #region AreNotEquals
@@ -384,7 +389,7 @@ public partial class Contract
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract AreNotEquals<T>(double value, T comparer, string property, string message) where T : IConvertible =>
-    Validate(value, comparer, property, message, (v, c) => v == c);
+    Validate(value, comparer, property, message, (v, c) => Math.Abs(v - c) < doubleEpsilon);
   #endregion
 
   #region Contains
@@ -409,7 +414,7 @@ public partial class Contract
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract Contains<T>(double value, T[] list, string property, string message) where T : IConvertible =>
-    ValidateList(value, list, property, message, (v, l) => !l.Contains(v));
+    ValidateList(value, list, property, message, (v, l) => !l.Any(x => Math.Abs(v - x) < doubleEpsilon));
   #endregion
 
   #region NotContains
@@ -434,7 +439,7 @@ public partial class Contract
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract NotContains<T>(double value, T[] list, string property, string message) where T : IConvertible =>
-    ValidateList(value, list, property, message, (v, l) => l.Contains(v));
+    ValidateList(value, list, property, message, (v, l) => l.Any(x => Math.Abs(v - x) < doubleEpsilon));
   #endregion
 
   #region All
@@ -459,7 +464,7 @@ public partial class Contract
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract All<T>(double value, T[] list, string property, string message) where T : IConvertible =>
-    ValidateList(value, list, property, message, (v, l) => !l.All(x => x == v));
+    ValidateList(value, list, property, message, (v, l) => !l.All(x => Math.Abs(v - x) < doubleEpsilon));
   #endregion
 
   #region NotAll
@@ -484,7 +489,7 @@ public partial class Contract
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Contrato de validação.</returns>
   public Contract NotAll<T>(double value, T[] list, string property, string message) where T : IConvertible =>
-    ValidateList(value, list, property, message, (v, l) => l.All(x => x == v));
+    ValidateList(value, list, property, message, (v, l) => l.All(x => Math.Abs(v - x) < doubleEpsilon));
   #endregion
 
   #region IsNull

@@ -147,34 +147,42 @@ internal static partial class InternalNormalize
     return value;
   }
 
-  // Definições de expressões regulares para uso na normalização
   // Caracteres espaço para ser removido
   [GeneratedRegex(@"\s", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex SpaceRegex();
+  
   // Caracteres especiais substituir para C
   [GeneratedRegex("[Ç]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex CRegex();
+  
   // Caracteres especiais substituir para N
   [GeneratedRegex("[Ñ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex NRegex();
+  
   // Caracteres especiais substituir para Y
   [GeneratedRegex("[ŸÝ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex YRegex();
+  
   // Caracteres especiais substituir para A
   [GeneratedRegex("[ÂÄÀÅÁÃ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex ARegex();
+  
   // Caracteres especiais substituir para E
   [GeneratedRegex("[ÉÊËÈ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex ERegex();
+  
   // Caracteres especiais substituir para I
   [GeneratedRegex("[ÏÎÌÍ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex IRegex();
+  
   // Caracteres especiais substituir para O
   [GeneratedRegex("[ÔÖÒÓÕ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex ORegex();
+  
   // Caracteres especiais substituir para U
   [GeneratedRegex("[ÜÛÙÚ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex URegex();
+  
   // Caracteres que não são numéricos e letras maiúscula para ser removido
   [GeneratedRegex("[^0-9A-Z]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex AcceptRegex();
