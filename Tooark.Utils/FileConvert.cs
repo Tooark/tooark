@@ -60,28 +60,24 @@ internal static class InternalFileConvert
   /// <returns>Retorna um <see cref="MemoryStream"/>.</returns>
   internal static MemoryStream? ToMemoryStream(string? file)
   {
-    // Verifica se o arquivo é nulo ou vazio
-    if (!string.IsNullOrEmpty(file))
+    // Verifica se o arquivo é nulo ou vazio, e se o arquivo contém a palavra base64
+    if (!string.IsNullOrEmpty(file) && file.Contains("base64,", StringComparison.OrdinalIgnoreCase))
     {
-      // Verifica se o arquivo contém a palavra base64
-      if (file.Contains("base64,", StringComparison.OrdinalIgnoreCase))
+      try
       {
-        try
-        {
-          // Pega a string do arquivo
-          var fileString = file[(file.LastIndexOf(',') + 1)..];
+        // Pega a string do arquivo
+        var fileString = file[(file.LastIndexOf(',') + 1)..];
 
-          // Converte a string para byte
-          byte[] byteArray = Convert.FromBase64String(fileString);
+        // Converte a string para byte
+        byte[] byteArray = Convert.FromBase64String(fileString);
 
-          // Retorna o arquivo em MemoryStream
-          return new MemoryStream(byteArray);
-        }
-        catch
-        {
-          // Retorna nulo caso ocorra um erro
-          return null;
-        }
+        // Retorna o arquivo em MemoryStream
+        return new MemoryStream(byteArray);
+      }
+      catch
+      {
+        // Retorna nulo caso ocorra um erro
+        return null;
       }
     }
 
@@ -120,22 +116,18 @@ internal static class InternalFileConvert
   /// <returns>Retorna a extensão do arquivo.</returns>
   internal static string? Extension(string? file)
   {
-    // Verifica se o arquivo é nulo ou vazio
-    if (!string.IsNullOrEmpty(file))
+    // Verifica se o arquivo é nulo ou vazio, e se o arquivo contém a palavra base64
+    if (!string.IsNullOrEmpty(file) && file.Contains("base64,", StringComparison.OrdinalIgnoreCase))
     {
-      // Verifica se o arquivo contém a palavra base64
-      if (file.Contains("base64,", StringComparison.OrdinalIgnoreCase))
-      {
-        // Pega a posição da barra e o tamanho da extensão
-        var position = file.IndexOf('/') + 1;
-        var length = file.IndexOf(';') - position;
+      // Pega a posição da barra e o tamanho da extensão
+      var position = file.IndexOf('/') + 1;
+      var length = file.IndexOf(';') - position;
 
-        // Verifica se a posição é maior ou igual a 0 e o tamanho é maior que 0
-        if (position >= 0 && length > 0)
-        {
-          // Retorna a extensão do arquivo
-          return file.Substring(position, length).ToUpperInvariant();
-        }
+      // Verifica se a posição é maior ou igual a 0 e o tamanho é maior que 0
+      if (position >= 0 && length > 0)
+      {
+        // Retorna a extensão do arquivo
+        return file.Substring(position, length).ToUpperInvariant();
       }
     }
 

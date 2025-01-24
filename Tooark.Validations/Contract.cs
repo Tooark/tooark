@@ -7,6 +7,7 @@ namespace Tooark.Validations;
 /// </summary>
 public partial class Contract : Notification
 {
+  #region Default Contract
   /// <summary>
   /// Juntar mais de uma notificação
   /// </summary>
@@ -24,7 +25,7 @@ public partial class Contract : Notification
     foreach (var notification in notifications)
     {
       // Se a notificação for inválida, adiciona a notificação
-      if (notification.IsValid == false)
+      if (!notification.IsValid)
       {
         // Adiciona a notificação
         AddNotifications(notification);
@@ -34,6 +35,7 @@ public partial class Contract : Notification
     // Retorna a instância atual
     return this;
   }
+  #endregion
 
   #region Validates
   /// <summary>
@@ -47,7 +49,7 @@ public partial class Contract : Notification
   private Contract ValidateNull<T>(T? value, bool returnAwait, string property, string message)
   {
     // Se a condição for verdadeira, adicione a notificação.
-    if (value == null == returnAwait)
+    if (EqualityComparer<T>.Default.Equals(value, default) == returnAwait)
     {
       // Adiciona a notificação.
       AddNotification(message, property);

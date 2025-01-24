@@ -1,6 +1,9 @@
 namespace Tooark.Validations.Patterns;
 
-public class RegexPattern
+/// <summary>
+/// Classe estática que fornece padrões de expressões regulares.
+/// </summary>
+public static class RegexPattern
 {
   #region Documents
   /// <summary>
