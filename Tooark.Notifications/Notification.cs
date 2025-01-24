@@ -84,17 +84,18 @@ public abstract class Notification
   }
 
   /// <summary>
-  /// Adiciona uma nova notificação à lista de notificações.
+  /// Adiciona uma coleção de notificações à lista de notificações.
   /// </summary>
+  /// <param name="property">Propriedade que gerou a notificação.</param>
   /// <param name="message">Mensagem da notificação.</param>
-  public void AddNotification(string message) => AddNotification(message, null);
+  public void AddNotification(Type property, string message) => AddNotification(message, property?.Name ?? string.Empty);
 
   /// <summary>
   /// Adiciona uma nova notificação à lista de notificações.
   /// </summary>
   /// <param name="key">Chave da notificação.</param>
-  /// <param name="message">Mensagem da notificação. Padrão é nulo.</param>
-  public void AddNotification(string message, string? key = null)
+  /// <param name="message">Mensagem da notificação.</param>
+  public void AddNotification(string message, string key)
   {
     // Verifica se a mensagem é nula ou vazia
     if (string.IsNullOrEmpty(message))
@@ -109,13 +110,6 @@ public abstract class Notification
     // Adiciona a nova instância à lista de notificações
     _notifications.Add(notification);
   }
-
-  /// <summary>
-  /// Adiciona uma coleção de notificações à lista de notificações.
-  /// </summary>
-  /// <param name="property">Propriedade que gerou a notificação.</param>
-  /// <param name="message">Mensagem da notificação.</param>
-  public void AddNotification(Type property, string message) => AddNotification(message, property?.Name);
 
   /// <summary>
   /// Adiciona uma coleção de notificações à lista de notificações.

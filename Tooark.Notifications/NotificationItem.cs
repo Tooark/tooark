@@ -1,4 +1,6 @@
-﻿namespace Tooark.Notifications;
+﻿using Tooark.Notifications.Messages;
+
+namespace Tooark.Notifications;
 
 /// <summary>
 /// Representa a estrutura de uma notificação.
@@ -10,12 +12,12 @@ public class NotificationItem(string message, string key = "Unknown")
   /// <summary>
   /// A chave privada da notificação.
   /// </summary>
-  private readonly string _key = key != null ? key.Trim().Replace(" ", string.Empty) : "Unknown";
+  private readonly string _key = key?.Trim()?.Replace(" ", string.Empty) ?? "Unknown";
 
   /// <summary>
   /// A mensagem privada da notificação.
   /// </summary>
-  private readonly string _message = message?.Trim() ?? "Unknown";
+  private readonly string _message = message?.Trim() ?? NotificationErrorMessages.MessageUnknown;
 
 
   /// <summary>

@@ -231,23 +231,6 @@ public class NotificationTests
     Assert.Equal("Notifications.NotificationNull", notification.Notifications.First().Message);
   }
 
-  // Testa o retorno da mensagem padrão ao adicionar notificação com mensagem nula ou vazia
-  [Fact]
-  public void Should_ReturnMessageDefaultMessageNullEmpty_WhenAddingNullOrEmptyMessage()
-  {
-    // Arrange
-    var notificationNull = new TestNotification();
-    var notificationEmpty = new TestNotification();
-
-    // Act
-    notificationNull.AddNotification((string)null!);
-    notificationEmpty.AddNotification("");
-
-    // Assert
-    Assert.Equal("Notifications.MessageNullEmpty", notificationNull.Notifications.First().Message);
-    Assert.Equal("Notifications.MessageNullEmpty", notificationEmpty.Notifications.First().Message);
-  }
-
   // Testa o retorno da mensagem padrão ao adicionar notificação com mensagem nula ou vazia com Type Property
   [Fact]
   public void Should_ReturnMessageDefaultMessageNullEmpty_WhenAddingNotificationWithNullOrEmptyMessageAndProperty()

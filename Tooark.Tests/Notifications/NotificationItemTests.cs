@@ -91,7 +91,7 @@ public class NotificationItemTests
     var notification = new NotificationItem(message);
 
     // Assert
-    Assert.Equal("Unknown", notification.Message);
+    Assert.Equal("Notifications.MessageUnknown", notification.Message);
     Assert.Equal("Unknown", notification.Key);
   }
 
