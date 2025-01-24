@@ -9,6 +9,11 @@ public static class NotificationErrorMessages
   /// Mensagem de erro para quando a mensagem da notificação é nula ou vazia.
   /// </summary>
   public const string MessageIsNullOrEmpty = "Notifications.MessageNullEmpty";
+  
+  /// <summary>
+  /// Mensagem de erro para quando a mensagem da notificação é desconhecida.
+  /// </summary>
+  public const string MessageUnknown = "Notifications.MessageUnknown";
 
   /// <summary>
   /// Mensagem de erro para quando a notificação é nula.
