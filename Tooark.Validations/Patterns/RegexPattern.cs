@@ -131,6 +131,11 @@ public static class RegexPattern
   /// Padrão de Cultura para Internacionalização.
   /// </summary>
   public readonly static string Culture = @"^[a-z]{2}-[A-Z]{2}$";
+
+  /// <summary>
+  /// Padrão de Cultura para Internacionalização (Ignorando Case Sensitivity).
+  /// </summary>
+  public readonly static string CultureIgnoreCase = @"^[a-zA-Z]{2}-[a-zA-Z]{2}$";
   #endregion
 
   #region Protocols

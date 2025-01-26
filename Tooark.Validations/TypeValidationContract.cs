@@ -238,4 +238,25 @@ public partial class Contract
   public Contract IsCulture(string value, string property, string message) =>
     Match(value, RegexPattern.Culture, property, message);
   #endregion
+
+  #region IsCultureIgnoreCase
+  /// <summary>
+  /// Verifica se o valor corresponde ao formato do idioma para Cultura (Ignorando Case Sensitivity). Com mensagem padrão.
+  /// </summary>
+  /// <param name="value">Valor a ser validado.</param>
+  /// <param name="property">Propriedade a ser validada.</param>
+  /// <returns>Contrato de validação.</returns>
+  public Contract IsCultureIgnoreCase(string value, string property) =>
+    IsCultureIgnoreCase(value, property, ValidationErrorMessages.IsValid(property, "CultureIgnoreCase"));
+
+  /// <summary>
+  /// Verifica se o valor corresponde ao formato do idioma para Cultura (Ignorando Case Sensitivity).
+  /// </summary>
+  /// <param name="value">Valor a ser validado.</param>
+  /// <param name="property">Propriedade a ser validada.</param>
+  /// <param name="message">Mensagem de erro.</param>
+  /// <returns>Contrato de validação.</returns>
+  public Contract IsCultureIgnoreCase(string value, string property, string message) =>
+    Match(value, RegexPattern.CultureIgnoreCase, property, message);
+  #endregion
 }
