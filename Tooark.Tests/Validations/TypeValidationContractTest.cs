@@ -268,8 +268,8 @@ public class TypeValidationContractTest
   [Theory]
   [InlineData("abc")]
   [InlineData("ABC")]
-  [InlineData("123")]  
-  [InlineData("aA1")]  
+  [InlineData("123")]
+  [InlineData("aA1")]
   public void IsHexadecimal_ShouldNotAddNotification_WhenValueIsHexadecimal(string valueParam)
   {
     // Arrange
@@ -419,7 +419,7 @@ public class TypeValidationContractTest
   }
 
   // Teste para validar se o valor corresponde ao padrão e cria notificação, com valor que não corresponde
-  [Theory]  
+  [Theory]
   [InlineData("pt-br")]
   [InlineData("PT-br")]
   [InlineData("PT-BR")]
@@ -459,6 +459,52 @@ public class TypeValidationContractTest
 
     // Act
     contract.IsCulture(value, property);
+
+    // Assert
+    Assert.Empty(contract.Notifications);
+  }
+
+  // Teste para validar se o valor corresponde ao padrão e cria notificação, com valor que não corresponde
+  [Theory]
+  [InlineData("12-12")]
+  [InlineData("ptbr")]
+  [InlineData("ptBR")]
+  [InlineData("PTBR")]
+  [InlineData("pt")]
+  [InlineData("PT")]
+  [InlineData("")]
+  [InlineData(null)]
+  public void IsCultureIgnoreCase_ShouldAddNotification_WhenValueNotIsCultureIgnoreCase(string? valueParam)
+  {
+    // Arrange
+    var property = "TestProperty";
+    var contract = new Contract();
+    string value = valueParam!;
+
+    // Act
+    contract.IsCultureIgnoreCase(value, property);
+
+    // Assert
+    Assert.Single(contract.Notifications);
+    Assert.Equal(property, contract.Notifications.First().Key);
+  }
+
+  // Teste para validar se o valor corresponde ao padrão e não cria notificação, com valor que corresponde
+  [Theory]
+  [InlineData("aa-AA")]
+  [InlineData("pt-BR")]
+  [InlineData("pt-br")]
+  [InlineData("PT-br")]
+  [InlineData("PT-BR")]
+  public void IsCultureIgnoreCase_ShouldNotAddNotification_WhenValueIsCultureIgnoreCase(string valueParam)
+  {
+    // Arrange
+    var property = "TestProperty";
+    var contract = new Contract();
+    string value = valueParam;
+
+    // Act
+    contract.IsCultureIgnoreCase(value, property);
 
     // Assert
     Assert.Empty(contract.Notifications);

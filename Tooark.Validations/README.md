@@ -251,6 +251,7 @@ A biblioteca `Tooark.Validations` oferece uma ampla gama de métodos de validaç
 - `IsCpfRg`: Validação de CPF ou RG.
 - `IsCpfRgCnh`: Validação de CPF, RG ou CNH.
 - `IsCulture` Validação de Cultura.
+- `IsCultureIgnoreCase` Validação de Cultura ignorando maiúsculas e minúsculas.
 - `IsEmail`: Validação de e-mail.
 - `IsEmailDomain`: Validação de domínio de e-mail.
 - `IsEmailDomainOrEmpty`: Validação de domínio de e-mail ou vazio.
