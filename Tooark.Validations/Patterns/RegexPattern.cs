@@ -123,7 +123,7 @@ public static class RegexPattern
   public readonly static string Base64 = @"^data:(?<mime>.+?);base64,(?<data>.+)$";
 
   /// <summary>
-  /// Padrão de Senha Complexa.
+  /// Padrão de Senha Complexa. Exige carácter minúsculo, maiúsculo, numérico e especial e tamanho mínimo de 8.
   /// </summary>
   public readonly static string Password = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&*()\-_+\=\[\]{}\/?;:.>,<|\\]).{8,}$";
 
