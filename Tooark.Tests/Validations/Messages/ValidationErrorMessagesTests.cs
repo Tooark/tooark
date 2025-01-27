@@ -2,7 +2,7 @@ using Tooark.Validations.Messages;
 
 namespace Tooark.Tests.Validations.Messages;
 
-public class ValidationErrorMessagesTest
+public class ValidationErrorMessagesTests
 {
   // Testa se a mensagem correta é retornada quando a validação de BooleanIsFalse falha
   [Theory]
