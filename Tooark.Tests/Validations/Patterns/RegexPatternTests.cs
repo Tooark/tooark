@@ -3,7 +3,7 @@ using Tooark.Validations.Patterns;
 
 namespace Tooark.Tests.Validations.Patterns;
 
-public class RegexPatternTest
+public class RegexPatternTests
 {
   // Teste de padrão CPF.
   [Theory]

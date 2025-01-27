@@ -3,7 +3,7 @@ using Tooark.Validations;
 
 namespace Tooark.Tests.Validations;
 
-public class RegexValidationContractTest
+public class RegexValidationContractTests
 {
   // Teste para validar se o valor corresponde ao padrão e cria notificação, com valor que não corresponde
   [Fact]

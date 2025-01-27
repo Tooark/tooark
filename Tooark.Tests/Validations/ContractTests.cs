@@ -3,7 +3,7 @@ using Tooark.Validations;
 
 namespace Tooark.Tests.Validations;
 
-public class ContractTest
+public class ContractTests
 {
   // Teste de Join com notificações nulas
   [Fact]
