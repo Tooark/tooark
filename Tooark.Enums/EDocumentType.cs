@@ -1,51 +1,51 @@
 using Tooark.Validations.Patterns;
 
-namespace Tooark.ValueObjects;
+namespace Tooark.Enums;
 
 /// <summary>
 /// Representa um tipo de documento.
 /// </summary>
-public sealed class DocumentType
+public sealed class EDocumentType
 {
   /// <summary>
   /// Documento do tipo "None".
   /// </summary>
-  public static readonly DocumentType None = new(0, "None", @"^[a-zA-Z0-9.-]*$");
+  public static readonly EDocumentType None = new(0, "None", @"^[a-zA-Z0-9.-]*$");
 
   /// <summary>
   /// Documento do tipo "CPF".
   /// </summary>
-  public static readonly DocumentType CPF = new(1, "CPF", RegexPattern.Cpf);
+  public static readonly EDocumentType CPF = new(1, "CPF", RegexPattern.Cpf);
 
   /// <summary>
   /// Documento do tipo "RG".
   /// </summary>
-  public static readonly DocumentType RG = new(2, "RG", RegexPattern.Rg);
+  public static readonly EDocumentType RG = new(2, "RG", RegexPattern.Rg);
 
   /// <summary>
   /// Documento do tipo "CNH".
   /// </summary>
-  public static readonly DocumentType CNH = new(3, "CNH", RegexPattern.Cnh);
+  public static readonly EDocumentType CNH = new(3, "CNH", RegexPattern.Cnh);
 
   /// <summary>
   /// Documento do tipo "CNPJ".
   /// </summary>
-  public static readonly DocumentType CNPJ = new(4, "CNPJ", RegexPattern.Cnpj);
+  public static readonly EDocumentType CNPJ = new(4, "CNPJ", RegexPattern.Cnpj);
 
   /// <summary>
   /// Documento do tipo "CPF" ou "CNPJ".
   /// </summary>
-  public static readonly DocumentType CPF_CNPJ = new(5, "CPF_CNPJ", RegexPattern.CpfCnpj);
+  public static readonly EDocumentType CPF_CNPJ = new(5, "CPF_CNPJ", RegexPattern.CpfCnpj);
 
   /// <summary>
   /// Documento do tipo "CPF" ou "RG".
   /// </summary>
-  public static readonly DocumentType CPF_RG = new(6, "CPF_RG", RegexPattern.CpfRg);
+  public static readonly EDocumentType CPF_RG = new(6, "CPF_RG", RegexPattern.CpfRg);
 
   /// <summary>
   /// Documento do tipo "CPF", "RG" ou "CNH".
   /// </summary>
-  public static readonly DocumentType CPF_RG_CNH = new(7, "CPF_RG_CNH", RegexPattern.CpfRgCnh);
+  public static readonly EDocumentType CPF_RG_CNH = new(7, "CPF_RG_CNH", RegexPattern.CpfRgCnh);
 
 
   /// <summary>
@@ -54,8 +54,8 @@ public sealed class DocumentType
   /// <param name="id">Id do tipo de documento.</param>
   /// <param name="description">Descrição do tipo de documento.</param>
   /// <param name="patternRegex">Padrão de regex do tipo de documento.</param>
-  /// <returns>Uma nova instância de <see cref="DocumentType"/>.</returns>
-  private DocumentType(int id, string description, string patternRegex)
+  /// <returns>Uma nova instância de <see cref="EDocumentType"/>.</returns>
+  private EDocumentType(int id, string description, string patternRegex)
   {
     Id = id;
     Description = description;
@@ -83,8 +83,8 @@ public sealed class DocumentType
   /// Função que retorna um tipo de documento a partir de sua descrição.
   /// </summary>
   /// <param name="description">Descrição do tipo de documento.</param>
-  /// <returns>Uma instância de <see cref="DocumentType"/>.</returns>
-  private static DocumentType FromDescription(string description) => description?.ToUpperInvariant() switch
+  /// <returns>Uma instância de <see cref="EDocumentType"/>.</returns>
+  private static EDocumentType FromDescription(string description) => description?.ToUpperInvariant() switch
   {
     "CPF" => CPF,
     "RG" => RG,
@@ -100,8 +100,8 @@ public sealed class DocumentType
   /// Função que retorna um tipo de documento a partir de seu id.
   /// </summary>
   /// <param name="id">Id do tipo de documento.</param>
-  /// <returns>Uma instância de <see cref="DocumentType"/>.</returns>
-  private static DocumentType FromId(int id) => id switch
+  /// <returns>Uma instância de <see cref="EDocumentType"/>.</returns>
+  private static EDocumentType FromId(int id) => id switch
   {
     1 => CPF,
     2 => RG,
@@ -133,30 +133,30 @@ public sealed class DocumentType
   public string ToRegex() => PatternRegex;
 
   /// <summary>
-  /// Conversão implícita de <see cref="DocumentType"/> para <see cref="int"/>.
+  /// Conversão implícita de <see cref="EDocumentType"/> para <see cref="int"/>.
   /// </summary>
-  /// <param name="document">Instância de <see cref="DocumentType"/>.</param>
+  /// <param name="document">Instância de <see cref="EDocumentType"/>.</param>
   /// <returns>Id do tipo de documento.</returns>
-  public static implicit operator int(DocumentType document) => document.Id;
+  public static implicit operator int(EDocumentType document) => document.Id;
 
   /// <summary>
-  /// Conversão implícita de <see cref="DocumentType"/> para <see cref="string"/>.
+  /// Conversão implícita de <see cref="EDocumentType"/> para <see cref="string"/>.
   /// </summary>
-  /// <param name="document">Instância de <see cref="DocumentType"/>.</param>
+  /// <param name="document">Instância de <see cref="EDocumentType"/>.</param>
   /// <returns>Descrição do tipo de documento.</returns>
-  public static implicit operator string(DocumentType document) => document.Description;
+  public static implicit operator string(EDocumentType document) => document.Description;
 
   /// <summary>
-  /// Conversão implícita de <see cref="int"/> para <see cref="DocumentType"/>.
+  /// Conversão implícita de <see cref="int"/> para <see cref="EDocumentType"/>.
   /// </summary>
   /// <param name="id">Id do tipo de documento.</param>
-  /// <returns>Uma instância de <see cref="DocumentType"/>.</returns>
-  public static implicit operator DocumentType(int id) => FromId(id);
+  /// <returns>Uma instância de <see cref="EDocumentType"/>.</returns>
+  public static implicit operator EDocumentType(int id) => FromId(id);
 
   /// <summary>
-  /// Conversão implícita de <see cref="string"/> para <see cref="DocumentType"/>.
+  /// Conversão implícita de <see cref="string"/> para <see cref="EDocumentType"/>.
   /// </summary>
   /// <param name="description">Descrição do tipo de documento.</param>
-  /// <returns>Uma instância de <see cref="DocumentType"/>.</returns>
-  public static implicit operator DocumentType(string description) => FromDescription(description);
+  /// <returns>Uma instância de <see cref="EDocumentType"/>.</returns>
+  public static implicit operator EDocumentType(string description) => FromDescription(description);
 }

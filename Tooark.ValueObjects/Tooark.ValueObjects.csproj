@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
+    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
   </ItemGroup>
 
 </Project>
