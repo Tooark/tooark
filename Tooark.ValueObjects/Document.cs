@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Tooark.Validations;
 
 namespace Tooark.ValueObjects;
@@ -80,6 +81,7 @@ public sealed class Document : ValueObject
       // Verifica se o valor é um CNH, CNPJ, CPF ou RG
       return type.ToString() switch
       {
+        "None" => Regex.IsMatch(value, type.ToRegex(), RegexOptions.None, TimeSpan.FromMilliseconds(300)),
         "CPF" => Cpf.Validate(value),
         "RG" => Rg.Validate(value),
         "CNH" => Cnh.Validate(value),
