@@ -5,33 +5,27 @@ namespace Tooark.Tests.ValueObjects;
 
 public class EmailDomainTests
 {
-  // Testa se o construtor da classe EmailDomain cria um objeto válido a partir de um domínio de email válido
+  // Testa se o domínio de email é válido a partir de um domínio de email válido
   [Theory]
   [InlineData("@example.com")] // EmailDomain válido
   [InlineData("@exa-ple.com")] // EmailDomain válido
-  [InlineData("@example.com.br")] // EmailDomain válido
-  [InlineData("@exa-ple.com.br")] // EmailDomain válido
-  public void Constructor_CreateValidEmailDomain_WhenGivenValidAddress(string domain)
+  [InlineData("@EXAMPLE.COM")] // EmailDomain válido
+  [InlineData("@EXA-PLE.COM")] // EmailDomain válido
+  public void EmailDomain_ShouldBeValid_WhenGivenValidEmailDomain(string domainParam)
   {
-    // Arrange
-    var validEmailDomain = domain;
-
     // Arrange & Act
-    EmailDomain emailDomain = new(validEmailDomain);
+    EmailDomain domain = new(domainParam);
 
     // Assert
-    Assert.Equal(validEmailDomain, emailDomain.Value);
-    Assert.Equal(validEmailDomain, (string)emailDomain);
+    Assert.True(domain.IsValid);
+    Assert.Equal(domainParam.ToLowerInvariant().Trim(), domain.Value);
   }
 
-  // Testa se o construtor da classe EmailDomain lança uma exceção de argumento inválido a partir de domínio de email inválido
+  // Testa se o domínio de email é inválido a partir de um domínio de email inválido
   [Theory]
-  [InlineData("teste@example.com")] // EmailDomain iniciado com parâmetro de email válido
-  [InlineData("te.te@example.com")] // EmailDomain iniciado com parâmetro de email válido
-  [InlineData("te-te@example.com")] // EmailDomain iniciado com parâmetro de email válido
-  [InlineData("te_te@example.com")] // EmailDomain iniciado com parâmetro de email válido
-  [InlineData("teste@.")] // Domínio com apenas .
-  [InlineData("test@example@.com")] // Domínio com @
+  [InlineData("test@example.com")] // Endereço de email
+  [InlineData("@.")] // Domínio com apenas .
+  [InlineData("@example@.com")] // Domínio com @
   [InlineData("@.example.com")] // Domínio iniciado com .
   [InlineData("@-example.com")] // Domínio iniciado com -
   [InlineData("@_example.com")] // Domínio iniciado com _
@@ -41,99 +35,69 @@ public class EmailDomainTests
   [InlineData("@exa#ple.com")] // Domínio que carácter especial #
   [InlineData("@exa$ple.com")] // Domínio que carácter especial $
   [InlineData("@exaçple.com")] // Domínio que carácter especial ç
-  [InlineData("@example.-com")] // Domínio iniciado com -
-  [InlineData("@example._com")] // Domínio iniciado com _
-  [InlineData("@example.com-")] // Domínio terminado com -
-  [InlineData("@example.com_")] // Domínio terminado com _
-  [InlineData("@example.com.")] // Domínio terminado com .
-  [InlineData("@example..com")] // Domínio com dois .
+  [InlineData("@example.-com")] // Extensão iniciado com -
+  [InlineData("@example._com")] // Extensão iniciado com _
+  [InlineData("@example.com-")] // Extensão terminado com -
+  [InlineData("@example.com_")] // Extensão terminado com _
+  [InlineData("@example.com.")] // Extensão terminado com .
+  [InlineData("@exaple..com")] // Domínio com dois .
   [InlineData("@example")] // Domínio sem extensão
   [InlineData("@.com")] // Domínio ausente apenas extensão
-  [InlineData("@.")] // Domínio com apenas ponto
-  [InlineData("@")] // Domínio ausente
+  [InlineData("@")] // Domínio e extensão ausentes
   [InlineData("")] // EmailDomain vazio
   [InlineData(null)] // EmailDomain nulo
-  public void Constructor_ThrowsAppException_WhenGivenInvalidDomain(string? domain)
+  public void EmailDomain_ShouldBeInvalid_WhenGivenInvalidEmailDomain(string? domainParam)
   {
-    // Arrange
-    var invalidEmailDomain = domain;
-
-    // Act
-    var exception = Assert.Throws<AppException>(() => new EmailDomain(invalidEmailDomain!));
+    // Arrange & Act
+    var domain = new EmailDomain(domainParam!);
 
     // Assert
-    Assert.Equal("Field.Invalid;EmailDomain", exception.Message);
+    Assert.False(domain.IsValid);
+    Assert.Null(domain.Value);
   }
 
-  // Testa se o construtor da classe EmailDomain lança uma exceção de argumento inválido a partir de um domínio de email nulo
+  // Testa se o método ToString retorna o domínio de email
   [Fact]
-  public void Constructor_ThrowsAppException_WhenGivenNullDomain()
+  public void EmailDomain_ShouldReturnCorrectStringRepresentation()
   {
     // Arrange
-    string nullEmailDomain = null!;
+    var validEmailDomain = "@example.com";
+    var domain = new EmailDomain(validEmailDomain);
 
     // Act
-    var exception = Assert.Throws<AppException>(() => new EmailDomain(nullEmailDomain));
+    var domainString = domain.ToString();
 
     // Assert
-    Assert.Equal("Field.Invalid;EmailDomain", exception.Message);
+    Assert.Equal(validEmailDomain.ToLowerInvariant().Trim(), domainString);
   }
 
-  // Testa se o construtor da classe EmailDomain lança uma exceção de argumento inválido a partir de um domínio de email vazio
+  // Testa se o domínio de email está sendo convertido para string implicitamente
   [Fact]
-  public void Constructor_ThrowsAppException_WhenGivenEmptyDomain()
+  public void EmailDomain_ShouldConvertToStringImplicitly()
   {
     // Arrange
-    var emptyEmailDomain = "";
+    var validEmailDomain = "@example.com";
+    var domain = new EmailDomain(validEmailDomain);
 
     // Act
-    var exception = Assert.Throws<AppException>(() => new EmailDomain(emptyEmailDomain));
+    string domainString = domain;
 
     // Assert
-    Assert.Equal("Field.Invalid;EmailDomain", exception.Message);
+    Assert.Equal(validEmailDomain.ToLowerInvariant().Trim(), domainString);
   }
 
-  // Testa se o método ToString retorna o valor do domínio de email
+  // Testa se o domínio de email está sendo convertido de string implicitamente
   [Fact]
-  public void ToString_ShouldReturnValue()
+  public void EmailDomain_ShouldConvertFromStringImplicitly()
   {
     // Arrange
     var validEmailDomain = "@example.com";
 
     // Act
-    var email = new EmailDomain(validEmailDomain);
-    var result = email.ToString();
+    EmailDomain domain = validEmailDomain;
 
     // Assert
-    Assert.Equal(validEmailDomain, result);
-  }
-
-  // Testa se o operador implícito de conversão de string para EmailDomain funciona corretamente
-  [Fact]
-  public void ImplicitOperator_ConvertsStringToEmailDomain()
-  {
-    // Arrange
-    var validEmailDomain = "@example.com";
-
-    // Act
-    EmailDomain email = validEmailDomain;
-
-    // Assert
-    Assert.Equal(validEmailDomain, email.Value);
-    Assert.Equal(validEmailDomain, (string)email);
-  }
-
-  // Testa se o operador implícito de conversão de EmailDomain para string funciona corretamente
-  [Fact]
-  public void ImplicitOperator_ConvertsEmailDomainToString()
-  {
-    // Arrange
-    string validEmailDomain = "@example.com";
-
-    // Act
-    string email = new EmailDomain(validEmailDomain);
-
-    // Assert
-    Assert.Equal(validEmailDomain, email);
+    Assert.True(domain.IsValid);
+    Assert.Equal(validEmailDomain.ToLowerInvariant().Trim(), domain.Value);
   }
 }

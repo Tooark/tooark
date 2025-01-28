@@ -1,127 +1,111 @@
 using Tooark.ValueObjects;
-using Tooark.Exceptions;
 
 namespace Tooark.Tests.ValueObjects;
 
 public class LanguageCodeTests
 {
-  // Teste de construtor com código válido
-  [Fact]
-  public void Constructor_WithValidCode_ShouldSetCode()
-  {
-    // Arrange
-    var validCode = "en-US";
-
-    // Act
-    var languageCode = new LanguageCode(validCode);
-
-    // Assert
-    Assert.Equal("en-US", languageCode.Code);
-  }
-
-  // Teste de construtor com código minúsculo
-  [Fact]
-  public void Constructor_WithLowerCode_ShouldSetCode()
-  {
-    // Arrange
-    var validCode = "en-us";
-
-    // Act
-    var languageCode = new LanguageCode(validCode);
-
-    // Assert
-    Assert.Equal("en-US", languageCode.Code);
-  }
-
-  // Teste de construtor com código maiúsculo
-  [Fact]
-  public void Constructor_WithUpperCode_ShouldSetCode()
-  {
-    // Arrange
-    var validCode = "EN-US";
-
-    // Act
-    var languageCode = new LanguageCode(validCode);
-
-    // Assert
-    Assert.Equal("en-US", languageCode.Code);
-  }
-
-  // Teste de construtor com código inválido por tamanho
+  // Teste de o código do idioma é válido a partir de um código de idioma válido
   [Theory]
-  [InlineData("enUS")]
+  [InlineData("en-us")]
+  [InlineData("en-uS")]
+  [InlineData("en-Us")]
+  [InlineData("en-US")]
+  [InlineData("eN-us")]
+  [InlineData("eN-uS")]
+  [InlineData("eN-Us")]
+  [InlineData("eN-US")]
+  [InlineData("En-us")]
+  [InlineData("En-uS")]
+  [InlineData("En-Us")]
+  [InlineData("En-US")]
+  [InlineData("EN-us")]
+  [InlineData("EN-uS")]
+  [InlineData("EN-Us")]
+  [InlineData("EN-US")]
+  public void LanguageCode_ShouldBeValid_WhenGivenValidCode(string codeParam)
+  {
+    // Arrange
+    var expectedCode = codeParam[..2].ToLowerInvariant() + "-" + codeParam[3..].ToUpperInvariant();
+    
+    // Act
+    var languageCode = new LanguageCode(codeParam);
+
+    // Assert
+    Assert.True(languageCode.IsValid);
+    Assert.Equal(expectedCode, languageCode.Code);
+  }
+
+  // Teste de o código do idioma é inválido a partir de um código de idioma inválido
+  [Theory]
   [InlineData("enus")]
-  [InlineData("ENUS")]
-  public void Constructor_InvalidLength_ShouldThrowException(string code)
-  {
-    // Arrange
-    var invalidCode = code;
-
-    // Act
-    var exception = Assert.Throws<AppException>(() => new LanguageCode(invalidCode));
-
-    // Assert
-    Assert.Equal("LanguageCode.ErrorLength;5", exception.Message);
-  }
-
-  // Teste de construtor com código inválido por formato
-  [Theory]
-  [InlineData("enUS-")]
   [InlineData("enus-")]
-  [InlineData("ENUS-")]
-  public void Constructor_InvalidFormat_ShouldThrowException(string code)
+  [InlineData("enu-s")]
+  [InlineData("e-nus")]
+  [InlineData("-enus")]
+  [InlineData("enus_")]
+  [InlineData("enu_s")]
+  [InlineData("en_us")]
+  [InlineData("e_nus")]
+  [InlineData("_enus")]
+  [InlineData("en")]
+  [InlineData("us")]
+  [InlineData("")]
+  [InlineData(null)]
+  public void LanguageCode_ShouldBeInvalid_WhenGivenInvalidLanguageCode(string? codeParam)
   {
-    // Arrange
-    var invalidCode = code;
-
-    // Act
-    var exception = Assert.Throws<AppException>(() => new LanguageCode(invalidCode));
+    // Arrange & Act
+    var languageCode = new LanguageCode(codeParam!);
 
     // Assert
-    Assert.Equal("LanguageCode.ErrorFormat", exception.Message);
+    Assert.False(languageCode.IsValid);
+    Assert.Null(languageCode.Code);
   }
 
-  // Teste do método ToString
+  // Testa se o método ToString retorna o código do idioma
   [Fact]
-  public void ToString_ShouldReturnCode()
+  public void LanguageCode_ShouldReturnCorrectStringRepresentation()
   {
     // Arrange
-    var validCode = "en-US";
-    var languageCode = new LanguageCode(validCode);
+    var code = "en-US";
+    var expectedCode = code[..2].ToLowerInvariant() + "-" + code[3..].ToUpperInvariant();
+    var languageCode = new LanguageCode(code);
 
     // Act
-    var result = languageCode.ToString();
+    var languageCodeString = languageCode.ToString();
 
     // Assert
-    Assert.Equal(validCode, result);
+    Assert.Equal(expectedCode, languageCodeString);
   }
 
-  // Teste de conversão implícita de LanguageCode para string
+  // Testa se o endereço de languageCode está sendo convertido para string implicitamente
   [Fact]
-  public void ImplicitConversion_ToString_ShouldReturnCode()
+  public void LanguageCode_ShouldConvertToStringImplicitly()
   {
     // Arrange
-    var validCode = "en-US";
-    var languageCode = new LanguageCode(validCode);
+    var code = "en-US";
+    var expectedCode = code[..2].ToLowerInvariant() + "-" + code[3..].ToUpperInvariant();
+    var languageCode = new LanguageCode(code);
 
     // Act
-    string result = languageCode;
+    string languageCodeString = languageCode;
 
     // Assert
-    Assert.Equal(validCode, result);
+    Assert.Equal(expectedCode, languageCodeString);
   }
 
-  // Teste de conversão implícita de string para LanguageCode
+  // Testa se o endereço de languageCode está sendo convertido de string implicitamente
   [Fact]
-  public void ImplicitConversion_FromString_ShouldCreateLanguageCode()
+  public void LanguageCode_ShouldConvertFromStringImplicitly()
   {
     // Arrange
-    var validCode = "en-US";
+    var code = "en-US";
+    var expectedCode = code[..2].ToLowerInvariant() + "-" + code[3..].ToUpperInvariant();
 
     // Act
-    LanguageCode languageCode = validCode;
+    LanguageCode languageCode = code;
 
     // Assert
-    Assert.Equal(validCode, languageCode.Code);
+    Assert.True(languageCode.IsValid);
+    Assert.Equal(expectedCode, languageCode.Code);
   }
 }

@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>Tooark.ValueObjects</PackageId>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <Company>Tooark</Company>
+    <PackageDescription>Package for creating predefined and validated Value Objects</PackageDescription>
+    <Description>Library for value object types that already have a predefined and validated</Description>
+    <PackageIcon>icon.jpg</PackageIcon>
+    <PackageTags>toolkit</PackageTags>
+    <Title>Tooark</Title>
+    <Summary>Managing value objects</Summary>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Media\icon.jpg" Pack="true" PackagePath="\" />
+    <None Update="Resources\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
+  </ItemGroup>
+
+</Project>

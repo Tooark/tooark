@@ -5,123 +5,165 @@ namespace Tooark.Tests.ValueObjects;
 
 public class PasswordTests
 {
-  // Testa o construtor da classe Password com uma senha válida
-  [Fact]
-  public void Constructor_ValidPassword_ShouldCreatePassword()
+  // Testa se a senha é válida a partir de uma senha válida
+  [Theory]
+  [InlineData("zzZZ11##")]
+  [InlineData("ZZzz11##")]
+  [InlineData("11zzZZ##")]
+  [InlineData("##zzZZ11")]
+  public void Password_ShouldBeValid_WhenGivenValidPassword(string valueParam)
   {
     // Arrange
-    var validPassword = "Senha@123";
+    var expectedValue = valueParam;
 
     // Act
-    Password password = new(validPassword);
+    Password password = new(valueParam);
 
     // Assert
-    Assert.Equal(validPassword, password.Value);
-    Assert.Equal(validPassword, (string)password);
+    Assert.True(password.IsValid);
+    Assert.Equal(expectedValue, password.Value);
   }
 
-  // Testa o construtor da classe Password com uma senha inválida
-  [Fact]
-  public void Constructor_InvalidPassword_ShouldThrowAppException()
+  // Testa se a senha é inválida a partir de uma senha inválida
+  [Theory]
+  [InlineData("z")]
+  [InlineData("Z")]
+  [InlineData("1")]
+  [InlineData("!")]
+  [InlineData("zZ")]
+  [InlineData("z1")]
+  [InlineData("z!")]
+  [InlineData("Z1")]
+  [InlineData("Z!")]
+  [InlineData("1!")]
+  [InlineData("zZ1")]
+  [InlineData("zZ!")]
+  [InlineData("z1!")]
+  [InlineData("Z1!")]
+  [InlineData("zZ1!")]
+  [InlineData("zZ1!Z1!")]
+  [InlineData("zZ1!z1!")]
+  [InlineData("zZ1!zZ!")]
+  [InlineData("zZ1!zZ1")]
+  [InlineData("")]
+  [InlineData(null)]
+  public void Password_ShouldBeInvalid_WhenGivenInvalidPassword(string? valueParam)
   {
-    // Arrange
-    var invalidPassword = "senha"; // Não atende aos critérios de complexidade
+    // Arrange & Act
+    var password = new Password(valueParam!);
 
-    // Act & Assert
-    var exception = Assert.Throws<AppException>(() => new Password(invalidPassword));
-    Assert.Equal("Field.Invalid;Password", exception.Message);
+    // Assert
+    Assert.False(password.IsValid);
+    Assert.Null(password.Value);
   }
 
-  // Testa o construtor da classe Password com uma senha vazia
-  [Fact]
-  public void Constructor_EmptyPassword_ShouldThrowAppException()
+  // Testa se a senha é válida a partir de uma senha válida para os parâmetros de validação
+  [Theory]
+  [InlineData("Senha@12", true, true, true, true, 8)] // Utiliza todos os parâmetros padrão
+  [InlineData("Senha123", true, true, true, false, 8)] // Permite não ter carácter especial
+  [InlineData("Senha!@#", true, true, false, true, 8)] // Permite não ter número
+  [InlineData("SenhaSen", true, true, false, false, 8)] // Permite não ter número e carácter especial
+  [InlineData("senha@12", true, false, true, true, 8)] // Permite não ter maiúscula
+  [InlineData("senha123", true, false, true, false, 8)] // Permite não ter maiúscula e carácter especial
+  [InlineData("senha!@#", true, false, false, true, 8)] // Permite não ter maiúscula e número
+  [InlineData("senhasen", true, false, false, false, 8)] // Permite não ter maiúscula, número e carácter especial
+  [InlineData("SENHA@12", false, true, true, true, 8)] // Permite não ter minúscula
+  [InlineData("SENHA123", false, true, true, false, 8)] // Permite não ter minúscula e carácter especial
+  [InlineData("SENHA!@#", false, true, false, true, 8)] // Permite não ter minúscula e número
+  [InlineData("SENHASEN", false, true, false, false, 8)] // Permite não ter minúscula, número e carácter especial
+  [InlineData("1234!@#$", false, false, true, true, 8)] // Permite não ter minúscula e maiúscula
+  [InlineData("12341234", false, false, true, false, 8)] // Permite não ter minúscula e maiúscula e carácter especial
+  [InlineData("!@#$!@#$", false, false, false, true, 8)] // Permite não ter minúscula e maiúscula e número
+  [InlineData("Senha@12", false, false, false, false, 8)] // Todos os parâmetros desativados, considera regra padrão
+  [InlineData("Senha@123", true, true, true, true, 9)] // Tamanho maior que o padrão
+  [InlineData("Senha@12", true, true, true, true, 7)] // Tamanho menor que o padrão, considera tamanho padrão
+  public void Password_ShouldBeValid_WhenGivenParams(string value, bool lower, bool upper, bool number, bool symbol, int length)
   {
     // Arrange
-    var emptyPassword = "";
-
-    // Act & Assert
-    var exception = Assert.Throws<AppException>(() => new Password(emptyPassword));
-    Assert.Equal("Field.Invalid;Password", exception.Message);
-  }
-
-  // Testa se o método ToString retorna o valor da senha
-  [Fact]
-  public void ToString_ShouldReturnValue()
-  {
-    // Arrange
-    var validPassword = "Senha@123";
+    var expectedValue = value;
 
     // Act
-    var password = new Password(validPassword);
-    var result = password.ToString();
+    Password password = new(value, lower, upper, number, symbol, length);
 
     // Assert
-    Assert.Equal(validPassword, result);
+    Assert.True(password.IsValid);
+    Assert.Equal(expectedValue, password.Value);
   }
 
-  // Testa o operador implícito de conversão de string para Password
+  // Testa se a senha é inválida a partir de uma senha inválida para os parâmetros de validação
+  [Theory]
+  [InlineData("!@#$!@#$", true, true, true, false, 8)] // Só permite não ter carácter especial
+  [InlineData("12341234", true, true, false, true, 8)] // Só permite não ter número
+  [InlineData("1234!@#$", true, true, false, false, 8)] // Só permite não ter número e carácter especial
+  [InlineData("SENHASEN", true, false, true, true, 8)] // Só permite não ter maiúscula
+  [InlineData("SENHA!@#", true, false, true, false, 8)] // Só permite não ter maiúscula e carácter especial
+  [InlineData("SENHA123", true, false, false, true, 8)] // Só permite não ter maiúscula e número
+  [InlineData("SENHA@12", true, false, false, false, 8)] // Só permite não ter maiúscula, número e carácter especial
+  [InlineData("senhasen", false, true, true, true, 8)] // Só permite não ter minúscula
+  [InlineData("senha!@#", false, true, true, false, 8)] // Só permite não ter minúscula e carácter especial
+  [InlineData("senha123", false, true, false, true, 8)] // Só permite não ter minúscula e número
+  [InlineData("senha@12", false, true, false, false, 8)] // Só permite não ter minúscula, número e carácter especial
+  [InlineData("senhaSEN", false, false, true, true, 8)] // Só permite não ter minúscula e maiúscula
+  [InlineData("Senha!@#", false, false, true, false, 8)] // Só permite não ter minúscula e maiúscula e carácter especial
+  [InlineData("Senha123", false, false, false, true, 8)] // Só permite não ter minúscula e maiúscula e número
+  [InlineData("", false, false, false, false, 8)] // Todos os parâmetros desativados, considera regra padrão
+  [InlineData("Senha@12", true, true, true, true, 9)] // Tamanho maior que o padrão
+  [InlineData("Senha@1", true, true, true, true, 7)] // Tamanho menor que o padrão, considera tamanho padrão
+  public void Password_ShouldBeInvalid_WhenGivenParams(string value, bool lower, bool upper, bool number, bool symbol, int length)
+  {
+    // Arrange & Act
+    Password password = new(value, lower, upper, number, symbol, length);
+
+    // Assert
+    Assert.False(password.IsValid);
+    Assert.Null(password.Value);
+  }
+
+// Testa se o método ToString retorna o código do idioma
   [Fact]
-  public void ImplicitOperator_StringToPassword_ShouldConvert()
+  public void Password_ShouldReturnCorrectStringRepresentation()
   {
     // Arrange
-    var validPassword = "Senha@123";
+    var passwordValue = "Senha@12";
+    var expectedCode = passwordValue;
+    var password = new Password(passwordValue);
 
     // Act
-    Password password = validPassword;
+    var passwordString = password.ToString();
 
     // Assert
-    Assert.Equal(validPassword, password.Value);
-    Assert.Equal(validPassword, (string)password);
+    Assert.Equal(expectedCode, passwordString);
   }
 
-  // Testa o operador implícito de conversão de Password para string
+  // Testa se o endereço de password está sendo convertido para string implicitamente
   [Fact]
-  public void ImplicitOperator_PasswordToString_ShouldConvert()
+  public void Password_ShouldConvertToStringImplicitly()
   {
     // Arrange
-    var validPassword = "Senha@123";
-    Password password = new(validPassword);
+    var passwordValue = "Senha@12";
+    var expectedCode = passwordValue;
+    var password = new Password(passwordValue);
 
     // Act
     string passwordString = password;
 
     // Assert
-    Assert.Equal(validPassword, passwordString);
+    Assert.Equal(expectedCode, passwordString);
   }
 
-  // Testa o construtor da classe Password com parâmetros personalizados de validação
-  [Theory]
-  [InlineData("SENHA@12", false, true, true, true, 8, true)] // Sem minúscula, mas válido de acordo com os parâmetros
-  [InlineData("senha@12", true, false, true, true, 8, true)] // Sem maiúscula, mas válido de acordo com os parâmetros
-  [InlineData("Senha@ab", true, true, false, true, 8, true)] // Sem número, mas válido de acordo com os parâmetros
-  [InlineData("Senha123", true, true, true, false, 8, true)] // Sem carácter especial, mas válido de acordo com os parâmetros
-  [InlineData("1234!@#$", false, false, true, true, 8, true)] // Sem minúscula e maiúscula, mas válido de acordo com os parâmetros
-  [InlineData("SENHA!@#", false, true, false, true, 8, true)] // Sem minúscula e número, mas válido de acordo com os parâmetros
-  [InlineData("SENHA123", false, true, true, false, 8, true)] // Sem minúscula e carácter especial, mas válido de acordo com os parâmetros
-  [InlineData("senha!@#", true, false, false, true, 8, true)] // Sem maiúscula e número, mas válido de acordo com os parâmetros
-  [InlineData("senha123", true, false, true, false, 8, true)] // Sem maiúscula e carácter especial, mas válido de acordo com os parâmetros
-  [InlineData("SENHAabc", true, true, false, false, 8, true)] // Sem número e carácter especial, mas válido de acordo com os parâmetros
-  [InlineData("Senha@12", true, true, true, true, 9, false)] // Tamanho insuficiente
-  public void Constructor_CustomParameters_ShouldValidateAccordingly(
-    string passwordValue,
-    bool useLowercase,
-    bool useUppercase,
-    bool useNumbers,
-    bool useSymbols,
-    int passwordLength,
-    bool valid)
+  // Testa se o endereço de password está sendo convertido de string implicitamente
+  [Fact]
+  public void Password_ShouldConvertFromStringImplicitly()
   {
-    if (valid)
-    {
-      // Act & Assert para senha válida
-      var password = new Password(passwordValue, useLowercase, useUppercase, useNumbers, useSymbols, passwordLength);
-      Assert.Equal(passwordValue, password.Value);
-    }
-    else
-    {
-      // Act & Assert para senha inválida
-      var exception = Assert.Throws<AppException>(() => new Password(passwordValue, useLowercase, useUppercase, useNumbers, useSymbols, passwordLength));
-      Assert.Equal("Field.Invalid;Password", exception.Message);
-    }
+    // Arrange
+    var passwordValue = "Senha@12";
+    var expectedCode = passwordValue;
+
+    // Act
+    Password password = passwordValue;
+
+    // Assert
+    Assert.True(password.IsValid);
+    Assert.Equal(expectedCode, password.Value);
   }
 }
