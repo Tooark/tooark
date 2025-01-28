@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Tooark.Enums;
 using Tooark.Validations;
 
 namespace Tooark.ValueObjects;
@@ -16,7 +17,7 @@ public sealed class Document : ValueObject
   /// <summary>
   /// Valor privado do tipo do documento.
   /// </summary>
-  private readonly DocumentType _type = null!;
+  private readonly EDocumentType _type = null!;
 
 
   /// <summary>
@@ -24,10 +25,10 @@ public sealed class Document : ValueObject
   /// </summary>
   /// <param name="number">O número do documento a ser validado.</param>
   /// <param name="type">O tipo do documento a ser validado. Parâmetro opcional.</param>
-  public Document(string number, DocumentType? type = null)
+  public Document(string number, EDocumentType? type = null)
   {
     // Define o tipo do documento como "None" se não for informado
-    type ??= DocumentType.None;
+    type ??= EDocumentType.None;
 
     // Adiciona as notificações de validação do documento
     AddNotifications(new Contract()
@@ -61,7 +62,7 @@ public sealed class Document : ValueObject
   /// <summary>
   /// Valor do tipo do documento.
   /// </summary>
-  public DocumentType Type { get => _type; }
+  public EDocumentType Type { get => _type; }
 
 
   /// <summary>
@@ -70,7 +71,7 @@ public sealed class Document : ValueObject
   /// <param name="value">O número do CNH, CNPJ, CPF ou RG a ser validado.</param>
   /// <param name="type">O tipo do documento a ser validado.</param>
   /// <returns>True se o número do CNH, CNPJ, CPF ou RG for válido</returns>
-  internal static bool Validate(string value, DocumentType type)
+  internal static bool Validate(string value, EDocumentType type)
   {
     // Remove os caracteres especiais do CNH, CNPJ, CPF ou RG
     value = value.Trim().Replace(".", "").Replace("/", "").Replace("-", "");
@@ -104,7 +105,7 @@ public sealed class Document : ValueObject
   /// </summary>
   /// <param name="value">O tipo de documento.</param>
   /// <returns>A regex do tipo de documento.</returns>
-  private static string MountRegex(DocumentType value) => value.ToRegex();
+  private static string MountRegex(EDocumentType value) => value.ToRegex();
 
   /// <summary>
   /// Sobrescrita do método <see cref="object.ToString"/> para retornar o valor do documento.

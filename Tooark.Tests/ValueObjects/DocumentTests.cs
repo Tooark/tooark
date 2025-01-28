@@ -1,3 +1,4 @@
+using Tooark.Enums;
 using Tooark.ValueObjects;
 
 namespace Tooark.Tests.ValueObjects;
@@ -22,7 +23,7 @@ public class DocumentTests
   {
     // Arrange
     var number = valueParam;
-    DocumentType type = typeParam;
+    EDocumentType type = typeParam;
 
     // Act
     var document = new Document(number, type);
@@ -58,7 +59,7 @@ public class DocumentTests
   {
     // Arrange
     var number = valueParam!;
-    var type = DocumentType.CPF;
+    var type = EDocumentType.CPF;
 
     // Act
     var document = new Document(number, type);
@@ -80,7 +81,7 @@ public class DocumentTests
     // Assert
     Assert.True(document.IsValid);
     Assert.Equal(number, document.Number);
-    Assert.Equal(DocumentType.None, document.Type);
+    Assert.Equal(EDocumentType.None, document.Type);
   }
 
   // Testa se o método ToString retorna o número do documento

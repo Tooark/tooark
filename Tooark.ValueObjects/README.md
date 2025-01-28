@@ -118,32 +118,7 @@ Representa um Documento (CPF, CNH, RG ou CNPJ).
 
 [**Exemplo de Uso**](#document)
 
-### 9. DocumentType
-
-**Funcionalidade:**
-Representa um tipo de documento (CPF, CNH, RG, CNPJ ou Genérico).
-
-**Métodos:**
-
-- `DocumentType.None`: Representa um tipo de documento qualquer. Id = 0. Utiliza o regex `^[a-zA-Z0-9.-]*$`.
-- `DocumentType.CPF`: Representa um documento do tipo CPF. Id = 1. Utiliza o regex `RegexPattern.CPF`.
-- `DocumentType.RG`: Representa um documento do tipo RG. Id = 2. Utiliza o regex `RegexPattern.RG`.
-- `DocumentType.CNH`: Representa um documento do tipo  CNH. Id = 3. Utiliza o regex `RegexPattern.CNH`.
-- `DocumentType.CNPJ`: Representa um documento do tipo CNPJ. Id = 4. Utiliza o regex `RegexPattern.CNPJ`.
-- `DocumentType.CPF_CNPJ`: Representa um documento do tipo CPF ou CNPJ. Id = 5. Utiliza o regex `RegexPattern.CPF_CNPJ`.
-- `DocumentType.CPF_RG`: Representa um documento do tipo CPF ou RG. Id = 6. Utiliza o regex `RegexPattern.CPF_RG`.
-- `DocumentType.CPF_RG_CNH`: Representa um documento do tipo CPF, RG ou CNH. Id = 7. Utiliza o regex `RegexPattern.CPF_RG_CNH`.
-- `ToString()`: Retorna a descrição do tipo de documento.
-- `ToInt()`: Retorna o ID do tipo de documento.
-- `ToRegex()`: Retorna o regex do tipo de documento.
-- `string(DocumentType document)`: Converte implicitamente um objeto DocumentType para uma string.
-- `int(DocumentType document)`: Converte implicitamente um objeto DocumentType para um int.
-- `DocumentType(string value)`: Converte implicitamente uma string para um objeto DocumentType.
-- `DocumentType(int value)`: Converte implicitamente uma int para um objeto DocumentType.
-
-[**Exemplo de Uso**](#documenttype)
-
-### 10. Email
+### 9. Email
 
 **Funcionalidade:**
 Representa um endereço de email válido.
@@ -157,7 +132,7 @@ Representa um endereço de email válido.
 
 [**Exemplo de Uso**](#email)
 
-### 11. EmailDomain
+### 10. EmailDomain
 
 **Funcionalidade:**
 Representa um domínio de email válido.
@@ -171,7 +146,7 @@ Representa um domínio de email válido.
 
 [**Exemplo de Uso**](#emaildomain)
 
-### 12. LanguageCode
+### 11. LanguageCode
 
 **Funcionalidade:**
 Representa um código de idioma válido.
@@ -185,7 +160,7 @@ Representa um código de idioma válido.
 
 [**Exemplo de Uso**](#languagecode)
 
-### 13. Letter
+### 12. Letter
 
 **Funcionalidade:**
 Representa uma string com apenas letras válida.
@@ -199,7 +174,7 @@ Representa uma string com apenas letras válida.
 
 [**Exemplo de Uso**](#letter)
 
-### 14. LetterNumeric
+### 13. LetterNumeric
 
 **Funcionalidade:**
 Representa uma string com apenas letras e números válida.
@@ -213,7 +188,7 @@ Representa uma string com apenas letras e números válida.
 
 [**Exemplo de Uso**](#letternumeric)
 
-### 15. Numeric
+### 14. Numeric
 
 **Funcionalidade:**
 Representa uma string com apenas números válida.
@@ -227,7 +202,7 @@ Representa uma string com apenas números válida.
 
 [**Exemplo de Uso**](#numeric)
 
-### 16. Password
+### 15. Password
 
 **Funcionalidade:**
 Representa uma senha válida com complexidade especificada.
@@ -248,7 +223,7 @@ Parâmetros suportados para a complexidade da senha:
 
 [**Exemplo de Uso**](#password)
 
-### 17. ZipCode
+### 16. ZipCode
 
 **Funcionalidade:**
 Representa um código postal válido.
@@ -262,7 +237,7 @@ Representa um código postal válido.
 
 [**Exemplo de Uso**](#zipcode)
 
-### 18. ProtocolEmailReceiver
+### 17. ProtocolEmailReceiver
 
 **Funcionalidade:**
 Representa um protocolo de recebimento de email válido.
@@ -276,7 +251,7 @@ Representa um protocolo de recebimento de email válido.
 
 [**Exemplo de Uso**](#protocolemailreceiver)
 
-### 19. ProtocolEmailSender
+### 18. ProtocolEmailSender
 
 **Funcionalidade:**
 Representa um protocolo de envio de email válido.
@@ -290,7 +265,7 @@ Representa um protocolo de envio de email válido.
 
 [**Exemplo de Uso**](#protocolemailsender)
 
-### 20. ProtocolFtp
+### 19. ProtocolFtp
 
 **Funcionalidade:**
 Representa um protocolo de FTP válido.
@@ -304,7 +279,7 @@ Representa um protocolo de FTP válido.
 
 [**Exemplo de Uso**](#protocolftp)
 
-### 21. ProtocolHttp
+### 20. ProtocolHttp
 
 **Funcionalidade:**
 Representa um protocolo de HTTP válido.
@@ -318,7 +293,7 @@ Representa um protocolo de HTTP válido.
 
 [**Exemplo de Uso**](#protocolhttp)
 
-### 22. ProtocolWs
+### 21. ProtocolWs
 
 **Funcionalidade:**
 Representa um protocolo Websocket válido.
@@ -332,7 +307,7 @@ Representa um protocolo Websocket válido.
 
 [**Exemplo de Uso**](#protocolws)
 
-### 23. Url
+### 22. Url
 
 **Funcionalidade:**
 Representa uma URL válida.
@@ -526,25 +501,9 @@ if (documento.IsValid)
 }
 ```
 
-### DocumentType
-
-[Informações](#9-documenttype)
-
-```csharp
-string tipoDocumento = DocumentType.CNPJ;
-
-Console.WriteLine($"Tipo de documento: {tipoDocumento}"); // Tipo de documento: CNPJ
-```
-
-```csharp
-int tipoDocumento = DocumentType.CNPJ;
-
-Console.WriteLine($"Tipo de documento: {tipoDocumento}"); // Tipo de documento: 4
-```
-
 ### Email
 
-[Informações](#10-email)
+[Informações](#9-email)
 
 ```csharp
 var email = new Email("test@example.com");
@@ -566,7 +525,7 @@ if (email.IsValid)
 
 ### EmailDomain
 
-[Informações](#11-emaildomain)
+[Informações](#10-emaildomain)
 
 ```csharp
 var emailDomain = new EmailDomain("example.com");
@@ -588,7 +547,7 @@ if (emailDomain.IsValid)
 
 ### LanguageCode
 
-[Informações](#12-languagecode)
+[Informações](#11-languagecode)
 
 ```csharp
 var languageCode = new LanguageCode("pt-BR");
@@ -610,7 +569,7 @@ if (languageCode.IsValid)
 
 ### Letter
 
-[Informações](#13-letter)
+[Informações](#12-letter)
 
 ```csharp
 var letter = new Letter("abc");
@@ -632,7 +591,7 @@ if (letter.IsValid)
 
 ### LetterNumeric
 
-[Informações](#14-letternumeric)
+[Informações](#13-letternumeric)
 
 ```csharp
 var letterNumeric = new LetterNumeric("abc123");
@@ -654,7 +613,7 @@ if (letterNumeric.IsValid)
 
 ### Numeric
 
-[Informações](#15-numeric)
+[Informações](#14-numeric)
 
 ```csharp
 var numeric = new Numeric("123456");
@@ -676,7 +635,7 @@ if (numeric.IsValid)
 
 ### Password
 
-[Informações](#16-password)
+[Informações](#15-password)
 
 ```csharp
 var password = new Password("P@ssw0rd");
@@ -698,7 +657,7 @@ if (password.IsValid)
 
 ### ZipCode
 
-[Informações](#17-zipcode)
+[Informações](#16-zipcode)
 
 ```csharp
 var zipCode = new ZipCode("12345-678");
@@ -720,7 +679,7 @@ if (zipCode.IsValid)
 
 ### ProtocolEmailReceiver
 
-[Informações](#18-protocolemailreceiver)
+[Informações](#17-protocolemailreceiver)
 
 ```csharp
 var protocol = new ProtocolEmailReceiver("imap://example.com");
@@ -742,7 +701,7 @@ if (protocol.IsValid)
 
 ### ProtocolEmailSender
 
-[Informações](#19-protocolemailsender)
+[Informações](#18-protocolemailsender)
 
 ```csharp
 var protocol = new ProtocolEmailSender("smtp://example.com");
@@ -764,7 +723,7 @@ if (protocol.IsValid)
 
 ### ProtocolFtp
 
-[Informações](#20-protocolftp)
+[Informações](#19-protocolftp)
 
 ```csharp
 var protocol = new ProtocolEmailReceiver("sftp://example.com");
@@ -786,7 +745,7 @@ if (protocol.IsValid)
 
 ### ProtocolHttp
 
-[Informações](#21-protocolhttp)
+[Informações](#20-protocolhttp)
 
 ```csharp
 var protocol = new ProtocolHttp("https://example.com");
@@ -808,7 +767,7 @@ if (protocol.IsValid)
 
 ### ProtocolWs
 
-[Informações](#22-protocolws)
+[Informações](#21-protocolws)
 
 ```csharp
 var protocol = new ProtocolWs("wss://example.com");
@@ -830,7 +789,7 @@ if (protocol.IsValid)
 
 ### Url
 
-[Informações](#23-url)
+[Informações](#22-url)
 
 ```csharp
 var url = new Url("https://example.com");

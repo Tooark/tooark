@@ -27,9 +27,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tooark\Tooark.csproj" />
+    <ProjectReference Include="..\Tooark.Attributes\Tooark.Attributes.csproj" />
+    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
     <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
-    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
     <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
+    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
     <ProjectReference Include="..\Tooark.ValueObjects\Tooark.ValueObjects.csproj" />
   </ItemGroup>
 
