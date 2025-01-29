@@ -20,18 +20,16 @@ public sealed class CpfRg : ValueObject
   public CpfRg(string number)
   {
     // Valida documento do tipo CPF ou RG
-    string value = new Document(number, EDocumentType.CPF_RG);
+    var document = new Document(number, EDocumentType.CPF_RG);
+
+    // Adiciona as notificações
+    AddNotifications(document);
 
     // Verifica se é válido, então não existe notificação
-    if (value != null)
+    if (document.IsValid)
     {
       // Define o valor do número da CPF ou RG
-      _number = value;
-    }
-    else
-    {
-      // Adiciona uma notificação de validação do CPF ou RG
-      AddNotification("CpfRg", "Field.Invalid;CpfRg");
+      _number = document;
     }
   }
 

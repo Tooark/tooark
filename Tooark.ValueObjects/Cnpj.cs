@@ -20,18 +20,16 @@ public sealed class Cnpj : ValueObject
   public Cnpj(string number)
   {
     // Valida documento do tipo CNPJ
-    string value = new Document(number, EDocumentType.CNPJ);
+    var document = new Document(number, EDocumentType.CNPJ);
+
+    // Adiciona as notificações
+    AddNotifications(document);
 
     // Verifica se é válido, então não existe notificação
-    if (value != null)
+    if (document.IsValid)
     {
       // Define o valor do número da CNPJ
-      _number = value;
-    }
-    else
-    {
-      // Adiciona uma notificação de validação do CNPJ
-      AddNotification("Cnpj", "Field.Invalid;Cnpj");
+      _number = document;
     }
   }
 
