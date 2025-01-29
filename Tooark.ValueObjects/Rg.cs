@@ -26,7 +26,7 @@ public sealed class Rg : ValueObject
     AddNotifications(document);
 
     // Verifica se é válido, então não existe notificação
-    if (document.IsValid)
+    if (IsValid)
     {
       // Define o valor do número da RG
       _number = document;
