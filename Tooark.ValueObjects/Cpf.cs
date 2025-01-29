@@ -1,4 +1,4 @@
-using Tooark.Validations;
+using Tooark.Enums;
 
 namespace Tooark.ValueObjects;
 
@@ -19,25 +19,19 @@ public sealed class Cpf : ValueObject
   /// <param name="number">O número do CPF a ser validado.</param>
   public Cpf(string number)
   {
-    // Adiciona as notificações de validação do CPF
-    AddNotifications(new Contract()
-      .IsCpf(number, "Cpf.Number", "Field.Invalid;Cpf.Number")
-    );
+    // Valida documento do tipo CPF
+    string value = new Document(number, EDocumentType.CPF);
 
-    // Verifica é valido então não existe notificação
-    if (IsValid)
+    // Verifica se é válido, então não existe notificação
+    if (value != null)
     {
-      // Verifica se o número do CPF é válido
-      if (Validate(number))
-      {
-        // Define o valor do número do CPF
-        _number = number;
-      }
-      else
-      {
-        // Adiciona uma notificação de validação do CPF
-        AddNotification("Cpf.Number", "Field.Invalid;Cpf.Number");
-      }
+      // Define o valor do número da CPF
+      _number = value;
+    }
+    else
+    {
+      // Adiciona uma notificação de validação do CPF
+      AddNotification("Cpf", "Field.Invalid;Cpf");
     }
   }
 
@@ -47,54 +41,6 @@ public sealed class Cpf : ValueObject
   /// </summary>
   public string Number { get => _number; }
 
-
-  /// <summary>
-  /// Valida um número de CPF.
-  /// </summary>
-  /// <param name="value">O número do CPF a ser validado.</param>
-  /// <returns>True se o número do CPF for válido</returns>
-  internal static bool Validate(string value)
-  {
-    // Remove os caracteres especiais do CPF
-    value = value.Trim().Replace(".", "").Replace("-", "");
-
-    // Verifica se o número do CPF tem 11 caracteres e se é diferente de 0
-    if (value.Length != 11 || long.Parse(value) == 0)
-    {
-      return false;
-    }
-
-    // Cria as variáveis para o cálculo
-    int multi1 = 10;
-    int multi2 = 11;
-    int sum1 = 0;
-    int sum2 = 0;
-
-    // Calcula a soma dos dígitos com os multiplicadores
-    for (int i = 0; i < 9; i++)
-    {// Pega o dígito da iteração
-      var digit = int.Parse(value[i].ToString());
-
-      // Calcula a soma dos dígitos
-      sum1 += digit * multi1;
-      sum2 += digit * multi2;
-
-      // Atualiza os multiplicadores
-      multi1--;
-      multi2--;
-    }
-
-    // Calcula o primeiro dígito verificador
-    var digit1 = sum1 % 11;
-    digit1 = digit1 < 2 ? 0 : 11 - digit1;
-
-    // Calcula o segundo dígito verificador
-    var digit2 = (sum2 + digit1 * multi2) % 11;
-    digit2 = digit2 < 2 ? 0 : 11 - digit2;
-
-    // Verifica se os dígitos verificadores são iguais aos dígitos do CPF
-    return $"{digit1}{digit2}" == value[9..];
-  }
 
   /// <summary>
   /// Sobrescrita do método <see cref="object.ToString"/> para retornar o valor do CPF.

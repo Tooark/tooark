@@ -41,7 +41,7 @@ public class CpfRgCnhTests
   [InlineData("12.345.678-X")]
   [InlineData("12.345.678-x")]
   [InlineData("00000000000")]
-  [InlineData("01234567890")]
+  [InlineData("12345678901")]
   [InlineData("1234")]
   [InlineData("!@#$")]
   [InlineData("aB1234")]

@@ -1,4 +1,4 @@
-using Tooark.Validations;
+using Tooark.Enums;
 
 namespace Tooark.ValueObjects;
 
@@ -19,25 +19,19 @@ public sealed class CpfCnpj : ValueObject
   /// <param name="number">O número do CPF ou CNPJ a ser validado.</param>
   public CpfCnpj(string number)
   {
-    // Adiciona as notificações de validação do CPF ou CNPJ
-    AddNotifications(new Contract()
-      .IsCpfCnpj(number, "CpfCnpj.Number", "Field.Invalid;CpfCnpj.Number")
-    );
+    // Valida documento do tipo CPF ou CNPJ
+    string value = new Document(number, EDocumentType.CPF_CNPJ);
 
-    // Verifica é valido então não existe notificação
-    if (IsValid)
+    // Verifica se é válido, então não existe notificação
+    if (value != null)
     {
-      // Verifica se o número do CPF ou CNPJ é válido
-      if (Validate(number))
-      {
-        // Define o valor do número do CPF ou CNPJ
-        _number = number;
-      }
-      else
-      {
-        // Adiciona uma notificação de validação do CPF ou CNPJ
-        AddNotification("CpfCnpj.Number", "Field.Invalid;CpfCnpj.Number");
-      }
+      // Define o valor do número da CPF ou CNPJ
+      _number = value;
+    }
+    else
+    {
+      // Adiciona uma notificação de validação do CPF ou CNPJ
+      AddNotification("CpfCnpj", "Field.Invalid;CpfCnpj");
     }
   }
 
@@ -47,39 +41,6 @@ public sealed class CpfCnpj : ValueObject
   /// </summary>
   public string Number { get => _number; }
 
-
-  /// <summary>
-  /// Valida um número de CPF ou CNPJ.
-  /// </summary>
-  /// <param name="value">O número do CPF ou CNPJ a ser validado.</param>
-  /// <returns>True se o número do CPF ou CNPJ for válido</returns>
-  internal static bool Validate(string value)
-  {
-    // Remove os caracteres especiais do CPF ou CNPJ
-    value = value.Trim().Replace(".", "").Replace("/", "").Replace("-", "");
-
-    // Verifica se o valor é maior que 0
-    if (long.Parse(value) > 0)
-    {
-      // Verifica é um CPF
-      if (value.Length == 11)
-      {
-        // Utiliza a validação do CPF
-        return Cpf.Validate(value);
-      }
-      // Verifica é um CNPJ
-      else
-      {
-        // Utiliza a validação do CNPJ
-        return Cnpj.Validate(value);
-      }
-    }
-    else
-    {
-      // Retorna falso se não for um CPF ou CNPJ
-      return false;
-    }
-  }
 
   /// <summary>
   /// Sobrescrita do método <see cref="object.ToString"/> para retornar o valor do CPF ou CNPJ.

@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using Tooark.Enums;
 using Tooark.Validations;
 
@@ -32,14 +31,14 @@ public sealed class Document : ValueObject
 
     // Adiciona as notificações de validação do documento
     AddNotifications(new Contract()
-      .Match(number, MountRegex(type), "Document", "Field.Invalid;Document")
+      .Match(number, type.ToRegex(), "Document.Number", "Field.Invalid;Document")
     );
 
     // Verifica é valido então não existe notificação
     if (IsValid)
     {
       // Verifica se o número do Documento é válido
-      if (Validate(number, type))
+      if (type.IsValid(number))
       {
         // Define o valor do número do documento e o tipo do documento
         _number = number;
@@ -48,7 +47,7 @@ public sealed class Document : ValueObject
       else
       {
         // Adiciona uma notificação de validação do Documento
-        AddNotification("Document.Number", "Field.Invalid;Document.Number");
+        AddNotification("Document.Type", $"Field.Invalid;Document.{type}");
       }
     }
   }
@@ -64,48 +63,6 @@ public sealed class Document : ValueObject
   /// </summary>
   public EDocumentType Type { get => _type; }
 
-
-  /// <summary>
-  /// Valida um número de CNH, CNPJ, CPF ou RG.
-  /// </summary>
-  /// <param name="value">O número do CNH, CNPJ, CPF ou RG a ser validado.</param>
-  /// <param name="type">O tipo do documento a ser validado.</param>
-  /// <returns>True se o número do CNH, CNPJ, CPF ou RG for válido</returns>
-  internal static bool Validate(string value, EDocumentType type)
-  {
-    // Remove os caracteres especiais do CNH, CNPJ, CPF ou RG
-    value = value.Trim().Replace(".", "").Replace("/", "").Replace("-", "");
-
-    // Verifica se o valor é maior que 0
-    if (long.Parse(value[..8]) > 0)
-    {
-      // Verifica se o valor é um CNH, CNPJ, CPF ou RG
-      return type.ToString() switch
-      {
-        "None" => Regex.IsMatch(value, type.ToRegex(), RegexOptions.None, TimeSpan.FromMilliseconds(300)),
-        "CPF" => Cpf.Validate(value),
-        "RG" => Rg.Validate(value),
-        "CNH" => Cnh.Validate(value),
-        "CNPJ" => Cnpj.Validate(value),
-        "CPF_CNPJ" => CpfCnpj.Validate(value),
-        "CPF_RG" => CpfRg.Validate(value),
-        "CPF_RG_CNH" => CpfRgCnh.Validate(value),
-        _ => true,
-      };
-    }
-    else
-    {
-      // Retorna falso se não for um CNH, CNPJ, CPF ou RG
-      return false;
-    }
-  }
-
-  /// <summary>
-  /// Monta a regex do tipo de documento.
-  /// </summary>
-  /// <param name="value">O tipo de documento.</param>
-  /// <returns>A regex do tipo de documento.</returns>
-  private static string MountRegex(EDocumentType value) => value.ToRegex();
 
   /// <summary>
   /// Sobrescrita do método <see cref="object.ToString"/> para retornar o valor do documento.
