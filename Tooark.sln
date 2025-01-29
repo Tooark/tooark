@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.ValueObjects", "Tooa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Enums", "Tooark.Enums\Tooark.Enums.csproj", "{33F08690-A044-4DB6-9C54-46BCD5E3CF1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Attributes", "Tooark.Attributes\Tooark.Attributes.csproj", "{E6BAFADE-E690-4F6B-97C5-AEF6288700F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{33F08690-A044-4DB6-9C54-46BCD5E3CF1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33F08690-A044-4DB6-9C54-46BCD5E3CF1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33F08690-A044-4DB6-9C54-46BCD5E3CF1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6BAFADE-E690-4F6B-97C5-AEF6288700F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6BAFADE-E690-4F6B-97C5-AEF6288700F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6BAFADE-E690-4F6B-97C5-AEF6288700F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6BAFADE-E690-4F6B-97C5-AEF6288700F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
