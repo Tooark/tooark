@@ -1,4 +1,4 @@
-using Tooark.Validations;
+using Tooark.Enums;
 
 namespace Tooark.ValueObjects;
 
@@ -19,25 +19,19 @@ public sealed class CpfRgCnh : ValueObject
   /// <param name="number">O número do CPF, RG ou CNH a ser validado.</param>
   public CpfRgCnh(string number)
   {
-    // Adiciona as notificações de validação do CPF, RG ou CNH
-    AddNotifications(new Contract()
-      .IsCpfRgCnh(number, "CpfRgCnh.Number", "Field.Invalid;CpfRgCnh.Number")
-    );
+    // Valida documento do tipo CPF, RG ou CNH
+    string value = new Document(number, EDocumentType.CPF_RG_CNH);
 
-    // Verifica é valido então não existe notificação
-    if (IsValid)
+    // Verifica se é válido, então não existe notificação
+    if (value != null)
     {
-      // Verifica se o número do CPF, RG ou CNH é válido
-      if (Validate(number))
-      {
-        // Define o valor do número do CPF, RG ou CNH
-        _number = number;
-      }
-      else
-      {
-        // Adiciona uma notificação de validação do CPF, RG ou CNH
-        AddNotification("CpfRgCnh.Number", "Field.Invalid;CpfRgCnh.Number");
-      }
+      // Define o valor do número da CPF, RG ou CNH
+      _number = value;
+    }
+    else
+    {
+      // Adiciona uma notificação de validação do CPF, RG ou CNH
+      AddNotification("CpfRgCnh", "Field.Invalid;CpfRgCnh");
     }
   }
 
@@ -47,52 +41,6 @@ public sealed class CpfRgCnh : ValueObject
   /// </summary>
   public string Number { get => _number; }
 
-
-  /// <summary>
-  /// Valida um número de CPF, RG ou CNH.
-  /// </summary>
-  /// <param name="value">O número do CPF, RG ou CNH a ser validado.</param>
-  /// <returns>True se o número do CPF, RG ou CNH for válido</returns>
-  internal static bool Validate(string value)
-  {
-    // Verifica se o valor contém ponto
-    var cpf = value.Contains('.');
-
-    // Remove os caracteres especiais do CPF, RG ou CNH
-    value = value.Trim().Replace(".", "").Replace("-", "");
-
-    // Verifica se o valor é maior que 0
-    if (long.Parse(value[..8]) > 0)
-    {
-      // Verifica se o valor tem 11 caracteres
-      if (value.Length == 11)
-      {
-        // Verifica é um CPF
-        if (cpf)
-        {
-          // Utiliza a validação do CPF
-          return Cpf.Validate(value);
-        }
-        // É uma CNH
-        else
-        {
-          // Utiliza a validação do CNH
-          return Cnh.Validate(value);
-        }
-      }
-      // Verifica é um RG
-      else
-      {
-        // Utiliza a validação do RG
-        return Rg.Validate(value);
-      }
-    }
-    else
-    {
-      // Retorna falso se não for um CPF, RG ou CNH
-      return false;
-    }
-  }
 
   /// <summary>
   /// Sobrescrita do método <see cref="object.ToString"/> para retornar o valor do CPF, RG ou CNH.

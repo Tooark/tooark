@@ -1,4 +1,4 @@
-using Tooark.Validations;
+using Tooark.Enums;
 
 namespace Tooark.ValueObjects;
 
@@ -19,25 +19,19 @@ public sealed class Rg : ValueObject
   /// <param name="number">O número do RG a ser validado.</param>
   public Rg(string number)
   {
-    // Adiciona as notificações de validação do RG
-    AddNotifications(new Contract()
-      .IsRg(number, "Rg.Number", "Field.Invalid;Rg.Number")
-    );
+    // Valida documento do tipo RG
+    string value = new Document(number, EDocumentType.RG);
 
-    // Verifica é valido então não existe notificação
-    if (IsValid)
+    // Verifica se é válido, então não existe notificação
+    if (value != null)
     {
-      // Verifica se o número do RG é válido
-      if (Validate(number))
-      {
-        // Define o valor do número do RG
-        _number = number;
-      }
-      else
-      {
-        // Adiciona uma notificação de validação do RG
-        AddNotification("Rg.Number", "Field.Invalid;Rg.Number");
-      }
+      // Define o valor do número da RG
+      _number = value;
+    }
+    else
+    {
+      // Adiciona uma notificação de validação do RG
+      AddNotification("Rg", "Field.Invalid;Rg");
     }
   }
 
@@ -47,59 +41,6 @@ public sealed class Rg : ValueObject
   /// </summary>
   public string Number { get => _number; }
 
-
-  /// <summary>
-  /// Valida um número de RG.
-  /// </summary>
-  /// <param name="value">O número do RG a ser validado.</param>
-  /// <returns>True se o número do RG for válido</returns>
-  internal static bool Validate(string value)
-  {
-    // Remove os caracteres especiais do RG
-    value = value.Trim().Replace(".", "").Replace("-", "");
-
-    // Verifica se o número do RG tem 8 ou 9 caracteres e se é diferente de 0
-    if ((value.Length != 8 && value.Length != 9) || long.Parse(value[..8]) == 0)
-    {
-      return false;
-    }
-
-    // Se o número do RG for 8 caracteres, então é um RG sem dígito verificador
-    if(value.Length == 8)
-    {
-      return true;
-    }
-
-    // Cria as variáveis para o cálculo
-    int multi = 2;
-    int sum = 0;
-
-    // Calcula a soma dos dígitos com os multiplicadores
-    for (int i = 0; i < 8; i++)
-    {// Pega o dígito da iteração
-      var dig = int.Parse(value[i].ToString());
-
-      // Calcula a soma dos dígitos
-      sum += dig * multi;
-
-      // Atualiza os multiplicadores
-      multi++;
-    }
-
-    // Calcula o dígito verificador
-    var digit = sum % 11;
-    digit = (11 - digit) % 11;
-
-    // Verifica se o dígito verificador é 10
-    if (digit == 10)
-    {
-      // Verifica se o dígito verificador é X ou x
-      return value[8] == 'X' || value[8] == 'x';
-    }
-
-    // Verifica se os dígitos verificadores são iguais aos dígitos do RG
-    return $"{digit}" == value[8..];
-  }
 
   /// <summary>
   /// Sobrescrita do método <see cref="object.ToString"/> para retornar o valor do RG.
