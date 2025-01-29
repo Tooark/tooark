@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>Tooark.ValueObjects</PackageId>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <Company>Tooark</Company>
+    <PackageDescription>Package for creating Attribute Validators</PackageDescription>
+    <Description>Library for attribute validators</Description>
+    <PackageIcon>icon.jpg</PackageIcon>
+    <PackageTags>toolkit</PackageTags>
+    <Title>Tooark</Title>
+    <Summary>Managing attribute validators</Summary>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
+    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
+  </ItemGroup>
+
+</Project>
