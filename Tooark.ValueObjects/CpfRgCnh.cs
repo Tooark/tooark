@@ -19,19 +19,17 @@ public sealed class CpfRgCnh : ValueObject
   /// <param name="number">O número do CPF, RG ou CNH a ser validado.</param>
   public CpfRgCnh(string number)
   {
-    // Valida documento do tipo CPF, RG ou CNH
-    string value = new Document(number, EDocumentType.CPF_RG_CNH);
+    // Valida documento do tipo CPF, RG OU CNH
+    var document = new Document(number, EDocumentType.CPF_RG_CNH);
+
+    // Adiciona as notificações
+    AddNotifications(document);
 
     // Verifica se é válido, então não existe notificação
-    if (value != null)
+    if (document.IsValid)
     {
-      // Define o valor do número da CPF, RG ou CNH
-      _number = value;
-    }
-    else
-    {
-      // Adiciona uma notificação de validação do CPF, RG ou CNH
-      AddNotification("CpfRgCnh", "Field.Invalid;CpfRgCnh");
+      // Define o valor do número da CPF, RG OU CNH
+      _number = document;
     }
   }
 

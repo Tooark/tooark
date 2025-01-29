@@ -19,19 +19,17 @@ public sealed class CpfCnpj : ValueObject
   /// <param name="number">O número do CPF ou CNPJ a ser validado.</param>
   public CpfCnpj(string number)
   {
-    // Valida documento do tipo CPF ou CNPJ
-    string value = new Document(number, EDocumentType.CPF_CNPJ);
+    // Valida documento do tipo CPF ou CNPJ 
+    var document = new Document(number, EDocumentType.CPF_CNPJ);
+
+    // Adiciona as notificações
+    AddNotifications(document);
 
     // Verifica se é válido, então não existe notificação
-    if (value != null)
+    if (document.IsValid)
     {
-      // Define o valor do número da CPF ou CNPJ
-      _number = value;
-    }
-    else
-    {
-      // Adiciona uma notificação de validação do CPF ou CNPJ
-      AddNotification("CpfCnpj", "Field.Invalid;CpfCnpj");
+      // Define o valor do número da CPF ou CNPJ  
+      _number = document;
     }
   }
 

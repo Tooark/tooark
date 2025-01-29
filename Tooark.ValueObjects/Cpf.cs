@@ -20,18 +20,16 @@ public sealed class Cpf : ValueObject
   public Cpf(string number)
   {
     // Valida documento do tipo CPF
-    string value = new Document(number, EDocumentType.CPF);
+    var document = new Document(number, EDocumentType.CPF);
+
+    // Adiciona as notificações
+    AddNotifications(document);
 
     // Verifica se é válido, então não existe notificação
-    if (value != null)
+    if (document.IsValid)
     {
       // Define o valor do número da CPF
-      _number = value;
-    }
-    else
-    {
-      // Adiciona uma notificação de validação do CPF
-      AddNotification("Cpf", "Field.Invalid;Cpf");
+      _number = document;
     }
   }
 

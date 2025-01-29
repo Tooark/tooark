@@ -20,18 +20,16 @@ public sealed class Cnh : ValueObject
   public Cnh(string number)
   {
     // Valida documento do tipo CNH
-    string value = new Document(number, EDocumentType.CNH);
+    var document = new Document(number, EDocumentType.CNH);
+
+    // Adiciona as notificações
+    AddNotifications(document);
 
     // Verifica se é válido, então não existe notificação
-    if (value != null)
+    if (document.IsValid)
     {
       // Define o valor do número da CNH
-      _number = value;
-    }
-    else
-    {
-      // Adiciona uma notificação de validação da CNH
-      AddNotification("Cnh", "Field.Invalid;Cnh");
+      _number = document;
     }
   }
 

@@ -20,18 +20,16 @@ public sealed class Rg : ValueObject
   public Rg(string number)
   {
     // Valida documento do tipo RG
-    string value = new Document(number, EDocumentType.RG);
+    var document = new Document(number, EDocumentType.RG);
+
+    // Adiciona as notificações
+    AddNotifications(document);
 
     // Verifica se é válido, então não existe notificação
-    if (value != null)
+    if (document.IsValid)
     {
       // Define o valor do número da RG
-      _number = value;
-    }
-    else
-    {
-      // Adiciona uma notificação de validação do RG
-      AddNotification("Rg", "Field.Invalid;Rg");
+      _number = document;
     }
   }
 
