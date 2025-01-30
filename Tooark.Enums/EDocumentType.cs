@@ -3,7 +3,7 @@ using Tooark.Validations.Patterns;
 namespace Tooark.Enums;
 
 /// <summary>
-/// Representa um tipo de documento.
+/// Tipos de documento.
 /// </summary>
 public sealed class EDocumentType
 {
@@ -139,7 +139,7 @@ public sealed class EDocumentType
   /// <returns>O padrão de regex do tipo de documento.</returns>
   public string ToRegex() => PatternRegex;
 
-  // <summary>
+  /// <summary>
   /// Método que retorna a função de validação do tipo de documento.
   /// </summary>
   /// <returns>A função de validação do tipo de documento.</returns>
