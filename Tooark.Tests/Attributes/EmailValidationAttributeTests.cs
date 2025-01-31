@@ -2,7 +2,7 @@ using Tooark.Attributes;
 
 namespace Tooark.Tests.Attributes;
 
-public class EmailValidationTest
+public class EmailValidationTests
 {
   // Instância do atributo de EmailValidation para ser testado
   private readonly EmailValidationAttribute _emailValidationAttribute = new();

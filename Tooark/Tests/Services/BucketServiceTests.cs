@@ -42,7 +42,7 @@ public class BucketServiceTests
     _awsBucketOptions = new BucketOptions
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.AWS,
+      CloudProvider = ECloudProvider.Amazon,
       AWS = new BasicAWSCredentials("access-key", "secret-key"),
       FileSize = 10485760 // 10 MB
     };
@@ -53,7 +53,7 @@ public class BucketServiceTests
     _gcpBucketOptions = new BucketOptions
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.GCP,
+      CloudProvider = ECloudProvider.Google,
       GCP = new GcpCredentialDto().GCP,
       FileSize = 10485760 // 10 MB
     };
@@ -524,7 +524,7 @@ public class BucketServiceTests
     var bucketOptions = new BucketOptions()
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.AWS,
+      CloudProvider = ECloudProvider.Amazon,
       AWS = new BasicAWSCredentials("access-key", "secret-key")
     };
     optionsMock.Setup(o => o.Value).Returns(bucketOptions);
@@ -547,7 +547,7 @@ public class BucketServiceTests
     var bucketOptions = new BucketOptions()
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.AWS,
+      CloudProvider = ECloudProvider.Amazon,
       AWS = new BasicAWSCredentials("access-key", "secret-key")
     };
     optionsMock.Setup(o => o.Value).Returns(bucketOptions);
@@ -570,7 +570,7 @@ public class BucketServiceTests
     var bucketOptions = new BucketOptions()
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.AWS,
+      CloudProvider = ECloudProvider.Amazon,
       AWS = new BasicAWSCredentials("access-key", "secret-key")
     };
     optionsMock.Setup(o => o.Value).Returns(bucketOptions);
@@ -590,7 +590,7 @@ public class BucketServiceTests
     var bucketOptions = new BucketOptions()
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.AWS,
+      CloudProvider = ECloudProvider.Amazon,
       AWS = new BasicAWSCredentials("access-key", "secret-key")
     };
     optionsMock.Setup(o => o.Value).Returns(bucketOptions);
@@ -712,7 +712,7 @@ public class BucketServiceTests
     var bucketOptions = new BucketOptions()
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.AWS,
+      CloudProvider = ECloudProvider.Amazon,
       AWS = new BasicAWSCredentials("access-key", "secret-key")
     };
     optionsMock.Setup(o => o.Value).Returns(bucketOptions);
@@ -731,7 +731,7 @@ public class BucketServiceTests
     var bucketOptions = new BucketOptions()
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.AWS,
+      CloudProvider = ECloudProvider.Amazon,
       AWS = new BasicAWSCredentials("access-key", "secret-key")
     };
     optionsMock.Setup(o => o.Value).Returns(bucketOptions);
@@ -751,7 +751,7 @@ public class BucketServiceTests
     var bucketOptions = new BucketOptions()
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.AWS,
+      CloudProvider = ECloudProvider.Amazon,
       AWS = new BasicAWSCredentials("access-key", "secret-key")
     };
     optionsMock.Setup(o => o.Value).Returns(bucketOptions);
@@ -770,7 +770,7 @@ public class BucketServiceTests
     var bucketOptions = new BucketOptions()
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.AWS,
+      CloudProvider = ECloudProvider.Amazon,
       AWS = new BasicAWSCredentials("access-key", "secret-key")
     };
     optionsMock.Setup(o => o.Value).Returns(bucketOptions);
@@ -789,7 +789,7 @@ public class BucketServiceTests
     var bucketOptions = new BucketOptions()
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.AWS,
+      CloudProvider = ECloudProvider.Amazon,
       AWS = new BasicAWSCredentials("access-key", "secret-key")
     };
     optionsMock.Setup(o => o.Value).Returns(bucketOptions);
@@ -852,7 +852,7 @@ public class BucketServiceTests
     var bucketOptions = new BucketOptions()
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.AWS
+      CloudProvider = ECloudProvider.Amazon
     };
     optionsMock.Setup(o => o.Value).Returns(bucketOptions);
 
@@ -870,7 +870,7 @@ public class BucketServiceTests
     var bucketOptions = new BucketOptions()
     {
       BucketName = "test-bucket",
-      CloudProvider = CloudProvider.GCP
+      CloudProvider = ECloudProvider.Google
     };
     optionsMock.Setup(o => o.Value).Returns(bucketOptions);
 

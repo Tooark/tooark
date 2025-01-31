@@ -1,5 +1,4 @@
 using Tooark.Enums;
-using Tooark.Validations.Patterns;
 
 namespace Tooark.Tests.Enums;
 
