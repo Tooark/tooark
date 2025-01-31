@@ -7,12 +7,12 @@
     <PackageId>Tooark.Notifications</PackageId>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
     <Company>Tooark</Company>
-    <PackageDescription>Package for creating and managing notifications and alerts</PackageDescription>
-    <Description>Library for creating, managing and sending notifications and alerts</Description>
+    <PackageDescription>Package for creating and managing notifications and alerts for .NET applications.</PackageDescription>
+    <Description>Library for creating and managing notifications and alerts, facilitating communication and monitoring for .NET projects.</Description>
     <PackageIcon>icon.jpg</PackageIcon>
-    <PackageTags>toolkit</PackageTags>
+    <PackageTags>toolkit, notifications, alerts, .NET</PackageTags>
     <Title>Tooark</Title>
-    <Summary>Notification and alert management</Summary>
+    <Summary>Management of notifications and alerts for .NET projects.</Summary>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>

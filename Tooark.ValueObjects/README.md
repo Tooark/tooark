@@ -1,6 +1,6 @@
 # Tooark.ValueObjects
 
-Esta pasta contém os Value Objects disponíveis no pacote. Abaixo estão descritos os Value Objects, suas funcionalidades, métodos e exemplos de uso.
+Biblioteca para criação e gerenciamento de Value Objects pré-definidos e validados, garantindo a integridade e consistência dos dados para projetos .NET.
 
 ## Conteúdo
 

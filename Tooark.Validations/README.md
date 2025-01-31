@@ -1,6 +1,6 @@
 # Tooark.Validations
 
-O projeto fornece uma série de métodos para validação de diferentes tipos de dados e padrões. Ela é projetada para facilitar a validação de dados em aplicações .NET, garantindo que os valores atendam aos critérios especificados.
+Biblioteca para validação de tipos e padrões, fornecendo métodos para garantir a integridade e conformidade dos dados para projetos .NET.
 
 ## Conteúdo
 

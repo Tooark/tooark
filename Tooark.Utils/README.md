@@ -1,6 +1,6 @@
 # Tooark.Utils
 
-Este pacote contém várias classes utilitárias para normalização de strings, gerenciamento de idiomas, obtenção de informações localizadas, geração de strings, validação de arquivos e conversão de arquivos.
+Biblioteca de funções utilitárias gerais que auxiliam no desenvolvimento, incluindo métodos para manipulação de strings, datas, coleções e mais.
 
 ## Conteúdo
 

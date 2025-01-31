@@ -7,12 +7,12 @@
     <PackageId>Tooark.ValueObjects</PackageId>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
     <Company>Tooark</Company>
-    <PackageDescription>Package for creating predefined and validated Value Objects</PackageDescription>
-    <Description>Library for value object types that already have a predefined and validated</Description>
+    <PackageDescription>Package for creating predefined and validated Value Objects for .NET applications.</PackageDescription>
+    <Description>Library for creating and managing predefined and validated Value Objects, ensuring data integrity and consistency for .NET projects.</Description>
     <PackageIcon>icon.jpg</PackageIcon>
-    <PackageTags>toolkit</PackageTags>
+    <PackageTags>toolkit, value objects, validation, .NET</PackageTags>
     <Title>Tooark</Title>
-    <Summary>Managing value objects</Summary>
+    <Summary>Management of predefined and validated Value Objects for .NET projects.</Summary>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
