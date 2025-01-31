@@ -1,8 +1,11 @@
 # Tooark.Notifications
 
-## Descrição
+A biblioteca fornece uma estrutura para criar e gerenciar notificações.
 
-O namespace `Tooark.Notifications` fornece uma estrutura para criar e gerenciar notificações.
+## Conteúdo
+
+- [NotificationItem](#notificationitem)
+- [Notification](#notification)
 
 ## Classes
 

@@ -1,13 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>Tooark.Enums</PackageId>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <Company>Tooark</Company>
+    <PackageDescription>Package for creating predefined and validated Enums</PackageDescription>
+    <Description>Library for enum types that already have a predefined and validated</Description>
+    <PackageIcon>icon.jpg</PackageIcon>
+    <PackageTags>toolkit</PackageTags>
+    <Title>Tooark</Title>
+    <Summary>Managing enums</Summary>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
+  </ItemGroup>
 
 </Project>

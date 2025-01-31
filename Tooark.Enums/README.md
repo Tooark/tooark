@@ -1,6 +1,6 @@
 # Tooark.Enums
 
-O projeto contém classes que representam tipos enumerados para diferentes propósitos.
+Biblioteca para tipos de enumeradores que já possuem um valor predefinido e validado.
 
 ## Conteúdo
 

@@ -7,7 +7,7 @@
     <PackageId>Tooark.Notifications</PackageId>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
     <Company>Tooark</Company>
-    <PackageDescription>Package for managing notifications and alerts</PackageDescription>
+    <PackageDescription>Package for creating and managing notifications and alerts</PackageDescription>
     <Description>Library for creating, managing and sending notifications and alerts</Description>
     <PackageIcon>icon.jpg</PackageIcon>
     <PackageTags>toolkit</PackageTags>
