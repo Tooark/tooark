@@ -2,6 +2,15 @@
 
 Este pacote contém várias classes utilitárias para normalização de strings, gerenciamento de idiomas, obtenção de informações localizadas, geração de strings, validação de arquivos e conversão de arquivos.
 
+## Conteúdo
+
+- [FileConvert](#fileconvert)
+- [FileValid](#filevalid)
+- [GenerateString](#generatestring)
+- [GetInfo](#getinfo)
+- [Language](#language)
+- [Normalize](#normalize)
+
 ## Funcionalidades e Métodos Disponíveis
 
 ### Language
