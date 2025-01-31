@@ -2,7 +2,7 @@ using Tooark.Attributes;
 
 namespace Tooark.Tests.Attributes;
 
-public class UrlValidationAttributeTest
+public class UrlValidationAttributeTests
 {
   // Instância do atributo de UrlValidationAttribute para ser testado
   private readonly UrlValidationAttribute _urlValidationAttribute = new();

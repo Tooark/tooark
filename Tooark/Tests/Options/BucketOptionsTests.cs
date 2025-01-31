@@ -51,7 +51,7 @@ public class BucketOptionsTests
     Assert.Null(bucketOptions.GCP);
     Assert.Equal("", bucketOptions.BucketName);
     Assert.Equal(1024, bucketOptions.FileSize);
-    Assert.Equal(CloudProvider.None, bucketOptions.CloudProvider);
+    Assert.Equal(ECloudProvider.None, bucketOptions.CloudProvider);
     Assert.Equal(RegionEndpoint.USEast1, bucketOptions.AWSRegion);
     Assert.Equal(S3CannedACL.Private, bucketOptions.AWSAcl);
   }
@@ -86,12 +86,12 @@ public class BucketOptionsTests
     Assert.Equal(fileSize, bucketOptions.FileSize);
   }
 
-  // Testes com propriedade CloudProvider
+  // Testes com propriedade ECloudProvider
   [Theory]
-  [InlineData(CloudProvider.AWS)]
-  [InlineData(CloudProvider.GCP)]
-  [InlineData(CloudProvider.None)]
-  public void CloudProvider_ShouldBeSetAndGetCorrectly(CloudProvider cloudProvider)
+  [InlineData("AWS")]
+  [InlineData("GCP")]
+  [InlineData("None")]
+  public void CloudProvider_ShouldBeSetAndGetCorrectly(ECloudProvider cloudProvider)
   {
     // Arrange & Act
     var bucketOptions = new BucketOptions

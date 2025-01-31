@@ -3,7 +3,7 @@ using Tooark.Enums;
 
 namespace Tooark.Tests.Attributes;
 
-public class DocumentValidationAttributeTest
+public class DocumentValidationAttributeTests
 {
   // Teste de documento válido com documento válido
   [Theory]

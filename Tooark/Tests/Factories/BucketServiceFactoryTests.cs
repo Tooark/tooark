@@ -22,7 +22,7 @@ namespace Tooark.Tests.Factories
       mockOptions.Setup(o => o.Value).Returns(new BucketOptions()
       {
         BucketName = "bucket-name",
-        CloudProvider = CloudProvider.AWS,
+        CloudProvider = ECloudProvider.Amazon,
         AWS = new BasicAWSCredentials("access-key", "secret-key")
       });
 

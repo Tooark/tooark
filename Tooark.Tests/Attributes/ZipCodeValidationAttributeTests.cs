@@ -2,7 +2,7 @@ using Tooark.Attributes;
 
 namespace Tooark.Tests.Attributes;
 
-public class ZipCodeValidationAttributeTest
+public class ZipCodeValidationAttributeTests
 {
   // Instância do atributo de ZipCodeValidation para ser testado
   private readonly ZipCodeValidationAttribute _zipCodeValidationAttribute = new();
