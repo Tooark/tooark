@@ -1,4 +1,3 @@
-using Tooark.Exceptions;
 using Tooark.ValueObjects;
 
 namespace Tooark.Tests.ValueObjects;
