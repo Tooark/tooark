@@ -1,6 +1,6 @@
 # Tooark.Notifications
 
-A biblioteca fornece uma estrutura para criar e gerenciar notificações.
+Biblioteca para criação e gerenciamento de notificações e alertas, facilitando a comunicação e monitoramento para projetos .NET.
 
 ## Conteúdo
 

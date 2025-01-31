@@ -7,12 +7,12 @@
     <PackageId>Tooark.Utils</PackageId>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
     <Company>Tooark</Company>
-    <PackageDescription>General Functions Package Utils</PackageDescription>
-    <Description>General Functions Library Utils</Description>
+    <PackageDescription>General utility package for .NET applications.</PackageDescription>
+    <Description>A library of general utility functions that aid development, including methods for manipulating strings, dates, collections, and more.</Description>
     <PackageIcon>icon.jpg</PackageIcon>
-    <PackageTags>toolkit</PackageTags>
+    <PackageTags>toolkit, utils, .NET</PackageTags>
     <Title>Tooark</Title>
-    <Summary>General Functions Management Utils</Summary>
+    <Summary>Management of general utility functions for .NET projects.</Summary>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
@@ -26,11 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
   </ItemGroup>
 
 </Project>

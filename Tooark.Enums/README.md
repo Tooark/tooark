@@ -1,6 +1,6 @@
 # Tooark.Enums
 
-Biblioteca para tipos de enumeradores que já possuem um valor predefinido e validado.
+Biblioteca que fornece tipos enumerados validados, permitindo a padronização para projetos .NET. Inclui métodos para conversão e validação de valores enumerados.
 
 ## Conteúdo
 
@@ -22,14 +22,14 @@ A classe `EDocumentType` representa diferentes tipos de documentos e fornece mé
 - `CPF_RG`
 - `CPF_RG_CNH`
 
-### Métodos
+### Métodos do EDocumentType
 
 - `ToString()`: Retorna a descrição do tipo de documento.
 - `ToInt()`: Retorna o ID do tipo de documento.
 - `ToRegex()`: Retorna o padrão de regex do tipo de documento.
 - `IsValid(string)`: Retorna a função de validação do tipo de documento.
 
-### Exemplo de Uso
+### Exemplo de Uso para EDocumentType
 
 ```csharp
 using Tooark.Enums;
@@ -58,12 +58,12 @@ A classe `ECloudProvider` representa diferentes provedores de cloud.
 - `Google` (GCP)
 - `Microsoft` (Azure)
 
-### Métodos
+### Métodos do ECloudProvider
 
 - `ToString()`: Retorna a descrição do provedor de cloud.
 - `ToInt()`: Retorna o ID do provedor de cloud.
 
-### Exemplo de Uso
+### Exemplo de Uso para ECloudProvider
 
 ```csharp
 using Tooark.Enums;
