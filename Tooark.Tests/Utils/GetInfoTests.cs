@@ -530,6 +530,20 @@ public class GetInfoTests
     Assert.Equal("NotFound.Property;LanguageCode", exception.Message);
   }
 
+  // Testa se o método Custom lança uma exceção quando a propriedade LanguageCode não existe na lista de linguagens
+  [Fact]
+  public void Custom_ThrowsExceptionWhenLanguageCodePropertyOnlyExist()
+  {
+    // Arrange
+    List<MLanguageOnlyLanguageCode> list = [ new() { LanguageCode = "pt-BR" } ];
+
+    // Act
+    var exception = Assert.Throws<InvalidOperationException>(() => GetInfo.Name(list));
+
+    // Assert
+    Assert.Equal("NotFound.Property;Name", exception.Message);
+  }
+
   // Testa se o método Custom lança uma exceção quando a propriedade Name não existe na lista de linguagens
   [Fact]
   public void Custom_ThrowsExceptionWhenNamePropertyDoesNotExist()
