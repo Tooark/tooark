@@ -42,12 +42,12 @@ CultureInfo currentCulture = Language.CurrentCulture; // pt-BR
 
 Classe estática que fornece métodos para normalização de strings.
 
-#### Métodos
+#### Métodos de Normalização
 
 - `Value(string value)`: Normaliza um valor removendo espaços, convertendo para maiúscula e substituindo caracteres especiais.
 - `ValueRegex(string value)`: Normaliza um valor removendo espaços, convertendo para maiúscula e substituindo caracteres especiais usando expressões regulares.
 
-#### Exemplo de Uso
+#### Exemplo de Uso de Normalização
 
 ```csharp
 using Tooark.Utils;
@@ -60,14 +60,14 @@ string normalizedValueRegex = Normalize.ValueRegex("Olá Mundo!"); // OLAMUNDO
 
 Classe estática que fornece métodos para buscar campos `name`, `title`, `description` e `custom` de uma lista de objetos.
 
-#### Métodos
+#### Métodos de Busca
 
 - `Name<T>(IList<T> list, string? languageCode = null)`: Obtém o nome localizado de uma lista de objetos.
 - `Title<T>(IList<T> list, string? languageCode = null)`: Obtém o título localizado de uma lista de objetos.
 - `Description<T>(IList<T> list, string? languageCode = null)`: Obtém a descrição localizada de uma lista de objetos.
 - `Custom<T>(IList<T> list, string property, string? languageCode = null)`: Obtém um valor localizado de uma propriedade em uma lista de objetos.
 
-#### Exemplo de Uso
+#### Exemplo de Uso de Busca
 
 ```csharp
 using Tooark.Utils;
@@ -83,7 +83,7 @@ string customValue = GetInfo.Custom(list, "CustomProperty");
 
 Classe estática que fornece métodos para gerar strings.
 
-#### Métodos
+#### Métodos de Geração
 
 - `Sequential(int number)`: Converte um número inteiro em uma representação equivalente alfabética do número.
 - `Password(int len = 12, bool upper = true, bool lower = true, bool number = true, bool special = true, bool similarity = false)`: Gera uma string com critérios específicos.
@@ -91,7 +91,7 @@ Classe estática que fornece métodos para gerar strings.
 - `GuidCode()`: Gera uma string Guid sem hífens.
 - `Token(int length = 256)`: Gera uma string de token.
 
-#### Exemplo de Uso
+#### Exemplo de Uso de Geração
 
 ```csharp
 using Tooark.Utils;
@@ -107,14 +107,14 @@ string token = GenerateString.Token(); // 1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P...
 
 Classe estática que fornece métodos para verificar a validade de arquivos.
 
-#### Métodos
+#### Métodos de Validação de Arquivos
 
 - `IsImage(IFormFile file, long fileSize = 0)`: Verifica se o arquivo é uma imagem válida.
 - `IsDocument(IFormFile file, long fileSize = 0)`: Verifica se o arquivo é um documento válido.
 - `IsVideo(IFormFile file, long fileSize = 0)`: Verifica se o arquivo é um vídeo válido.
 - `IsCustom(IFormFile file, long fileSize = 0, string[]? permittedExtensions = null)`: Verifica se o arquivo é válido para extensões personalizadas.
 
-#### Exemplo de Uso
+#### Exemplo de Uso de Validação de Arquivos
 
 ```csharp
 using Tooark.Utils;
@@ -130,14 +130,14 @@ bool isCustom = FileValid.IsCustom(formFile, permittedExtensions: new[] { ".TXT"
 
 Classe estática que fornece métodos para conversão de arquivos e extração de extensões.
 
-#### Métodos
+#### Métodos de Conversão e Extração
 
 - `ToMemoryStream(string stringFile)`: Converte uma string base64 para `MemoryStream`.
 - `ToMemoryStream(IFormFile fromFile)`: Converte um `IFormFile` para `MemoryStream`.
 - `Extension(string stringFile)`: Extrai a extensão do arquivo de uma string base64.
 - `Extension(IFormFile fromFile)`: Extrai a extensão do arquivo de um `IFormFile`.
 
-#### Exemplo de Uso
+#### Exemplo de Uso de Conversão e Extração
 
 ```csharp
 using Tooark.Utils;
@@ -155,4 +155,4 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull re
 
 ## Licença
 
-Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](../LICENSE) para mais detalhes.
+Este projeto está licenciado sob a licença BSD 3-Clause. Veja o arquivo [LICENSE](../LICENSE) para mais detalhes.

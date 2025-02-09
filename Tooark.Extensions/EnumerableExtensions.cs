@@ -10,20 +10,27 @@ namespace Tooark.Extensions;
 public static class EnumerableExtensions
 {
   /// <summary>
-  /// Ordena uma sequência de objetos por uma propriedade.
+  /// Ordena uma sequência de objetos por uma propriedade e de forma ascendente.
   /// </summary>
   /// <typeparam name="T">Tipo do objeto a ser ordenado.</typeparam>
   /// <param name="source">Sequência de objetos a ser ordenada.</param>
   /// <param name="sortProperty">Propriedade a ser utilizada para ordenar.</param>
-  /// <param name="ascending">Indica se a ordenação é ascendente.</param>
-  /// <returns>Retorna a sequência de objetos ordenados.</returns>
-
-  public static IEnumerable<T> OrderByProperty<T>(
-    this IEnumerable<T> source,
-    string sortProperty,
-    bool ascending = true)
+  /// <returns>Retorna a sequência de objetos ordenados de forma ascendente.</returns>
+  public static IEnumerable<T> OrderByProperty<T>(this IEnumerable<T> source, string sortProperty)
   {
-    return InternalEnumerableExtensions.OrderByProperty(source, sortProperty, ascending);
+    return InternalEnumerableExtensions.OrderByProperty(source, sortProperty, true);
+  }
+
+  /// <summary>
+  /// Ordena uma sequência de objetos por uma propriedade e de forma descendente.
+  /// </summary>
+  /// <typeparam name="T">Tipo do objeto a ser ordenado.</typeparam>
+  /// <param name="source">Sequência de objetos a ser ordenada.</param>
+  /// <param name="sortProperty">Propriedade a ser utilizada para ordenar.</param>
+  /// <returns>Retorna a sequência de objetos ordenados de forma descendente.</returns>
+  public static IEnumerable<T> OrderByPropertyDescending<T>(this IEnumerable<T> source, string sortProperty)
+  {
+    return InternalEnumerableExtensions.OrderByProperty(source, sortProperty, false);
   }
 }
 
