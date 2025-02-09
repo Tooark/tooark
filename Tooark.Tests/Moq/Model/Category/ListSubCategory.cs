@@ -6,4 +6,6 @@ public class ListSubCategory
   public string? Name { get; set; } = null!;
   public int Type { get; set; }
   public DateTime CreatedAt { get; set; }
+
+  public DeepCategory? DeepCategory { get; set; }
 }
