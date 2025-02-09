@@ -131,6 +131,24 @@ public class EnumerableExtensionsTests
     Assert.Equal(new Guid("00000000-0000-0000-0000-00000000000" + 5), result[4]);
   }
 
+  // Teste para ordenar por Guid de forma descendente
+  [Fact]
+  public void OrderByPropertyDescending_SortsByGuidProperty()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByPropertyDescending("Id")
+      .Select(x => x.Id)
+      .ToList();
+
+    // Assert
+    Assert.Equal(new Guid("00000000-0000-0000-0000-00000000000" + 5), result[0]);
+    Assert.Equal(new Guid("00000000-0000-0000-0000-00000000000" + 4), result[1]);
+    Assert.Equal(new Guid("00000000-0000-0000-0000-00000000000" + 3), result[2]);
+    Assert.Equal(new Guid("00000000-0000-0000-0000-00000000000" + 2), result[3]);
+    Assert.Equal(new Guid("00000000-0000-0000-0000-00000000000" + 1), result[4]);
+  }
+
   // Teste para ordenar por string
   [Fact]
   public void OrderByProperty_SortsByStringProperty()
