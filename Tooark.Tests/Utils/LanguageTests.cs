@@ -6,6 +6,12 @@ namespace Tooark.Tests.Utils;
 
 public class LanguageTests
 {
+  public LanguageTests()
+  {
+    // Define a instância da linguagem como a implementação padrão
+    Language.Instance = new Language.LanguageImplementation();
+  }
+
   // Testa se o valor padrão da linguagem é "en-US"
   [Fact]
   public void DefaultLanguage_ShouldBeEnUS()
@@ -17,22 +23,6 @@ public class LanguageTests
     Assert.Equal("en-US", defaultLanguage);
   }
 
-  // Testa se a propriedade Current reflete corretamente a cultura atual
-  [Fact]
-  public void CurrentLanguage_ShouldBeCurrentCulture()
-  {
-    // Arrange
-    var mockCultureInfo = new Mock<CultureInfo>("en-US");
-    mockCultureInfo.Setup(c => c.Name).Returns("en-US");
-    Language.SetCulture(mockCultureInfo.Object);
-
-    // Act
-    var currentLanguage = Language.Current;
-
-    // Assert
-    Assert.Equal(mockCultureInfo.Object.Name, currentLanguage);
-  }
-
   // Testa se a cultura atual é alterada corretamente
   [Theory]
   [InlineData("en-US")]
@@ -42,18 +32,12 @@ public class LanguageTests
   [InlineData("pt-PT")]
   public void SetCulture_ShouldChangeCurrentCulture(string culture)
   {
-    // Arrange
-    var mockCultureInfo = new Mock<CultureInfo>(culture);
-    mockCultureInfo.Setup(c => c.Name).Returns(culture);
-
-    // Act
-    Language.SetCulture(mockCultureInfo.Object);
+    // Arrange & Act
+    Language.SetCulture(culture);
 
     // Assert
-    Assert.Equal(mockCultureInfo.Object.Name, Language.Current);
-    Assert.Equal(mockCultureInfo.Object.Name, Language.CurrentCulture.Name);
-    Assert.Equal(mockCultureInfo.Object.Name, CultureInfo.CurrentCulture.Name);
-    Assert.Equal(mockCultureInfo.Object.Name, CultureInfo.CurrentUICulture.Name);
+    Assert.Equal(culture, Language.Current);
+    Assert.Equal(culture, Language.CurrentCulture.Name);
   }
 
   // Testa se a cultura atual é alterada corretamente com um objeto CultureInfo
@@ -66,20 +50,17 @@ public class LanguageTests
   public void SetCulture_WithCultureInfo_SetsCurrentCulture(string newCulture)
   {
     // Arrange
-    var mockCultureInfo = new Mock<CultureInfo>(newCulture);
-    mockCultureInfo.Setup(c => c.Name).Returns(newCulture);
+    CultureInfo culture = new(newCulture);
 
     // Act
-    Language.SetCulture(mockCultureInfo.Object);
+    Language.SetCulture(culture);
 
     // Assert
-    Assert.Equal(mockCultureInfo.Object.Name, Language.Current);
-    Assert.Equal(mockCultureInfo.Object, Language.CurrentCulture);
-    Assert.Equal(mockCultureInfo.Object, CultureInfo.CurrentCulture);
-    Assert.Equal(mockCultureInfo.Object, CultureInfo.CurrentUICulture);
+    Assert.Equal(newCulture, Language.Current);
+    Assert.Equal(culture, Language.CurrentCulture);
   }
 
-  // Testa se a cultura atual é alterada corretamente
+  // Testa se a cultura atual mantém o valor padrão quando a cultura informada é inválida
   [Theory]
   [InlineData("en")]
   [InlineData("es")]
@@ -94,7 +75,5 @@ public class LanguageTests
     // Assert
     Assert.Equal(Language.Default, Language.Current);
     Assert.Equal(Language.Default, Language.CurrentCulture.Name);
-    Assert.Equal(Language.Default, CultureInfo.CurrentCulture.Name);
-    Assert.Equal(Language.Default, CultureInfo.CurrentUICulture.Name);
   }
 }

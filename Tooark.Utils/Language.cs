@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Tooark.Utils.Interfaces;
 using Tooark.Validations.Patterns;
 
 namespace Tooark.Utils;
@@ -10,19 +11,24 @@ namespace Tooark.Utils;
 public static class Language
 {
   /// <summary>
+  /// A instância da interface ILanguage.
+  /// </summary>
+  public static ILanguage Instance { get; set; } = new LanguageImplementation();
+
+  /// <summary>
   /// O código de idioma padrão usado na aplicação. Padrão "en-US".
   /// </summary>
-  public static readonly string Default = InternalLanguage.Default;
+  public static readonly string Default = Instance.DefaultLanguage;
 
   /// <summary>
   /// O código de idioma atual do ambiente de execução.
   /// </summary>
-  public static string Current { get => InternalLanguage.Current; }
+  public static string Current { get => Instance.CurrentLanguage; }
 
   /// <summary>
   /// A cultura atual do ambiente de execução.
   /// </summary>
-  public static CultureInfo CurrentCulture { get => InternalLanguage.CurrentCulture; }
+  public static CultureInfo CurrentCulture { get => Instance.CurrentCultureInfo; }
 
   /// <summary>
   /// Função para definir a cultura atual para a aplicação.
@@ -30,7 +36,7 @@ public static class Language
   /// <param name="culture">O nome da cultura a ser definida. Exemplo: "en-US" ou "pt-BR".</param>
   public static void SetCulture(string culture)
   {
-    InternalLanguage.SetCulture(culture);
+    Instance.SetCultureInfo(culture);
   }
 
   /// <summary>
@@ -39,7 +45,46 @@ public static class Language
   /// <param name="culture">A cultura a ser definida. Exemplo: "en-US" ou "pt-BR".</param>
   public static void SetCulture(CultureInfo culture)
   {
-    InternalLanguage.SetCulture(culture);
+    Instance.SetCultureInfo(culture);
+  }
+
+  /// <summary>
+  /// Implementação da interface ILanguage.
+  /// </summary>
+  internal class LanguageImplementation : ILanguage
+  {
+    /// <summary>
+    /// O código de idioma padrão usado na aplicação. Padrão "en-US".
+    /// </summary>
+    public string DefaultLanguage => InternalLanguage.Default;
+
+    /// <summary>
+    /// O código de idioma atual do ambiente de execução.
+    /// </summary>
+    public string CurrentLanguage => InternalLanguage.Current;
+
+    /// <summary>
+    /// A cultura atual do ambiente de execução.
+    /// </summary>
+    public CultureInfo CurrentCultureInfo => InternalLanguage.CurrentCulture;
+
+    /// <summary>
+    /// Função para definir a cultura atual para a aplicação.
+    /// </summary>
+    /// <param name="culture">O nome da cultura a ser definida. Exemplo: "en-US" ou "pt-BR".</param>
+    public void SetCultureInfo(string culture)
+    {
+      InternalLanguage.SetCulture(culture);
+    }
+
+    /// <summary>
+    /// Função para definir a cultura atual para a aplicação.
+    /// </summary>
+    /// <param name="culture">A cultura a ser definida. Exemplo: "en-US" ou "pt-BR".</param>
+    public void SetCultureInfo(CultureInfo culture)
+    {
+      InternalLanguage.SetCulture(culture);
+    }
   }
 }
 
