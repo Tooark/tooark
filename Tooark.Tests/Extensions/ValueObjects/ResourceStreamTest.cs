@@ -1,12 +1,13 @@
+using System.Globalization;
 using Tooark.Extensions.ValueObjects;
 
-namespace Tooark.Tests.Extensions.Dtos;
+namespace Tooark.Tests.Extensions.ValueObjects;
 
 public class ResourceStreamTest
 {
   // Teste quando o construtor é chamado com parâmetros válidos
   [Fact]
-  public void ResourceStream_ShouldInitializeProperties()
+  public void ResourceStream_ShouldInitializeProperties_WithLanguageCodeString()
   {
     // Arrange
     string languageCode = "en";
@@ -17,6 +18,22 @@ public class ResourceStreamTest
 
     // Assert
     Assert.Equal(languageCode, resourceStream.LanguageCode);
+    Assert.Equal(stream, resourceStream.Stream);
+  }
+
+  // Teste quando o construtor é chamado com parâmetros válidos
+  [Fact]
+  public void ResourceStream_ShouldInitializeProperties_WithLanguageCodeCultureInfo()
+  {
+    // Arrange
+    CultureInfo languageCode = new("en");
+    MemoryStream stream = new();
+
+    // Act
+    var resourceStream = new ResourceStream(languageCode, stream);
+
+    // Assert
+    Assert.Equal(languageCode.Name, resourceStream.LanguageCode);
     Assert.Equal(stream, resourceStream.Stream);
   }
 

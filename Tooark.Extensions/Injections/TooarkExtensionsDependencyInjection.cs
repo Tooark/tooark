@@ -1,19 +1,18 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
-using Tooark.Extensions;
-using Tooark.Factories;
-using Tooark.Options;
+using Tooark.Extensions.Factories;
+using Tooark.Extensions.Options;
 
-namespace Tooark.Injections;
+namespace Tooark.Extensions.Injections;
 
 /// <summary>
-/// Classe para adicionar o serviço JsonStringLocalizer ao contêiner de injeção de dependência.
+/// Classe de extensão para injeção de dependência do projeto Tooark.Extensions.
 /// </summary>
-public static partial class TooarkDependencyInjection
+public static class TooarkExtensionsDependencyInjection
 {
   /// <summary>
-  /// Adiciona o serviço JsonStringLocalizer ao contêiner de injeção de dependência.
+  /// Adiciona o serviço JsonStringLocalizer com injeção de dependência.
   /// </summary>
   /// <param name="services">A coleção de serviços para adicionar o serviço JsonStringLocalizer.</param>
   /// <param name="localizerOptions">Configurações para o serviço de localização de recursos. Parâmetro opcional.</param>
@@ -22,17 +21,25 @@ public static partial class TooarkDependencyInjection
     this IServiceCollection services,
     LocalizerOptions? localizerOptions = null)
   {
+    // Caso as opções de configuração não sejam informadas, cria um novo objeto de opções.
     var options = localizerOptions ?? new LocalizerOptions();
 
+    // Adiciona o serviço de cache distribuído.
+    services.AddDistributedMemoryCache();
+
+    // Adiciona o serviço de localização de recurso padrão.
     services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
+
+    // Adiciona o serviço de localização de recursos com cache distribuído e opções de configuração.
     services.AddSingleton<IStringLocalizerFactory>(provider =>
       new JsonStringLocalizerFactory(
         provider.GetRequiredService<IDistributedCache>(),
-        options.ResourceAdditionalPaths,
-        options.FileStream
+        options.ResourceAdditionalPath,
+        options.ResourceAdditionalStream
       )
     );
 
+    // Adiciona o serviço de localização de recursos com cache distribuído e opções de configuração.
     services.AddTransient<IStringLocalizer>(provider =>
     {
       var factory = provider.GetRequiredService<IStringLocalizerFactory>();
