@@ -125,6 +125,29 @@ var localizedString = _localizer["Field.Empty", "Name"]; // "O campo Name está 
 
 #### Exemplos de Configuração
 
+**Arquivo 'appsettings.ENV.json':**
+
+```json
+{
+  // ...outros parâmetros de configuração
+  "LocalizerOptions": {
+    // ...parâmetros de configuração dos recursos adicionais
+  }
+}
+```
+
+**Configuração Básica:**
+
+```csharp
+using Microsoft.Extensions.DependencyInjection;
+using Tooark.Extensions.Options;
+using Tooark.Extensions.Injections;
+
+var services = new ServiceCollection();
+
+services.AddJsonStringLocalizer();
+```
+
 **Configuração com Caminhos Adicionais:**
 
 ```csharp

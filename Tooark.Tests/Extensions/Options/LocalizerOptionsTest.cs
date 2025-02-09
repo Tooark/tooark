@@ -17,6 +17,7 @@ public class LocalizerOptionsTest
     var streams = options.ResourceAdditionalStream;
 
     // Assert
+    Assert.Equal("LocalizerResource", LocalizerOptions.Section);
     Assert.Null(paths);
     Assert.Null(streams);
   }
