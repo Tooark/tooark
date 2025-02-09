@@ -1,6 +1,6 @@
 # Tooark.Extensions
 
-Biblioteca de extensões úteis para facilitar o desenvolvimento em .NET. Essas extensões cobrem uma variedade de tipos e cenários comuns.
+Biblioteca para criar e gerenciar extensões e utilitários, facilitando o desenvolvimento e a manutenção de projetos .NET.
 
 ## Conteúdo
 
