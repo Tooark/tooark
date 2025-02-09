@@ -38,9 +38,9 @@ public static class StringExtensions
   /// </summary>
   /// <param name="value">A string em Snake Case.</param>
   /// <returns>A string convertida para Pascal Case.</returns>
-  public static string SnakeToPascalCase(this string value)
+  public static string FromSnakeToPascalCase(this string value)
   {
-    return InternalStringExtensions.SnakeToPascalCase(value);
+    return InternalStringExtensions.FromSnakeToPascalCase(value);
   }
 
   /// <summary>
@@ -48,9 +48,9 @@ public static class StringExtensions
   /// </summary>
   /// <param name="value">A string em Snake Case.</param>
   /// <returns>A string convertida para Camel Case.</returns>
-  public static string SnakeToCamelCase(this string value)
+  public static string FromSnakeToCamelCase(this string value)
   {
-    return InternalStringExtensions.SnakeToCamelCase(value);
+    return InternalStringExtensions.FromSnakeToCamelCase(value);
   }
 
   /// <summary>
@@ -58,9 +58,9 @@ public static class StringExtensions
   /// </summary>
   /// <param name="value">A string em Snake Case.</param>
   /// <returns>A string convertida para Kebab Case.</returns>
-  public static string SnakeToKebabCase(this string value)
+  public static string FromSnakeToKebabCase(this string value)
   {
-    return InternalStringExtensions.SnakeToKebabCase(value);
+    return InternalStringExtensions.FromSnakeToKebabCase(value);
   }
 
   /// <summary>
@@ -68,9 +68,9 @@ public static class StringExtensions
   /// </summary>
   /// <param name="value">A string em Pascal Case.</param>
   /// <returns>A string convertida para Snake Case.</returns>
-  public static string PascalToSnakeCase(this string value)
+  public static string FromPascalToSnakeCase(this string value)
   {
-    return InternalStringExtensions.PascalToSnakeCase(value);
+    return InternalStringExtensions.FromPascalToSnakeCase(value);
   }
 
   /// <summary>
@@ -78,9 +78,9 @@ public static class StringExtensions
   /// </summary>
   /// <param name="value">A string em Pascal Case.</param>
   /// <returns>A string convertida para Camel Case.</returns>
-  public static string CamelToSnakeCase(this string value)
+  public static string FromCamelToSnakeCase(this string value)
   {
-    return InternalStringExtensions.CamelToSnakeCase(value);
+    return InternalStringExtensions.FromCamelToSnakeCase(value);
   }
 
   /// <summary>
@@ -88,9 +88,9 @@ public static class StringExtensions
   /// </summary>
   /// <param name="value">A string em Camel Case.</param>
   /// <returns>A string convertida para Snake Case.</returns>
-  public static string KebabToSnakeCase(this string value)
+  public static string FromKebabToSnakeCase(this string value)
   {
-    return InternalStringExtensions.KebabToSnakeCase(value);
+    return InternalStringExtensions.FromKebabToSnakeCase(value);
   }
 }
 
@@ -130,7 +130,7 @@ internal static class InternalStringExtensions
   /// </summary>
   /// <param name="value">A string em Snake Case.</param>
   /// <returns>A string convertida para Pascal Case.</returns>
-  internal static string SnakeToPascalCase(this string value)
+  internal static string FromSnakeToPascalCase(this string value)
   {
     // Verifica se a string é nula ou vazia
     if (string.IsNullOrEmpty(value))
@@ -151,7 +151,7 @@ internal static class InternalStringExtensions
   /// </summary>
   /// <param name="value">A string em Snake Case.</param>
   /// <returns>A string convertida para Camel Case.</returns>
-  internal static string SnakeToCamelCase(this string value)
+  internal static string FromSnakeToCamelCase(this string value)
   {
     // Verifica se a string é nula ou vazia
     if (string.IsNullOrEmpty(value))
@@ -160,7 +160,7 @@ internal static class InternalStringExtensions
     }
 
     // Converte a string para Pascal Case
-    var pascalCase = SnakeToPascalCase(value);
+    var pascalCase = FromSnakeToPascalCase(value);
 
     // Converte a string para Camel Case, mantendo a primeira letra minúscula
     return pascalCase.Length > 0 ? (char.ToLowerInvariant(pascalCase[0]) + pascalCase[1..]) : "";
@@ -171,7 +171,7 @@ internal static class InternalStringExtensions
   /// </summary>
   /// <param name="value">A string em Snake Case.</param>
   /// <returns>A string convertida para Kebab Case.</returns>
-  internal static string SnakeToKebabCase(this string value)
+  internal static string FromSnakeToKebabCase(this string value)
   {
     // Verifica se a string é nula ou vazia
     if (string.IsNullOrEmpty(value))
@@ -191,7 +191,7 @@ internal static class InternalStringExtensions
   /// </summary>
   /// <param name="value">A string em Pascal Case.</param>
   /// <returns>A string convertida para Snake Case.</returns>
-  internal static string PascalToSnakeCase(this string value)
+  internal static string FromPascalToSnakeCase(this string value)
   {
     // Verifica se a string é nula ou vazia
     if (string.IsNullOrEmpty(value))
@@ -214,7 +214,7 @@ internal static class InternalStringExtensions
   /// </summary>
   /// <param name="value">A string em Pascal Case.</param>
   /// <returns>A string convertida para Camel Case.</returns>
-  internal static string CamelToSnakeCase(this string value)
+  internal static string FromCamelToSnakeCase(this string value)
   {
     // Verifica se a string é nula ou vazia
     if (string.IsNullOrEmpty(value))
@@ -223,7 +223,7 @@ internal static class InternalStringExtensions
     }
 
     // Converte a string para Snake Case
-    return PascalToSnakeCase(value);
+    return FromPascalToSnakeCase(value);
   }
 
   /// <summary>
@@ -231,7 +231,7 @@ internal static class InternalStringExtensions
   /// </summary>
   /// <param name="value">A string em Camel Case.</param>
   /// <returns>A string convertida para Snake Case.</returns>
-  internal static string KebabToSnakeCase(this string value)
+  internal static string FromKebabToSnakeCase(this string value)
   {
     // Verifica se a string é nula ou vazia
     if (string.IsNullOrEmpty(value))

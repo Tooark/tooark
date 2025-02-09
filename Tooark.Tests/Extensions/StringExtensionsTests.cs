@@ -12,9 +12,9 @@ public class StringExtensionsTests
   [InlineData("  ", "")]
   [InlineData("Hello World", "HELLOWORLD")]
   [InlineData("Ç Ñ Ÿ Ý Â Ä À Å Á Ã", "CNYYAAAAAA")]
-  [InlineData("É Ê Ë È Ï Î Ì Í Ô Ö Ò Ó Õ Ü Û Ù Ú", "EEEEIIIIOOOOOUUUU")]
+  [InlineData("É Ê Ë È & Ï Î Ì Í Ô Ö Ò Ó Õ Ü Û Ù Ú", "EEEEEIIIIOOOOOUUUU")]
   [InlineData("123 ABC", "123ABC")]
-  [InlineData("!@#$%^&*()_+", "")]
+  [InlineData("!@#$%^&*()_+", "E")]
   [InlineData("çñÿâäàåáãéêëèïîìíôöòóðõüûùú", "CNYAAAAAAEEEEIIIIOOOOOUUUU")]
   [InlineData("123 abc ÇÑÝÂÄÀÅÁÃÉÊËÈÏÎÌÍÔÖÒÓÐÕÜÛÙÚ", "123ABCCNYAAAAAAEEEEIIIIOOOOOUUUU")]
   [InlineData("Olá, eu sou o Tooark!", "OLAEUSOUOTOOARK")]
@@ -71,10 +71,10 @@ public class StringExtensionsTests
   [InlineData("  ", "")]
   [InlineData("Hello World", "HELLOWORLD")]
   [InlineData("Ç Ñ Ÿ Ý Â Ä À Å Á Ã", "CNYYAAAAAA")]
-  [InlineData("É Ê Ë È Ï Î Ì Í Ô Ö Ò Ó Õ Ü Û Ù Ú", "EEEEIIIIOOOOOUUUU")]
+  [InlineData("É Ê Ë È & Ï Î Ì Í Ô Ö Ò Ó Õ Ü Û Ù Ú", "EEEEEIIIIOOOOOUUUU")]
   [InlineData("123 ABC", "123ABC")]
-  [InlineData("!@#$%^&*()_+", "")]
-  [InlineData("çñÿâäàåáãéêëèïîìíôöòóðõüûùú", "CNYAAAAAAEEEEIIIIOOOOOUUUU")]
+  [InlineData("!@#$%^&*()_+", "E")]
+  [InlineData("çñÿâäàåáãéêëè&ïîìíôöòóðõüûùú", "CNYAAAAAAEEEEEIIIIOOOOOUUUU")]
   [InlineData("123 abc ÇÑÝÂÄÀÅÁÃÉÊËÈÏÎÌÍÔÖÒÓÐÕÜÛÙÚ", "123ABCCNYAAAAAAEEEEIIIIOOOOOUUUU")]
   [InlineData("Olá, eu sou o Tooark!", "OLAEUSOUOTOOARK")]
   [InlineData("¿Qué tal? Me llamo Tooark.", "QUETALMELLAMOTOOARK")]
@@ -141,10 +141,10 @@ public class StringExtensionsTests
   [InlineData("another_example_snake", "AnotherExampleSnake")]
   [InlineData("another__example_snake", "AnotherExampleSnake")]
   [InlineData("another__example__snake", "AnotherExampleSnake")]
-  public void SnakeToPascalCase_ShouldConvertToPascalCase(string? input, string? expected)
+  public void FromSnakeToPascalCase_ShouldConvertToPascalCase(string? input, string? expected)
   {
     // Act
-    var result = input!.SnakeToPascalCase();
+    var result = input!.FromSnakeToPascalCase();
 
     // Assert
     Assert.Equal(expected, result);
@@ -169,10 +169,10 @@ public class StringExtensionsTests
   [InlineData("another_example_snake", "anotherExampleSnake")]
   [InlineData("another__example_snake", "anotherExampleSnake")]
   [InlineData("another__example__snake", "anotherExampleSnake")]
-  public void SnakeToCamelCase_ShouldConvertToCamelCase(string? input, string? expected)
+  public void FromSnakeToCamelCase_ShouldConvertToCamelCase(string? input, string? expected)
   {
     // Act
-    var result = input!.SnakeToCamelCase();
+    var result = input!.FromSnakeToCamelCase();
 
     // Assert
     Assert.Equal(expected, result);
@@ -197,10 +197,10 @@ public class StringExtensionsTests
   [InlineData("another_example_snake", "another-example-snake")]
   [InlineData("another__example_snake", "another-example-snake")]
   [InlineData("another__example__snake", "another-example-snake")]
-  public void SnakeToKebabCase_ShouldConvertToKebabCase(string? input, string? expected)
+  public void FromSnakeToKebabCase_ShouldConvertToKebabCase(string? input, string? expected)
   {
     // Act
-    var result = input!.SnakeToKebabCase();
+    var result = input!.FromSnakeToKebabCase();
 
     // Assert
     Assert.Equal(expected, result);
@@ -216,10 +216,10 @@ public class StringExtensionsTests
   [InlineData("SnakeCase", "snake_case")]
   [InlineData("SnakeSCase", "snake_s_case")]
   [InlineData("AnotherExampleSnake", "another_example_snake")]
-  public void PascalToSnakeCase_ShouldConvertToSnakeCase(string? input, string? expected)
+  public void FromPascalToSnakeCase_ShouldConvertToSnakeCase(string? input, string? expected)
   {
     // Act
-    var result = input!.PascalToSnakeCase();
+    var result = input!.FromPascalToSnakeCase();
 
     // Assert
     Assert.Equal(expected, result);
@@ -234,10 +234,10 @@ public class StringExtensionsTests
   [InlineData("snakeCase", "snake_case")]
   [InlineData("snakeSCase", "snake_s_case")]
   [InlineData("anotherExampleSnake", "another_example_snake")]
-  public void CamelToSnakeCase_ShouldConvertToSnakeCase(string? input, string? expected)
+  public void FromCamelToSnakeCase_ShouldConvertToSnakeCase(string? input, string? expected)
   {
     // Act
-    var result = input!.CamelToSnakeCase();
+    var result = input!.FromCamelToSnakeCase();
 
     // Assert
     Assert.Equal(expected, result);
@@ -260,10 +260,10 @@ public class StringExtensionsTests
   [InlineData("another-example-snake", "another_example_snake")]
   [InlineData("another--example-snake", "another_example_snake")]
   [InlineData("another--example--snake", "another_example_snake")]
-  public void KebabToSnakeCase_ShouldConvertToSnakeCase(string? input, string? expected)
+  public void FromKebabToSnakeCase_ShouldConvertToSnakeCase(string? input, string? expected)
   {
     // Act
-    var result = input!.KebabToSnakeCase();
+    var result = input!.FromKebabToSnakeCase();
 
     // Assert
     Assert.Equal(expected, result);

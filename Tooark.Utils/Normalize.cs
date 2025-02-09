@@ -86,7 +86,8 @@ internal static partial class InternalNormalize
           case 'É':
           case 'Ê':
           case 'Ë':
-          case 'È': normalizedValue.Append('E'); break;
+          case 'È':
+          case '&': normalizedValue.Append('E'); break;
           case 'Ï':
           case 'Î':
           case 'Ì':
@@ -168,7 +169,7 @@ internal static partial class InternalNormalize
   private static partial Regex ARegex();
   
   // Caracteres especiais substituir para E
-  [GeneratedRegex("[ÉÊËÈ]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
+  [GeneratedRegex("[ÉÊËÈ&]", RegexOptions.IgnoreCase, matchTimeoutMilliseconds: 250)]
   private static partial Regex ERegex();
   
   // Caracteres especiais substituir para I
