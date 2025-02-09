@@ -304,11 +304,11 @@ public class EnumerableExtensionsTests
       .ToList();
 
     // Assert
-    Assert.Equal(1 % 2 == 1, result[0]);
-    Assert.Equal(2 % 2 == 0, result[1]);
-    Assert.Equal(3 % 2 == 1, result[2]);
-    Assert.Equal(4 % 2 == 0, result[3]);
-    Assert.Equal(5 % 2 == 1, result[4]);
+    Assert.False(result[0]);
+    Assert.False(result[1]);
+    Assert.True(result[2]);
+    Assert.True(result[3]);
+    Assert.True(result[4]);
   }
 
   // Teste para ordenar por caractere
@@ -322,11 +322,11 @@ public class EnumerableExtensionsTests
       .ToList();
 
     // Assert
-    Assert.Equal(1, result[0]);
-    Assert.Equal(2, result[1]);
-    Assert.Equal(3, result[2]);
-    Assert.Equal(4, result[3]);
-    Assert.Equal(5, result[4]);
+    Assert.Equal(65, result[0]);
+    Assert.Equal(67, result[1]);
+    Assert.Equal(69, result[2]);
+    Assert.Equal(72, result[3]);
+    Assert.Equal(74, result[4]);
   }
 
   // Teste para ordenar por Sbyte
