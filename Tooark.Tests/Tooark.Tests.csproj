@@ -10,6 +10,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\Media\icon.jpg" Pack="true" PackagePath="\" />
+    <None Update="Moq\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tooark.Attributes\Tooark.Attributes.csproj" />
+    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
+    <ProjectReference Include="..\Tooark.Extensions\Tooark.Extensions.csproj" />
+    <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
+    <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
+    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
+    <ProjectReference Include="..\Tooark.ValueObjects\Tooark.ValueObjects.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="Moq" Version="4.20.70" />
@@ -23,16 +40,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Tooark.Attributes\Tooark.Attributes.csproj" />
-    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
-    <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
-    <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
-    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
-    <ProjectReference Include="..\Tooark.ValueObjects\Tooark.ValueObjects.csproj" />
-    <ProjectReference Include="..\Tooark.Extensions\Tooark.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

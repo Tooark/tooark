@@ -4,82 +4,7 @@ namespace Tooark.Tests.Extensions;
 
 public class StringExtensionsTests
 {
-  // Um método de teste para verificar se a função ToNormalize retorna uma string vazia se a entrada for nula ou vazia
-  [Fact]
-  public void ToNormalize_ShouldReturnEmptyString_WhenInputIsNullEmpty()
-  {
-    // Arrange
-    string input = null!;
-    string expected = "";
-
-    // Act
-    string result = input.ToNormalize();
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  // Um método de teste para verificar se a função ToNormalize remove os espaços da entrada
-  [Fact]
-  public void ToNormalize_ShouldRemoveSpaces_WhenInputHasSpaces()
-  {
-    // Arrange
-    string input = "Hello World";
-    string expected = "HELLOWORLD";
-
-    // Act
-    string result = input.ToNormalize();
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  // Um método de teste para verificar se a função ToNormalize converte a entrada para minúsculas
-  [Fact]
-  public void ToNormalize_ShouldConvertToLowercase_WhenInputHasUppercase()
-  {
-    // Arrange
-    string input = "HELLO WORLD";
-    string expected = "HELLOWORLD";
-
-    // Act
-    string result = input.ToNormalize();
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  // Um método de teste para verificar se a função ToNormalize substitui os caracteres especiais por caracteres sem acentuação
-  [Fact]
-  public void ToNormalize_ShouldReplaceSpecialCharacters_WhenInputHasSpecialCharacters()
-  {
-    // Arrange
-    string input = "Ça va? Je m'appelle Tooark.";
-    string expected = "CAVAJEMAPPELLETOOARK";
-
-    // Act
-    string result = input.ToNormalize();
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  // Um método de teste para verificar se a função ToNormalize ignora os caracteres que não são números ou letras minúsculas
-  [Fact]
-  public void ToNormalize_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters()
-  {
-    // Arrange
-    string input = "Hello, I'm Tooark! 123.";
-    string expected = "HELLOIMTOOARK123";
-
-    // Act
-    string result = input.ToNormalize();
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  // Uma lista de 48 testes com valores de entrada e resultados esperados gerados aleatoriamente
+  // Teste para verificar se a função ToNormalize normaliza uma string
   [Theory]
   [InlineData(null, "")]
   [InlineData("", "")]
@@ -129,91 +54,16 @@ public class StringExtensionsTests
   [InlineData("òî7gåP0siH", "OI7GAP0SIH")]
   [InlineData("SB8làbhûH1", "SB8LABHUH1")]
   [InlineData(" âdçd51KU8 ", "ADCD51KU8")]
-  public void ToNormalize_ReturnsExpectedResult(string? input, string expected)
+  public void ToNormalize_ShouldNormalizeString(string? input, string expected)
   {
     // Arrange & Act
-    string result = input!.ToNormalize();
+    var result = input!.ToNormalize();
 
     // Assert
     Assert.Equal(expected, result);
   }
 
-  // Um método de teste para verificar se a função ToNormalizeRegex retorna uma string vazia se a entrada for nula ou vazia
-  [Fact]
-  public void ToNormalizeRegex_ShouldReturnEmptyString_WhenInputIsNullEmpty()
-  {
-    // Arrange
-    string input = null!;
-    string expected = "";
-
-    // Act
-    string result = input.ToNormalizeRegex();
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  // Um método de teste para verificar se a função ToNormalizeRegex remove os espaços da entrada
-  [Fact]
-  public void ToNormalizeRegex_ShouldRemoveSpaces_WhenInputHasSpaces()
-  {
-    // Arrange
-    string input = "Hello World";
-    string expected = "HELLOWORLD";
-
-    // Act
-    string result = input.ToNormalizeRegex();
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  // Um método de teste para verificar se a função ToNormalizeRegex converte a entrada para minúsculas
-  [Fact]
-  public void ToNormalizeRegex_ShouldConvertToLowercase_WhenInputHasUppercase()
-  {
-    // Arrange
-    string input = "HELLO WORLD";
-    string expected = "HELLOWORLD";
-
-    // Act
-    string result = input.ToNormalizeRegex();
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  // Um método de teste para verificar se a função ToNormalizeRegex substitui os caracteres especiais por caracteres sem acentuação
-  [Fact]
-  public void ToNormalizeRegex_ShouldReplaceSpecialCharacters_WhenInputHasSpecialCharacters()
-  {
-    // Arrange
-    string input = "Ça va? Je m'appelle Tooark.";
-    string expected = "CAVAJEMAPPELLETOOARK";
-
-    // Act
-    string result = input.ToNormalizeRegex();
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  // Um método de teste para verificar se a função ToNormalizeRegex ignora os caracteres que não são números ou letras minúsculas
-  [Fact]
-  public void ToNormalizeRegex_ShouldIgnoreOtherCharacters_WhenInputHasOtherCharacters()
-  {
-    // Arrange
-    string input = "Hello, I'm Tooark! 123.";
-    string expected = "HELLOIMTOOARK123";
-
-    // Act
-    string result = input.ToNormalizeRegex();
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  // Uma lista de 48 testes com valores de entrada e resultados esperados gerados aleatoriamente
+  // Teste para verificar se a função ToNormalizeRegex normaliza uma string
   [Theory]
   [InlineData(null, "")]
   [InlineData("", "")]
@@ -263,62 +113,159 @@ public class StringExtensionsTests
   [InlineData("òî7gåP0siH", "OI7GAP0SIH")]
   [InlineData("SB8làbhûH1", "SB8LABHUH1")]
   [InlineData(" âdçd51KU8 ", "ADCD51KU8")]
-  public void ToNormalizeRegex_ReturnsExpectedResult(string? input, string expected)
+  public void ToNormalizeRegex_ShouldNormalizeString(string? input, string expected)
   {
     // Arrange & Act
-    string result = input!.ToNormalizeRegex();
+    var result = input!.ToNormalizeRegex();
 
     // Assert
     Assert.Equal(expected, result);
   }
 
-  // Um método de teste para verificar se a função ToPascalCase converte SnakeCase para PascalCase
+  // Teste para verificar se a função SnakeToPascalCase converte SnakeCase para PascalCase
   [Theory]
+  [InlineData(null, null)]
   [InlineData("_", "")]
-  [InlineData("t", "T")]
-  [InlineData("_t", "T")]
-  [InlineData("t_", "T")]
-  [InlineData("_hello_tooark", "HelloTooark")]
-  [InlineData("hello_tooark_", "HelloTooark")]
-  [InlineData("hello__tooark", "HelloTooark")]
-  [InlineData("_hello_package_tooark", "HelloPackageTooark")]
-  [InlineData("hello_package_tooark_", "HelloPackageTooark")]
-  [InlineData("hello__package_tooark", "HelloPackageTooark")]
-  public void ToPascalCase_ShouldConvertSnakeCaseToPascalCase(string input, string expected)
+  [InlineData("_a", "A")]
+  [InlineData("a_", "A")]
+  [InlineData("snake_", "Snake")]
+  [InlineData("_snake", "Snake")]
+  [InlineData("_snake_", "Snake")]
+  [InlineData("snake_case", "SnakeCase")]
+  [InlineData("snake_s_case", "SnakeSCase")]
+  [InlineData("SNAKE_CASE", "SnakeCase")]
+  [InlineData("snake__case", "SnakeCase")]
+  [InlineData("_snake__case", "SnakeCase")]
+  [InlineData("snake__case_", "SnakeCase")]
+  [InlineData("_snake__case_", "SnakeCase")]
+  [InlineData("another_example_snake", "AnotherExampleSnake")]
+  [InlineData("another__example_snake", "AnotherExampleSnake")]
+  [InlineData("another__example__snake", "AnotherExampleSnake")]
+  public void SnakeToPascalCase_ShouldConvertToPascalCase(string? input, string? expected)
   {
-    // Arrange & Act
-    string result = input.ToPascalCase();
+    // Act
+    var result = input!.SnakeToPascalCase();
 
     // Assert
     Assert.Equal(expected, result);
   }
 
-  // Um método de teste para verificar se a função ToPascalCase retorna string vazia quando a entrada é uma string vazia
-  [Fact]
-  public void ToPascalCase_ShouldHandleEmptyString()
+  // Teste para verificar se a função SnakeToCamelCase converte SnakeCase para CamelCase
+  [Theory]
+  [InlineData(null, null)]
+  [InlineData("_", "")]
+  [InlineData("_a", "a")]
+  [InlineData("a_", "a")]
+  [InlineData("snake_", "snake")]
+  [InlineData("_snake", "snake")]
+  [InlineData("_snake_", "snake")]
+  [InlineData("snake_case", "snakeCase")]
+  [InlineData("snake_s_case", "snakeSCase")]
+  [InlineData("SNAKE_CASE", "snakeCase")]
+  [InlineData("snake__case", "snakeCase")]
+  [InlineData("_snake__case", "snakeCase")]
+  [InlineData("snake__case_", "snakeCase")]
+  [InlineData("_snake__case_", "snakeCase")]
+  [InlineData("another_example_snake", "anotherExampleSnake")]
+  [InlineData("another__example_snake", "anotherExampleSnake")]
+  [InlineData("another__example__snake", "anotherExampleSnake")]
+  public void SnakeToCamelCase_ShouldConvertToCamelCase(string? input, string? expected)
   {
-    // Arrange
-    string input = "";
-    string expected = "";
-
     // Act
-    string result = input.ToPascalCase();
+    var result = input!.SnakeToCamelCase();
 
     // Assert
     Assert.Equal(expected, result);
   }
 
-  // Um método de teste para verificar se a função ToPascalCase retorna string nula quando a entrada é nula
-  [Fact]
-  public void ToPascalCase_ShouldHandleNullString()
+  // Teste para verificar se a função SnakeToKebabCase converte SnakeCase para KebabCase
+  [Theory]
+  [InlineData(null, null)]
+  [InlineData("_", "")]
+  [InlineData("_a", "a")]
+  [InlineData("a_", "a")]
+  [InlineData("snake_", "snake")]
+  [InlineData("_snake", "snake")]
+  [InlineData("_snake_", "snake")]
+  [InlineData("snake_case", "snake-case")]
+  [InlineData("snake_s_case", "snake-s-case")]
+  [InlineData("SNAKE_CASE", "snake-case")]
+  [InlineData("snake__case", "snake-case")]
+  [InlineData("_snake__case", "snake-case")]
+  [InlineData("snake__case_", "snake-case")]
+  [InlineData("_snake__case_", "snake-case")]
+  [InlineData("another_example_snake", "another-example-snake")]
+  [InlineData("another__example_snake", "another-example-snake")]
+  [InlineData("another__example__snake", "another-example-snake")]
+  public void SnakeToKebabCase_ShouldConvertToKebabCase(string? input, string? expected)
   {
-    // Arrange
-    string input = null!;
-
     // Act
-    string result = input.ToPascalCase();
+    var result = input!.SnakeToKebabCase();
 
     // Assert
-    Assert.Null(result);
+    Assert.Equal(expected, result);
+  }
+
+  // Teste para verificar se a função PascalToSnakeCase converte PascalCase para SnakeCase
+  [Theory]
+  [InlineData(null, null)]
+  [InlineData("", "")]
+  [InlineData("A", "a")]
+  [InlineData("Snake", "snake")]
+  [InlineData("SNAKE", "s_n_a_k_e")]
+  [InlineData("SnakeCase", "snake_case")]
+  [InlineData("SnakeSCase", "snake_s_case")]
+  [InlineData("AnotherExampleSnake", "another_example_snake")]
+  public void PascalToSnakeCase_ShouldConvertToSnakeCase(string? input, string? expected)
+  {
+    // Act
+    var result = input!.PascalToSnakeCase();
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Teste para verificar se a função CamelToSnakeCase converte CamelCase para SnakeCase
+  [Theory]
+  [InlineData(null, null)]
+  [InlineData("", "")]
+  [InlineData("snake", "snake")]
+  [InlineData("SNAKE", "s_n_a_k_e")]
+  [InlineData("snakeCase", "snake_case")]
+  [InlineData("snakeSCase", "snake_s_case")]
+  [InlineData("anotherExampleSnake", "another_example_snake")]
+  public void CamelToSnakeCase_ShouldConvertToSnakeCase(string? input, string? expected)
+  {
+    // Act
+    var result = input!.CamelToSnakeCase();
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Teste para verificar se a função KebabToSnakeCase converte KebabCase para SnakeCase
+  [Theory]
+  [InlineData(null, null)]
+  [InlineData("", "")]
+  [InlineData("snake-", "snake")]
+  [InlineData("-s-n-a-k-e-", "s_n_a_k_e")]
+  [InlineData("-snake", "snake")]
+  [InlineData("-snake-", "snake")]
+  [InlineData("snake-case", "snake_case")]
+  [InlineData("snake-s-case", "snake_s_case")]
+  [InlineData("snake--case", "snake_case")]
+  [InlineData("-snake--case", "snake_case")]
+  [InlineData("snake--case-", "snake_case")]
+  [InlineData("-snake--case-", "snake_case")]
+  [InlineData("another-example-snake", "another_example_snake")]
+  [InlineData("another--example-snake", "another_example_snake")]
+  [InlineData("another--example--snake", "another_example_snake")]
+  public void KebabToSnakeCase_ShouldConvertToSnakeCase(string? input, string? expected)
+  {
+    // Act
+    var result = input!.KebabToSnakeCase();
+
+    // Assert
+    Assert.Equal(expected, result);
   }
 }
