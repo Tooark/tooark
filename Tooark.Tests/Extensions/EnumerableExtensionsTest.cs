@@ -34,12 +34,27 @@ public class EnumerableExtensionsTests
 
       var category = new Category
       {
-        Id = sequence,
+        Id = new Guid("00000000-0000-0000-0000-00000000000" + sequence),
         Type = "Type " + letter,
         Description = includeOptional ? "Description " + letter : null,
         CreatedAt = date.AddDays(sequence),
         SubCategory = includeOptional ? CreateSubCategory(sequence) : null,
-        ListSubCategory = includeOptional ? new List<ListSubCategory> { CreateListSubCategory(sequence) } : null!
+        ListSubCategory = includeOptional ? new List<ListSubCategory> { CreateListSubCategory(sequence) } : null!,
+
+        Object = includeOptional,
+        Boolean = includeOptional,
+        Char = letter[0],
+        SByte = (sbyte)sequence,
+        Byte = (byte)sequence,
+        Int_16 = (short)sequence,
+        UInt_16 = (ushort)sequence,
+        Int_32 = sequence,
+        UInt_32 = (uint)sequence,
+        Int_64 = sequence,
+        UInt_64 = (ulong)sequence,
+        Float = sequence,
+        Double = sequence,
+        Decimal= sequence,
       };
 
       return category;
@@ -98,9 +113,9 @@ public class EnumerableExtensionsTests
     }
   }
 
-  // Teste para ordenar por inteiro
+  // Teste para ordenar por Guid
   [Fact]
-  public void OrderByProperty_SortsByIntProperty()
+  public void OrderByProperty_SortsByGuidProperty()
   {
     // Arrange & Act
     var result = _categories
@@ -109,11 +124,11 @@ public class EnumerableExtensionsTests
       .ToList();
 
     // Assert
-    Assert.Equal(1, result[0]);
-    Assert.Equal(2, result[1]);
-    Assert.Equal(3, result[2]);
-    Assert.Equal(4, result[3]);
-    Assert.Equal(5, result[4]);
+    Assert.Equal(new Guid("00000000-0000-0000-0000-00000000000" + 1), result[0]);
+    Assert.Equal(new Guid("00000000-0000-0000-0000-00000000000" + 2), result[1]);
+    Assert.Equal(new Guid("00000000-0000-0000-0000-00000000000" + 3), result[2]);
+    Assert.Equal(new Guid("00000000-0000-0000-0000-00000000000" + 4), result[3]);
+    Assert.Equal(new Guid("00000000-0000-0000-0000-00000000000" + 5), result[4]);
   }
 
   // Teste para ordenar por string
@@ -140,7 +155,7 @@ public class EnumerableExtensionsTests
   {
     // Arrange
     DateTime date = new(2025, 1, 1);
-    
+
     // Act
     var result = _categories
       .OrderByProperty("CreatedAt")
@@ -232,7 +247,7 @@ public class EnumerableExtensionsTests
   public void OrderByProperty_SortsByNullProperty()
   {
     // Arrange
-    var categories = new List<Category> { new() { Id = 1 } };
+    var categories = new List<Category> { new() { Id = new Guid("00000000-0000-0000-0000-000000000001") } };
 
     // Act
     var result = _categories
@@ -249,7 +264,7 @@ public class EnumerableExtensionsTests
   public void OrderByProperty_SortsByEmptyProperty()
   {
     // Arrange
-    var categories = new List<Category> { new() { Id = 1 } };
+    var categories = new List<Category> { new() { Id = new Guid("00000000-0000-0000-0000-000000000001") } };
 
     // Act
     var result = _categories
@@ -266,7 +281,7 @@ public class EnumerableExtensionsTests
   public void OrderByProperty_SortsByUnknownProperty()
   {
     // Arrange
-    var categories = new List<Category> { new() { Id = 1 } };
+    var categories = new List<Category> { new() { Id = new Guid("00000000-0000-0000-0000-000000000001") } };
 
     // Act
     var result = _categories
@@ -276,5 +291,239 @@ public class EnumerableExtensionsTests
 
     // Assert
     Assert.Equal(categories.First().Id, result[0]);
+  }
+
+  // Teste para ordenar por booleano
+  [Fact]
+  public void OrderByProperty_SortsByBoolProperty()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("Boolean")
+      .Select(x => x.Boolean)
+      .ToList();
+
+    // Assert
+    Assert.Equal(1 % 2 == 1, result[0]);
+    Assert.Equal(2 % 2 == 0, result[1]);
+    Assert.Equal(3 % 2 == 1, result[2]);
+    Assert.Equal(4 % 2 == 0, result[3]);
+    Assert.Equal(5 % 2 == 1, result[4]);
+  }
+
+  // Teste para ordenar por caractere
+  [Fact]
+  public void OrderByProperty_SortsByCharProperty()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("Char")
+      .Select(x => x.Char)
+      .ToList();
+
+    // Assert
+    Assert.Equal(1, result[0]);
+    Assert.Equal(2, result[1]);
+    Assert.Equal(3, result[2]);
+    Assert.Equal(4, result[3]);
+    Assert.Equal(5, result[4]);
+  }
+
+  // Teste para ordenar por Sbyte
+  [Fact]
+  public void OrderByProperty_SortsBySByteProperty()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("SByte")
+      .Select(x => x.SByte)
+      .ToList();
+
+    // Assert
+    Assert.Equal(1, result[0]);
+    Assert.Equal(2, result[1]);
+    Assert.Equal(3, result[2]);
+    Assert.Equal(4, result[3]);
+    Assert.Equal(5, result[4]);
+  }
+
+  // Teste para ordenar por byte
+  [Fact]
+  public void OrderByProperty_SortsByByteProperty()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("Byte")
+      .Select(x => x.Byte)
+      .ToList();
+
+    // Assert
+    Assert.Equal(1, result[0]);
+    Assert.Equal(2, result[1]);
+    Assert.Equal(3, result[2]);
+    Assert.Equal(4, result[3]);
+    Assert.Equal(5, result[4]);
+  }
+
+  // Teste para ordenar por inteiro de 16 bits
+  [Fact]
+  public void OrderByProperty_SortsByInt16Property()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("Int_16")
+      .Select(x => x.Int_16)
+      .ToList();
+
+    // Assert
+    Assert.Equal(1, result[0]);
+    Assert.Equal(2, result[1]);
+    Assert.Equal(3, result[2]);
+    Assert.Equal(4, result[3]);
+    Assert.Equal(5, result[4]);
+  }
+
+  // Teste para ordenar por inteiro sem sinal de 16 bits
+  [Fact]
+  public void OrderByProperty_SortsByUInt16Property()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("UInt_16")
+      .Select(x => x.UInt_16)
+      .ToList();
+
+    // Assert
+    Assert.Equal((ushort)1, result[0]);
+    Assert.Equal((ushort)2, result[1]);
+    Assert.Equal((ushort)3, result[2]);
+    Assert.Equal((ushort)4, result[3]);
+    Assert.Equal((ushort)5, result[4]);
+  }
+
+  // Teste para ordenar por inteiro de 32 bits
+  [Fact]
+  public void OrderByProperty_SortsByInt32Property()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("Int_32")
+      .Select(x => x.Int_32)
+      .ToList();
+
+    // Assert
+    Assert.Equal(1, result[0]);
+    Assert.Equal(2, result[1]);
+    Assert.Equal(3, result[2]);
+    Assert.Equal(4, result[3]);
+    Assert.Equal(5, result[4]);
+  }
+
+  // Teste para ordenar por inteiro sem sinal de 32 bits
+  [Fact]
+  public void OrderByProperty_SortsByUInt32Property()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("UInt_32")
+      .Select(x => x.UInt_32)
+      .ToList();
+
+    // Assert
+    Assert.Equal((uint)1, result[0]);
+    Assert.Equal((uint)2, result[1]);
+    Assert.Equal((uint)3, result[2]);
+    Assert.Equal((uint)4, result[3]);
+    Assert.Equal((uint)5, result[4]);
+  }
+
+  // Teste para ordenar por inteiro de 64 bits | long
+  [Fact]
+  public void OrderByProperty_SortsByInt64Property()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("Int_64")
+      .Select(x => x.Int_64)
+      .ToList();
+
+    // Assert
+    Assert.Equal(1, result[0]);
+    Assert.Equal(2, result[1]);
+    Assert.Equal(3, result[2]);
+    Assert.Equal(4, result[3]);
+    Assert.Equal(5, result[4]);
+  }
+
+  // Teste para ordenar por inteiro sem sinal de 64 bits | long
+  [Fact]
+  public void OrderByProperty_SortsByUInt64Property()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("UInt_64")
+      .Select(x => x.UInt_64)
+      .ToList();
+
+    // Assert
+    Assert.Equal((ulong)1, result[0]);
+    Assert.Equal((ulong)2, result[1]);
+    Assert.Equal((ulong)3, result[2]);
+    Assert.Equal((ulong)4, result[3]);
+    Assert.Equal((ulong)5, result[4]);
+  }
+
+  // Teste para ordenar por float
+  [Fact]
+  public void OrderByProperty_SortsByFloatProperty()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("Float")
+      .Select(x => x.Float)
+      .ToList();
+
+    // Assert
+    Assert.Equal(1, result[0]);
+    Assert.Equal(2, result[1]);
+    Assert.Equal(3, result[2]);
+    Assert.Equal(4, result[3]);
+    Assert.Equal(5, result[4]);
+  }
+
+  // Teste para ordenar por double
+  [Fact]
+  public void OrderByProperty_SortsByDoubleProperty()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("Double")
+      .Select(x => x.Double)
+      .ToList();
+
+    // Assert
+    Assert.Equal(1, result[0]);
+    Assert.Equal(2, result[1]);
+    Assert.Equal(3, result[2]);
+    Assert.Equal(4, result[3]);
+    Assert.Equal(5, result[4]);
+  }
+
+  // Teste para ordenar por decimal
+  [Fact]
+  public void OrderByProperty_SortsByDecimalProperty()
+  {
+    // Arrange & Act
+    var result = _categories
+      .OrderByProperty("Decimal")
+      .Select(x => x.Decimal)
+      .ToList();
+
+    // Assert
+    Assert.Equal(1, result[0]);
+    Assert.Equal(2, result[1]);
+    Assert.Equal(3, result[2]);
+    Assert.Equal(4, result[3]);
+    Assert.Equal(5, result[4]);
   }
 }

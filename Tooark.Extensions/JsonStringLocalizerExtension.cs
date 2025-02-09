@@ -173,19 +173,30 @@ internal class InternalJsonStringLocalizer
       // Substitui a key com a string localizada
       listInfo[0] = value;
 
-      // Itera sobre os parâmetros da string localizada
-      for (int i = 1; i < listInfo.Length; i++)
-      {
-        // Substitui parâmetros da string pelas strings localizadas
-        var param = GetJsonValueFromDocument(listInfo[i], jsonDocument);
-
-        // Substitui o parâmetro se ele não for nulo ou vazio
-        listInfo[i] = string.IsNullOrEmpty(param) ? listInfo[i] : param;
-      }
+      // Substitui os parâmetros da string localizada
+      ReplaceParametersInList(listInfo, jsonDocument);
     }
 
     // Retorna a string encontrada
     return ReplaceParameters(listInfo);
+  }
+
+  /// <summary>
+  /// Substitui os parâmetros da string localizada.
+  /// </summary>
+  /// <param name="listInfo">Lista de strings localizadas.</param>
+  /// <param name="jsonDocument">Documento JSON.</param>
+  private static void ReplaceParametersInList(string[] listInfo, JsonDocument jsonDocument)
+  {
+    // Itera sobre os parâmetros da string localizada
+    for (int i = 1; i < listInfo.Length; i++)
+    {
+      // Substitui parâmetros da string pelas strings localizadas
+      var param = GetJsonValueFromDocument(listInfo[i], jsonDocument);
+
+      // Substitui o parâmetro se ele não for nulo ou vazio
+      listInfo[i] = string.IsNullOrEmpty(param) ? listInfo[i] : param;
+    }
   }
 
   /// <summary>

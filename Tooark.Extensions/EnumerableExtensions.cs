@@ -108,13 +108,18 @@ internal static class InternalEnumerableExtensions
     // Pega a constante da expressão
     ConstantExpression constantExpression = GetDefaultValue(expression.Type);
 
+    // Converte a constante para o tipo da expressão, se necessário
+    Expression convertedConstantExpression = constantExpression.Type == expression.Type
+      ? constantExpression
+      : Expression.Convert(constantExpression, expression.Type);
+
     // Pega o corpo da expressão lambda
     var body = lambda.Body;
 
     // Retorna a expressão condicional
     return Expression.Condition(
       body,
-      constantExpression,
+      convertedConstantExpression,
       expression
     );
   }
@@ -359,7 +364,6 @@ internal static class InternalEnumerableExtensions
       TypeCode.Double => Expression.Constant(default(double), typeof(double)),        //  14: Representa um tipo de ponto flutuante que representa valores variando de aproximadamente 5,0 x 10 -324 a 1,7 x 10 308 com uma precisão de 15-16 dígitos.
       TypeCode.Decimal => Expression.Constant(default(decimal), typeof(decimal)),     //  15: Representa um tipo decimal de 128 bits com uma faixa de valores de -79.228.162.514.264.337.593.543.950.335 a 79.228.162.514.264.337.593.543.950.335 com uma precisão de 28-29 dígitos.
       TypeCode.DateTime => Expression.Constant(default(DateTime), typeof(DateTime)),  //  16: Representa um tipo que armazena valores de data e hora. O valor DateTime.MinValue é 00:00:00.0000000, 1 de janeiro de 0001.
-      TypeCode.String => Expression.Constant(default(string), typeof(string)),        //  18: Representa uma sequência de caracteres Unicode.
       _ => Expression.Constant(Activator.CreateInstance(type), type)
     };
   }

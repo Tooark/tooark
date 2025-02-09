@@ -26,11 +26,14 @@ public class ECloudProviderTests
 
   // Teste para converter de string para ECloudProvider e retornar a string e o int corretos.
   [Theory]
-  [InlineData("None", 0)]
-  [InlineData("AWS", 1)]
-  [InlineData("GCP", 2)]
-  [InlineData("Azure", 3)]
-  public void ECloudProvider_ShouldBeValid_WhenGivenDescription(string description, int id)
+  [InlineData("None", 0, "None")]
+  [InlineData("AWS", 1, "AWS")]
+  [InlineData("GCP", 2, "GCP")]
+  [InlineData("Azure", 3, "Azure")]
+  [InlineData("Amazon", 1, "AWS")]
+  [InlineData("Google", 2, "GCP")]
+  [InlineData("Microsoft", 3, "Azure")]
+  public void ECloudProvider_ShouldBeValid_WhenGivenDescription(string description, int id, string descriptionExpected)
   {
     // Arrange
     ECloudProvider cloudProvider = description;
@@ -40,7 +43,7 @@ public class ECloudProviderTests
     int cloudProviderId = cloudProvider;
 
     // Assert
-    Assert.Equal(description, cloudProviderDescription);
+    Assert.Equal(descriptionExpected, cloudProviderDescription);
     Assert.Equal(id, cloudProviderId);
   }
 
