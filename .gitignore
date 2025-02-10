@@ -483,7 +483,9 @@ appsettings.*.json
 .sonarqube/
 
 # Folder scripts
-scripts/
+scripts/**
+!scripts/example-run-sonarqube-local.ps1
+!scripts/example-run-sonarqube-local.sh
 
 # Arquivo de documentação
 *.xml
