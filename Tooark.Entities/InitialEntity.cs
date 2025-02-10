@@ -42,6 +42,7 @@ public abstract class InitialEntity : BaseEntity
   [Required]
   public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 
+
   /// <summary>
   /// Define o identificador do criador da entidade e a data e hora de criação.
   /// </summary>
