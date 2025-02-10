@@ -32,7 +32,7 @@ using Tooark.Validations;
 
 bool value = true;
 string property = "Booleano";
-var contract = new Contract()
+var validation = new Validation()
     .IsTrue(value, property, "O valor deve ser verdadeiro.")
     .IsFalse(value, property, "O valor deve ser falso.")
     .Contains(value, bool[], property, "O valor deve estar na lista.")
@@ -50,7 +50,7 @@ using Tooark.Validations;
 
 DateTime date = DateTime.Now;
 string property = "Data";
-var contract = new Contract()
+var validation = new Validation()
     .IsGreater(date, Comparer, property, "A data deve ser maior que a data comparada.")
     .IsGreaterOrEquals(date, Comparer, property, "A data deve ser maior ou igual que a data comparada.")
     .IsLower(date, Comparer, property, "A data deve ser menor que a data comparada.")
@@ -78,7 +78,7 @@ using Tooark.Validations;
 
 decimal value = 10.5m;
 string property = "Decimal";
-var contract = new Contract()
+var validation = new Validation()
     .IsGreater(value, Comparer, property, "O valor deve ser maior que o valor comparado.")
     .IsGreaterOrEquals(value, Comparer, property, "O valor deve ser maior ou igual que o valor comparado.")
     .IsLower(value, Comparer, property, "O valor deve ser menor que o valor comparado.")
@@ -105,7 +105,7 @@ var contract = new Contract()
 using Tooark.Validations;
 
 string property = "Document";
-var contract = new Contract()
+var validation = new Validation()
     .IsCpf(document, property, "Tem que ser um CPF válido")
     .IsRg(document, property, "Tem que ser um RG válido")
     .IsCnh(document, property, "Tem que ser um CNH válido")
@@ -122,7 +122,7 @@ using Tooark.Validations;
 
 double value = 10.5;
 string property = " Double";
-var contract = new Contract()
+var validation = new Validation()
     .IsGreater(value, Comparer, property, "O valor deve ser maior que o valor comparado.")
     .IsGreaterOrEquals(value, Comparer, property, "O valor deve ser maior ou igual que o valor comparado.")
     .IsLower(value, Comparer, property, "O valor deve ser menor que o valor comparado.")
@@ -150,7 +150,7 @@ using Tooark.Validations;
 
 string email = "exemplo@dominio.com";
 string property = "Email";
-var contract = new Contract()
+var validation = new Validation()
     .IsEmail(email, property, "Tem que ser um email válido")
     .IsEmailOrEmpty(email, property, "Tem que ser um email válido ou vazio");
 ```
@@ -162,7 +162,7 @@ using Tooark.Validations;
 
 string email = "@domain.com";
 string property = "EmailDomain";
-var contract = new Contract()
+var validation = new Validation()
     .IsEmailDomain(email, property, "Tem que ser domínio de email válido")
     .IsEmailDomainOrEmpty(email, property, "Tem que ser domínio de email válido ou vazio");
 ```
@@ -174,7 +174,7 @@ using Tooark.Validations;
 
 float value = 10.5f;
 string property = "Float";
-var contract = new Contract()
+var validation = new Validation()
     .IsGreater(value, Comparer, property, "O valor deve ser maior que o valor comparado.")
     .IsGreaterOrEquals(value, Comparer, property, "O valor deve ser maior ou igual que o valor comparado.")
     .IsLower(value, Comparer, property, "O valor deve ser menor que o valor comparado.")
@@ -202,7 +202,7 @@ using Tooark.Validations;
 
 Guid guid = Guid.NewGuid();
 string property = "Guid";
-var contract = new Contract()
+var validation = new Validation()
     .AreEquals(guid, Comparer, property, "Os valores devem ser iguais.")
     .AreNotEquals(guid, Comparer, property, "Os valores não devem ser iguais.")
     .Contains(guid, Guid[], property, "O valor deve estar na lista.")
@@ -222,7 +222,7 @@ using Tooark.Validations;
 
 int value = 10;
 string property = "Int";
-var contract = new Contract()    
+var validation = new Validation()    
     .IsGreater(value, Comparer, property, "O valor deve ser maior que o valor comparado.")
     .IsGreaterOrEquals(value, Comparer, property, "O valor deve ser maior ou igual que o valor comparado.")
     .IsLower(value, Comparer, property, "O valor deve ser menor que o valor comparado.")
@@ -250,7 +250,7 @@ using Tooark.Validations;
 
 int[] list = [1, 2, 3];
 string property = "Valores";
-var contract = new Contract()
+var validation = new Validation()
     .IsGreater(list, Value, property, "A lista tem que ser maior que o valor permitido.")
     .IsGreaterOrEquals(list, Value, property, "A lista tem que ser maior ou igual que o valor permitido.")
     .IsLower(list, Value, property, "A lista tem que ser menor que o valor permitido.")
@@ -270,7 +270,7 @@ using Tooark.Validations;
 
 long value = 10L;
 string property = "Long";
-var contract = new Contract()
+var validation = new Validation()
     .IsGreater(value, Comparer, property, "O valor deve ser maior que o valor comparado.")
     .IsGreaterOrEquals(value, Comparer, property, "O valor deve ser maior ou igual que o valor comparado.")
     .IsLower(value, Comparer, property, "O valor deve ser menor que o valor comparado.")
@@ -297,7 +297,7 @@ var contract = new Contract()
 using Tooark.Validations;
 
 string property = "IP";
-var contract = new Contract()
+var validation = new Validation()
     .IsIp(Value, property, "Tem que ser um IP válido.")
     .IsIpv4(Value, property, "Tem que ser um IPV4 válido.")
     .IsIpv6(Value, property, "Tem que ser um IPV6 válido.")
@@ -311,7 +311,7 @@ using Tooark.Validations;
 
 object obj = new object();
 string property = "Objeto";
-var contract = new Contract()
+var validation = new Validation()
     .AreEquals(obj, Comparer, property, "Os objetos devem ser iguais.")
     .AreNotEquals(obj, Comparer, property, "Os objetos não devem ser iguais.")
     .IsNull(obj, property, "O objeto deve ser nulo.")
@@ -324,7 +324,7 @@ var contract = new Contract()
 using Tooark.Validations;
 
 string property = "Protocolo";
-var contract = new Contract()
+var validation = new Validation()
     .IsUrl(Protocol, property, "O protocolo deve ser uma Url válida.")
     .IsFtp(Protocol, property, "O protocolo deve ser um Ftp válido.")
     .IsSftp(Protocol, property, "O protocolo deve ser um Sftp válido.")
@@ -348,7 +348,7 @@ var contract = new Contract()
 using Tooark.Validations;
 
 string property = "Email";
-var contract = new Contract()
+var validation = new Validation()
     .Match(Value, Pattern, property, "O valor deve corresponder ao padrão.")
     .NotMatch(Value, Pattern, property, "O valor não deve corresponder ao padrão.");
 ```
@@ -360,7 +360,7 @@ using Tooark.Validations;
 
 string value = "exemplo";
 string property = "Texto";
-var contract = new Contract()
+var validation = new Validation()
     .IsGreater(value, Comparer, property, "O tamanho da string do valor deve ser maior que o valor comparado.")
     .IsGreaterOrEquals(value, Comparer, property, "O tamanho da string do valor deve ser maior ou igual que o valor comparado.")
     .IsLower(value, Comparer, property, "O tamanho da string do valor deve ser menor que o valor comparado.")
@@ -386,7 +386,7 @@ var contract = new Contract()
 ```csharp
 TimeSpan value = TimeSpan.FromHours(2);
 string property = "Duração";
-var contract = new Contract()
+var validation = new Validation()
     .IsGreater(value, Comparer, property, "O valor deve ser maior que o valor comparado.")
     .IsGreaterOrEquals(value, Comparer, property, "O valor deve ser maior ou igual que o valor comparado.")
     .IsLower(value, Comparer, property, "O valor deve ser menor que o valor comparado.")
@@ -413,7 +413,7 @@ var contract = new Contract()
 string value = "abc";
 string zipCode = "10000-000";
 string property = "Tipos";
-var contract = new Contract()
+var validation = new Validation()
     .IsGuid(value, property, "Tem que ser um Guid válido.")
     .IsLetter(value, property, "Tem que ser letras.")
     .IsLetterLower(value, property, "Tem que ser letras minúsculas.")

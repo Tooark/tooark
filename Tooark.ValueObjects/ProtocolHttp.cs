@@ -20,7 +20,7 @@ public sealed class ProtocolHttp : ValueObject
   public ProtocolHttp(string value)
   {
     // Adiciona as notificações de validação do protocolo HTTP
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsProtocolHttp(value, "ProtocolHttp", "Field.Invalid;ProtocolHttp")
     );
 

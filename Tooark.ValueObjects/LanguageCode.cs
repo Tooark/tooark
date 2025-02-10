@@ -20,7 +20,7 @@ public sealed class LanguageCode : ValueObject
   public LanguageCode(string code)
   {
     // Adiciona as notificações de validação código do idioma
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsCultureIgnoreCase(code, "LanguageCode", "Field.Invalid;LanguageCode")
     );
 

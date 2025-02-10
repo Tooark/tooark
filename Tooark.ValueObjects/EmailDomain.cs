@@ -19,7 +19,7 @@ public sealed class EmailDomain : ValueObject
   public EmailDomain(string value)
   {
     // Adiciona as notificações de validação do domínio de email
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsEmailDomain(value, "EmailDomain", "Field.Invalid;EmailDomain")
     );
 

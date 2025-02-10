@@ -19,7 +19,7 @@ public sealed class Email : ValueObject
   public Email(string value)
   {
     // Adiciona as notificações de validação do email
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsEmail(value, "Email", "Field.Invalid;Email")
     );
 

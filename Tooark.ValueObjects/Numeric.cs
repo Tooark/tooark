@@ -19,7 +19,7 @@ public sealed class Numeric : ValueObject
   public Numeric(string value)
   {
     // Adiciona as notificações de validação da string de números.
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsNumeric(value, "Numeric", "Field.Invalid;Numeric")
     );
 

@@ -20,7 +20,7 @@ public sealed class ProtocolEmailReceiver : ValueObject
   public ProtocolEmailReceiver(string value)
   {
     // Adiciona as notificações de validação do protocolo de Recebimento de Email
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsProtocolEmailReceiver(value, "ProtocolEmailReceiver", "Field.Invalid;ProtocolEmailReceiver")
     );
 

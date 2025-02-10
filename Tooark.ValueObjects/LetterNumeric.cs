@@ -19,7 +19,7 @@ public sealed class LetterNumeric : ValueObject
   public LetterNumeric(string value)
   {
     // Adiciona as notificações de validação da string de letras e números.
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsLetterNumeric(value, "LetterNumeric", "Field.Invalid;LetterNumeric")
     );
 

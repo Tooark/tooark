@@ -19,7 +19,7 @@ public sealed class Letter : ValueObject
   public Letter(string value)
   {
     // Adiciona as notificações de validação da string de letras.
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsLetter(value, "Letter", "Field.Invalid;Letter")
     );
 

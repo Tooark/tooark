@@ -20,7 +20,7 @@ public class Url : ValueObject
   public Url(string value)
   {
     // Adiciona as notificações de validação da URL
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsUrl(value, "Url", "Field.Invalid;Url")
     );
 

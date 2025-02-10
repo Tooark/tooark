@@ -19,7 +19,7 @@ public class ZipCode : ValueObject
   public ZipCode(string value)
   {
     // Adiciona as notificações de validação do código postal.
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsZipCode(value, "ZipCode", "Field.Invalid;ZipCode")
     );
 
