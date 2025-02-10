@@ -32,6 +32,7 @@ public class InitialEntityTests
     entity.SetCreatedBy(createdBy);
 
     // Assert
+    Assert.True(entity.IsValid);
     Assert.Equal(createdBy, entity.CreatedBy);
     Assert.True((DateTime.UtcNow - entity.CreatedAt).TotalMinutes < 1);
   }

@@ -32,6 +32,7 @@ public class DetailedEntityTests
     entity.SetCreatedBy(createdBy);
 
     // Assert
+    Assert.True(entity.IsValid);
     Assert.Equal(createdBy, entity.CreatedBy);
     Assert.Equal(createdBy, entity.UpdatedBy);
     Assert.True((DateTime.UtcNow - entity.CreatedAt).TotalMinutes < 1);
@@ -49,6 +50,7 @@ public class DetailedEntityTests
     entity.SetUpdatedBy(updatedBy);
 
     // Assert
+    Assert.True(entity.IsValid);
     Assert.Equal(updatedBy, entity.UpdatedBy);
     Assert.True((DateTime.UtcNow - entity.UpdatedAt).TotalMinutes < 1);
   }
