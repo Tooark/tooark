@@ -25,6 +25,7 @@ public abstract class BaseEntity : Notification
   [Required]
   public Guid Id { get; private set; } = Guid.NewGuid();
 
+
   /// <summary>
   /// Define o identificador único para a entidade.
   /// </summary>

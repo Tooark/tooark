@@ -42,6 +42,7 @@ public abstract class DetailedEntity : InitialEntity
   [Required]
   public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
 
+
   /// <summary>
   /// Define o identificador do criador e o atualizador da entidade.
   /// </summary>
