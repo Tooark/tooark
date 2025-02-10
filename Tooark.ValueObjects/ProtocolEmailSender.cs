@@ -20,7 +20,7 @@ public sealed class ProtocolEmailSender : ValueObject
   public ProtocolEmailSender(string value)
   {
     // Adiciona as notificações de validação do protocolo de Envio de Email
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsProtocolEmailSender(value, "ProtocolEmailSender", "Field.Invalid;ProtocolEmailSender")
     );
 

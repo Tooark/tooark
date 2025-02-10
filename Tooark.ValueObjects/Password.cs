@@ -28,7 +28,7 @@ public sealed class Password : ValueObject
     string regexPassword = MountRegex(lowercase, uppercase, number, symbol, length);
 
     // Adiciona as notificações de validação da senha
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .Match(value, regexPassword, "Password", "Field.Invalid;Password")
     );
 

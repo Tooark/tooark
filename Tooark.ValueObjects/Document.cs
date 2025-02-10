@@ -30,7 +30,7 @@ public sealed class Document : ValueObject
     type ??= EDocumentType.None;
 
     // Adiciona as notificações de validação do documento
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .Match(number, type.ToRegex(), "Document.Number", "Field.Invalid;Document")
     );
 

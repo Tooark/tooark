@@ -20,7 +20,7 @@ public sealed class ProtocolFtp : ValueObject
   public ProtocolFtp(string value)
   {
     // Adiciona as notificações de validação do protocolo FTP
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsProtocolFtp(value, "ProtocolFtp", "Field.Invalid;ProtocolFtp")
     );
 

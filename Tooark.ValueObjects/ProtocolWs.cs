@@ -20,7 +20,7 @@ public sealed class ProtocolWs : ValueObject
   public ProtocolWs(string value)
   {
     // Adiciona as notificações de validação do protocolo WebSocket
-    AddNotifications(new Contract()
+    AddNotifications(new Validation()
       .IsProtocolWebSocket(value, "ProtocolWs", "Field.Invalid;ProtocolWs")
     );
 
