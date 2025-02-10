@@ -31,6 +31,7 @@ public class BaseEntityTests
     entity.SetId(newId);
 
     // Assert
+    Assert.True(entity.IsValid);
     Assert.Equal(newId, entity.Id);
   }
 
