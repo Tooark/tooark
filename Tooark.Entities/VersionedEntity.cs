@@ -32,14 +32,14 @@ public abstract class VersionedEntity : DetailedEntity
   /// <summary>
   /// Cria uma nova instância da entidade versionamento.
   /// </summary>
-  public VersionedEntity()
+  protected VersionedEntity()
   { }
 
   /// <summary>
   /// Cria uma nova instância da entidade versionamento.
   /// </summary>
   /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  public VersionedEntity(Guid createdBy)
+  protected VersionedEntity(Guid createdBy)
   {
     // Define o identificador do criador
     SetCreatedBy(createdBy);

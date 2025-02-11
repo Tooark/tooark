@@ -100,14 +100,14 @@ public abstract class AuditableEntity : DetailedEntity
   /// <summary>
   /// Cria uma nova instância da entidade auditoria.
   /// </summary>
-  public AuditableEntity()
+  protected AuditableEntity()
   { }
 
   /// <summary>
   /// Cria uma nova instância da entidade auditoria.
   /// </summary>
   /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  public AuditableEntity(Guid createdBy)
+  protected AuditableEntity(Guid createdBy)
   {
     // Define o identificador do criador
     SetCreatedBy(createdBy);
