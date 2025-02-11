@@ -6,23 +6,49 @@ public class VersionedEntityTest
 {
   // Uma classe concreta para testar VersionedEntity
   private class TestVersionedEntity : VersionedEntity
-  { }
+  {
+    // Construtor padrão
+    public TestVersionedEntity() { }
 
-  // Testa se a versão é inicializada com 1
+    // Construtor com parâmetros
+    public TestVersionedEntity(Guid createdBy) : base(createdBy) { }
+  }
+
+  // Teste se o construtor atribui valores padrão
   [Fact]
-  public void Version_ShouldBeInitializedToOne()
+  public void Constructor_ShouldAssignDefaultValues()
   {
     // Arrange
+    var createdBy = Guid.Empty;
     var entity = new TestVersionedEntity();
 
     // Act
     var version = entity.Version;
 
     // Assert
+    Assert.True(entity.IsValid);
+    Assert.Equal(createdBy, entity.CreatedBy);
     Assert.Equal(1, version);
   }
 
-  // Testa se a versão é incrementada ao chamar SetUpdatedBy
+  // Teste se o construtor atribui valores padrão com um criador
+  [Fact]
+  public void Constructor_ShouldAssignValues_WithCreatedBy()
+  {
+    // Arrange
+    var createdBy = Guid.NewGuid();
+
+    // Act
+    var entity = new TestVersionedEntity(createdBy);
+    var version = entity.Version;
+
+    // Assert
+    Assert.True(entity.IsValid);
+    Assert.Equal(createdBy, entity.CreatedBy);
+    Assert.Equal(1, version);
+  }
+
+  // Teste se a versão é incrementada ao chamar SetUpdatedBy
   [Fact]
   public void SetUpdatedBy_ShouldIncrementVersion_WhenCalled()
   {
@@ -36,10 +62,11 @@ public class VersionedEntityTest
     var updatedVersion = entity.Version;
 
     // Assert
+    Assert.True(entity.IsValid);
     Assert.Equal(initialVersion + 1, updatedVersion);
   }
 
-  // Testa se a versão não é incrementada ao chamar SetUpdatedBy quando a entidade é inválida
+  // Teste se a versão não é incrementada ao chamar SetUpdatedBy quando a entidade é inválida
   [Fact]
   public void SetUpdatedBy_ShouldNotIncrementVersion_WhenEntityIsInvalid()
   {
@@ -54,8 +81,8 @@ public class VersionedEntityTest
     var updatedVersion = entity.Version;
 
     // Assert
-    Assert.Equal(version, updatedVersion);
     Assert.False(entity.IsValid);
     Assert.Equal("IdentifierEmpty;UpdatedBy", entity.Notifications.First());
+    Assert.Equal(version, updatedVersion);
   }
 }

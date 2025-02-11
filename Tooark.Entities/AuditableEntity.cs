@@ -97,6 +97,22 @@ public abstract class AuditableEntity : DetailedEntity
   public DateTime? RestoredAt { get; private set; }
 
 
+  /// <summary>
+  /// Cria uma nova instância da entidade auditoria.
+  /// </summary>
+  public AuditableEntity()
+  { }
+
+  /// <summary>
+  /// Cria uma nova instância da entidade auditoria.
+  /// </summary>
+  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
+  public AuditableEntity(Guid createdBy)
+  {
+    // Define o identificador do criador
+    SetCreatedBy(createdBy);
+  }
+
 
   /// <summary>
   /// Marca a entidade como excluída.
