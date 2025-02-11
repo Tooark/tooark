@@ -17,7 +17,7 @@ public abstract class BaseEntity : Notification
   /// a entidade é criada.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'id' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'id' é do tipo 'uuid' e é obrigatória.
   /// </remarks>
   [Key]
   [DatabaseGenerated(DatabaseGeneratedOption.None)]

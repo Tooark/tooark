@@ -20,7 +20,7 @@ public abstract class DetailedEntity : InitialEntity
   /// O identificador do atualizador é do tipo <see cref="Guid"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'updatedby' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'updatedby' é do tipo 'uuid' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("updatedby", TypeName = "uuid")]
@@ -34,8 +34,7 @@ public abstract class DetailedEntity : InitialEntity
   /// A data e hora da última atualização é do tipo <see cref="DateTime"/> em UTC.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'updatedat' e é obrigatória do tipo
-  /// 'timestamp with time zone'.
+  /// A coluna correspondente no banco de dados é 'updatedat' é do tipo 'timestamp with time zone' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("updatedat", TypeName = "timestamp with time zone")]

@@ -20,7 +20,7 @@ public abstract class AuditableEntity : DetailedEntity
   /// O valor é do tipo <see cref="long"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'version'.
+  /// A coluna correspondente no banco de dados é 'version' é do tipo 'bigint' com valor padrão '1' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("version", TypeName = "bigint")]
@@ -35,7 +35,7 @@ public abstract class AuditableEntity : DetailedEntity
   /// O valor é do tipo <see cref="bool"/>. O valor padrão é 'false'.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'deleted'.
+  /// A coluna correspondente no banco de dados é 'deleted' é do tipo 'bool' com valor padrão 'false' e é obrigatória.
   /// </remarks>
   [Column("deleted", TypeName = "bool")]
   [DefaultValue(false)]
@@ -49,7 +49,7 @@ public abstract class AuditableEntity : DetailedEntity
   /// O identificador do excluidor é do tipo <see cref="Guid"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'deletedby' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'deletedby' é do tipo 'uuid' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("deletedby", TypeName = "uuid")]
@@ -63,8 +63,7 @@ public abstract class AuditableEntity : DetailedEntity
   /// A data e hora da exclusão é do tipo <see cref="DateTime"/> em UTC.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'deletedat' e é obrigatória do tipo
-  /// 'timestamp with time zone'.
+  /// A coluna correspondente no banco de dados é 'deletedat' é do tipo 'timestamp with time zone' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("deletedat", TypeName = "timestamp with time zone")]
@@ -77,7 +76,7 @@ public abstract class AuditableEntity : DetailedEntity
   /// O identificador do restaurador é do tipo <see cref="Guid"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'restoredby' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'restoredby' é do tipo 'uuid' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("restoredby", TypeName = "uuid")]
@@ -91,8 +90,7 @@ public abstract class AuditableEntity : DetailedEntity
   /// A data e hora da restauração é do tipo <see cref="DateTime"/> em UTC.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'restoredat' e é obrigatória do tipo
-  /// 'timestamp with time zone'.
+  /// A coluna correspondente no banco de dados é 'restoredat' é do tipo 'timestamp with time zone' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("restoredat", TypeName = "timestamp with time zone")]

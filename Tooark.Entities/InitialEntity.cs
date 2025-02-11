@@ -20,7 +20,7 @@ public abstract class InitialEntity : BaseEntity
   /// O identificador do criador é do tipo <see cref="Guid"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'createdby' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'createdby' é do tipo 'uuid' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("createdby", TypeName = "uuid")]
@@ -34,8 +34,7 @@ public abstract class InitialEntity : BaseEntity
   /// A data e hora de criação é do tipo <see cref="DateTime"/> em UTC.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'createdat' e é obrigatória do tipo
-  /// 'timestamp with time zone'.
+  /// A coluna correspondente no banco de dados é 'createdat' é do tipo 'timestamp with time zone' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("createdat", TypeName = "timestamp with time zone")]
