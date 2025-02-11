@@ -20,7 +20,7 @@ public abstract class SoftDeletableEntity : DetailedEntity
   /// O valor é do tipo <see cref="bool"/>. O valor padrão é 'false'.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'deleted'.
+  /// A coluna correspondente no banco de dados é 'deleted' é do tipo 'bool' com valor padrão 'false' e é obrigatória.
   /// </remarks>
   [Column("deleted", TypeName = "bool")]
   [DefaultValue(false)]

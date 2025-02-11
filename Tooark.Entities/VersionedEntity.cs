@@ -20,7 +20,7 @@ public abstract class VersionedEntity : DetailedEntity
   /// O valor é do tipo <see cref="long"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'version'.
+  /// A coluna correspondente no banco de dados é 'version' é do tipo 'bigint' com valor padrão '1' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("version", TypeName = "bigint")]
