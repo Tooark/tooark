@@ -10,6 +10,11 @@ public class ProtocolValidationTests
   [InlineData("example.com")]
   [InlineData("abc")]
   [InlineData("123")]
+  [InlineData("https://example")]
+  [InlineData("https:/example.com.br")]
+  [InlineData("https//example.com/test")]
+  [InlineData("https://example/test")]
+  [InlineData("https://example/test//")]
   [InlineData("")]
   [InlineData(null)]
   public void IsUrl_ShouldAddNotification_WhenValueNotIsUrl(string? valueParam)
@@ -38,6 +43,16 @@ public class ProtocolValidationTests
   [InlineData("smtp://example.com")]
   [InlineData("ws://example.com")]
   [InlineData("wss://example.com")]
+  [InlineData("https://example.com.br")]
+  [InlineData("https://example.com/test")]
+  [InlineData("https://example.com/test/")]
+  [InlineData("https://example.com/test/test2")]
+  [InlineData("https://example.com/test?query=1")]
+  [InlineData("https://www.example.com.br")]
+  [InlineData("https://www.example.com/test")]
+  [InlineData("https://www.example.com/test/")]
+  [InlineData("https://www.example.com/test/test2")]
+  [InlineData("https://www.example.com/test?query=1")]
   public void IsUrl_ShouldNotAddNotification_WhenValueIsUrl(string valueParam)
   {
     // Arrange

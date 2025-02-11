@@ -82,7 +82,7 @@ public class InitialEntityTests
 
   // Teste se SetCreatedBy lança uma exceção ao tentar alterar o criador
   [Fact]
-  public void SetCreatedBy_WithNonEmptyGuid_ShouldThrowInvalidOperationException()
+  public void SetCreatedBy_WithNonEmptyGuid_ShouldGenerateNotification()
   {
     // Arrange
     var createdBy = Guid.NewGuid();

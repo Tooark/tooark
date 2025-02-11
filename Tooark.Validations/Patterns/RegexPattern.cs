@@ -142,7 +142,7 @@ public static class RegexPattern
   /// <summary>
   /// Padrão de URL.
   /// </summary>
-  public readonly static string Url = @"^((s)?ftp|http(s)?|imap|pop3|smtp|ws(s)?):\/\/(((www\.[a-zA-Z0-9]+[a-zA-Z0-9.-]*[a-zA-Z0-9]+)|([a-zA-Z0-9]+[a-zA-Z0-9.-]*[a-zA-Z0-9]+))\.[a-zA-Z0-9]+[a-zA-Z0-9.]*[a-zA-Z0-9])$";
+  public readonly static string Url = @"^((s)?ftp|http(s)?|imap|pop3|smtp|ws(s)?):\/\/(www\.)?[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,6}(\/[a-zA-Z0-9\-\/]*)?";
 
   /// <summary>
   /// Padrão de FTP.
