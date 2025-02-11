@@ -25,7 +25,7 @@ public abstract class InitialEntity : BaseEntity
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("createdby", TypeName = "uuid")]
   [Required]
-  public Guid CreatedBy { get; private set; } = Guid.Empty;
+  public Guid CreatedBy { get; private set; }
 
   /// <summary>
   /// Data e hora de criação da entidade.
@@ -40,6 +40,23 @@ public abstract class InitialEntity : BaseEntity
   [Column("createdat", TypeName = "timestamp with time zone")]
   [Required]
   public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+
+
+  /// <summary>
+  /// Cria uma nova instância da entidade inicial.
+  /// </summary>
+  public InitialEntity()
+  { }
+
+  /// <summary>
+  /// Cria uma nova instância da entidade inicial.
+  /// </summary>
+  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
+  public InitialEntity(Guid createdBy)
+  {
+    // Define o identificador do criador
+    SetCreatedBy(createdBy);
+  }
 
 
   /// <summary>

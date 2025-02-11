@@ -6,25 +6,55 @@ public class AuditableEntityTest
 {
   // Uma classe concreta para testar AuditableEntity
   private class TestAuditableEntity : AuditableEntity
-  { }
-
-  // Testa se a versão é inicializada com 1
-  [Fact]
-  public void Version_ShouldBeInitializedToOne()
   {
-    // Arrange & Act
+    // Construtor padrão
+    public TestAuditableEntity() { }
+
+    // Construtor com parâmetros
+    public TestAuditableEntity(Guid createdBy) : base(createdBy) { }
+  }
+
+  // Teste se o construtor atribui valores padrão
+  [Fact]
+  public void Constructor_ShouldAssignDefaultValues()
+  {
+    // Arrange
+    var userId = Guid.Empty;
+
+    // Act
     var entity = new TestAuditableEntity();
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(Guid.Empty, entity.UpdatedBy);
+    Assert.Equal(userId, entity.CreatedBy);
+    Assert.Equal(userId, entity.UpdatedBy);
+    Assert.Equal(1, entity.Version);
+    Assert.False(entity.Deleted);
+    Assert.Equal(userId, entity.DeletedBy);
+    Assert.Null(entity.DeletedAt);
+  }
+
+  // Teste se o construtor atribui valores padrão com um criador
+  [Fact]
+  public void Constructor_ShouldAssignValues_WithCreatedBy()
+  {
+    // Arrange
+    var userId = Guid.NewGuid();
+
+    // Act
+    var entity = new TestAuditableEntity(userId);
+
+    // Assert
+    Assert.True(entity.IsValid);
+    Assert.Equal(userId, entity.CreatedBy);
+    Assert.Equal(userId, entity.UpdatedBy);
     Assert.Equal(1, entity.Version);
     Assert.False(entity.Deleted);
     Assert.Equal(Guid.Empty, entity.DeletedBy);
     Assert.Null(entity.DeletedAt);
   }
 
-  // Testa se o construtor atribui valores padrão
+  // Teste se o construtor atribui valores padrão
   [Fact]
   public void SetDeleted_ShouldSetDeletedByAndDeletedAt()
   {
@@ -44,7 +74,7 @@ public class AuditableEntityTest
     Assert.NotNull(entity.DeletedAt);
   }
 
-  // Testa se SetDeleted não atribui DeletedBy quando o usuário é vazio
+  // Teste se SetDeleted não atribui DeletedBy quando o usuário é vazio
   [Fact]
   public void SetDeleted_ShouldNotSetDeletedBy_WhenUserIdIsEmpty()
   {
@@ -65,7 +95,7 @@ public class AuditableEntityTest
     Assert.Equal("IdentifierEmpty;DeletedBy", entity.Notifications.First());
   }
 
-  // Testa se SetRestored atribui valores corretos
+  // Teste se SetRestored atribui valores corretos
   [Fact]
   public void SetRestored_ShouldSetRestoredByAndRestoredAt()
   {
@@ -87,7 +117,7 @@ public class AuditableEntityTest
     Assert.NotNull(entity.RestoredAt);
   }
 
-  // Testa se SetRestored não atribui RestoredBy quando o usuário é vazio
+  // Teste se SetRestored não atribui RestoredBy quando o usuário é vazio
   [Fact]
   public void SetRestored_ShouldNotSetRestoredBy_WhenUserIdIsEmpty()
   {

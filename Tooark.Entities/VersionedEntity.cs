@@ -28,6 +28,24 @@ public abstract class VersionedEntity : DetailedEntity
   [Required]
   public long Version { get; private set; } = 1;
 
+  
+  /// <summary>
+  /// Cria uma nova instância da entidade versionamento.
+  /// </summary>
+  public VersionedEntity()
+  { }
+
+  /// <summary>
+  /// Cria uma nova instância da entidade versionamento.
+  /// </summary>
+  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
+  public VersionedEntity(Guid createdBy)
+  {
+    // Define o identificador do criador
+    SetCreatedBy(createdBy);
+  }
+
+
   /// <summary>
   /// Incrementa a versão da entidade.
   /// </summary>

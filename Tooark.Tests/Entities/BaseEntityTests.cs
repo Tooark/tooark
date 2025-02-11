@@ -8,7 +8,7 @@ public class BaseEntityTests
   private class TestEntity : BaseEntity
   { }
 
-  // Testa se o construtor atribui um novo Guid não vazio
+  // Teste se o construtor atribui um novo Guid não vazio
   [Fact]
   public void Constructor_ShouldAssignNewGuid()
   {
@@ -16,10 +16,11 @@ public class BaseEntityTests
     var entity = new TestEntity();
 
     // Assert
+    Assert.True(entity.IsValid);
     Assert.NotEqual(Guid.Empty, entity.Id);
   }
 
-   // Testa se SetId atribui um Guid válido
+   // Teste se SetId atribui um Guid válido
   [Fact]
   public void SetId_WithValidGuid_ShouldAssignGuid()
   {
@@ -35,12 +36,13 @@ public class BaseEntityTests
     Assert.Equal(newId, entity.Id);
   }
 
-  // Testa se SetId lança uma exceção ao receber um Guid vazio
+  // Teste se SetId gera uma notificação ao tentar atribuir um Guid vazio
   [Fact]
-  public void SetId_WithEmptyGuid_ShouldThrowArgumentException()
+  public void SetId_WithEmptyGuid_ShouldGenerateNotification()
   {
     // Arrange
     var entity = new TestEntity();
+    var originalId = entity.Id;
 
     // Act
     entity.SetId(Guid.Empty);
@@ -48,5 +50,6 @@ public class BaseEntityTests
     // Assert
     Assert.False(entity.IsValid);
     Assert.Equal("IdentifierEmpty;Id", entity.Notifications.First());
+    Assert.Equal(originalId, entity.Id);
   }
 }

@@ -29,6 +29,23 @@ public abstract class SoftDeletableEntity : DetailedEntity
 
 
   /// <summary>
+  /// Cria uma nova instância da entidade exclusão lógica.
+  /// </summary>
+  public SoftDeletableEntity()
+  { }
+
+  /// <summary>
+  /// Cria uma nova instância da entidade exclusão lógica.
+  /// </summary>
+  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
+  public SoftDeletableEntity(Guid createdBy)
+  {
+    // Define o identificador do criador
+    SetCreatedBy(createdBy);
+  }
+
+
+  /// <summary>
   /// Marca a entidade como excluída logicamente.
   /// </summary>
   /// <param name="changedBy">O identificador do usuário que excluiu a entidade.</param>

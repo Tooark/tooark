@@ -43,6 +43,23 @@ public abstract class DetailedEntity : InitialEntity
 
 
   /// <summary>
+  /// Cria uma nova instância da entidade detalhada.
+  /// </summary>
+  public DetailedEntity()
+  { }
+
+  /// <summary>
+  /// Cria uma nova instância da entidade detalhada.
+  /// </summary>
+  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
+  public DetailedEntity(Guid createdBy)
+  {
+    // Define o identificador do criador
+    SetCreatedBy(createdBy);
+  }
+
+
+  /// <summary>
   /// Define o identificador do criador e o atualizador da entidade.
   /// </summary>
   /// <param name="createdBy">O valor do identificador do criador a ser definido.</param>
