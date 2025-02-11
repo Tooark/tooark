@@ -54,7 +54,7 @@ public class AuditableEntityTest
     Assert.Null(entity.DeletedAt);
   }
 
-  // Teste se o construtor atribui valores padrão
+  // Teste para marcar a entidade como excluída
   [Fact]
   public void SetDeleted_ShouldSetDeletedByAndDeletedAt()
   {
