@@ -45,14 +45,14 @@ public abstract class InitialEntity : BaseEntity
   /// <summary>
   /// Cria uma nova instância da entidade inicial.
   /// </summary>
-  public InitialEntity()
+  protected InitialEntity()
   { }
 
   /// <summary>
   /// Cria uma nova instância da entidade inicial.
   /// </summary>
   /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  public InitialEntity(Guid createdBy)
+  protected InitialEntity(Guid createdBy)
   {
     // Define o identificador do criador
     SetCreatedBy(createdBy);

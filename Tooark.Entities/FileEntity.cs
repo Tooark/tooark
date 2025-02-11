@@ -88,7 +88,7 @@ public abstract class FileEntity : InitialEntity
   /// <summary>
   /// Construtor da classe FileEntity.
   /// </summary>
-  public FileEntity()
+  protected FileEntity()
   { }
 
   /// <summary>
@@ -97,15 +97,13 @@ public abstract class FileEntity : InitialEntity
   /// <param name="fileUrl">A URL do arquivo.</param>
   /// <param name="name">O título do arquivo.</param>
   /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  public FileEntity(string fileUrl, string name, Guid createdBy)
+  protected FileEntity(string fileUrl, string name, Guid createdBy)
   {
     // Valida os parâmetros
     AddNotifications(new Validation()
       .IsUrl(fileUrl, "FileUrl", "Field.Invalid;FileUrl")
       .IsNotNullOrEmpty(name, "Name", "Field.Required;Name")
     );
-
-    var a = Regex.IsMatch(fileUrl, RegexPattern.Url, RegexOptions.None, TimeSpan.FromMilliseconds(300));
 
     // Define o identificador do criador
     SetCreatedBy(createdBy);
@@ -126,7 +124,7 @@ public abstract class FileEntity : InitialEntity
   /// <param name="name">O título do arquivo.</param>
   /// <param name="publicUrl">A URL pública do arquivo. Parâmetro opcional.</param>
   /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  public FileEntity(string fileUrl, string name, string publicUrl, Guid createdBy)
+  protected FileEntity(string fileUrl, string name, string publicUrl, Guid createdBy)
   {
     // Valida os parâmetros
     AddNotifications(new Validation()
@@ -156,7 +154,7 @@ public abstract class FileEntity : InitialEntity
   /// <param name="fileFormat">O formato do arquivo.</param>
   /// <param name="type">O tipo do arquivo.</param>
   /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  public FileEntity(string fileUrl, string name, string publicUrl, string fileFormat, EFileType type, Guid createdBy)
+  protected FileEntity(string fileUrl, string name, string publicUrl, string fileFormat, EFileType type, Guid createdBy)
   {
     // Valida os parâmetros
     AddNotifications(new Validation()

@@ -31,14 +31,14 @@ public abstract class SoftDeletableEntity : DetailedEntity
   /// <summary>
   /// Cria uma nova instância da entidade exclusão lógica.
   /// </summary>
-  public SoftDeletableEntity()
+  protected SoftDeletableEntity()
   { }
 
   /// <summary>
   /// Cria uma nova instância da entidade exclusão lógica.
   /// </summary>
   /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  public SoftDeletableEntity(Guid createdBy)
+  protected SoftDeletableEntity(Guid createdBy)
   {
     // Define o identificador do criador
     SetCreatedBy(createdBy);

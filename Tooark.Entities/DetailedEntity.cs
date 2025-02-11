@@ -45,14 +45,14 @@ public abstract class DetailedEntity : InitialEntity
   /// <summary>
   /// Cria uma nova instância da entidade detalhada.
   /// </summary>
-  public DetailedEntity()
+  protected DetailedEntity()
   { }
 
   /// <summary>
   /// Cria uma nova instância da entidade detalhada.
   /// </summary>
   /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  public DetailedEntity(Guid createdBy)
+  protected DetailedEntity(Guid createdBy)
   {
     // Define o identificador do criador
     SetCreatedBy(createdBy);
