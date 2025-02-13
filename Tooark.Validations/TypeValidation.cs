@@ -215,7 +215,7 @@ public partial class Validation
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Validação.</returns>
   public Validation IsPassword(string value, string property, string message) =>
-    Match(value, RegexPattern.Password, property, message);
+    Match(value, RegexPattern.ComplexPasswordPattern, property, message);
   #endregion
 
   #region IsCulture

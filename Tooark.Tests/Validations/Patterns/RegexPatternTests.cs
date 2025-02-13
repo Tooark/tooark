@@ -328,7 +328,7 @@ public class RegexPatternTests
   public void TestPasswordPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Password);
+    var result = Regex.IsMatch(input, RegexPattern.ComplexPasswordPattern);
 
     // Assert
     Assert.Equal(expected, result);
