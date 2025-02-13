@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tooark.Attributes\Tooark.Attributes.csproj" />
+    <ProjectReference Include="..\Tooark.Dtos\Tooark.Dtos.csproj" />
     <ProjectReference Include="..\Tooark.Entities\Tooark.Entities.csproj" />
     <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
     <ProjectReference Include="..\Tooark.Extensions\Tooark.Extensions.csproj" />
