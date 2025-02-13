@@ -123,11 +123,6 @@ public static class RegexPattern
   public readonly static string Base64 = @"^data:(?<mime>.+?);base64,(?<data>.+)$";
 
   /// <summary>
-  /// Padrão de Senha Complexa. Exige carácter minúsculo, maiúsculo, numérico e especial e tamanho mínimo de 8.
-  /// </summary>
-  public readonly static string ComplexPasswordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&*()\-_+\=\[\]{}\/?;:.>,<|\\]).{8,}$";
-
-  /// <summary>
   /// Padrão de Cultura para Internacionalização.
   /// </summary>
   public readonly static string Culture = @"^[a-z]{2}-[A-Z]{2}$";
@@ -213,5 +208,32 @@ public static class RegexPattern
   /// Padrão de Protocolo Web Socket.
   /// </summary>
   public readonly static string ProtocolWebSocket = @"^ws(s)?:\/\/.*";
+  #endregion
+
+  #region Password
+  /// <summary>
+  /// Padrão de carácter minúsculo para senha.
+  /// </summary>
+  public readonly static string PassLower = @"^(?=.*[a-z])";
+
+  /// <summary>
+  /// Padrão de carácter maiúsculo para senha.
+  /// </summary>
+  public readonly static string PassUpper = @"^(?=.*[A-Z])";
+
+  /// <summary>
+  /// Padrão de carácter numérico para senha.
+  /// </summary>
+  public readonly static string PassNumber = @"^(?=.*[0-9])";
+
+  /// <summary>
+  /// Padrão de carácter especial para senha.
+  /// </summary>
+  public readonly static string PassSymbol = @"^(?=.*[!@#$%¨&*()\-_+\=´`~^'""\[\]{}\/?;:.>,<|\\])";
+
+  /// <summary>
+  /// Padrão de Senha Complexa. Exige carácter minúsculo, maiúsculo, numérico e especial e tamanho mínimo de 8.
+  /// </summary>
+  public readonly static string PassComplex = $"^{PassLower[1..]}{PassUpper[1..]}{PassNumber[1..]}{PassSymbol[1..]}.{{8,}}$";
   #endregion
 }

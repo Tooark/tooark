@@ -205,7 +205,7 @@ public partial class Validation
   /// <param name="property">Propriedade a ser validada.</param>
   /// <returns>Validação.</returns>
   public Validation IsPassword(string value, string property) =>
-    IsPassword(value, property, ValidationErrorMessages.IsValid(property, "Password"));
+    IsPassword(value, 8, property, ValidationErrorMessages.IsValid(property, "Password"));
 
   /// <summary>
   /// Verifica se o valor corresponde ao formato de Senha Complexa.
@@ -215,7 +215,36 @@ public partial class Validation
   /// <param name="message">Mensagem de erro.</param>
   /// <returns>Validação.</returns>
   public Validation IsPassword(string value, string property, string message) =>
-    Match(value, RegexPattern.ComplexPasswordPattern, property, message);
+    IsPassword(value, 8, property, message);
+
+  /// <summary>
+  /// Verifica se o valor corresponde ao formato de Senha Complexa. Com mensagem padrão.
+  /// </summary>
+  /// <param name="value">Valor a ser validado.</param>
+  /// <param name="length">Tamanho mínimo da senha. Tamanho mínimo da senha é 8.</param>
+  /// <param name="property">Propriedade a ser validada.</param>
+  /// <returns>Validação.</returns>
+  public Validation IsPassword(string value, int length, string property) =>
+    IsPassword(value, length, property, ValidationErrorMessages.IsValid(property, "Password"));
+
+  /// <summary>
+  /// Verifica se o valor corresponde ao formato de Senha Complexa.
+  /// </summary>
+  /// <param name="value">Valor a ser validado.</param>
+  /// <param name="length">Tamanho mínimo da senha. Tamanho mínimo da senha é 8.</param>
+  /// <param name="property">Propriedade a ser validada.</param>
+  /// <param name="message">Mensagem de erro.</param>
+  /// <returns>Validação.</returns>
+  public Validation IsPassword(string value, int length, string property, string message) {
+    // Define o tamanho mínimo da senha.
+    length = length < 8 ? 8 : length;
+    
+    // Define a expressão regular para validação da senha.
+    var pattern = RegexPattern.PassComplex.Replace(".{8,}", $".{{{length},}}");
+
+    // Valida a senha.
+    return Match(value, pattern, property, message);
+  }
   #endregion
 
   #region IsCulture
