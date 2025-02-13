@@ -397,6 +397,30 @@ public class TypeValidationTests
     Assert.Equal(property, validation.Notifications.First().Key);
   }
 
+  // Teste para validar se o valor corresponde ao padrão com mensagem e cria notificação, com valor que não corresponde
+  [Theory]
+  [InlineData("abcdefghijklmnopqrstuvwxyz")]
+  [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
+  [InlineData("0123456789")]
+  [InlineData("!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\")]
+  [InlineData("aA0!")]
+  [InlineData("")]
+  [InlineData(null)]
+  public void IsPassword_ShouldAddNotification_WhenValueNotIsPassword_WithMessage(string? valueParam)
+  {
+    // Arrange
+    var property = "TestProperty";
+    var validation = new Validation();
+    string value = valueParam!;
+
+    // Act
+    validation.IsPassword(value, property, "Custom message");
+
+    // Assert
+    Assert.Single(validation.Notifications);
+    Assert.Equal(property, validation.Notifications.First().Key);
+  }
+
   // Teste para validar se o valor corresponde ao padrão e não cria notificação, com valor que corresponde
   [Theory]
   [InlineData("aA0!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\")]
@@ -413,6 +437,62 @@ public class TypeValidationTests
 
     // Act
     validation.IsPassword(value, property);
+
+    // Assert
+    Assert.Empty(validation.Notifications);
+  }
+
+  // Teste para validar se o valor corresponde ao padrão com parâmetro de tamanho e cria notificação, com valor que não corresponde
+  [Theory]
+  [InlineData("aA012!", 6)]
+  [InlineData("aA01234!", 10)]
+  public void IsPassword_ShouldAddNotification_WhenValueNotIsPassword_WithLength(string? valueParam, int length)
+  {
+    // Arrange
+    var property = "TestProperty";
+    var validation = new Validation();
+    string value = valueParam!;
+
+    // Act
+    validation.IsPassword(value, length, property);
+
+    // Assert
+    Assert.Single(validation.Notifications);
+    Assert.Equal(property, validation.Notifications.First().Key);
+  }
+
+  // Teste para validar se o valor corresponde ao padrão com parâmetro de tamanho, com mensagem e cria notificação, com valor que não corresponde
+  [Theory]
+  [InlineData("aA012!", 6)]
+  [InlineData("aA01234!", 10)]
+  public void IsPassword_ShouldAddNotification_WhenValueNotIsPassword_WithLengthAndMessage(string? valueParam, int length)
+  {
+    // Arrange
+    var property = "TestProperty";
+    var validation = new Validation();
+    string value = valueParam!;
+
+    // Act
+    validation.IsPassword(value, length, property, "Custom message");
+
+    // Assert
+    Assert.Single(validation.Notifications);
+    Assert.Equal(property, validation.Notifications.First().Key);
+  }
+
+  // Teste para validar se o valor corresponde ao padrão com parâmetro de tamanho e não cria notificação, com valor que corresponde
+  [Theory]
+  [InlineData("aA0123456789!", 6)]
+  [InlineData("aA0123456789!", 10)]
+  public void IsPassword_ShouldNotAddNotification_WhenValueIsPassword_WithLength(string valueParam, int length)
+  {
+    // Arrange
+    var property = "TestProperty";
+    var validation = new Validation();
+    string value = valueParam;
+
+    // Act
+    validation.IsPassword(value, length, property);
 
     // Assert
     Assert.Empty(validation.Notifications);
