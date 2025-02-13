@@ -9,7 +9,7 @@ namespace Tooark.Extensions.Injections;
 /// <summary>
 /// Classe de extensão para injeção de dependência do projeto Tooark.Extensions.
 /// </summary>
-public static class TooarkExtensionsDependencyInjection
+public static partial class TooarkDependencyInjection
 {
   /// <summary>
   /// Adiciona o serviço JsonStringLocalizer com injeção de dependência.
@@ -21,16 +21,19 @@ public static class TooarkExtensionsDependencyInjection
     this IServiceCollection services,
     LocalizerOptions? localizerOptions = null)
   {
-    // Caso as opções de configuração não sejam informadas, cria um novo objeto de opções.
+    // Caso as opções de configuração não sejam informadas, cria um novo objeto de opções
     var options = localizerOptions ?? new LocalizerOptions();
 
-    // Adiciona o serviço de cache distribuído.
+    // Adiciona o serviço de cache distribuído
     services.AddDistributedMemoryCache();
 
-    // Adiciona o serviço de localização de recurso padrão.
+    // Adiciona o serviço de localização de recursos
+    services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+    // Adiciona o serviço de localização de recurso padrão
     services.AddSingleton<IStringLocalizerFactory, JsonStringLocalizerFactory>();
 
-    // Adiciona o serviço de localização de recursos com cache distribuído e opções de configuração.
+    // Adiciona o serviço de localização de recursos com cache distribuído e opções de configuração
     services.AddSingleton<IStringLocalizerFactory>(provider =>
       new JsonStringLocalizerFactory(
         provider.GetRequiredService<IDistributedCache>(),
@@ -39,7 +42,7 @@ public static class TooarkExtensionsDependencyInjection
       )
     );
 
-    // Adiciona o serviço de localização de recursos com cache distribuído e opções de configuração.
+    // Adiciona o serviço de localização de recursos com cache distribuído e opções de configuração
     services.AddTransient<IStringLocalizer>(provider =>
     {
       var factory = provider.GetRequiredService<IStringLocalizerFactory>();
