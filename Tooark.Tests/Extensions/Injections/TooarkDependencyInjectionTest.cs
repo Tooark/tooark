@@ -5,12 +5,11 @@ using Moq;
 using Tooark.Extensions.Factories;
 using Tooark.Extensions.Injections;
 using Tooark.Extensions.Options;
-using Tooark.Extensions.ValueObjects;
 using Tooark.Utils;
 
 namespace Tooark.Tests.Extensions.Injections;
 
-public class TooarkExtensionsDependencyInjectionTest
+public class TooarkDependencyInjectionTest
 {
 
   [Fact]

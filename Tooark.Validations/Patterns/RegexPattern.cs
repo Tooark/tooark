@@ -125,7 +125,7 @@ public static class RegexPattern
   /// <summary>
   /// Padrão de Senha Complexa. Exige carácter minúsculo, maiúsculo, numérico e especial e tamanho mínimo de 8.
   /// </summary>
-  public readonly static string Password = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&*()\-_+\=\[\]{}\/?;:.>,<|\\]).{8,}$";
+  public readonly static string ComplexPasswordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&*()\-_+\=\[\]{}\/?;:.>,<|\\]).{8,}$";
 
   /// <summary>
   /// Padrão de Cultura para Internacionalização.
