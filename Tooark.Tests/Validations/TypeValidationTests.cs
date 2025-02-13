@@ -378,7 +378,7 @@ public class TypeValidationTests
   [InlineData("abcdefghijklmnopqrstuvwxyz")]
   [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
   [InlineData("0123456789")]
-  [InlineData("!@#$%¨&*()_+-=[{]]<,>.:;?/\\")]
+  [InlineData("!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\")]
   [InlineData("aA0!")]
   [InlineData("")]
   [InlineData(null)]
@@ -399,7 +399,7 @@ public class TypeValidationTests
 
   // Teste para validar se o valor corresponde ao padrão e não cria notificação, com valor que corresponde
   [Theory]
-  [InlineData("aA0!@#$%¨&*()_+-=[{]]<,>.:;?/\\")]
+  [InlineData("aA0!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\")]
   [InlineData("aA0123456789!")]
   [InlineData("aABCDEFGHIJKLMNOPQRSTUVWXYZ0!")]
   [InlineData("abcdefghijklmnopqrstuvwxyzA0!")]

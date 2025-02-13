@@ -313,27 +313,6 @@ public class RegexPatternTests
     Assert.Equal(expected, result);
   }
 
-  // Teste de padrão Password.
-  [Theory]
-  [InlineData("aA0!@#$%¨&*()_+-=[{]]<,>.:;?/\\", true)]
-  [InlineData("aA0123456789!", true)]
-  [InlineData("aABCDEFGHIJKLMNOPQRSTUVWXYZ0!", true)]
-  [InlineData("abcdefghijklmnopqrstuvwxyzA0!", true)]
-  [InlineData("abAB01!@", true)]
-  [InlineData("abcdefghijklmnopqrstuvwxyz", false)]
-  [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", false)]
-  [InlineData("0123456789", false)]
-  [InlineData("!@#$%¨&*()_+-=[{]]<,>.:;?/\\", false)]
-  [InlineData("aA0!", false)]
-  public void TestPasswordPattern(string input, bool expected)
-  {
-    // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.ComplexPasswordPattern);
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
   // Teste de padrão Culture.
   [Theory]
   [InlineData("aa-AA", true)]
@@ -480,7 +459,7 @@ public class RegexPatternTests
   [InlineData("pop3://example.com", true)]
   [InlineData("imap://example.com", false)]
   [InlineData("http://example.com", false)]
-  public void TestPopPattern(string input, bool expected)
+  public void TestPop3Pattern(string input, bool expected)
   {
     // Arrange & Act
     var result = Regex.IsMatch(input, RegexPattern.Pop3);
@@ -566,6 +545,111 @@ public class RegexPatternTests
   {
     // Arrange & Act
     var result = Regex.IsMatch(input, RegexPattern.ProtocolWebSocket);
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Teste de padrão PassLower.
+  [Theory]
+  [InlineData("aA0!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\", true)]
+  [InlineData("aA0123456789!", true)]
+  [InlineData("aABCDEFGHIJKLMNOPQRSTUVWXYZ0!", true)]
+  [InlineData("abcdefghijklmnopqrstuvwxyzA0!", true)]
+  [InlineData("abAB01!@", true)]
+  [InlineData("aA0!", true)]
+  [InlineData("abcdefghijklmnopqrstuvwxyz", true)]
+  [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", false)]
+  [InlineData("0123456789", false)]
+  [InlineData("!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\", false)]
+  public void TestPassLowerPattern(string input, bool expected)
+  {
+    // Arrange & Act
+    var result = Regex.IsMatch(input, RegexPattern.PassLower);
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Teste de padrão PassUpper.
+  [Theory]
+  [InlineData("aA0!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\", true)]
+  [InlineData("aA0123456789!", true)]
+  [InlineData("aABCDEFGHIJKLMNOPQRSTUVWXYZ0!", true)]
+  [InlineData("abcdefghijklmnopqrstuvwxyzA0!", true)]
+  [InlineData("abAB01!@", true)]
+  [InlineData("aA0!", true)]
+  [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", true)]
+  [InlineData("abcdefghijklmnopqrstuvwxyz", false)]
+  [InlineData("0123456789", false)]
+  [InlineData("!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\", false)]
+  public void TestPassUpperPattern(string input, bool expected)
+  {
+    // Arrange & Act
+    var result = Regex.IsMatch(input, RegexPattern.PassUpper);
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Teste de padrão PassNumber.
+  [Theory]
+  [InlineData("aA0!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\", true)]
+  [InlineData("aA0123456789!", true)]
+  [InlineData("aABCDEFGHIJKLMNOPQRSTUVWXYZ0!", true)]
+  [InlineData("abcdefghijklmnopqrstuvwxyzA0!", true)]
+  [InlineData("abAB01!@", true)]
+  [InlineData("aA0!", true)]
+  [InlineData("0123456789", true)]
+  [InlineData("abcdefghijklmnopqrstuvwxyz", false)]
+  [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", false)]
+  [InlineData("!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\", false)]
+  public void TestPassNumberPattern(string input, bool expected)
+  {
+    // Arrange & Act
+    var result = Regex.IsMatch(input, RegexPattern.PassNumber);
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Teste de padrão PassSymbol.
+  [Theory]
+  [InlineData("aA0!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\", true)]
+  [InlineData("aA0123456789!", true)]
+  [InlineData("aABCDEFGHIJKLMNOPQRSTUVWXYZ0!", true)]
+  [InlineData("abcdefghijklmnopqrstuvwxyzA0!", true)]
+  [InlineData("abAB01!@", true)]
+  [InlineData("aA0!", true)]
+  [InlineData("!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\", true)]
+  [InlineData("abcdefghijklmnopqrstuvwxyz", false)]
+  [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", false)]
+  [InlineData("0123456789", false)]
+  public void TestPassSymbolPattern(string input, bool expected)
+  {
+    // Arrange & Act
+    var result = Regex.IsMatch(input, RegexPattern.PassSymbol);
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Teste de padrão PassComplex.
+  [Theory]
+  [InlineData("aA0!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\", true)]
+  [InlineData("aA0123456789!", true)]
+  [InlineData("aABCDEFGHIJKLMNOPQRSTUVWXYZ0!", true)]
+  [InlineData("abcdefghijklmnopqrstuvwxyzA0!", true)]
+  [InlineData("abAB01!@", true)]
+  [InlineData("abcdefghijklmnopqrstuvwxyz", false)]
+  [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", false)]
+  [InlineData("0123456789", false)]
+  [InlineData("!@#$%¨&*()-_+=´`~^'\"[{]]<,>.:;?/\\", false)]
+  [InlineData("aA0!", false)]
+  public void TestPassComplexPattern(string input, bool expected)
+  {
+    // Arrange & Act
+    var result = Regex.IsMatch(input, RegexPattern.PassComplex);
 
     // Assert
     Assert.Equal(expected, result);

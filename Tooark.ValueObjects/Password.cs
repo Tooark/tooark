@@ -1,4 +1,5 @@
 using Tooark.Validations;
+using Tooark.Validations.Patterns;
 
 namespace Tooark.ValueObjects;
 
@@ -67,32 +68,41 @@ public sealed class Password : ValueObject
     // Se a senha deve conter carácter minúsculo.
     if (lowercase)
     {
-      regexPassword += "(?=.*[a-z])";
+      regexPassword += RegexPattern.PassLower;
     }
 
     // Se a senha deve conter carácter maiúsculo.
     if (uppercase)
     {
-      regexPassword += "(?=.*[A-Z])";
+      regexPassword += RegexPattern.PassUpper;
     }
 
     // Se a senha deve conter carácter numérico.
     if (number)
     {
-      regexPassword += "(?=.*[0-9])";
+      regexPassword += RegexPattern.PassNumber;
     }
 
     // Se a senha deve conter carácter especial.
     if (symbol)
     {
-      regexPassword += "(?=.*[!@#$%&*()\\-_+\\=\\[\\]{}\\/?;:.>,<|\\\\])";
+      regexPassword += RegexPattern.PassSymbol;
     }
 
-    // Se não foi definido critérios de complexidade, utiliza o padrão de complexidade.
-    regexPassword ??= "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&*()\\-_+\\=\\[\\]{}\\/?;:.>,<|\\\\])";
+    // Verifica se não foi definido critérios de complexidade.
+    if (string.IsNullOrEmpty(regexPassword))
+    {
+      // Utiliza o padrão de complexidade.
+      regexPassword = RegexPattern.PassComplex;
 
-    // Define o tamanho mínimo da senha.
-    regexPassword += ".{" + length + ",}";
+      // Define o tamanho mínimo da senha.
+      regexPassword = regexPassword.Replace(".{8,}", $".{{{length},}}");
+    }
+    else
+    {
+      // Define o tamanho mínimo da senha.
+      regexPassword += ".{" + length + ",}";
+    }
 
     // Retorna a expressão regular da senha.
     return regexPassword;
