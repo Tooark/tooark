@@ -44,7 +44,7 @@ public class ResponseDto<T> : Dto
     if (data is Notification notification && !notification.IsValid)
     {
       // Atribui as mensagens de erro com as strings localizadas correspondentes caso existam
-      Errors = [.. notification.Messages.Select(x => _localizer[x])];
+      Errors = [.. notification.Messages.Select(Localizer)];
     }
     else
     {
@@ -89,7 +89,7 @@ public class ResponseDto<T> : Dto
   public ResponseDto(string error)
   {
     // Atribui o erro com a string localizada correspondente
-    Errors.Add(_localizer[error]);
+    Errors.Add(Localizer(error));
   }
 
   /// <summary>
@@ -99,7 +99,7 @@ public class ResponseDto<T> : Dto
   public ResponseDto(IList<string> errors)
   {
     // Atribui os erros com as strings localizadas correspondentes
-    Errors = [.. errors.Select(x => _localizer[x])];
+    Errors = [.. errors.Select(Localizer)];
   }
 
   /// <summary>
@@ -109,7 +109,7 @@ public class ResponseDto<T> : Dto
   public ResponseDto(Exception exception)
   {
     // Atribui o erro da exceção com a string localizada correspondente
-    Errors.Add(_localizer[exception.Message]);
+    Errors.Add(Localizer(exception.Message));
   }
 
   /// <summary>
@@ -128,7 +128,7 @@ public class ResponseDto<T> : Dto
     else
     {
       // Atribui o erro com a string localizada correspondente
-      Errors.Add(_localizer[message]);
+      Errors.Add(Localizer(message));
     }
   }
 
@@ -138,8 +138,11 @@ public class ResponseDto<T> : Dto
   /// <param name="notifications">Lista de itens de notificação.</param>
   public ResponseDto(IReadOnlyCollection<NotificationItem> notifications)
   {
+    // Captura as mensagens de erro das notificações
+    var errors = notifications.Select(x => x.Message).ToList();
+
     // Atribui as mensagens de erro com as strings localizadas correspondentes
-    Errors = [.. notifications.Select(x => _localizer[x])];
+    Errors = [.. errors.Select(Localizer)];
   }
 
 
@@ -172,4 +175,11 @@ public class ResponseDto<T> : Dto
     // Adiciona um metadado
     Metadata.Add(metadata);
   }
+
+  /// <summary>
+  /// Localizador de string.
+  /// </summary>
+  /// <param name="key">Chave da string.</param>
+  /// <returns>String localizada.</returns>
+  private static string Localizer(string key) => LocalizerString?[key] ?? key;
 }
