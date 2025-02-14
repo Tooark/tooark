@@ -4,36 +4,36 @@ Biblioteca para criação e gerenciamento de notificações e alertas, facilitan
 
 ## Conteúdo
 
-- [NotificationItem](#notificationitem)
-- [Notification](#notification)
+- [NotificationItem](#1-item-de-notificação)
+- [Notification](#2-notificação)
 
 ## Classes
 
-### NotificationItem
+As classes disponíveis são:
 
-Representa a estrutura de uma notificação.
+### 1. Item de Notificação
 
-#### Propriedades da Instância Item de Notificação
+**Funcionalidade:**
+Refresca uma notificação com uma chave e uma mensagem.
+
+**Propriedades:**
 
 - `Key`: A chave da notificação.
 - `Message`: A mensagem da notificação.
 
-#### Construtores
+**Métodos:**
 
 - `NotificationItem(string message)`: Cria uma nova instância de `NotificationItem` com uma mensagem.
 - `NotificationItem(string key, string message)`: Cria uma nova instância de `NotificationItem` com uma chave e uma mensagem.
 
-```csharp
-// Exemplo de uso
-var notification1 = new NotificationItem("Mensagem de exemplo");
-var notification2 = new NotificationItem("ChaveExemplo", "Mensagem de exemplo com chave");
-```
+[**Exemplo de Uso**](#item-de-notificação)
 
-### Notification
+### 2. Notificação
 
+**Funcionalidade:**
 Representa uma classe abstrata que gerencia uma lista de notificações.
 
-#### Propriedades da Instância Notificação
+**Propriedades:**
 
 - `Notifications`: Retorna a lista de notificações.
 - `IsValid`: Retorna True se a lista de notificações estiver vazia.
@@ -41,16 +41,29 @@ Representa uma classe abstrata que gerencia uma lista de notificações.
 - `Keys`: Retorna a lista de chaves das notificações.
 - `Messages`: Retorna a lista de mensagens das notificações.
 
-#### Métodos
+**Métodos:**
 
 - `AddNotification(NotificationItem notification)`: Adiciona uma nova notificação à lista de notificações.
-- `AddNotification(string message)`: Adiciona uma nova notificação à lista de notificações.
-- `AddNotification(string message, string key)`: Adiciona uma nova notificação à lista de notificações.
 - `AddNotification(Type property, string message)`: Adiciona uma nova notificação à lista de notificações.
+- `AddNotification(string message, string key)`: Adiciona uma nova notificação à lista de notificações.
 - `AddNotifications(ICollection<NotificationItem> notifications)`: Adiciona uma coleção de notificações à lista de notificações.
 - `AddNotifications(Notification notification)`: Adiciona a lista de notificações de uma notificação à lista de notificações.
 - `AddNotifications(params Notification[] notifications)`: Adiciona uma coleção de notificações à lista de notificações.
 - `Clear()`: Limpa a lista de notificações.
+
+[**Exemplo de Uso**](#notificação)
+
+## Exemplo de Uso
+
+### Item de Notificação
+
+```csharp
+// Exemplo de uso
+var notification1 = new NotificationItem("Mensagem de exemplo");
+var notification2 = new NotificationItem("ChaveExemplo", "Mensagem de exemplo com chave");
+```
+
+### Notificação
 
 ```csharp
 // Exemplo de uso

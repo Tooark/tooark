@@ -7,8 +7,8 @@
     <PackageId>Tooark.Extensions</PackageId>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
     <Company>Tooark</Company>
-    <PackageDescription>Package for creating and managing extensions and utilities for .NET applications.</PackageDescription>
-    <Description>Library for creating and managing extensions and utilities, facilitating the development and maintenance of .NET projects.</Description>
+    <PackageDescription>Package for managing extensions and utilities for .NET applications.</PackageDescription>
+    <Description>Library for managing extensions and utilities, facilitating the development and maintenance of .NET projects.</Description>
     <PackageIcon>icon.jpg</PackageIcon>
     <PackageTags>toolkit, extensions, utilities, .NET</PackageTags>
     <Title>Tooark</Title>

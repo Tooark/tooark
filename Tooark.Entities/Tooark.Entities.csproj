@@ -7,12 +7,12 @@
     <PackageId>Tooark.Entities</PackageId>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
     <Company>Tooark</Company>
-    <PackageDescription>Package for creating and managing entities in .NET applications.</PackageDescription>
-    <Description>Library to facilitate the creation, management and maintenance of base entities in .NET projects.</Description>
+    <PackageDescription>Package for managing base entities in .NET applications.</PackageDescription>
+    <Description>Library to management and maintenance of base entities in .NET projects.</Description>
     <PackageIcon>icon.jpg</PackageIcon>
     <PackageTags>toolkit, entities, .NET, management, creation</PackageTags>
     <Title>Tooark</Title>
-    <Summary>Creation and management of entities in .NET projects.</Summary>
+    <Summary>Management of base entities in .NET projects.</Summary>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
@@ -26,9 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
     <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
     <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
-    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
   </ItemGroup>
 
 </Project>
