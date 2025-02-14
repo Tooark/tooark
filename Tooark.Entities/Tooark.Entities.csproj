@@ -28,6 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
     <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
+    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
   </ItemGroup>
 
 </Project>
