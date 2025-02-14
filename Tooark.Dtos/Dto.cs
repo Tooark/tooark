@@ -5,7 +5,6 @@ namespace Tooark.Dtos;
 /// <summary>
 /// Classe base para DTOs.
 /// </summary>
-/// <param name="localizer">Localizador de strings. Parâmetro opcional.</param>
 /// <remarks>Se o localizador não for fornecido, será obtido um localizador padrão.</remarks>
 public abstract class Dto
 {
