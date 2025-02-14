@@ -10,6 +10,7 @@ namespace Tooark.Tests.Injections;
 
 public class TooarkDependencyInjectionTests
 {
+  // Testa se o método AddTooarkService registra os serviços
   [Fact]
   public void AddTooarkService_ShouldRegisterServices()
   {
@@ -32,6 +33,7 @@ public class TooarkDependencyInjectionTests
     Assert.NotNull(dtoLocalizer);
   }
 
+  // Testa se o método AddTooarkService usa as opções padrão quando as opções não são fornecidas
   [Fact]
   public void AddTooarkService_ShouldUseDefaultOptions_WhenOptionsNotProvided()
   {
@@ -53,6 +55,7 @@ public class TooarkDependencyInjectionTests
     Assert.NotNull(dtoLocalizer);
   }
 
+  // Testa se o método AddTooarkService usa as opções fornecidas
   [Fact]
   public void AddTooarkService_ShouldUseProvidedOptions()
   {
@@ -75,6 +78,7 @@ public class TooarkDependencyInjectionTests
     Assert.NotNull(dtoLocalizer);
   }
 
+  // Testa se o método AddTooarkService registra os serviços com mock
   [Fact]
   public void AddTooarkService_ShouldRegisterServices_WithMock()
   {
