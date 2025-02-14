@@ -4,14 +4,39 @@ Biblioteca que fornece tipos enumerados validados, permitindo a padronização p
 
 ## Conteúdo
 
-- [EDocumentType](#edocumenttype)
-- [ECloudProvider](#ecloudprovider)
+- [ECloudProvider](#1-provedor-de-cloud)
+- [EDocumentType](#2-tipo-de-documento)
+- [EFileType](#3-tipo-de-arquivo)
 
-## EDocumentType
+## Enumeradores
 
-A classe `EDocumentType` representa diferentes tipos de documentos e fornece métodos para validação e conversão.
+Os enumeradores disponíveis são:
 
-### Tipos de Documentos
+### 1. Provedor de Cloud
+
+**Funcionalidade:**
+Representa diferentes provedores de cloud.
+
+**Tipos de Provedores:**
+
+- `None`: Nenhum provedor.
+- `Amazon`: AWS.
+- `Google`: GCP.
+- `Microsoft`: Azure.
+
+**Métodos:**
+
+- `ToString()`: Retorna a descrição do provedor de cloud.
+- `ToInt()`: Retorna o ID do provedor de cloud.
+
+[**Exemplo de Uso**](#provedor-de-cloud)
+
+### 2. Tipo de Documento
+
+**Funcionalidade:**
+Representa diferentes tipos de documentos.
+
+**Tipos de Documentos:**
 
 - `None`
 - `CPF`
@@ -22,48 +47,38 @@ A classe `EDocumentType` representa diferentes tipos de documentos e fornece mé
 - `CPF_RG`
 - `CPF_RG_CNH`
 
-### Métodos do EDocumentType
+**Métodos:**
 
 - `ToString()`: Retorna a descrição do tipo de documento.
 - `ToInt()`: Retorna o ID do tipo de documento.
 - `ToRegex()`: Retorna o padrão de regex do tipo de documento.
 - `IsValid(string)`: Retorna a função de validação do tipo de documento.
 
-### Exemplo de Uso para EDocumentType
+[**Exemplo de Uso**](#tipo-de-documento)
 
-```csharp
-using Tooark.Enums;
+### 3. Tipo de Arquivo
 
-class Program
-{
-  static void Main()
-  {
-    EDocumentType docType = EDocumentType.CPF;
-    Console.WriteLine(docType.ToString()); // Output: CPF
-    Console.WriteLine(docType.ToInt()); // Output: 1
-    Console.WriteLine(docType.ToRegex()); // Output: RegexPattern.Cpf
-    Console.WriteLine(docType.IsValid("12345678909")); // Output: True ou False dependendo da validade do CPF
-  }
-}
-```
+**Funcionalidade:**
+Representa diferentes tipos de arquivos.
 
-## ECloudProvider
+**Tipos de Arquivos:**
 
-A classe `ECloudProvider` representa diferentes provedores de cloud.
+- `Image`: Imagem.
+- `Document`: Documento.
+- `Video`: Vídeo.
+- `Audio`: Áudio.
+- `Unknown`: Tipo desconhecido.
 
-### Provedores de Cloud
+**Métodos:**
 
-- `None`
-- `Amazon` (AWS)
-- `Google` (GCP)
-- `Microsoft` (Azure)
+- `ToString()`: Retorna a descrição do tipo de arquivo.
+- `ToInt()`: Retorna o ID do tipo de arquivo.
 
-### Métodos do ECloudProvider
+[**Exemplo de Uso**](#tipo-de-arquivo)
 
-- `ToString()`: Retorna a descrição do provedor de cloud.
-- `ToInt()`: Retorna o ID do provedor de cloud.
+## Exemplo de Uso
 
-### Exemplo de Uso para ECloudProvider
+### Provedor de Cloud
 
 ```csharp
 using Tooark.Enums;
@@ -78,3 +93,45 @@ class Program
   }
 }
 ```
+
+### Tipo de Documento
+
+```csharp
+using Tooark.Enums;
+
+class Program
+{
+  static void Main()
+  {
+    EDocumentType docType = EDocumentType.CPF;
+    Console.WriteLine(docType.ToString()); // Output: CPF
+    Console.WriteLine(docType.ToInt()); // Output: 1
+    Console.WriteLine(docType.ToRegex()); // Output: @"^\d{3}\.\d{3}\.\d{3}-\d{2}$"
+    Console.WriteLine(docType.IsValid("12345678909")); // Output: True ou False dependendo da validade do CPF
+  }
+}
+```
+
+### Tipo de Arquivo
+
+```csharp
+using Tooark.Enums;
+
+class Program
+{
+  static void Main()
+  {
+    EFileType fileType = EFileType.Image;
+    Console.WriteLine(fileType.ToString()); // Output: Image
+    Console.WriteLine(fileType.ToInt()); // Output: 1
+  }
+}
+```
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Enums](https://github.com/Tooark/tooark).
+
+## Licença
+
+Este projeto está licenciado sob a licença BSD 3-Clause. Veja o arquivo [LICENSE](../LICENSE) para mais detalhes.

@@ -1,6 +1,6 @@
 # Tooark.ValueObjects
 
-Biblioteca para criação e gerenciamento de Value Objects pré-definidos e validados, garantindo a integridade e consistência dos dados para projetos .NET.
+Biblioteca gerenciamento de Value Objects pré-definidos e validados, garantindo a integridade e consistência dos dados para projetos .NET.
 
 ## Conteúdo
 
@@ -833,3 +833,11 @@ if (url.IsValid)
   Console.WriteLine($"Protocolo válido: {url.Value}");
 }
 ```
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.ValueObjects](https://github.com/Tooark/tooark).
+
+## Licença
+
+Este projeto está licenciado sob a licença BSD 3-Clause. Veja o arquivo [LICENSE](../LICENSE) para mais detalhes.

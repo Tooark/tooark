@@ -4,28 +4,208 @@ Biblioteca para validação de tipos e padrões, fornecendo métodos para garant
 
 ## Conteúdo
 
-- [Validação de Boolean](#validação-de-boolean)
-- [Validação de Datas](#validação-de-datas)
-- [Validação de Decimal](#validação-de-decimal)
-- [Validação de Documentos](#validação-de-documentos)
-- [Validação de Double](#validação-de-double)
-- [Validação de Email](#validação-de-email)
-- [Validação de Float](#validação-de-float)
-- [Validação de Guid](#validação-de-guid)
-- [Validação de Int](#validação-de-int)
-- [Validação de Listas](#validação-de-listas)
-- [Validação de Long](#validação-de-long)
-- [Validação de Rede (Network)](#validação-de-rede-network)
-- [Validação de Objeto](#validação-de-objeto)
-- [Validação de Protocolo](#validação-de-protocolo)
-- [Validação de Regex](#validação-de-regex)
-- [Validação de String](#validação-de-string)
-- [Validação de TimeSpan](#validação-de-timespan)
-- [Validação de Tipo](#validação-de-tipo)
+- [Validação de Boolean](#1-booleano)
+- [Validação de Datas](#2-datas)
+- [Validação de Decimal](#3-decimal)
+- [Validação de Documentos](#4-documentos)
+- [Validação de Double](#5-double)
+- [Validação de Email](#6-email)
+- [Validação de Float](#7-float)
+- [Validação de Guid](#8-guid)
+- [Validação de Int](#9-int)
+- [Validação de Listas](#10-listas)
+- [Validação de Long](#11-long)
+- [Validação de Rede (Network)](#12-rede-network)
+- [Validação de Objeto](#13-objeto)
+- [Validação de Protocolo](#14-protocolo)
+- [Validação de Regex](#15-regex)
+- [Validação de String](#16-string)
+- [Validação de TimeSpan](#17-timespan)
+- [Validação de Tipo](#18-tipos)
 
-## Utilização
+## Validações
 
-### Validação de Boolean
+As validações disponíveis são:
+
+### 1. Booleano
+
+**Funcionalidade:**
+Validações para valores booleanos.
+
+[**Exemplo de Uso**](#booleano)
+
+### 2. Datas
+
+**Funcionalidade:**
+Validações para valores de data.
+
+[**Exemplo de Uso**](#datas)
+
+### 3. Decimal
+
+**Funcionalidade:**
+Validações para valores decimais.
+
+[**Exemplo de Uso**](#decimal)
+
+### 4. Documentos
+
+**Funcionalidade:**
+Validações para documentos.
+
+**Tipos de Documentos:**
+
+- `CPF`
+- `RG`
+- `CNH`
+- `CPF ou RG`
+- `CPF, RG ou CNH`
+- `CNPJ`
+- `CPF ou CNPJ`
+
+[**Exemplo de Uso**](#documentos)
+
+### 5. Double
+
+**Funcionalidade:**
+Validações para valores double.
+
+[**Exemplo de Uso**](#double)
+
+### 6. Email
+
+**Funcionalidade:**
+Validações para endereços de email.
+
+[**Exemplo de Uso**](#email)
+
+### 7. Float
+
+**Funcionalidade:**
+Validações para valores float.
+
+[**Exemplo de Uso**](#float)
+
+### 8. Guid
+
+**Funcionalidade:**
+Validações para valores guid.
+
+[**Exemplo de Uso**](#guid)
+
+### 9. Int
+
+**Funcionalidade:**
+Validações para valores inteiros.
+
+[**Exemplo de Uso**](#int)
+
+### 10. Listas
+
+**Funcionalidade:**
+Validações para listas.
+
+[**Exemplo de Uso**](#listas)
+
+### 11. Long
+
+**Funcionalidade:**
+Validações para valores long.
+
+[**Exemplo de Uso**](#long)
+
+### 12. Rede (Network)
+
+**Funcionalidade:**
+Validações para endereços de rede.
+
+**Tipos de Endereços:**
+
+- `IP`
+- `IPv4`
+- `IPv6`
+- `MacAddress`
+
+[**Exemplo de Uso**](#rede-network)
+
+### 13. Objeto
+
+**Funcionalidade:**
+Validações para objetos.
+
+[**Exemplo de Uso**](#objeto)
+
+### 14. Protocolo
+
+**Funcionalidade:**
+Validações para protocolos.
+
+**Tipos de Protocolos:**
+
+- `Url`
+- `Ftp`
+- `Sftp`
+- `ProtocolFtp`
+- `Http`
+- `Https`
+- `ProtocolHttp`
+- `Imap`
+- `Pop3`
+- `ProtocolEmailReceiver`
+- `Smtp`
+- `ProtocolEmailSender`
+- `Ws`
+- `Wss`
+- `ProtocolWebSocket`
+
+[**Exemplo de Uso**](#protocolo)
+
+### 15. Regex
+
+**Funcionalidade:**
+Validações para expressões regulares.
+
+[**Exemplo de Uso**](#regex)
+
+### 16. String
+
+**Funcionalidade:**
+Validações para strings.
+
+[**Exemplo de Uso**](#string)
+
+### 17. TimeSpan
+
+**Funcionalidade:**
+Validações para valores de tempo.
+
+[**Exemplo de Uso**](#timespan)
+
+### 18. Tipos
+
+**Funcionalidade:**
+Validações para tipos de string.
+
+**Tipos de Disponíveis:**
+
+- `Guid`
+- `Letter`
+- `LetterLower`
+- `LetterUpper`
+- `Numeric`
+- `LetterNumeric`
+- `Hexadecimal`
+- `ZipCode`
+- `Base64`
+- `Password`
+- `Culture`
+- `CultureIgnoreCase`
+
+[**Exemplo de Uso**](#tipos)
+
+## Exemplos de Uso
+
+### Booleano
 
 ```csharp
 using Tooark.Validations;
@@ -43,7 +223,7 @@ var validation = new Validation()
     .IsNotNull(value, property, "O valor não deve ser nulo.")
 ```
 
-### Validação de Datas
+### Datas
 
 ```csharp
 using Tooark.Validations;
@@ -71,7 +251,7 @@ var validation = new Validation()
     .IsNotNull(date, property, "A data não deve ser nula.")
 ```
 
-### Validação de Decimal
+### Decimal
 
 ```csharp
 using Tooark.Validations;
@@ -99,7 +279,7 @@ var validation = new Validation()
     .IsNotNull(value, property, "O valor não deve ser nulo.");
 ```
 
-### Validação de Documentos
+### Documentos
 
 ```csharp
 using Tooark.Validations;
@@ -115,7 +295,7 @@ var validation = new Validation()
     .IsCpfCnpj(document, property, "Tem que ser um CPF ou CNPJ válido").
 ```
 
-### Validação de Double
+### Double
 
 ```csharp
 using Tooark.Validations;
@@ -143,7 +323,7 @@ var validation = new Validation()
     .IsNotNull(value, property, "O valor não deve ser nulo.");
 ```
 
-### Validação de Email
+### Email
 
 ```csharp
 using Tooark.Validations;
@@ -155,7 +335,7 @@ var validation = new Validation()
     .IsEmailOrEmpty(email, property, "Tem que ser um email válido ou vazio");
 ```
 
-### Validação de Domínio de Email
+### Domínio de Email
 
 ```csharp
 using Tooark.Validations;
@@ -167,7 +347,7 @@ var validation = new Validation()
     .IsEmailDomainOrEmpty(email, property, "Tem que ser domínio de email válido ou vazio");
 ```
 
-### Validação de Float
+### Float
 
 ```csharp
 using Tooark.Validations;
@@ -195,7 +375,7 @@ var validation = new Validation()
     .IsNotNull(value, property, "O valor não deve ser nulo.");
 ```
 
-### Validação de Guid
+### Guid
 
 ```csharp
 using Tooark.Validations;
@@ -215,7 +395,7 @@ var validation = new Validation()
     .IsNotEmpty(guid, property, "O valor não deve ser vazio.");
 ```
 
-### Validação de Int
+### Int
 
 ```csharp
 using Tooark.Validations;
@@ -243,7 +423,7 @@ var validation = new Validation()
     .IsNotNull(value, property, "O valor não deve ser nulo.");
 ```
 
-### Validação de Listas
+### Listas
 
 ```csharp
 using Tooark.Validations;
@@ -263,7 +443,7 @@ var validation = new Validation()
     .IsNotEmpty(list, value, property, "A lista não pode ser vazia.");
 ```
 
-### Validação de Long
+### Long
 
 ```csharp
 using Tooark.Validations;
@@ -291,7 +471,7 @@ var validation = new Validation()
     .IsNotNull(value, property, "O valor não deve ser nulo.");
 ```
 
-### Validação de Rede (Network)
+### Rede (Network)
 
 ```csharp
 using Tooark.Validations;
@@ -304,7 +484,7 @@ var validation = new Validation()
     .IsMacAddress(Value, property, "Tem que ser um MacAddress válido.");
 ```
 
-### Validação de Objeto
+### Objeto
 
 ```csharp
 using Tooark.Validations;
@@ -318,7 +498,7 @@ var validation = new Validation()
     .IsNotNull(obj, property, "O objeto não deve ser nulo.");
 ```
 
-### Validação de Protocolo
+### Protocolo
 
 ```csharp
 using Tooark.Validations;
@@ -342,7 +522,7 @@ var validation = new Validation()
     .IsProtocolWebSocket(Protocol, property, "O protocolo deve ser um ProtocolWebSocket válido.");
 ```
 
-### Validação de Regex
+### Regex
 
 ```csharp
 using Tooark.Validations;
@@ -353,7 +533,7 @@ var validation = new Validation()
     .NotMatch(Value, Pattern, property, "O valor não deve corresponder ao padrão.");
 ```
 
-### Validação de String
+### String
 
 ```csharp
 using Tooark.Validations;
@@ -381,7 +561,7 @@ var validation = new Validation()
     .IsNotNull(value, property, "O valor não deve ser nulo, vazio ou espaço em branco.");
 ```
 
-### Validação de TimeSpan
+### TimeSpan
 
 ```csharp
 TimeSpan value = TimeSpan.FromHours(2);
@@ -407,7 +587,7 @@ var validation = new Validation()
     .IsNotNull(value, property, "O valor não deve ser nulo.");
 ```
 
-### Validação de Tipo
+### Tipos
 
 ```csharp
 string value = "abc";
@@ -424,13 +604,14 @@ var validation = new Validation()
     .IsZipCode(value, property, "Tem que ser um código postal.")
     .IsBase64(value, property, "Tem que ser um Base64.")
     .IsPassword(value, property, "Tem que ser uma senha complexa.")
+    .IsPassword(value, 10, property, "Tem que ser uma senha complexa e com no mínimo 10 caracteres.")
     .IsCulture(value, property, "Tem que ser uma cultura.")
     .IsCultureIgnoreCase(value, property, "Tem que ser uma cultura ignorando case sensitive.");
 ```
 
 ## Métodos Disponíveis
 
-A biblioteca `Tooark.Validations` oferece uma ampla gama de métodos de validação, incluindo, mas não se limitando a:
+A biblioteca `Tooark.Validations` oferece uma ampla gama de métodos de validação, incluindo:
 
 - `Join`: Junta as mensagens de notificação.
 

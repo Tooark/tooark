@@ -1,87 +1,98 @@
 # Tooark.Entities
 
-Biblioteca para facilitar a criação, gerenciamento e manutenção de entidades base em projetos .NET.
+Biblioteca para gerenciamento e manutenção de entidades base em projetos .NET.
 
-## Enumeradores
+## Conteúdo
 
-### EFileType
+- [BaseEntity](#1-entidade-base)
+- [InitialEntity](#2-entidade-inicial)
+- [DetailedEntity](#3-entidade-detalhada)
+- [VersionedEntity](#4-entidade-versionada)
+- [SoftDeletableEntity](#5-entidade-deletável)
+- [AuditableEntity](#6-entidade-auditável)
+- [FileEntity](#7-entidade-de-arquivo)
 
-Enumerador que define os tipos de arquivos.
+## Entidades
 
-- **Valores:**
-  - `Image`: Imagem.
-  - `Document`: Documento.
-  - `Video`: Vídeo.
-  - `Audio`: Áudio.
-  - `Unknown`: Tipo desconhecido.
+As entidades disponíveis são:
 
-## Classes
+### 1. Entidade Base
 
-### BaseEntity
+**Funcionalidade:**
+Classe base abstrata contemplando a definição de um identificador único para a entidade.
 
-Classe base abstrata para entidades.
-
-- **Campos:**
+- **Propriedades:**
 
   - `Id` (Guid): Identificador único para a entidade.
 
 - **Métodos:**
+
   - `SetId(Guid id)`: Define o identificador único para a entidade.
 
-### InitialEntity
+[Exemplo de Uso](#entidade-base)
 
-Classe base abstrata para entidades iniciais. Herda de [`BaseEntity`](#baseentity).
+### 2. Entidade Inicial
 
-- **Campos:**
+**Funcionalidade:**
+Classe base abstrata que herda de [`BaseEntity`](#1-entidade-base) e define campos para rastrear a criação da entidade.
+
+- **Propriedades:**
 
   - `CreatedBy` (Guid): Identificador do usuário que criou a entidade.
   - `CreatedAt` (DateTime): Data e hora de criação da entidade.
 
 - **Métodos:**
+
   - `SetCreatedBy(Guid createdBy)`: Define o identificador do criador da entidade e a data e hora de criação.
 
-### DetailedEntity
+### 3. Entidade Detalhada
 
-Classe base abstrata para entidades detalhadas. Herda de [`InitialEntity`](#initialentity).
+**Funcionalidade:**
+Classe base abstrata que herda de [`InitialEntity`](#2-entidade-inicial) e define campos para rastrear a última atualização da entidade.
 
-- **Campos:**
+- **Propriedades:**
 
   - `UpdatedBy` (Guid): Identificador do usuário que atualizou a entidade pela última vez.
   - `UpdatedAt` (DateTime): Data e hora da última atualização da entidade.
 
 - **Métodos:**
+
   - `SetCreatedBy(Guid createdBy)`: Define o identificador do criador e o atualizador da entidade.
   - `SetUpdatedBy(Guid updatedBy)`: Define o identificador do atualizador da entidade e a data e hora da última atualização.
 
-### VersionedEntity
+### 4. Entidade Versionada
 
-Classe base abstrata para entidades que suportam versionamento. Herda de [`DetailedEntity`](#detailedentity).
+**Funcionalidade:**
+Classe base abstrata que herda de [`DetailedEntity`](#3-entidade-detalhada) e define um campo para rastrear a versão da entidade.
 
-- **Campos:**
+- **Propriedades:**
 
   - `Version` (long): Versão da entidade.
 
 - **Métodos:**
+
   - `SetUpdatedBy(Guid updatedBy)`: Incrementa a versão da entidade ao atualizar.
-  - `IncrementVersion()`: Incrementa a versão da entidade.
 
-### SoftDeletableEntity
+### 5. Entidade Deletável
 
-Classe base abstrata para entidades que suportam exclusão lógica. Herda de [`DetailedEntity`](#detailedentity).
+**Funcionalidade:**
+Classe base abstrata que herda de [`DetailedEntity`](#3-entidade-detalhada) e define um campo para rastrear a exclusão lógica da entidade.
 
-- **Campos:**
+- **Propriedades:**
 
   - `Deleted` (bool): Indica se a entidade foi excluída logicamente.
 
 - **Métodos:**
+
   - `SetDeleted(Guid changedBy)`: Marca a entidade como excluída logicamente.
   - `SetRestored(Guid changedBy)`: Marca a entidade como não excluída logicamente.
 
-### AuditableEntity
+### 6. Entidade Auditável
 
-Classe base abstrata para entidades que precisam de auditoria completa. Herda de [`DetailedEntity`](#detailedentity).
+**Funcionalidade:**
+Classe base abstrata que herda de [`DetailedEntity`](#3-entidade-detalhada) e define campos para rastrear a exclusão lógica e restauração da entidade.
 
-- **Campos:**
+- **Propriedades:**
 
   - `Version` (long): Versão da entidade.
   - `Deleted` (bool): Indica se a entidade foi excluída logicamente.
@@ -91,50 +102,66 @@ Classe base abstrata para entidades que precisam de auditoria completa. Herda de
   - `RestoredAt` (DateTime?): Data e hora da restauração da entidade.
 
 - **Métodos:**
-  - `SetDeleted(Guid deletedBy)`: Marca a entidade como excluída.
-  - `SetRestored(Guid restoredBy)`: Marca a entidade como restaurada.
-  - `IncrementVersion()`: Incrementa a versão da entidade.
 
-### FileEntity
+  - `SetDeleted(Guid deletedBy)`: Marca a entidade como excluída, definindo o usuário e a data e hora da exclusão e incrementando a versão.
+  - `SetRestored(Guid restoredBy)`: Marca a entidade como restaurada, definindo o usuário e a data e hora da restauração e incrementando a versão.
 
-Classe base abstrata para entidades que gerenciam arquivos dentro do bucket. Herda de [`InitialEntity`](#initialentity).
+### .7 Entidade de Arquivo
 
-- **Campos:**
+**Funcionalidade:**
+Classe base abstrata que herda de [`InitialEntity`](#2-entidade-inicial) e define campos para armazenar informações de arquivos.
+
+- **Propriedades:**
+
   - `FileUrl` (string): URL do arquivo no bucket.
   - `Name` (string): Nome do arquivo.
   - `PublicUrl` (string): URL pública do arquivo.
   - `FileFormat` (string): Formato do arquivo.
-  - `Type` (string): Tipo do arquivo.
+  - `Type` (EFileType): Tipo do arquivo.
+
 - **Construtores:**
+
   - `FileEntity(string fileUrl, string name, Guid createdBy)`: Inicializa uma nova instância da classe `FileEntity`.
   - `FileEntity(string fileUrl, string name, string publicUrl, Guid createdBy)`: Inicializa uma nova instância da classe `FileEntity`.
   - `FileEntity(string fileUrl, string name, string publicUrl, string fileFormat, EFileType type, Guid createdBy)`: Inicializa uma nova instância da classe `FileEntity`.
 
 ## Exemplo de Uso
 
-**Utilizando os enumeradores:**
-
-```csharp
-using Tooark.Entities.Enums;
-
-int typeInt = EFileType.Image; // 2
-string typeString = EFileType.Image; // Image
-```
-
-**Utilizando a entidade:**
+### Entidade Base
 
 ```csharp
 using Tooark.Entities;
 
-public class Produto : AuditableEntity
+public class Produto : BaseEntity
 {
   public string Nome { get; set; }
   public decimal Valor { get; set; }
 }
 
-public class FileRepository : FileEntity
+public class Program
 {
-  public string Bucket { get; set; }
+  public static void Main()
+  {
+    var produto = new Produto
+    {
+      Nome = "Produto A",
+      Valor = 100.0m
+    };
+
+    produto.SetId(Guid.NewGuid()); // Define o identificador único para a entidade.
+  }
+}
+```
+
+### Entidade Inicial
+
+```csharp
+using Tooark.Entities;
+
+public class Produto : InitialEntity
+{
+  public string Nome { get; set; }
+  public decimal Valor { get; set; }
 }
 
 public class Program
@@ -148,24 +175,168 @@ public class Program
     };
 
     // Definindo o criador da entidade
-    produto.SetCreatedBy(Guid.NewGuid());
+    produto.SetCreatedBy(Guid.NewGuid()); // Define o identificador do criador da entidade e a data e hora de criação.
+  }
+}
+```
+
+### Entidade Detalhada
+
+```csharp
+using Tooark.Entities;
+
+public class Produto : DetailedEntity
+{
+  public string Nome { get; set; }
+  public decimal Valor { get; set; }
+}
+
+public class Program
+{
+  public static void Main()
+  {
+    var produto = new Produto
+    {
+      Nome = "Produto A",
+      Valor = 100.0m
+    };
+
+    // Definindo o criador da entidade
+    produto.SetCreatedBy(Guid.NewGuid()); // Define o identificador do criador e o atualizador da entidade.
 
     // Atualizando a entidade
-    produto.SetUpdatedBy(Guid.NewGuid());
+    produto.SetUpdatedBy(Guid.NewGuid()); // Define o identificador do atualizador da entidade e a data e hora da última atualização.
+  }
+}
+```
+
+### Entidade Versionada
+
+```csharp
+using Tooark.Entities;
+
+public class Produto : VersionedEntity
+{
+  public string Nome { get; set; }
+  public decimal Valor { get; set; }
+}
+
+public class Program
+{
+  public static void Main()
+  {
+    var produto = new Produto
+    {
+      Nome = "Produto A",
+      Valor = 100.0m
+    };
+
+    // Definindo o criador da entidade
+    produto.SetCreatedBy(Guid.NewGuid()); // Define o identificador do criador e o atualizador da entidade.
+
+    // Atualizando a entidade
+    produto.SetUpdatedBy(Guid.NewGuid()); // Incrementa a versão da entidade ao atualizar.
+
+    var version = produto.Version; // Obtém a versão da entidade.
+  }
+}
+```
+
+### Entidade Deletável
+
+```csharp
+using Tooark.Entities;
+
+public class Produto : SoftDeletableEntity
+{
+  public string Nome { get; set; }
+  public decimal Valor { get; set; }
+}
+
+public class Program
+{
+  public static void Main()
+  {
+    var produto = new Produto
+    {
+      Nome = "Produto A",
+      Valor = 100.0m
+    };
+
+    // Definindo o criador da entidade
+    produto.SetCreatedBy(Guid.NewGuid()); // Define o identificador do criador e o atualizador da entidade.
 
     // Excluindo logicamente a entidade
-    produto.SetDeleted(Guid.NewGuid());
+    produto.SetDeleted(Guid.NewGuid()); // Marca a entidade como excluída logicamente.
 
     // Restaurando a entidade
-    produto.SetRestored(Guid.NewGuid());
+    produto.SetRestored(Guid.NewGuid()); // Marca a entidade como não excluída logicamente.
+  }
+}
+```
 
-    var fileUrl = "https://bucket.s3.amazonaws.com/documento.pdf";
-    var name = "Documento Exemplo";
+### Entidade Auditável
 
-    var file = new FileRepository(fileUrl, name, Guid.NewGuid())
+```csharp
+using Tooark.Entities;
+
+public class Produto : AuditableEntity
+{
+  public string Nome { get; set; }
+  public decimal Valor { get; set; }
+}
+
+public class Program
+{
+  public static void Main()
+  {
+    var produto = new Produto
     {
-      Bucket = "bucket"
+      Nome = "Produto A",
+      Valor = 100.0m
+    };
+
+    // Definindo o criador da entidade
+    produto.SetCreatedBy(Guid.NewGuid()); // Define o identificador do criador e o atualizador da entidade.
+
+    // Atualizando a entidade
+    produto.SetUpdatedBy(Guid.NewGuid()); // Define o identificador do atualizador da entidade e a data e hora da última atualização.
+
+    // Excluindo logicamente a entidade
+    produto.SetDeleted(Guid.NewGuid()); // Marca a entidade como excluída, definindo o usuário e a data e hora da exclusão e incrementando a versão.
+
+    // Restaurando a entidade
+    produto.SetRestored(Guid.NewGuid()); // Marca a entidade como restaurada, definindo o usuário e a data e hora da restauração e incrementando a versão.
+  }
+}
+```
+
+### Entidade de Arquivo
+
+```csharp
+using Tooark.Entities;
+
+public class Arquivo : FileEntity
+{
+  public string Descricao { get; set; }
+}
+
+public class Program
+{
+  public static void Main()
+  {
+    var arquivo = new Arquivo("https://bucket.com/arquivo.pdf", "Arquivo.pdf", Guid.NewGuid())
+    {
+      Descricao = "Arquivo de teste"
     };
   }
 }
 ```
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Entities](https://github.com/Tooark/tooark).
+
+## Licença
+
+Este projeto está licenciado sob a licença BSD 3-Clause. Veja o arquivo [LICENSE](../LICENSE) para mais detalhes.

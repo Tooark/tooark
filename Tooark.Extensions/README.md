@@ -1,23 +1,75 @@
 # Tooark.Extensions
 
-Biblioteca para criar e gerenciar extensões e utilitários, facilitando o desenvolvimento e a manutenção de projetos .NET.
+Biblioteca gerenciar extensões e utilitários, facilitando o desenvolvimento e a manutenção de projetos .NET.
 
 ## Conteúdo
 
-- [Enumerable Extensions](#enumerable-extensions)
-- [Json String Localizer Extensions](#json-string-localizer-extensions-extensões-para-istringlocalizer)
-- [String Extensions](#string-extensions)
+- [EnumerableExtensions](#1-extensão-de-enumeráveis)
+- [AddJsonStringLocalizer](#2-configuração-do-jsonstringlocalizer-extensão-localiza-string-dentro-de-json)
+- [JsonStringLocalizerExtensions](#3-extensão-localiza-string-dentro-de-json-extensão-para-istringlocalizer)
+- [StringExtensions](#4-extensões-de-string)
 
-## Funcionalidades e Métodos Disponíveis
+## Extensões
 
-### Enumerable Extensions
+As extensões disponíveis são:
 
-#### Métodos Enumerable
+### 1. Extensão de Enumeráveis
+
+**Funcionalidade:**
+Ordenação de coleções de objetos por propriedades específicas e propriedades de sub classes. Suporta ordenação ascendente e descendente de coleções de objetos.
+
+**Métodos:**
 
 - `OrderByProperty<T>(string sortProperty)`: Ordena uma coleção de objetos de forma ascendente por uma propriedade específica.
-- `OrderByPropertyDescending<T>(string sortProperty)`: Ordena uma coleção de objetos de forma descendente por uma propriedade específica
+- `OrderByPropertyDescending<T>(string sortProperty)`: Ordena uma coleção de objetos de forma descendente por uma propriedade específica.
 
-#### Exemplos de Uso Enumerable
+[**Exemplo de Uso**](#extensão-de-enumeráveis)
+
+### 2. Configuração do JsonStringLocalizer (Extensão Localiza String dentro de Json)
+
+**Funcionalidade:**
+Adiciona a injeção de dependência do serviço de localização de strings com base em arquivos JSON.
+
+**Métodos:**
+
+- `AddJsonStringLocalizer`: Adiciona a injeção de dependência do serviço de localização de strings com base em arquivos JSON.
+
+[**Exemplo de Uso**](#configuração-do-jsonstringlocalizer)
+
+### 3. Extensão Localiza String dentro de Json (Extensão para IStringLocalizer)
+
+**Funcionalidade:**
+Utiliza os [arquivos](#arquivos-de-recursos-multiculturais) padrão de recursos multiculturais para localização de strings.
+
+**Métodos:**
+
+- `LocalizedString this[string name]`: Representa um valor localizado.
+- `LocalizedString this[string name, params object[] arguments]`: Representa um valor localizado com argumentos.
+- `GetAllStrings(bool includeParentCultures)`: Obtém todos os valores localizados. Se `includeParentCultures` utilizado para valores da cultura `default` caso `true` ou `current` caso `false`.
+
+[**Exemplo de Uso**](#extensão-localiza-string-dentro-de-json-extensões-para-istringlocalizer)
+
+### 4. Extensões de String
+
+**Funcionalidade:**
+Extensões para manipulação de strings.
+
+**Métodos:**
+
+- `ToNormalize`: Normaliza uma string removendo espaços, convertendo para maiúscula e substituindo caracteres especiais.
+- `ToNormalizeRegex`: Normaliza uma string removendo espaços, convertendo para maiúscula e substituindo caracteres especiais usando expressões regulares.
+- `FromSnakeToPascalCase`: Converte uma string de snake_case para PascalCase.
+- `FromSnakeToCamelCase`: Converte uma string de snake_case para camelCase.
+- `FromSnakeToKebabCase`: Converte uma string de snake_case para kebab-case.
+- `FromPascalToSnakeCase`: Converte uma string de PascalCase para snake_case.
+- `FromCamelToSnakeCase`: Converte uma string de camelCase para snake_case.
+- `FromKebabToSnakeCase`: Converte uma string de kebab-case para snake_case.
+
+[**Exemplos de Uso**](#extensões-de-string)
+
+## Exemplos de Uso
+
+### Extensão de Enumeráveis
 
 **OrderByProperty com Parâmetro Simples:**
 
@@ -60,17 +112,19 @@ var sortedList = list.OrderByProperty("Address.City").toList();
 //]
 ```
 
-### Json String Localizer Extensions (Extensões para IStringLocalizer)
+### Configuração do JsonStringLocalizer
 
-Utiliza os [arquivos](#arquivos-de-recursos-multiculturais) padrão de recursos multiculturais para localização de strings.
+```csharp
+using Microsoft.Extensions.DependencyInjection;
+using Tooark.Extensions.Options;
+using Tooark.Extensions.Injections;
 
-#### Métodos Json String Localizer
+var services = new ServiceCollection();
 
-- `LocalizedString this[string name]`: Representa um valor localizado.
-- `LocalizedString this[string name, params object[] arguments]`: Representa um valor localizado com argumentos.
-- `GetAllStrings(bool includeParentCultures)`: Obtém todos os valores localizados. Se `includeParentCultures` utilizado para valores da cultura `default` caso `true` ou `current` caso `false`.
+services.AddJsonStringLocalizer();
+```
 
-#### Exemplos de Uso Json String Localizer
+### Extensão Localiza String dentro de Json (Extensões para IStringLocalizer)
 
 **Obter Valor Localizado:**
 
@@ -96,38 +150,7 @@ using Tooark.Extensions;
 var localizedString = _localizer["Field.Empty", "Name"]; // "O campo Name está vazio"
 ```
 
-### Configuração do JsonStringLocalizer
-
-#### Métodos de Injeção
-
-- `AddJsonStringLocalizer`: Adiciona o serviço de localização de strings com base em arquivos JSON.
-
-#### Exemplos de Configuração
-
-```csharp
-using Microsoft.Extensions.DependencyInjection;
-using Tooark.Extensions.Options;
-using Tooark.Extensions.Injections;
-
-var services = new ServiceCollection();
-
-services.AddJsonStringLocalizer();
-```
-
-### String Extensions
-
-#### Métodos String
-
-- `ToNormalize`: Normaliza uma string removendo espaços, convertendo para maiúscula e substituindo caracteres especiais.
-- `ToNormalizeRegex`: Normaliza uma string removendo espaços, convertendo para maiúscula e substituindo caracteres especiais usando expressões regulares.
-- `FromSnakeToPascalCase`: Converte uma string de snake_case para PascalCase.
-- `FromSnakeToCamelCase`: Converte uma string de snake_case para camelCase.
-- `FromSnakeToKebabCase`: Converte uma string de snake_case para kebab-case.
-- `FromPascalToSnakeCase`: Converte uma string de PascalCase para snake_case.
-- `FromCamelToSnakeCase`: Converte uma string de camelCase para snake_case.
-- `FromKebabToSnakeCase`: Converte uma string de kebab-case para snake_case.
-
-#### Exemplos de Uso String
+### Extensões de String
 
 **ToNormalize:**
 
