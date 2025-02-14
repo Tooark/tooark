@@ -1,9 +1,8 @@
-using System.Reflection;
 using Tooark.Dtos;
 
 namespace Tooark.Tests.Dtos;
 
-public class SearchOrderDtoTest
+public class SearchOrderDtoTests
 {
   // Cria uma classe que estende SearchOrderDto para testes
   private class TestSearchOrderDto : SearchOrderDto { }

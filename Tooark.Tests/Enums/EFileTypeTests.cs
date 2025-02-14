@@ -2,7 +2,7 @@ using Tooark.Enums;
 
 namespace Tooark.Tests.Enums;
 
-public class EFileTypeTest
+public class EFileTypeTests
 {
   // Teste para o tipo de arquivo Unknown
   [Fact]

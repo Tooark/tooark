@@ -2,7 +2,7 @@ using Tooark.Dtos;
 
 namespace Tooark.Tests.Dtos;
 
-public class SearchDtoTest
+public class SearchDtoTests
 {
   // Cria uma classe que estende SearchDto para testes
   private class TestSearchDto : SearchDto { }

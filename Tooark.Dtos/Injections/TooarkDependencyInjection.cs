@@ -5,15 +5,15 @@ using Tooark.Extensions.Injections;
 namespace Tooark.Dtos.Injections;
 
 /// <summary>
-/// Classe de extensão para injeção de dependência do projeto Tooark.Extensions.
+/// Classe de extensão para injeção de dependência do projeto Tooark.Dtos.
 /// </summary>
 public static partial class TooarkDependencyInjection
 {
   /// <summary>
-  /// Adiciona o serviço JsonStringLocalizer com injeção de dependência.
+  /// Adiciona o StringLocalizer para Dto com injeção de dependência.
   /// </summary>
-  /// <param name="services">A coleção de serviços para adicionar o serviço JsonStringLocalizer.</param>
-  /// <returns>A coleção de serviços com o serviço JsonStringLocalizer adicionado.</returns>
+  /// <param name="services">A coleção de serviços para adicionar o StringLocalizer para Dto.</param>
+  /// <returns>A coleção de serviços com o StringLocalizer para Dto adicionado.</returns>
   public static IServiceCollection AddDto(this IServiceCollection services)
   {
     // Adiciona o serviço JsonStringLocalizer

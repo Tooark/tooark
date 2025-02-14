@@ -2,7 +2,7 @@ using Tooark.Entities;
 
 namespace Tooark.Tests.Entities;
 
-public class AuditableEntityTest
+public class AuditableEntityTests
 {
   // Uma classe concreta para testar AuditableEntity
   private class TestAuditableEntity : AuditableEntity

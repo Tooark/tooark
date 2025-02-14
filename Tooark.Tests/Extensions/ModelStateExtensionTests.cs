@@ -3,7 +3,7 @@ using Tooark.Extensions;
 
 namespace Tooark.Tests.Extensions;
 
-public class ModelStateExtensionTest
+public class ModelStateExtensionTests
 {
   // Testes do método sem erros
   [Fact]

@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Http;
 using Tooark.Dtos;
 namespace Tooark.Tests.Dtos;
 
-public class PaginationDtoTest
+public class PaginationDtoTests
 {
-  private class PaginationTest : SearchDto { }
+  private class PaginationTests : SearchDto { }
 
   // Teste para verificar se os valores padrões são atribuídos corretamente.
   [Fact]
@@ -67,7 +67,7 @@ public class PaginationDtoTest
     context.Request.Scheme = "http";
     context.Request.Host = new HostString("example.com");
     context.Request.Path = "/api/test";
-    PaginationTest searchDto = new () { PageIndex = 1, PageSize = 10, Search = "Abc123" };
+    PaginationTests searchDto = new () { PageIndex = 1, PageSize = 10, Search = "Abc123" };
 
     // Act
     var paginationDto = new PaginationDto(total, searchDto, context.Request);
