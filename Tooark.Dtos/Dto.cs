@@ -1,6 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
-using Tooark.Extensions.Injections;
 
 namespace Tooark.Dtos;
 
@@ -12,9 +10,9 @@ namespace Tooark.Dtos;
 public abstract class Dto
 {
   /// <summary>
-  /// Localizador de strings.
+  /// Localizador de strings privado.
   /// </summary>
-  internal static IStringLocalizer _localizer;
+  private static IStringLocalizer? _localizer;
 
 
   /// <summary>
@@ -23,6 +21,12 @@ public abstract class Dto
   /// <param name="localizer">Localizador de strings.</param>
   public static void Configure(IStringLocalizer localizer)
   {
+    // Atribui o localizador de strings.
     _localizer = localizer;
   }
+
+  /// <summary>
+  /// Obtém o localizador de strings.
+  /// </summary>
+  public static IStringLocalizer? LocalizerString => _localizer;
 }
