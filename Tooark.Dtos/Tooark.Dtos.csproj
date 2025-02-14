@@ -4,6 +4,18 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>Tooark.Dtos</PackageId>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <Company>Tooark</Company>
+    <PackageDescription>Package for managing base DTOs in .NET applications.</PackageDescription>
+    <Description>Library to management and maintenance of base DTOs in .NET projects.</Description>
+    <PackageIcon>icon.jpg</PackageIcon>
+    <PackageTags>toolkit, dto, .NET, management, creation</PackageTags>
+    <Title>Tooark</Title>
+    <Summary>Management of base DTOs in .NET projects.</Summary>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
