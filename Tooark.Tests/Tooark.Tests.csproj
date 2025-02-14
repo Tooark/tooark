@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <None Include="..\Media\icon.jpg" Pack="true" PackagePath="\" />
-    <None Update="Moq\**\*.json">
+    <None Update="Resources\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
