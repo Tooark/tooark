@@ -5,8 +5,7 @@ namespace Tooark.Dtos;
 
 /// <summary>
 /// Classe de resposta padrão.
-/// </summary>
-/// <typeparam name="T">Tipo de dado de resposta.</typeparam>
+/// </summary
 /// <remarks>
 /// A classe <see cref="ResponseDto{T}"/> é uma classe de resposta padrão para operações de API.
 /// Fornece um objeto de resposta com dados, erros, metadados e informações de paginação.
@@ -36,7 +35,6 @@ public class ResponseDto<T> : Dto
   /// <summary>
   /// Construtor com dados de resposta.
   /// </summary>
-  /// <typeparam name="T">Tipo de dado de resposta.</typeparam>
   /// <param name="data">Dados de resposta.</param>
   public ResponseDto(T? data)
   {
@@ -56,7 +54,6 @@ public class ResponseDto<T> : Dto
   /// <summary>
   /// Construtor padrão.
   /// </summary>
-  /// <typeparam name="T">Tipo de dado de resposta.</typeparam>
   /// <param name="data">Dados de resposta.</param>
   /// <param name="errors">Lista de erros.</param>
   public ResponseDto(T data, IList<string> errors)
@@ -69,7 +66,6 @@ public class ResponseDto<T> : Dto
   /// <summary>
   /// Construtor com dados de resposta.
   /// </summary>
-  /// <typeparam name="T">Tipo de dado de resposta.</typeparam>
   /// <param name="data">Dados de resposta.</param>
   /// <param name="total">Total de registros.</param>
   /// <param name="request">Requisição.</param>
@@ -95,7 +91,7 @@ public class ResponseDto<T> : Dto
   /// <summary>
   /// Construtor com lista de erros.
   /// </summary>
-  /// <param name="erros">Lista de erros.</param>
+  /// <param name="errors">Lista de erros.</param>
   public ResponseDto(IList<string> errors)
   {
     // Atribui os erros com as strings localizadas correspondentes

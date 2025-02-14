@@ -13,7 +13,6 @@ public static partial class TooarkDependencyInjection
   /// Adiciona o serviço JsonStringLocalizer com injeção de dependência.
   /// </summary>
   /// <param name="services">A coleção de serviços para adicionar o serviço JsonStringLocalizer.</param>
-  /// <param name="localizerOptions">Configurações para o serviço de localização de recursos. Parâmetro opcional.</param>
   /// <returns>A coleção de serviços com o serviço JsonStringLocalizer adicionado.</returns>
   public static IServiceCollection AddDto(this IServiceCollection services)
   {
