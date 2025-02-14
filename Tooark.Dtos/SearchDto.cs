@@ -8,12 +8,12 @@ public abstract class SearchDto : Dto
   /// <summary>
   /// Índice privado da paginação.
   /// </summary>
-  private int pageIndex = 0;
+  private long pageIndex = 0;
 
   /// <summary>
   /// Tamanho privado da paginação.
   /// </summary>
-  private int pageSize = 50;
+  private long pageSize = 50;
 
 
   /// <summary>
@@ -28,7 +28,7 @@ public abstract class SearchDto : Dto
   /// <remarks>
   /// Utilizar valor 0 (zero) em PageSize para ignorar índice.
   /// </remarks>  /// 
-  public int PageIndex
+  public long PageIndex
   {
     get => pageIndex;
     set => pageIndex = value < 0 ? 0 : value;
@@ -41,7 +41,7 @@ public abstract class SearchDto : Dto
   /// <remarks>
   /// Utilizar valor 0 (zero) para ignorar tamanho. E configurar parar retornar todos os registros.
   /// </remarks>
-  public int PageSize
+  public long PageSize
   {
     get => pageSize;
     set => pageSize = value < 0 ? 0 : value;

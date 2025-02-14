@@ -13,31 +13,31 @@ public class PaginationDto
   /// Total de registros.
   /// </summary>
   /// <value>Valor padrão é: 0.</value>
-  public int Total { get; private set; } = 0;
+  public long Total { get; private set; } = 0;
 
   /// <summary>
   /// Tamanho da página.
   /// </summary>
   /// <value>Valor padrão é: 0.</value>
-  public int PageSize { get; set; } = 0;
+  public long PageSize { get; set; } = 0;
 
   /// <summary>
   /// Índice da página.
   /// </summary>
   /// <value>Valor padrão é: 0.</value>
-  public int PageIndex { get; set; } = 0;
+  public long PageIndex { get; set; } = 0;
 
   /// <summary>
   /// Índice da página anterior.
   /// </summary>
   /// <value>Valor padrão é: nulo.</value>
-  public int? Previous { get; set; } = null;
+  public long? Previous { get; set; } = null;
 
   /// <summary>
   /// Índice da página seguinte.
   /// </summary>
   /// <value>Valor padrão é: nulo.</value>
-  public int? Next { get; set; } = null;
+  public long? Next { get; set; } = null;
 
   /// <summary>
   /// Link da página atual.
@@ -64,7 +64,7 @@ public class PaginationDto
   /// <param name="total">Total de registros.</param>
   /// <param name="request">Requisição HTTP atual.</param>
   /// <returns>Retorna um objeto de paginação.</returns>
-  public PaginationDto(int total, HttpRequest request)
+  public PaginationDto(long total, HttpRequest request)
   {
     // Total de registros
     Total = total;
@@ -90,25 +90,11 @@ public class PaginationDto
       // Se existir parâmetro Index e Size de paginação. E o tamanho da pagina for menor que o total de registros
       if (PageSize > 0 && PageIndex >= 0 && PageSize < Total)
       {
-        // Se a página atual não for a primeira
-        if (PageIndex > 0)
-        {
-          // Calcula o índice da página anterior
-          Previous = PageIndex - 1;
+        // Define informações da página anterior
+        SetPrevious(PageIndex, baseUrl, query);
 
-          // Atualiza o índice da página na QueryString para gerar o link da página anterior
-          PreviousLink = GenerateLink(baseUrl, query, PageIndex - 1);
-        }
-        
-        // Se a página atual não for a última
-        if((PageIndex + 1) * PageSize < Total)
-        {
-          // Calcula o índice da página seguinte
-          Next = PageIndex + 1;
-
-          // Atualiza o índice da página na QueryString para gerar o link da página seguinte
-          NextLink = GenerateLink(baseUrl, query, PageIndex + 1);
-        }
+        // Define informações da página seguinte
+        SetNext(PageIndex, baseUrl, query);
       }
     }
   }
@@ -123,12 +109,12 @@ public class PaginationDto
   /// <param name="next">Índice da página seguinte.</param>
   /// <param name="request">Requisição HTTP atual.</param>
   /// <returns>Retorna um objeto de paginação.</returns>
-  public PaginationDto(int total, int pageSize, int pageIndex, int previous, int next, HttpRequest request)
+  public PaginationDto(long total, long pageSize, long pageIndex, long previous, long next, HttpRequest request)
   {
     // Atualiza os valores conforme os parâmetros
     Total = total;
     PageSize = pageSize;
-    PageIndex = pageIndex;   
+    PageIndex = pageIndex;
 
     // URL base da requisição
     var baseUrl = $"{request.Scheme}://{request.Host}{request.Path}";
@@ -145,25 +131,55 @@ public class PaginationDto
       // Atualiza o tamanho da página na QueryString
       query["PageSize"] = PageSize.ToString();
 
-      // Se a página atual não for a primeira
-      if (previous >= 0)
+      // Define informações da página anterior
+      SetPrevious(previous + 1, baseUrl, query);
+
+      // Define informações da página seguinte
+      SetNext(next - 1, baseUrl, query);
+    }
+  }
+
+  /// <summary>
+  /// Construtor com parâmetros de total de registros, busca com paginação e requisição.
+  /// </summary>
+  /// <param name="total">Total de registros.</param>
+  /// <param name="searchDto">Objeto de busca com paginação.</param>
+  /// <param name="request">Requisição HTTP atual.</param>
+  /// <returns>Retorna um objeto de paginação.</returns>
+  public PaginationDto(long total, SearchDto searchDto, HttpRequest request)
+  {
+    // Atualiza os valores conforme os parâmetros
+    Total = total;
+    PageSize = searchDto.PageSize;
+    PageIndex = searchDto.PageIndex;
+
+    // URL base da requisição
+    var baseUrl = $"{request.Scheme}://{request.Host}{request.Path}";
+
+    // URL atual da requisição. Base + QueryString
+    CurrentLink = $"{baseUrl}{request.QueryString}";
+
+    // Se existir registros, Index e Size de paginação. E o tamanho da pagina for menor que o total de registros.
+    if (total > 0 && PageSize > 0 && PageIndex >= 0 && PageSize < Total)
+    {
+      // QueryString da requisição
+      var query = QueryHelpers.ParseQuery(request.QueryString.ToString());
+
+      // Verifica se existe parâmetro de busca
+      if (!string.IsNullOrEmpty(searchDto.Search))
       {
-        // Define o índice da página anterior
-        Previous = previous;
-    
-        // Atualiza o índice da página na QueryString para gerar o link da página anterior
-        PreviousLink = GenerateLink(baseUrl, query, previous);
+        // Atualiza parâmetro de busca na QueryString
+        query["Search"] = searchDto.Search;
       }
 
-      // Se a página atual não for a última
-      if (next * PageSize < Total)
-      {
-        // Define o índice da página seguinte
-        Next = next;
+      // Atualiza o tamanho da página na QueryString
+      query["PageSize"] = PageSize.ToString();
 
-        // Atualiza o índice da página na QueryString para gerar o link da página seguinte
-        NextLink = GenerateLink(baseUrl, query, next);
-      }
+      // Define informações da página anterior
+      SetPrevious(PageIndex, baseUrl, query);
+
+      // Define informações da página seguinte
+      SetNext(PageIndex, baseUrl, query);
     }
   }
 
@@ -174,12 +190,12 @@ public class PaginationDto
   /// <param name="key">Chave do parâmetro.</param>
   /// <param name="query">Dicionário de parâmetros da QueryString.</param>
   /// <returns>Retorna o valor do parâmetro.</returns>
-  private static int GetQueryValue(string key, Dictionary<string, StringValues> query)
+  private static long GetQueryValue(string key, Dictionary<string, StringValues> query)
   {
-    // Se existir a chave no dicionário e for possível converter para inteiro, retorna o valor. Senão retorna 0.
+    // Se existir a chave no dicionário e for possível converter para long, retorna o valor. Senão retorna 0.
     return
       query.TryGetValue(key, out StringValues value) &&
-      int.TryParse(value, out int result) ?
+      long.TryParse(value, out long result) ?
       result :
       0;
   }
@@ -191,12 +207,50 @@ public class PaginationDto
   /// <param name="query">Dicionário de parâmetros da QueryString.</param>
   /// <param name="pageIndex">Índice da página.</param>
   /// <returns>Retorna o link de paginação.</returns>
-  private static string? GenerateLink(string baseUrl, Dictionary<string, StringValues> query, int pageIndex)
+  private static string? GenerateLink(string baseUrl, Dictionary<string, StringValues> query, long pageIndex)
   {
     // Atualiza o índice da página na QueryString
     query["PageIndex"] = pageIndex.ToString();
 
     // Retorna o link de paginação.
     return $"{baseUrl}{QueryString.Create(query)}";
+  }
+
+  /// <summary>
+  /// Função para definir o índice e link da página anterior.
+  /// </summary>
+  /// <param name="index">Índice da página.</param>
+  /// <param name="baseUrl">URL base.</param>
+  /// <param name="query">Dicionário de parâmetros da QueryString.</param>
+  private void SetPrevious(long index, string baseUrl, Dictionary<string, StringValues> query)
+  {
+    // Se a página atual não for a primeira
+    if (index > 0)
+    {
+      // Calcula o índice da página anterior
+      Previous = index - 1;
+
+      // Atualiza o índice da página na QueryString para gerar o link da página anterior
+      PreviousLink = GenerateLink(baseUrl, query, index - 1);
+    }
+  }
+
+  /// <summary>
+  /// Função para definir o índice e link da página seguinte.
+  /// </summary>
+  /// <param name="index">Índice da página.</param>
+  /// <param name="baseUrl">URL base.</param>
+  /// <param name="query">Dicionário de parâmetros da QueryString.</param>
+  private void SetNext(long index, string baseUrl, Dictionary<string, StringValues> query)
+  {
+    // Se a página atual não for a última
+    if ((index + 1) * PageSize < Total)
+    {
+      // Calcula o índice da página seguinte
+      Next = index + 1;
+
+      // Atualiza o índice da página na QueryString para gerar o link da página seguinte
+      NextLink = GenerateLink(baseUrl, query, index + 1);
+    }
   }
 }
