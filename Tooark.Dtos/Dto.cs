@@ -18,20 +18,6 @@ public abstract class Dto
 
 
   /// <summary>
-  /// Método para obter uma instância de IStringLocalizer.
-  /// </summary>
-  // private static IStringLocalizer GetLocalizer()
-  // {
-  //   // Cria um provedor de serviços
-  //   var serviceProvider = new ServiceCollection()
-  //     .AddJsonStringLocalizer()
-  //     .BuildServiceProvider();
-
-  //   // Retorna o localizador de strings
-  //   return serviceProvider.GetRequiredService<IStringLocalizer>();
-  // }
-
-  /// <summary>
   /// Configura o localizador de strings.
   /// </summary>
   /// <param name="localizer">Localizador de strings.</param>

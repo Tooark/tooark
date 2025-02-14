@@ -23,13 +23,6 @@ public static partial class TooarkDependencyInjection
     // Adiciona o serviço de localização de recurso padrão
     services.AddTransient<IStringLocalizer, StringLocalizer<Dto>>();
 
-    // services.AddSingleton<IStringLocalizer<Dto>>(provider =>
-    // {
-    //   var factory = provider.GetRequiredService<IStringLocalizerFactory>();
-
-    //   return (IStringLocalizer<Dto>)factory.Create(typeof(Dto));
-    // });
-
      // Configura o localizador de strings para a classe Dto
     var serviceProvider = services.BuildServiceProvider();
     var localizer = serviceProvider.GetRequiredService<IStringLocalizer>();

@@ -4,6 +4,8 @@ namespace Tooark.Tests.Dtos;
 
 public class PaginationDtoTest
 {
+  private class PaginationTest : SearchDto { }
+
   // Teste para verificar se os valores padrões são atribuídos corretamente.
   [Fact]
   public void PaginationDto_WithoutQueryString_ShouldSetDefaultValues()
@@ -53,6 +55,32 @@ public class PaginationDtoTest
     Assert.Equal("http://example.com/api/test?PageIndex=1&PageSize=10&Param=Abc123", paginationDto.CurrentLink);
     Assert.Equal("http://example.com/api/test?PageIndex=0&PageSize=10&Param=Abc123", paginationDto.PreviousLink);
     Assert.Equal("http://example.com/api/test?PageIndex=2&PageSize=10&Param=Abc123", paginationDto.NextLink);
+  }
+
+  // Teste para verificar se os valores são atribuídos corretamente com os parâmetros de paginação na request.
+  [Fact]
+  public void PaginationDto_WithParamSearch_ShouldSetValuesCorrectly()
+  {
+    // Arrange
+    var total = 100;
+    var context = new DefaultHttpContext();
+    context.Request.Scheme = "http";
+    context.Request.Host = new HostString("example.com");
+    context.Request.Path = "/api/test";
+    PaginationTest searchDto = new () { PageIndex = 1, PageSize = 10, Search = "Abc123" };
+
+    // Act
+    var paginationDto = new PaginationDto(total, searchDto, context.Request);
+
+    // Assert
+    Assert.Equal(total, paginationDto.Total);
+    Assert.Equal(10, paginationDto.PageSize);
+    Assert.Equal(1, paginationDto.PageIndex);
+    Assert.Equal(0, paginationDto.Previous);
+    Assert.Equal(2, paginationDto.Next);
+    Assert.Equal("http://example.com/api/test", paginationDto.CurrentLink);
+    Assert.Equal("http://example.com/api/test?Search=Abc123&PageSize=10&PageIndex=0", paginationDto.PreviousLink);
+    Assert.Equal("http://example.com/api/test?Search=Abc123&PageSize=10&PageIndex=2", paginationDto.NextLink);
   }
 
   // Teste para verificar se os valores são atribuídos corretamente com os parâmetros de paginação no construtor e ignorando os da request.
