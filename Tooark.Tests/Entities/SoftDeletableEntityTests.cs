@@ -2,7 +2,7 @@ using Tooark.Entities;
 
 namespace Tooark.Tests.Entities;
 
-public class SoftDeletableEntityTest
+public class SoftDeletableEntityTests
 {
   // Uma classe concreta para testar SoftDeletableEntity
   private class TestSoftDeletableEntity : SoftDeletableEntity

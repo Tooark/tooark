@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Entities", "Tooark.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Dtos", "Tooark.Dtos\Tooark.Dtos.csproj", "{486F0A27-AA7F-4CA9-B72C-8A12346825F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark", "Tooark\Tooark.csproj", "{4AD5070B-C7CA-4E3F-8345-96FD6EF129F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,5 +80,9 @@ Global
 		{486F0A27-AA7F-4CA9-B72C-8A12346825F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{486F0A27-AA7F-4CA9-B72C-8A12346825F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{486F0A27-AA7F-4CA9-B72C-8A12346825F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AD5070B-C7CA-4E3F-8345-96FD6EF129F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AD5070B-C7CA-4E3F-8345-96FD6EF129F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AD5070B-C7CA-4E3F-8345-96FD6EF129F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AD5070B-C7CA-4E3F-8345-96FD6EF129F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

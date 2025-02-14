@@ -6,10 +6,10 @@ using Tooark.Notifications;
 
 namespace Tooark.Tests.Dtos;
 
-public class ResponseDtoTest
+public class ResponseDtoTests
 {
   // Adiciona o serviço JsonStringLocalizer com injeção de dependência.
-  public ResponseDtoTest()
+  public ResponseDtoTests()
   {
     var services = new ServiceCollection();
     services.AddDto();

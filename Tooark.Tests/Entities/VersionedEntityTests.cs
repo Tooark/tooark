@@ -2,7 +2,7 @@ using Tooark.Entities;
 
 namespace Tooark.Tests.Entities;
 
-public class VersionedEntityTest
+public class VersionedEntityTests
 {
   // Uma classe concreta para testar VersionedEntity
   private class TestVersionedEntity : VersionedEntity

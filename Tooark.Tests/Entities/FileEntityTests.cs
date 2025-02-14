@@ -3,7 +3,7 @@ using Tooark.Enums;
 
 namespace Tooark.Tests.Entities;
 
-public class FileEntityTest
+public class FileEntityTests
 {
   // Uma classe concreta para testar FileEntity
   private class TestFileEntity : FileEntity

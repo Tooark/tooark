@@ -2,7 +2,7 @@ using Tooark.Dtos;
 
 namespace Tooark.Tests.Dtos;
 
-public class MetadataDtoTest
+public class MetadataDtoTests
 {
   // Teste se atributos são inicializados corretamente
   [Fact]
