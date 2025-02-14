@@ -1,6 +1,6 @@
-using Tooark.Entities.Enums;
+using Tooark.Enums;
 
-namespace Tooark.Tests.Entities.Enums;
+namespace Tooark.Tests.Enums;
 
 public class EFileTypeTest
 {

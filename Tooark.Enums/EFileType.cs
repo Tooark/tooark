@@ -1,9 +1,9 @@
-namespace Tooark.Entities.Enums;
+namespace Tooark.Enums;
 
 /// <summary>
 /// Representa as ações que podem ser realizadas em uma permissão.
 /// </summary>
-public class EFileType
+public sealed class EFileType
 {
   /// <summary>
   /// Tipo de arquivo desconhecido. Seu id é 0 e seu tipo é "unknown".

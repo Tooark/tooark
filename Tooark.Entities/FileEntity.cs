@@ -1,9 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.RegularExpressions;
-using Tooark.Entities.Enums;
+using Tooark.Enums;
 using Tooark.Validations;
-using Tooark.Validations.Patterns;
 
 namespace Tooark.Entities;
 

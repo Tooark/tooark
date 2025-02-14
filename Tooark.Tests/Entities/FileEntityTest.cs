@@ -1,5 +1,5 @@
 using Tooark.Entities;
-using Tooark.Entities.Enums;
+using Tooark.Enums;
 
 namespace Tooark.Tests.Entities;
 

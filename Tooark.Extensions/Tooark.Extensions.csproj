@@ -32,7 +32,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.13" />
   </ItemGroup>
 
 </Project>
