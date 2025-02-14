@@ -4,7 +4,6 @@ using Microsoft.Extensions.Localization;
 using Moq;
 using Tooark.Extensions.Factories;
 using Tooark.Extensions.Injections;
-using Tooark.Extensions.Options;
 using Tooark.Utils;
 
 namespace Tooark.Tests.Extensions.Injections;
@@ -17,13 +16,9 @@ public class TooarkDependencyInjectionTest
   {
     // Arrange
     var services = new ServiceCollection();
-    var localizerOptions = new LocalizerOptions
-    {
-      ResourceAdditionalPath = [new(Language.Current, Path.GetFullPath($"Moq/Resources/{Language.Current}.json"))],
-    };
 
     // Act
-    services.AddJsonStringLocalizer(localizerOptions);
+    services.AddJsonStringLocalizer();
     var serviceProvider = services.BuildServiceProvider();
 
     // Assert
@@ -59,13 +54,9 @@ public class TooarkDependencyInjectionTest
   {
     // Arrange
     var services = new ServiceCollection();
-    var localizerOptions = new LocalizerOptions
-    {
-      ResourceAdditionalPath = [new(Language.Current, Path.GetFullPath($"Moq/Resources/{Language.Current}.json"))],
-    };
 
     // Act
-    services.AddJsonStringLocalizer(localizerOptions);
+    services.AddJsonStringLocalizer();
     var serviceProvider = services.BuildServiceProvider();
 
     // Assert
@@ -85,13 +76,8 @@ public class TooarkDependencyInjectionTest
     var mockDistributedCache = new Mock<IDistributedCache>();
     services.AddSingleton(mockDistributedCache.Object);
 
-    var localizerOptions = new LocalizerOptions
-    {
-      ResourceAdditionalPath = [new(Language.Current, Path.GetFullPath($"Moq/Resources/{Language.Current}.json"))],
-    };
-
     // Act
-    services.AddJsonStringLocalizer(localizerOptions);
+    services.AddJsonStringLocalizer();
     var serviceProvider = services.BuildServiceProvider();
 
     // Assert

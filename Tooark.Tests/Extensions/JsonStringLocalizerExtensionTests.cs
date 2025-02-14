@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Moq;
 using Tooark.Extensions;
-using Tooark.Extensions.ValueObjects;
 using Tooark.Utils;
 
 namespace Tooark.Tests.Extensions;
@@ -10,34 +9,21 @@ public class JsonStringLocalizerExtensionTests
 {
   private readonly Mock<IDistributedCache> _mockDistributedCache;
   private readonly JsonStringLocalizerExtension _localizer;
-  private readonly string _culture;
-  private readonly string _filePathAdditional;
-  private readonly string _filePathDefault;
 
   // Construtor para inicializar as variáveis de teste
   public JsonStringLocalizerExtensionTests()
   {
     // Define a instância da linguagem como a implementação padrão
     Language.Instance = new Language.LanguageImplementation();
+
+    // Define a cultura atual como "pt-BR"
+    Language.SetCulture("pt-BR");
     
+    // Define o mock do cache distribuído
     _mockDistributedCache = new Mock<IDistributedCache>();
-    _culture = Language.Current;
-    _filePathAdditional = Path.GetFullPath($"Moq/Resources/{Language.Current}.json");
-    _filePathDefault = Path.GetFullPath($"Moq/Resources/{Language.Default}.json");
 
-    var additionalResourceContent = "{\"a\": \"Hello\", \"b\": \"Hello, {0}\", \"c\": \"Hello, {0} {1} {2}\"}";
-    var defaultResourceContent = "{\"z\": \"Default\"}";
-
-    var additionalResourceStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(additionalResourceContent));
-    var defaultResourceStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(defaultResourceContent));
-
-    ResourcePath additionalPath = new(_culture, _filePathAdditional);
-    ResourcePath defaultPath = new(Language.Default, _filePathDefault);
-
-    ResourceStream additionalStream = new(_culture, additionalResourceStream);
-    ResourceStream defaultStream = new(Language.Default, defaultResourceStream);
-
-    _localizer = new JsonStringLocalizerExtension(_mockDistributedCache.Object, [additionalPath, defaultPath], [additionalStream, defaultStream]);
+    // Define o localizador de string JSON
+    _localizer = new JsonStringLocalizerExtension(_mockDistributedCache.Object);
   }
 
 
@@ -47,7 +33,7 @@ public class JsonStringLocalizerExtensionTests
   {
     // Arrange
     string key = "a";
-    string localizedValue = "Hello";
+    string localizedValue = "Olá";
 
     // Act
     var result = _localizer[key];
@@ -62,7 +48,7 @@ public class JsonStringLocalizerExtensionTests
   {
     // Arrange
     string key = "b;Tooark";
-    string localizedValue = "Hello, Tooark";
+    string localizedValue = "Olá, Tooark";
 
     // Act
     var result = _localizer[key];
@@ -77,7 +63,7 @@ public class JsonStringLocalizerExtensionTests
   {
     // Arrange
     string key = "c;Package;Nuget;Tooark";
-    string localizedValue = "Hello, Package Nuget Tooark";
+    string localizedValue = "Olá, Package Nuget Tooark";
 
     // Act
     var result = _localizer[key];
@@ -123,7 +109,7 @@ public class JsonStringLocalizerExtensionTests
     // Arrange
     string key = "b";
     string[] parameters = ["Tooark"];
-    string localizedValue = "Hello, Tooark";
+    string localizedValue = "Olá, Tooark";
 
     // Act
     var result = _localizer[key, parameters];
@@ -139,7 +125,7 @@ public class JsonStringLocalizerExtensionTests
     // Arrange
     string key = "c";
     string[] parameters = ["Package", "Nuget", "Tooark"];
-    string localizedValue = "Hello, Package Nuget Tooark";
+    string localizedValue = "Olá, Package Nuget Tooark";
 
     // Act
     var result = _localizer[key, parameters];
@@ -154,7 +140,7 @@ public class JsonStringLocalizerExtensionTests
   {
     // Arrange
     var expectedName = "a";
-    var expectedValue = "Hello";
+    var expectedValue = "Olá";
 
     // Act
     var result = _localizer.GetAllStrings(false).ToList();
@@ -204,7 +190,7 @@ public class JsonStringLocalizerExtensionTests
     // Arrange
     string key = "c";
     string[] parameters = ["Tooark"];
-    string expectedValue = "Hello, {0} {1} {2};Tooark";
+    string expectedValue = "Olá, {0} {1} {2};Tooark";
 
     // Act
     var result = _localizer[key, parameters];
@@ -224,5 +210,23 @@ public class JsonStringLocalizerExtensionTests
 
     // Assert
     Assert.Equal(string.Empty, result.Value);
+  }
+
+  // Teste se this[string name] com chave vazia ou nula
+  [Fact]
+  public void LocalizedString_AdditionalNotFound_ShouldReturnKey()
+  {
+    // Arrange
+    Language.Instance = new Language.LanguageImplementation();
+    Language.SetCulture("es-ES");
+    var mockDistributedCache = new Mock<IDistributedCache>();
+    var localizer = new JsonStringLocalizerExtension(mockDistributedCache.Object);
+    string key = "custom";
+
+    // Act
+    var result = localizer[key];
+
+    // Assert
+    Assert.Equal(key, result.Value);
   }
 }
