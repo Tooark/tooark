@@ -62,7 +62,7 @@ var sortedList = list.OrderByProperty("Address.City").toList();
 
 ### Json String Localizer Extensions (Extensões para IStringLocalizer)
 
-Utiliza os [arquivos](#arquivos-de-recursos-multiculturais) de recursos multiculturais para localização de strings.
+Utiliza os [arquivos](#arquivos-de-recursos-multiculturais) padrão de recursos multiculturais para localização de strings.
 
 #### Métodos Json String Localizer
 
@@ -102,41 +102,7 @@ var localizedString = _localizer["Field.Empty", "Name"]; // "O campo Name está 
 
 - `AddJsonStringLocalizer`: Adiciona o serviço de localização de strings com base em arquivos JSON.
 
-#### Parâmetros de Injeção
-
-- `LocalizerOptions`: Opções de configuração para o serviço de localização de strings.
-
-#### Opções de Configuração
-
-- `ResourceAdditionalPath`: Lista de caminhos adicionais para arquivos de recursos.
-- `ResourceAdditionalStream`: Lista de streams adicionais para arquivos de recursos.
-
-#### Parâmetros de Recursos Adicionais
-
-**ResourceAdditionalPath:**
-
-- `LanguageCode`: Código da cultura do recurso adicional.
-- `Path`: Caminho do arquivo adicional. Para funcionar, o nome do arquivo sempre deve iniciar com o código da cultura.
-
-**ResourceAdditionalStream:**
-
-- `LanguageCode`: Código da cultura do recurso adicional.
-- `Stream`: Stream do arquivo adicional.
-
 #### Exemplos de Configuração
-
-**Arquivo 'appsettings.ENV.json':**
-
-```json
-{
-  // ...outros parâmetros de configuração
-  "LocalizerOptions": {
-    // ...parâmetros de configuração dos recursos adicionais
-  }
-}
-```
-
-**Configuração Básica:**
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
@@ -146,45 +112,6 @@ using Tooark.Extensions.Injections;
 var services = new ServiceCollection();
 
 services.AddJsonStringLocalizer();
-```
-
-**Configuração com Caminhos Adicionais:**
-
-```csharp
-using Microsoft.Extensions.DependencyInjection;
-using Tooark.Extensions.Options;
-using Tooark.Extensions.Injections;
-
-var services = new ServiceCollection();
-
-services.AddJsonStringLocalizer(new LocalizerOptions
-{
-  ResourceAdditionalPath = 
-  [
-    new ("en-US", "path/to/en-US.json"),
-    new ("pt-BR", "path/to/pt-BR.json")
-  ]
-});
-```
-
-**Configuração com Streams Adicionais:**
-
-```csharp
-using Microsoft.Extensions.DependencyInjection;
-using Tooark.Extensions.Options;
-using Tooark.Extensions.Injections;
-using System.IO;
-
-var services = new ServiceCollection();
-
-services.AddJsonStringLocalizer(new LocalizerOptions
-{
-  ResourceAdditionalStream = 
-  [
-    new ("en-US", new FileStream("path/to/en-US.json", FileMode.Open)),
-    new ("pt-BR", new FileStream("path/to/pt-BR.json", FileMode.Open))
-  ]
-});
 ```
 
 ### String Extensions
