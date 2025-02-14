@@ -50,6 +50,7 @@ public static partial class TooarkDependencyInjection
       return factory.Create(typeof(JsonStringLocalizerExtension));
     });
 
+    // Retorna a coleção de serviços
     return services;
   }
 }
