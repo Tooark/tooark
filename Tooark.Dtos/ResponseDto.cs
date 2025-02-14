@@ -5,7 +5,7 @@ namespace Tooark.Dtos;
 
 /// <summary>
 /// Classe de resposta padrão.
-/// </summary
+/// </summary>
 /// <remarks>
 /// A classe <see cref="ResponseDto{T}"/> é uma classe de resposta padrão para operações de API.
 /// Fornece um objeto de resposta com dados, erros, metadados e informações de paginação.
