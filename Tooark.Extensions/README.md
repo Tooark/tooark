@@ -231,6 +231,13 @@ string snakeCaseValue = value.FromKebabToSnakeCase(); // hello_world
 - [pt-BR.json](./Resources/pt-BR.default.json)
 - [pt-PT.json](./Resources/pt-PT.default.json)
 
+## Dependências
+
+- [Microsoft.AspNetCore.Mvc.Core](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Core/)
+- [Microsoft.Extensions.Caching.Memory](https://www.nuget.org/packages/Microsoft.Extensions.Caching.Memory/)
+- [Microsoft.Extensions.Localization](https://www.nuget.org/packages/Microsoft.Extensions.Localization/)
+- [Tooark.Utils](../Tooark.Utils/README.md)
+
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Extensions](https://github.com/Tooark/tooark).

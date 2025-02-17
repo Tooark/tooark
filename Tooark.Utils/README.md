@@ -174,6 +174,11 @@ string normalizedValue = Normalize.Value("Olá Mundo!"); // OLAMUNDO
 string normalizedValueRegex = Normalize.ValueRegex("Olá Mundo!"); // OLAMUNDO
 ```
 
+## Dependências
+
+- [Microsoft.AspNetCore.Http](https://www.nuget.org/packages/Microsoft.AspNetCore.Http/)
+- [Tooark.Validations](../Tooark.Validations/README.md)
+
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Utils](https://github.com/Tooark/tooark).

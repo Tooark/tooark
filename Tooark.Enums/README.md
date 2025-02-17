@@ -128,6 +128,10 @@ class Program
 }
 ```
 
+## Dependências
+
+- [Tooark.Validations](../Tooark.Validations/README.md)
+
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Enums](https://github.com/Tooark/tooark).

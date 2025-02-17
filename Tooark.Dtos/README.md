@@ -284,6 +284,14 @@ using Tooark.Dtos;
 var metadata = new MetadataDto("Chave", "Valor");
 ```
 
+## Dependências
+
+- [Microsoft.AspNetCore.Http](https://www.nuget.org/packages/Microsoft.AspNetCore.Http/)
+- [Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/)
+- [Microsoft.Extensions.Localization](https://www.nuget.org/packages/Microsoft.Extensions.Localization/)
+- [Tooark.Extensions](../Tooark.Extensions/README.md)
+- [Tooark.Notifications](../Tooark.Notifications/README.md)
+
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Dtos](https://github.com/Tooark/tooark).
