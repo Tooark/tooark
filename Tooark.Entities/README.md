@@ -333,6 +333,12 @@ public class Program
 }
 ```
 
+## Dependências
+
+- [Tooark.Enums](../Tooark.Enums/README.md)
+- [Tooark.Notifications](../Tooark.Notifications/README.md)
+- [Tooark.Utils](../Tooark.Utils/README.md)
+
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Entities](https://github.com/Tooark/tooark).

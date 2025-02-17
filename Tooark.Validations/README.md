@@ -687,6 +687,10 @@ A biblioteca `Tooark.Validations` oferece uma ampla gama de métodos de validaç
 
 Para uma lista completa de métodos e suas descrições, consulte a documentação XML gerada com a biblioteca.
 
+## Dependências
+
+- [Tooark.Notifications](../Tooark.Notifications/README.md)
+
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Validations](https://github.com/Tooark/tooark).
