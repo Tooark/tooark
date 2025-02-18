@@ -2,24 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <PackageId>Tooark.Utils</PackageId>
+    <Title>Tooark.Utils</Title>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
-    <Company>Tooark</Company>
+    <PackageTags>toolkit, utils, .NET</PackageTags>
+    <Summary>Management of general utility functions for .NET projects.</Summary>
     <PackageDescription>General utility package for .NET applications.</PackageDescription>
     <Description>A library of general utility functions that aid development, including methods for manipulating strings, dates, collections, and more.</Description>
-    <PackageIcon>icon.jpg</PackageIcon>
-    <PackageTags>toolkit, utils, .NET</PackageTags>
-    <Title>Tooark</Title>
-    <Summary>Management of general utility functions for .NET projects.</Summary>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\Media\icon.jpg" Pack="true" PackagePath="\" />
     <None Update="Resources\**\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

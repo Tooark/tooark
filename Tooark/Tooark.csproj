@@ -2,24 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <PackageId>Tooark</PackageId>
+    <Title>Tooark</Title>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
-    <Company>Tooark</Company>
+    <PackageTags>toolkit, management, resources, functionality, .NET</PackageTags>
+    <Summary>Tooark management for .NET projects.</Summary>
     <PackageDescription>Package with all Tooark resources for .NET applications.</PackageDescription>
     <Description>Library with all Tooark resources and features aimed at .NET projects.</Description>
-    <PackageIcon>icon.jpg</PackageIcon>
-    <PackageTags>toolkit, management, resources, functionality, .NET</PackageTags>
-    <Title>Tooark</Title>
-    <Summary>Tooark management for .NET projects.</Summary>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\Media\icon.jpg" Pack="true" PackagePath="\" />
     <None Update="Resources\**\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -2,24 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <PackageId>Tooark.ValueObjects</PackageId>
+    <Title>Tooark.ValueObjects</Title>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
-    <Company>Tooark</Company>
+    <PackageTags>toolkit, value objects, validation, .NET</PackageTags>
+    <Summary>Management of predefined and validated Value Objects for .NET projects.</Summary>
     <PackageDescription>Package for managing predefined and validated Value Objects for .NET applications.</PackageDescription>
     <Description>Library managing predefined and validated Value Objects, ensuring data integrity and consistency for .NET projects.</Description>
-    <PackageIcon>icon.jpg</PackageIcon>
-    <PackageTags>toolkit, value objects, validation, .NET</PackageTags>
-    <Title>Tooark</Title>
-    <Summary>Management of predefined and validated Value Objects for .NET projects.</Summary>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\Media\icon.jpg" Pack="true" PackagePath="\" />
     <None Update="Resources\**\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

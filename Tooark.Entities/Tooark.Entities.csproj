@@ -2,24 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <PackageId>Tooark.Entities</PackageId>
+    <Title>Tooark.Entities</Title>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
-    <Company>Tooark</Company>
+    <PackageTags>toolkit, entities, .NET, management, creation</PackageTags>
+    <Summary>Management of base entities in .NET projects.</Summary>
     <PackageDescription>Package for managing base entities in .NET applications.</PackageDescription>
     <Description>Library to management and maintenance of base entities in .NET projects.</Description>
-    <PackageIcon>icon.jpg</PackageIcon>
-    <PackageTags>toolkit, entities, .NET, management, creation</PackageTags>
-    <Title>Tooark</Title>
-    <Summary>Management of base entities in .NET projects.</Summary>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\Media\icon.jpg" Pack="true" PackagePath="\" />
     <None Update="Resources\**\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
