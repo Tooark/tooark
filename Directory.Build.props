@@ -1,7 +1,20 @@
 <Project>
+
   <PropertyGroup>
     <Version>2.0.0</Version>
     <RepositoryUrL>https://github.com/Tooark/tooark</RepositoryUrL>
     <PackageProjectUrl>https://github.com/Tooark/tooark</PackageProjectUrl>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Company>Tooark</Company>
+    <PackageIcon>icon.jpg</PackageIcon>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Media\icon.jpg" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
 </Project>
