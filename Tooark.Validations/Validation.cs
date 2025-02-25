@@ -3,7 +3,7 @@
 namespace Tooark.Validations;
 
 /// <summary>
-/// Classe de Validação
+/// Classe base de Validação
 /// </summary>
 public partial class Validation : Notification
 {
