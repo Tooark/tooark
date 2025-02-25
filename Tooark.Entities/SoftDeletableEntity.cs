@@ -90,7 +90,7 @@ public abstract class SoftDeletableEntity : DetailedEntity
     if (changedBy == Guid.Empty)
     {
       // Adiciona uma notificação de erro
-      AddNotification("IdentifierEmpty;ChangedBy", "ChangedBy");
+      AddNotification("IdentifierEmpty;ChangedBy", "ChangedBy", "T.ENT.SOF1");
 
       // Retorna falso para indicar que o parâmetro é inválido
       return false;

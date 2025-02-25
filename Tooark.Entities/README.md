@@ -339,6 +339,16 @@ public class Program
 - [Tooark.Notifications](../Tooark.Notifications/README.md)
 - [Tooark.Utils](../Tooark.Utils/README.md)
 
+## Códigos de Erro para notificações
+
+Os códigos de erro para notificações são:
+
+- `Base`: `T.ENT.BAS`
+- `Initial`: `T.ENT.INI`
+- `Detailed`: `T.ENT.DET`
+- `SoftDeletable`: `T.ENT.SOF`
+- `Auditable`: `T.ENT.AUD`
+
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Entities](https://github.com/Tooark/tooark).

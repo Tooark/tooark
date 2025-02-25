@@ -69,7 +69,7 @@ public abstract class InitialEntity : BaseEntity
     if (CreatedBy != Guid.Empty)
     {
       // Adiciona uma notificação de erro
-      AddNotification("ChangeNotAllowed;CreatedBy", "CreatedBy");
+      AddNotification("ChangeNotAllowed;CreatedBy", "CreatedBy", "T.ENT.INI1");
     }
     else
     {
@@ -77,7 +77,7 @@ public abstract class InitialEntity : BaseEntity
       if (createdBy == Guid.Empty)
       {
         // Adiciona uma notificação de erro
-        AddNotification("IdentifierEmpty;CreatedBy", "CreatedBy");
+        AddNotification("IdentifierEmpty;CreatedBy", "CreatedBy", "T.ENT.INI2");
       }
       else
       {
