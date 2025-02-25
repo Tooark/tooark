@@ -18,13 +18,13 @@ public partial class Validation
   /// <param name="message">Mensagem de erro.</param>
   /// <param name="condition">Condição a ser validada.</param>
   /// <returns>Validação.</returns>
-  private Validation Validate<T>(T[] list, int comparer, string property, string message, Func<T[], int, bool> condition) where T : IConvertible 
+  private Validation Validate<T>(T[] list, int comparer, string property, string message, Func<T[], int, bool> condition) where T : IConvertible
   {
     // Se a condição for verdadeira, adicione a notificação.
     if (condition(list, comparer))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.LST1");
     }
 
     // Retorna uma validação.
@@ -47,7 +47,7 @@ public partial class Validation
     if (condition(list, comparer))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.LST2");
     }
 
     // Retorna uma validação.
@@ -229,7 +229,7 @@ public partial class Validation
     if (list != null)
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.LST3");
     }
 
     // Retorna uma validação.
@@ -260,7 +260,7 @@ public partial class Validation
     if (list == null)
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.LST4");
     }
 
     // Retorna uma validação.
@@ -291,7 +291,7 @@ public partial class Validation
     if (list?.Length > 0)
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.LST5");
     }
 
     // Retorna uma validação.
@@ -322,7 +322,7 @@ public partial class Validation
     if (list?.Length == 0)
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.LST6");
     }
 
     // Retorna uma validação.

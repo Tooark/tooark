@@ -32,7 +32,7 @@ public partial class Validation
     if (condition(value, comparer))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.GUI1");
     }
 
     // Retorna uma validação.
@@ -54,7 +54,7 @@ public partial class Validation
     if (condition(value, list))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.GUI2");
     }
 
     // Retorna uma validação.
@@ -267,7 +267,7 @@ public partial class Validation
     if (value != Guid.Empty)
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.GUI3");
     }
 
     // Retorna uma validação.
@@ -298,7 +298,7 @@ public partial class Validation
     if (value == Guid.Empty)
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.GUI4");
     }
 
     // Retorna uma validação.

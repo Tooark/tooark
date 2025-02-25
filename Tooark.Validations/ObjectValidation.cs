@@ -32,7 +32,7 @@ public partial class Validation
     if (condition(value, comparer))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.OBJ1");
     }
 
     // Retorna uma validação.

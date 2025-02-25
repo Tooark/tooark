@@ -52,7 +52,7 @@ public partial class Validation : Notification
     if (EqualityComparer<T>.Default.Equals(value, default) == returnAwait)
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.NUL1");
     }
 
     // Retorna uma validação.
