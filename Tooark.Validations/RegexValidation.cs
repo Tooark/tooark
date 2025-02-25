@@ -33,7 +33,7 @@ public partial class Validation
     if (condition())
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.RGX1");
     }
 
     // Retorna uma validação.

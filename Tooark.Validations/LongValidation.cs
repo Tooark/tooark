@@ -42,7 +42,7 @@ public partial class Validation
     if (condition(value, comparer))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.LNG1");
     }
 
     // Retorna uma validação.
@@ -77,7 +77,7 @@ public partial class Validation
     if (condition(value, list))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.LNG2");
     }
 
     // Retorna uma validação.

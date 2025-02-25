@@ -32,7 +32,7 @@ public partial class Validation
     if (condition(value, comparer))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.STR1");
     }
 
     // Retorna uma validação.
@@ -54,7 +54,7 @@ public partial class Validation
     if (condition(value, comparer))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.STR2");
     }
 
     // Retorna uma validação.
@@ -76,7 +76,7 @@ public partial class Validation
     if (condition(value, list))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.STR3");
     }
 
     // Retorna uma validação.
@@ -468,7 +468,7 @@ public partial class Validation
     if (!string.IsNullOrEmpty(value))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.STR4");
     }
 
     // Retorna uma validação.
@@ -499,7 +499,7 @@ public partial class Validation
     if (string.IsNullOrEmpty(value))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.STR5");
     }
 
     // Retorna uma validação.
@@ -530,7 +530,7 @@ public partial class Validation
     if (!string.IsNullOrWhiteSpace(value))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.STR6");
     }
 
     // Retorna uma validação.
@@ -561,7 +561,7 @@ public partial class Validation
     if (string.IsNullOrWhiteSpace(value))
     {
       // Adiciona a notificação.
-      AddNotification(message, property);
+      AddNotification(message, property, "T.VLD.STR7");
     }
 
     // Retorna uma validação.
