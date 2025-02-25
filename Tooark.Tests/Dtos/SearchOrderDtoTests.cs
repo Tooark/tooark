@@ -19,7 +19,7 @@ public class SearchOrderDtoTests
     Assert.Null(dto.OrderBy);
     Assert.True(dto.OrderAsc);
     Assert.Null(dto.Search);
-    Assert.Equal(0, dto.PageIndex);
+    Assert.Equal(1, dto.PageIndex);
     Assert.Equal(50, dto.PageSize);
   }
 
@@ -38,7 +38,7 @@ public class SearchOrderDtoTests
     Assert.Equal(expectedOrderBy, dto.OrderBy);
     Assert.True(dto.OrderAsc);
     Assert.Null(dto.Search);
-    Assert.Equal(0, dto.PageIndex);
+    Assert.Equal(1, dto.PageIndex);
     Assert.Equal(50, dto.PageSize);
   }
 
@@ -57,7 +57,7 @@ public class SearchOrderDtoTests
     Assert.Null(dto.OrderBy);
     Assert.False(dto.OrderAsc);
     Assert.Null(dto.Search);
-    Assert.Equal(0, dto.PageIndex);
+    Assert.Equal(1, dto.PageIndex);
     Assert.Equal(50, dto.PageSize);
   }
 }

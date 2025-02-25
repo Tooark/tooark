@@ -17,6 +17,7 @@ public class NotificationItemTests
     // Assert
     Assert.Equal(message, notification.Message);
     Assert.Equal("Unknown", notification.Key);
+    Assert.Equal("T.ERR", notification.Code);
   }
 
   // Teste para construtor da classe NotificationItem com parâmetro key.
@@ -26,13 +27,15 @@ public class NotificationItemTests
     // Arrange
     var message = "Tooark message";
     var key = "Tooark Key";
+    var code = "ERR";
 
     // Act
-    var notification = new NotificationItem(message, key);
+    var notification = new NotificationItem(message, key, code);
 
     // Assert
     Assert.Equal(message, notification.Message);
     Assert.Equal(key.Trim().Replace(" ", string.Empty), notification.Key);
+    Assert.Equal(code, notification.Code);
   }
 
   // Teste para método ToString da classe NotificationItem.
@@ -63,6 +66,7 @@ public class NotificationItemTests
     // Assert
     Assert.Equal(message, notification.Message);
     Assert.Equal("Unknown", notification.Key);
+    Assert.Equal("T.ERR", notification.Code);
   }
 
   // Teste para operador implícito de conversão de NotificationItem para string.
@@ -78,6 +82,8 @@ public class NotificationItemTests
 
     // Assert
     Assert.Equal(message, result);
+    Assert.Equal("Unknown", notification.Key);
+    Assert.Equal("T.ERR", notification.Code);
   }
 
   // Teste para construtor da classe NotificationItem com mensagem nula retornando 'Unknown'.
@@ -93,6 +99,7 @@ public class NotificationItemTests
     // Assert
     Assert.Equal("Notifications.MessageUnknown", notification.Message);
     Assert.Equal("Unknown", notification.Key);
+    Assert.Equal("T.ERR", notification.Code);
   }
 
   // Teste para construtor da classe NotificationItem com mensagem vazia retornando string.Empty.
@@ -108,6 +115,7 @@ public class NotificationItemTests
     // Assert
     Assert.Equal(string.Empty, notification.Message);
     Assert.Equal("Unknown", notification.Key);
+    Assert.Equal("T.ERR", notification.Code);
   }
 
   // Teste para construtor da classe NotificationItem com chave nula retornando 'Unknown'.
@@ -124,6 +132,7 @@ public class NotificationItemTests
     // Assert
     Assert.Equal(message, notification.Message);
     Assert.Equal("Unknown", notification.Key);
+    Assert.Equal("T.ERR", notification.Code);
   }
 
   // Teste para construtor da classe NotificationItem com chave vazia retornando string.Empty.
@@ -139,6 +148,7 @@ public class NotificationItemTests
 
     // Assert
     Assert.Equal(message, notification.Message);
-    Assert.Equal(string.Empty, notification.Key);
+    Assert.Equal("Unknown", notification.Key);
+    Assert.Equal("T.ERR", notification.Code);
   }
 }
