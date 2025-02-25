@@ -8,7 +8,7 @@ public abstract class SearchDto : Dto
   /// <summary>
   /// Índice privado da paginação.
   /// </summary>
-  private long pageIndex = 0;
+  private long pageIndex = 1;
 
   /// <summary>
   /// Tamanho privado da paginação.
@@ -24,10 +24,10 @@ public abstract class SearchDto : Dto
   /// <summary>
   /// Índice da paginação.
   /// </summary>
-  /// <value>Parâmetro padrão é 0.</value>
+  /// <value>Parâmetro padrão é 1.</value>
   /// <remarks>
-  /// Utilizar valor 0 (zero) em PageSize para ignorar índice.
-  /// </remarks>  /// 
+  /// Utilizar valor 0 (zero) para ignorar índice.
+  /// </remarks>
   public long PageIndex
   {
     get => pageIndex;
@@ -35,11 +35,20 @@ public abstract class SearchDto : Dto
   }
 
   /// <summary>
+  /// Índice lógico da paginação.
+  /// </summary>
+  /// <value>Parâmetro padrão é 0.</value>
+  public long PageIndexLogical
+  {
+    get => pageIndex > 0 ? pageIndex - 1 : 0;
+  }
+
+  /// <summary>
   /// Tamanho da paginação.
   /// </summary>
   /// <value>Parâmetro padrão é 50.</value>
   /// <remarks>
-  /// Utilizar valor 0 (zero) para ignorar tamanho. E configurar parar retornar todos os registros.
+  /// Utilizar valor 0 (zero) para ignorar tamanho.
   /// </remarks>
   public long PageSize
   {
