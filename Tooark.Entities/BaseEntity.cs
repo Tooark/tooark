@@ -36,7 +36,7 @@ public abstract class BaseEntity : Notification
     if (id == Guid.Empty)
     {
       // Adiciona uma notificação de erro
-      AddNotification("IdentifierEmpty;Id", "Id");
+      AddNotification("IdentifierEmpty;Id", "Id", "T.ENT.BAS1");
     }
     else
     {

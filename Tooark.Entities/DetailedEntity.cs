@@ -86,7 +86,7 @@ public abstract class DetailedEntity : InitialEntity
     if (updatedBy == Guid.Empty)
     {
       // Adiciona uma notificação de erro
-      AddNotification("IdentifierEmpty;UpdatedBy", "UpdatedBy");
+      AddNotification("IdentifierEmpty;UpdatedBy", "UpdatedBy", "T.ENT.DET1");
     }
     else
     {

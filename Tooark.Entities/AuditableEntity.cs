@@ -124,7 +124,7 @@ public abstract class AuditableEntity : DetailedEntity
     if (deletedBy == Guid.Empty)
     {
       // Adiciona uma notificação de erro
-      AddNotification("IdentifierEmpty;DeletedBy", "DeletedBy");
+      AddNotification("IdentifierEmpty;DeletedBy", "DeletedBy", "T.ENT.AUD1");
     }
     else
     {
@@ -160,7 +160,7 @@ public abstract class AuditableEntity : DetailedEntity
     if (restoredBy == Guid.Empty)
     {
       // Adiciona uma notificação de erro
-      AddNotification("IdentifierEmpty;RestoredBy", "RestoredBy");
+      AddNotification("IdentifierEmpty;RestoredBy", "RestoredBy", "T.ENT.AUD2");
     }
     else
     {
