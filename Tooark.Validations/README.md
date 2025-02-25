@@ -691,6 +691,25 @@ Para uma lista completa de métodos e suas descrições, consulte a documentaç�
 
 - [Tooark.Notifications](../Tooark.Notifications/README.md)
 
+## Códigos de Erro para notificações
+
+Os códigos de erro para notificações são:
+
+- `Boolean`: `T.VLD.BOO`
+- `Datas`: `T.VLD.DTT`
+- `Decimal`: `T.VLD.DEC`
+- `Double`: `T.VLD.DBL`
+- `Float`: `T.VLD.FLT`
+- `Guid`: `T.VLD.GUI`
+- `Int`: `T.VLD.INT`
+- `Listas`: `T.VLD.LST`
+- `Long`: `T.VLD.LNG`
+- `Objeto`: `T.VLD.OBJ`
+- `Regex`: `T.VLD.RGX`
+- `String`: `T.VLD.STR`
+- `TimeSpan`: `T.VLD.TMS`
+- `Validação`: `T.VLD.NUL`
+
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Validations](https://github.com/Tooark/tooark).
