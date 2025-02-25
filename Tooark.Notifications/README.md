@@ -98,7 +98,7 @@ var notifications = myNotification.Notifications; // [NotificationItem("Error", 
 
 ## Contribuição
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Notifications](https://github.com/Tooark/tooark).
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Notifications](https://github.com/Tooark/tooark/issues).
 
 ## Licença
 
