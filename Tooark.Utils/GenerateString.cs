@@ -121,7 +121,6 @@ internal static class InternalGenerateString
   /// <param name="specialChar">Indica se deve incluir caracteres especiais. Valor padrão é true.</param>
   /// <param name="similarChar">Indica se deve utilizar caracteres semelhantes. Valor padrão é false.</param>
   /// <returns>Uma string gerada de acordo com os critérios especificados.</returns>
-  /// <exception cref="ArgumentException">Se todos os tipos de caracteres estiverem desativados.</exception>
   internal static string Password(
     int length = 12,
     bool upperChar = true,
@@ -133,7 +132,11 @@ internal static class InternalGenerateString
     // Verifica se pelo menos um tipo de caractere está ativado.
     if (!upperChar && !lowerChar && !numberChar && !specialChar)
     {
-      throw new ArgumentException("MissingParameter");
+      // Aplica critérios padrão.
+      upperChar = true;
+      lowerChar = true;
+      numberChar = true;
+      specialChar = true;
     }
 
     // Define o comprimento da string aleatória.

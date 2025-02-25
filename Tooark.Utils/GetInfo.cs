@@ -1,3 +1,5 @@
+using Tooark.Exceptions;
+
 namespace Tooark.Utils;
 
 /// <summary>
@@ -76,7 +78,7 @@ public static class GetInfo
   /// O valor da propriedade localizada como uma string. Se o item correspondente ao idioma atual não for encontrado,
   /// tenta retornar o valor no idioma padrão. Se nenhum item for encontrado, retorna uma string vazia.
   /// </returns>
-  /// <exception cref="InvalidOperationException">
+  /// <exception cref="GetInfoException">
   /// Lança uma exceção se a propriedade 'LanguageCode' ou a propriedade especificada não existir no tipo T.
   /// </exception>
   public static string Custom<T>(IList<T> list, string property, string? languageCode = null)
@@ -180,7 +182,7 @@ internal static class InternalGetInfo
   /// <param name="nameProperty">O nome da propriedade a ser obtida do objeto.</param>
   /// <param name="languageCode">O código de idioma. Parâmetro opcional. Padrão é o idioma atual.</param>
   /// <returns> O valor da propriedade localizada como uma string.</returns>
-  /// <exception cref="InvalidOperationException">
+  /// <exception cref="GetInfoException">
   /// Lança uma exceção se a propriedade 'LanguageCode' ou a propriedade especificada não existir no tipo T.
   /// </exception>
   internal static string GetLanguageCode<T>(IList<T> list, string nameProperty, string? languageCode = null)
@@ -201,14 +203,14 @@ internal static class InternalGetInfo
     if (languageCodeProperty == null)
     {
       // Lança uma exceção se a propriedade 'LanguageCode' não existir.
-      throw new InvalidOperationException($"NotFound.Property;LanguageCode");
+      throw new GetInfoException($"NotFound.Property;LanguageCode");
     }
 
     // Se a propriedade especificada não existir, lança uma exceção.
     if (property == null)
     {
       // Lança uma exceção se a propriedade especificada não existir.
-      throw new InvalidOperationException($"NotFound.Property;{nameProperty}");
+      throw new GetInfoException($"NotFound.Property;{nameProperty}");
     }
 
     // Obtém o item atual com base no código de idioma.

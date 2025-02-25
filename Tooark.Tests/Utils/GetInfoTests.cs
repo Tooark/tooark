@@ -1,4 +1,5 @@
 using System.Globalization;
+using Tooark.Exceptions;
 using Tooark.Tests.Moq.Model.Language;
 using Tooark.Utils;
 
@@ -524,7 +525,7 @@ public class GetInfoTests
     List<MLanguageOnlyName> list = [ new() { Name = "Name in English" } ];
 
     // Act
-    var exception = Assert.Throws<InvalidOperationException>(() => GetInfo.Custom(list, "Name"));
+    var exception = Assert.Throws<GetInfoException>(() => GetInfo.Custom(list, "Name"));
 
     // Assert
     Assert.Equal("NotFound.Property;LanguageCode", exception.Message);
@@ -538,7 +539,7 @@ public class GetInfoTests
     List<MLanguageOnlyLanguageCode> list = [ new() { LanguageCode = "pt-BR" } ];
 
     // Act
-    var exception = Assert.Throws<InvalidOperationException>(() => GetInfo.Name(list));
+    var exception = Assert.Throws<GetInfoException>(() => GetInfo.Name(list));
 
     // Assert
     Assert.Equal("NotFound.Property;Name", exception.Message);
@@ -549,7 +550,7 @@ public class GetInfoTests
   public void Custom_ThrowsExceptionWhenNamePropertyDoesNotExist()
   {
     // Act
-    var exception = Assert.Throws<InvalidOperationException>(() => GetInfo.Custom(_testItems, "Person"));
+    var exception = Assert.Throws<GetInfoException>(() => GetInfo.Custom(_testItems, "Person"));
 
     // Assert
     Assert.Equal("NotFound.Property;Person", exception.Message);

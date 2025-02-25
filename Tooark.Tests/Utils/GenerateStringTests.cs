@@ -63,13 +63,13 @@ public class GenerateStringTests
 
   // Testa se Password lança ArgumentException quando todos os tipos de caracteres estão desativados
   [Fact]
-  public void Password_ShouldThrowArgumentException_WhenAllCharacterTypesDisabled()
+  public void Password_ShouldReturnString_WhenAllCharacterTypesDisabled()
   {
     // Arrange & Act
-    var exception = Assert.Throws<ArgumentException>(() => GenerateString.Password(12, false, false, false, false));
+    var result = GenerateString.Password(12, false, false, false, false);
 
     // Assert
-    Assert.Equal("MissingParameter", exception.Message);
+    Assert.Equal(12, result.Length);
   }
 
   // Testa se Hexadecimal gera uma string hexadecimal com o comprimento correto
