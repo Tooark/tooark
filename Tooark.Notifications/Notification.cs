@@ -37,6 +37,12 @@ public abstract class Notification
   public long Count => _notifications.Count;
 
   /// <summary>
+  /// Retorna a lista de códigos de erros das notificações.
+  /// </summary>
+  /// <returns>Lista de códigos de erros das notificações.</returns>
+  public IReadOnlyList<string> Codes => _notifications.Select(x => x.Code).ToList().AsReadOnly();
+
+  /// <summary>
   /// Retorna a lista de chaves das notificações.
   /// </summary>
   /// <returns>Lista de chaves das notificações.</returns>
@@ -54,12 +60,14 @@ public abstract class Notification
   /// </summary>
   /// <param name="message">Mensagem da notificação.</param>
   /// <param name="key">Chave da notificação. Padrão é nulo.</param>
+  /// <param name="code">Código de erro da notificação. Padrão é nulo.</param>
   /// <returns>Instância de NotificationItem.</returns>
-  private static NotificationItem GetNotificationInstance(string message, string? key = null)
+  private static NotificationItem GetNotificationInstance(string message, string? key = null, string? code = null)
   {
     // Retorna uma nova instância de NotificationItem
-    return (NotificationItem)Activator.CreateInstance(typeof(NotificationItem), message, key)!;
+    return (NotificationItem)Activator.CreateInstance(typeof(NotificationItem), message, key, code)!;
   }
+
 
   /// <summary>
   /// Adiciona uma nova notificação à lista de notificações.
@@ -88,7 +96,17 @@ public abstract class Notification
   /// </summary>
   /// <param name="property">Propriedade que gerou a notificação.</param>
   /// <param name="message">Mensagem da notificação.</param>
-  public void AddNotification(Type property, string message) => AddNotification(message, property?.Name ?? string.Empty);
+  public void AddNotification(Type property, string message) =>
+    AddNotification(message, property?.Name ?? string.Empty);
+
+  /// <summary>
+  /// Adiciona uma coleção de notificações à lista de notificações.
+  /// </summary>
+  /// <param name="property">Propriedade que gerou a notificação.</param>
+  /// <param name="message">Mensagem da notificação.</param>
+  /// <param name="code">Código de erro da notificação.</param>
+  public void AddNotification(Type property, string message, string code) =>
+    AddNotification(message, property?.Name ?? string.Empty, code);
 
   /// <summary>
   /// Adiciona uma nova notificação à lista de notificações.
@@ -106,6 +124,28 @@ public abstract class Notification
 
     // Cria uma nova instância de NotificationItem
     var notification = GetNotificationInstance(message, key);
+
+    // Adiciona a nova instância à lista de notificações
+    _notifications.Add(notification);
+  }
+
+  /// <summary>
+  /// Adiciona uma nova notificação à lista de notificações.
+  /// </summary>
+  /// <param name="key">Chave da notificação.</param>
+  /// <param name="message">Mensagem da notificação.</param>
+  /// <param name="code">Código de erro da notificação.</param>
+  public void AddNotification(string message, string key, string code)
+  {
+    // Verifica se a mensagem é nula ou vazia
+    if (string.IsNullOrEmpty(message))
+    {
+      // Atribui a mensagem de message nula ou vazia
+      message = NotificationErrorMessages.MessageIsNullOrEmpty;
+    }
+
+    // Cria uma nova instância de NotificationItem
+    var notification = GetNotificationInstance(message, key, code);
 
     // Adiciona a nova instância à lista de notificações
     _notifications.Add(notification);

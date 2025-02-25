@@ -3,22 +3,33 @@
 namespace Tooark.Notifications;
 
 /// <summary>
-/// Representa a estrutura de uma notificação.
+/// Representa a estrutura de um item de notificação.
 /// </summary>
 /// <param name="message">Mensagem da notificação.</param>
 /// <param name="key">Chave da notificação. Padronizado como 'Unknown'.</param>
-public class NotificationItem(string message, string key = "Unknown")
+/// <param name="code">Código de erro da notificação. Padronizado como 'T.ERR'. T[ooark].ERR[or]</param>
+public class NotificationItem(string message, string key = "Unknown", string code = "T.ERR")
 {
+  /// <summary>
+  /// O código de erro privado da notificação.
+  /// </summary>
+  private readonly string _code = string.IsNullOrWhiteSpace(code) ? "T.ERR" : code;
+
   /// <summary>
   /// A chave privada da notificação.
   /// </summary>
-  private readonly string _key = key?.Trim()?.Replace(" ", string.Empty) ?? "Unknown";
+  private readonly string _key = string.IsNullOrWhiteSpace(key) ? "Unknown" : key.Trim().Replace(" ", string.Empty);
 
   /// <summary>
   /// A mensagem privada da notificação.
   /// </summary>
   private readonly string _message = message?.Trim() ?? NotificationErrorMessages.MessageUnknown;
 
+
+  /// <summary>
+  /// O código de erro da notificação.
+  /// </summary>
+  public string Code { get => _code; }
 
   /// <summary>
   /// A chave da notificação.
