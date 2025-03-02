@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Dtos", "Tooark.Dtos\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark", "Tooark\Tooark.csproj", "{4AD5070B-C7CA-4E3F-8345-96FD6EF129F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Storages", "Tooark.Storages\Tooark.Storages.csproj", "{90A719B4-7A4B-4D5B-9661-EC99D6427366}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Exceptions", "Tooark.Exceptions\Tooark.Exceptions.csproj", "{D603BCFD-CABA-446B-BE60-B45DE905313F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,5 +88,13 @@ Global
 		{4AD5070B-C7CA-4E3F-8345-96FD6EF129F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AD5070B-C7CA-4E3F-8345-96FD6EF129F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AD5070B-C7CA-4E3F-8345-96FD6EF129F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90A719B4-7A4B-4D5B-9661-EC99D6427366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90A719B4-7A4B-4D5B-9661-EC99D6427366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90A719B4-7A4B-4D5B-9661-EC99D6427366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90A719B4-7A4B-4D5B-9661-EC99D6427366}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D603BCFD-CABA-446B-BE60-B45DE905313F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D603BCFD-CABA-446B-BE60-B45DE905313F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D603BCFD-CABA-446B-BE60-B45DE905313F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D603BCFD-CABA-446B-BE60-B45DE905313F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
