@@ -236,4 +236,26 @@ public static class RegexPattern
   /// </summary>
   public readonly static string PassComplex = $"^{PassLower[1..]}{PassUpper[1..]}{PassNumber[1..]}{PassSymbol[1..]}.{{8,}}$";
   #endregion
+
+  #region Link Video
+  /// <summary>
+  /// Padrão de Link de Vídeo do YouTube.
+  /// </summary>
+  public readonly static string YouTube = @"^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?";
+
+  /// <summary>
+  /// Padrão de Link de Vídeo do Vimeo.
+  /// </summary>
+  public readonly static string Vimeo = @"^(?:https?:\/\/)?(?:www\.)?(?:player\.)?vimeo\.com\/(?:channels\/(?:[^\/]+\/)|groups\/(?:[^\/]+)\/videos\/|video\/|)(\d+)(:?\?\S*)?";
+
+  /// <summary>
+  /// Padrão de Link de Vídeo do Dailymotion.
+  /// </summary>
+  public readonly static string Dailymotion = @"^(?:https?:\/\/)?(www\.)?(dailymotion\.com\/video\/|dai\.ly\/|geo\.dailymotion\.com\/player\.html\?video=)([a-zA-Z0-9]{7})";
+
+  /// <summary>
+  /// Padrão de Link de Vídeo.
+  /// </summary>
+  public readonly static string LinkVideo = $"^({YouTube[1..]})|({Vimeo[1..]})|({Dailymotion[1..]})$";
+  #endregion
 }
