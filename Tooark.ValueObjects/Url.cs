@@ -48,9 +48,9 @@ public class Url : ValueObject
   /// <summary>
   /// Define uma conversão implícita de um objeto Url para uma string.
   /// </summary>
-  /// <param name="protocol">O objeto Url a ser convertido.</param>
+  /// <param name="url">O objeto Url a ser convertido.</param>
   /// <returns>Uma string que representa o valor da URL.</returns>
-  public static implicit operator string(Url protocol) => protocol._value;
+  public static implicit operator string(Url url) => url._value;
 
   /// <summary>
   /// Define uma conversão implícita de uma string para um objeto Url.
