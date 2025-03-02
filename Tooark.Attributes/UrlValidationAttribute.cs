@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
-using Tooark.Enums;
 using Tooark.Validations.Patterns;
 
 namespace Tooark.Attributes;

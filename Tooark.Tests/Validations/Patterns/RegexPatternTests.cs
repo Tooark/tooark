@@ -12,7 +12,7 @@ public class RegexPatternTests
   public void TestCpfPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Cpf);
+    var result = Regex.IsMatch(input, RegexPattern.Cpf, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -28,7 +28,7 @@ public class RegexPatternTests
   public void TestRgPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Rg);
+    var result = Regex.IsMatch(input, RegexPattern.Rg, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -41,7 +41,7 @@ public class RegexPatternTests
   public void TestCnhPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Cnh);
+    var result = Regex.IsMatch(input, RegexPattern.Cnh, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -59,7 +59,7 @@ public class RegexPatternTests
   public void TestCpfRgPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.CpfRg);
+    var result = Regex.IsMatch(input, RegexPattern.CpfRg, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -78,7 +78,7 @@ public class RegexPatternTests
   public void TestCpfRgCnhPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.CpfRgCnh);
+    var result = Regex.IsMatch(input, RegexPattern.CpfRgCnh, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -91,7 +91,7 @@ public class RegexPatternTests
   public void TestCnpjPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Cnpj);
+    var result = Regex.IsMatch(input, RegexPattern.Cnpj, RegexOptions.None, TimeSpan.FromMilliseconds(250)); ;
 
     // Assert
     Assert.Equal(expected, result);
@@ -106,7 +106,7 @@ public class RegexPatternTests
   public void TestCpfCnpjPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.CpfCnpj);
+    var result = Regex.IsMatch(input, RegexPattern.CpfCnpj, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -119,7 +119,7 @@ public class RegexPatternTests
   public void TestEmailPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Email);
+    var result = Regex.IsMatch(input, RegexPattern.Email, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -132,7 +132,7 @@ public class RegexPatternTests
   public void TestEmailDomainPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.EmailDomain);
+    var result = Regex.IsMatch(input, RegexPattern.EmailDomain, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -145,7 +145,7 @@ public class RegexPatternTests
   public void TestIpPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Ip);
+    var result = Regex.IsMatch(input, RegexPattern.Ip, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -158,7 +158,7 @@ public class RegexPatternTests
   public void TestIpv4Pattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Ipv4);
+    var result = Regex.IsMatch(input, RegexPattern.Ipv4, RegexOptions.None, TimeSpan.FromMilliseconds(250)); ;
 
     // Assert
     Assert.Equal(expected, result);
@@ -171,7 +171,7 @@ public class RegexPatternTests
   public void TestIpv6Pattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Ipv6);
+    var result = Regex.IsMatch(input, RegexPattern.Ipv6, RegexOptions.None, TimeSpan.FromMilliseconds(250)); ;
 
     // Assert
     Assert.Equal(expected, result);
@@ -184,7 +184,7 @@ public class RegexPatternTests
   public void TestMacAddressPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.MacAddress);
+    var result = Regex.IsMatch(input, RegexPattern.MacAddress, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -197,7 +197,7 @@ public class RegexPatternTests
   public void TestGuidPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Guid);
+    var result = Regex.IsMatch(input, RegexPattern.Guid, RegexOptions.None, TimeSpan.FromMilliseconds(250)); ;
 
     // Assert
     Assert.Equal(expected, result);
@@ -210,7 +210,7 @@ public class RegexPatternTests
   public void TestLetterPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Letter);
+    var result = Regex.IsMatch(input, RegexPattern.Letter, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -223,7 +223,7 @@ public class RegexPatternTests
   public void TestLetterLowerPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.LetterLower);
+    var result = Regex.IsMatch(input, RegexPattern.LetterLower, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -236,7 +236,7 @@ public class RegexPatternTests
   public void TestLetterUpperPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.LetterUpper);
+    var result = Regex.IsMatch(input, RegexPattern.LetterUpper, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -249,7 +249,7 @@ public class RegexPatternTests
   public void TestNumericPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Numeric);
+    var result = Regex.IsMatch(input, RegexPattern.Numeric, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -262,7 +262,7 @@ public class RegexPatternTests
   public void TestLetterNumericPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.LetterNumeric);
+    var result = Regex.IsMatch(input, RegexPattern.LetterNumeric, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -277,7 +277,7 @@ public class RegexPatternTests
   public void TestHexadecimalPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Hexadecimal);
+    var result = Regex.IsMatch(input, RegexPattern.Hexadecimal, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -291,7 +291,7 @@ public class RegexPatternTests
   public void TestZipCodePattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.ZipCode);
+    var result = Regex.IsMatch(input, RegexPattern.ZipCode, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -307,7 +307,7 @@ public class RegexPatternTests
   public void TestBase64Pattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Base64);
+    var result = Regex.IsMatch(input, RegexPattern.Base64, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -329,7 +329,7 @@ public class RegexPatternTests
   public void TestCulturePattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Culture);
+    var result = Regex.IsMatch(input, RegexPattern.Culture, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -350,7 +350,7 @@ public class RegexPatternTests
   public void TestUrlPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Url);
+    var result = Regex.IsMatch(input, RegexPattern.Url, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -364,7 +364,7 @@ public class RegexPatternTests
   public void TestFtpPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Ftp);
+    var result = Regex.IsMatch(input, RegexPattern.Ftp, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -378,7 +378,7 @@ public class RegexPatternTests
   public void TestSftpPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Sftp);
+    var result = Regex.IsMatch(input, RegexPattern.Sftp, RegexOptions.None, TimeSpan.FromMilliseconds(250)); ;
 
     // Assert
     Assert.Equal(expected, result);
@@ -392,11 +392,11 @@ public class RegexPatternTests
   public void TestProtocolFtpPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.ProtocolFtp);
+    var result = Regex.IsMatch(input, RegexPattern.ProtocolFtp, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
-  }  
+  }
 
   // Teste de padrão de HTTP.
   [Theory]
@@ -406,7 +406,7 @@ public class RegexPatternTests
   public void TestHttpPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Http);
+    var result = Regex.IsMatch(input, RegexPattern.Http, RegexOptions.None, TimeSpan.FromMilliseconds(250)); ;
 
     // Assert
     Assert.Equal(expected, result);
@@ -420,7 +420,7 @@ public class RegexPatternTests
   public void TestHttpsPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Https);
+    var result = Regex.IsMatch(input, RegexPattern.Https, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -434,7 +434,7 @@ public class RegexPatternTests
   public void TestProtocolHttpPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.ProtocolHttp);
+    var result = Regex.IsMatch(input, RegexPattern.ProtocolHttp, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -448,7 +448,7 @@ public class RegexPatternTests
   public void TestImapPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Imap);
+    var result = Regex.IsMatch(input, RegexPattern.Imap, RegexOptions.None, TimeSpan.FromMilliseconds(250)); ;
 
     // Assert
     Assert.Equal(expected, result);
@@ -462,7 +462,7 @@ public class RegexPatternTests
   public void TestPop3Pattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Pop3);
+    var result = Regex.IsMatch(input, RegexPattern.Pop3, RegexOptions.None, TimeSpan.FromMilliseconds(250)); ;
 
     // Assert
     Assert.Equal(expected, result);
@@ -476,7 +476,7 @@ public class RegexPatternTests
   public void TestProtocolEmailReceiverPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.ProtocolEmailReceiver);
+    var result = Regex.IsMatch(input, RegexPattern.ProtocolEmailReceiver, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -489,7 +489,7 @@ public class RegexPatternTests
   public void TestSmtpPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Smtp);
+    var result = Regex.IsMatch(input, RegexPattern.Smtp, RegexOptions.None, TimeSpan.FromMilliseconds(250)); ;
 
     // Assert
     Assert.Equal(expected, result);
@@ -502,7 +502,7 @@ public class RegexPatternTests
   public void TestProtocolEmailSenderPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.ProtocolEmailSender);
+    var result = Regex.IsMatch(input, RegexPattern.ProtocolEmailSender, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -516,7 +516,7 @@ public class RegexPatternTests
   public void TestWsPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Ws);
+    var result = Regex.IsMatch(input, RegexPattern.Ws, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -530,7 +530,7 @@ public class RegexPatternTests
   public void TestWssPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.Wss);
+    var result = Regex.IsMatch(input, RegexPattern.Wss, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -544,7 +544,7 @@ public class RegexPatternTests
   public void TestProtocolWebSocketPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.ProtocolWebSocket);
+    var result = Regex.IsMatch(input, RegexPattern.ProtocolWebSocket, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -565,7 +565,7 @@ public class RegexPatternTests
   public void TestPassLowerPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.PassLower);
+    var result = Regex.IsMatch(input, RegexPattern.PassLower, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -586,7 +586,7 @@ public class RegexPatternTests
   public void TestPassUpperPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.PassUpper);
+    var result = Regex.IsMatch(input, RegexPattern.PassUpper, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -607,7 +607,7 @@ public class RegexPatternTests
   public void TestPassNumberPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.PassNumber);
+    var result = Regex.IsMatch(input, RegexPattern.PassNumber, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -628,7 +628,7 @@ public class RegexPatternTests
   public void TestPassSymbolPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.PassSymbol);
+    var result = Regex.IsMatch(input, RegexPattern.PassSymbol, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
@@ -649,7 +649,97 @@ public class RegexPatternTests
   public void TestPassComplexPattern(string input, bool expected)
   {
     // Arrange & Act
-    var result = Regex.IsMatch(input, RegexPattern.PassComplex);
+    var result = Regex.IsMatch(input, RegexPattern.PassComplex, RegexOptions.None, TimeSpan.FromMilliseconds(250));
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Teste de link de vídeo do YouTube.
+  [Theory]
+  [InlineData("https://www.youtube.com/watch?v=b6-JNeXxN3s&list=RDMMb6-JNeXxN3s&start_radio=1", true)]
+  [InlineData("https://youtu.be/b6-JNeXxN3s?si=Q3mm2FArjTqUf7I6", true)]
+  [InlineData("https://youtube.com/watch?v=b6-JNeXxN3s&list=RDMMb6-JNeXxN3s&start_radio=1", true)]
+  [InlineData("https://www.youtube.com/embed/b6-JNeXxN3s?si=9ON8XlL6BaqygVkW", true)]
+  [InlineData("https://vimeo.com/24812648", false)]
+  [InlineData("https://vimeo.com/24812648?share=copy", false)]
+  [InlineData("https://player.vimeo.com/video/24812648?badge=0&autopause=0&player_id=0&app_id=58479", false)]
+  [InlineData("https://www.dailymotion.com/video/x9fbqre", false)]
+  [InlineData("https://dai.ly/x9fbqre", false)]
+  [InlineData("https://geo.dailymotion.com/player.html?video=x9fbqre", false)]
+  [InlineData("https://www.y0utube.com/watch?v=b6-JNeXxN3s&list=RDMMb6-JNeXxN3s&start_radio=1", false)]
+  public void TestLinkYouTubePattern(string input, bool expected)
+  {
+    // Arrange & Act
+    var result = Regex.IsMatch(input, RegexPattern.YouTube, RegexOptions.None, TimeSpan.FromMilliseconds(250));
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Teste de link de vídeo do Vimeo.
+  [Theory]
+  [InlineData("https://www.youtube.com/watch?v=b6-JNeXxN3s&list=RDMMb6-JNeXxN3s&start_radio=1", false)]
+  [InlineData("https://youtu.be/b6-JNeXxN3s?si=Q3mm2FArjTqUf7I6", false)]
+  [InlineData("https://youtube.com/watch?v=b6-JNeXxN3s&list=RDMMb6-JNeXxN3s&start_radio=1", false)]
+  [InlineData("https://www.youtube.com/embed/b6-JNeXxN3s?si=9ON8XlL6BaqygVkW", false)]
+  [InlineData("https://vimeo.com/24812648", true)]
+  [InlineData("https://vimeo.com/24812648?share=copy", true)]
+  [InlineData("https://player.vimeo.com/video/24812648?badge=0&autopause=0&player_id=0&app_id=58479", true)]
+  [InlineData("https://www.dailymotion.com/video/x9fbqre", false)]
+  [InlineData("https://dai.ly/x9fbqre", false)]
+  [InlineData("https://geo.dailymotion.com/player.html?video=x9fbqre", false)]
+  [InlineData("https://vime0.com/24812648", false)]
+  public void TestLinkVimeoPattern(string input, bool expected)
+  {
+    // Arrange & Act
+    var result = Regex.IsMatch(input, RegexPattern.Vimeo, RegexOptions.None, TimeSpan.FromMilliseconds(250));
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Teste de link de vídeo do Dailymotion.
+  [Theory]
+  [InlineData("https://www.youtube.com/watch?v=b6-JNeXxN3s&list=RDMMb6-JNeXxN3s&start_radio=1", false)]
+  [InlineData("https://youtu.be/b6-JNeXxN3s?si=Q3mm2FArjTqUf7I6", false)]
+  [InlineData("https://youtube.com/watch?v=b6-JNeXxN3s&list=RDMMb6-JNeXxN3s&start_radio=1", false)]
+  [InlineData("https://www.youtube.com/embed/b6-JNeXxN3s?si=9ON8XlL6BaqygVkW", false)]
+  [InlineData("https://vimeo.com/24812648", false)]
+  [InlineData("https://vimeo.com/24812648?share=copy", false)]
+  [InlineData("https://player.vimeo.com/video/24812648?badge=0&autopause=0&player_id=0&app_id=58479", false)]
+  [InlineData("https://www.dailymotion.com/video/x9fbqre", true)]
+  [InlineData("https://dai.ly/x9fbqre", true)]
+  [InlineData("https://geo.dailymotion.com/player.html?video=x9fbqre", true)]
+  [InlineData("https://www.dailym0tion.com/video/x9fbqre", false)]
+  public void TestLinkDailymotionPattern(string input, bool expected)
+  {
+    // Arrange & Act
+    var result = Regex.IsMatch(input, RegexPattern.Dailymotion, RegexOptions.None, TimeSpan.FromMilliseconds(250));
+
+    // Assert
+    Assert.Equal(expected, result);
+  }
+
+  // Teste de padrão de link de vídeo.
+  [Theory]
+  [InlineData("https://www.youtube.com/watch?v=b6-JNeXxN3s&list=RDMMb6-JNeXxN3s&start_radio=1", true)]
+  [InlineData("https://youtu.be/b6-JNeXxN3s?si=Q3mm2FArjTqUf7I6", true)]
+  [InlineData("https://youtube.com/watch?v=b6-JNeXxN3s&list=RDMMb6-JNeXxN3s&start_radio=1", true)]
+  [InlineData("https://www.youtube.com/embed/b6-JNeXxN3s?si=9ON8XlL6BaqygVkW", true)]
+  [InlineData("https://vimeo.com/24812648", true)]
+  [InlineData("https://vimeo.com/24812648?share=copy", true)]
+  [InlineData("https://player.vimeo.com/video/24812648?badge=0&autopause=0&player_id=0&app_id=58479", true)]
+  [InlineData("https://www.dailymotion.com/video/x9fbqre", true)]
+  [InlineData("https://dai.ly/x9fbqre", true)]
+  [InlineData("https://geo.dailymotion.com/player.html?video=x9fbqre", true)]
+  [InlineData("https://www.y0utube.com/watch?v=b6-JNeXxN3s&list=RDMMb6-JNeXxN3s&start_radio=1", false)]
+  [InlineData("https://vime0.com/24812648", false)]
+  [InlineData("https://www.dailym0tion.com/video/x9fbqre", false)]
+  public void TestLinkVideoPattern(string input, bool expected)
+  {
+    // Arrange & Act
+    var result = Regex.IsMatch(input, RegexPattern.LinkVideo, RegexOptions.None, TimeSpan.FromMilliseconds(250));
 
     // Assert
     Assert.Equal(expected, result);
