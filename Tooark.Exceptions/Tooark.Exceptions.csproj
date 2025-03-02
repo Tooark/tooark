@@ -2,16 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <PackageId>Tooark.Exceptions</PackageId>
+    <Title>Tooark.Exceptions</Title>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <PackageTags>toolkit, exception, .NET</PackageTags>
+    <Summary>Management of exceptions for .NET projects.</Summary>
+    <PackageDescription>Package for creating exceptions for .NET applications.</PackageDescription>
+    <Description>Library that provides exceptions for .NET projects, allowing standardization for error handling. Includes methods for creating and managing exceptions.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.3.0" />
+    <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.3.0" />
   </ItemGroup>
 
 </Project>
