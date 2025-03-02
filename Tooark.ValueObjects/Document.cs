@@ -47,7 +47,7 @@ public sealed class Document : ValueObject
       else
       {
         // Adiciona uma notificação de validação do Documento
-        AddNotification("Document.Type", $"Field.Invalid;Document.{type}", "T.VOJ.DOC1");
+        AddNotification($"Field.Invalid;Document.{type}", "Document.Type", "T.VOJ.DOC1");
       }
     }
   }
