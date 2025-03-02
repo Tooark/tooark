@@ -1,13 +1,18 @@
 using System.Net;
 using Tooark.Exceptions;
+using Tooark.Notifications;
 
 namespace Tooark.Tests.Exceptions;
 
 public class GetInfoExceptionTests
 {
-  // Teste de unidade para a mensagem de erro.
+  // Classe de teste para simular uma exceção de teste.
+  public class TestException : Notification
+  { }
+
+  // Teste para retornar a mensagem de erro correta com parâmetro de uma única mensagem.
   [Fact]
-  public void GetInfoException_ShouldReturnCorrectMessage()
+  public void GetInfoException_ShouldReturnCorrectMessage_WithSingleMessage()
   {
     // Arrange
     var expectedMessage = "Get Info Error";
@@ -17,19 +22,44 @@ public class GetInfoExceptionTests
 
     // Assert
     Assert.Equal(expectedMessage, exception.Message);
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().FirstOrDefault());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.BadRequest, exception.GetStatusCode());
   }
 
-  // Teste de unidade para o código de status HTTP.
+  // Teste para retornar a mensagem de erro correta com parâmetro de uma lista de mensagens.
   [Fact]
-  public void GetInfoException_ShouldReturnBadRequestStatusCode()
+  public void GetInfoException_ShouldReturnCorrectMessage_WithListMessages()
   {
     // Arrange
-    var exception = new GetInfoException("Get Info Error");
+    string[] expectedMessage = ["Get Info Error", "Another Get Info Error"];
 
     // Act
-    var statusCode = exception.GetStatusCode();
+    var exception = new GetInfoException(expectedMessage);
 
     // Assert
-    Assert.Equal(HttpStatusCode.BadRequest, statusCode);
+    Assert.Equal(expectedMessage[0], exception.Message);
+    Assert.Equal(expectedMessage, exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetNotifications().Select(n => n.Message));
+    Assert.Equal(HttpStatusCode.BadRequest, exception.GetStatusCode());
+  }
+
+  // Teste para retornar a mensagem de erro correta com parâmetro de notificação.
+  [Fact]
+  public void GetInfoException_ShouldReturnCorrectMessage_WithNotification()
+  {
+    // Arrange
+    string expectedMessage = "Get Info Error";
+    TestException testException = new();
+    testException.AddNotification(expectedMessage);
+
+    // Act
+    var exception = new GetInfoException(testException);
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().FirstOrDefault());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.BadRequest, exception.GetStatusCode());
   }
 }

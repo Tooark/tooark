@@ -1,13 +1,18 @@
 using System.Net;
 using Tooark.Exceptions;
+using Tooark.Notifications;
 
 namespace Tooark.Tests.Exceptions;
 
 public class UnauthorizedExceptionTest
 {
-  // Teste de unidade para a mensagem de erro.
+  // Classe de teste para simular uma exceção de teste.
+  public class TestException : Notification
+  { }
+
+  // Teste para retornar a mensagem de erro correta com parâmetro de uma única mensagem.
   [Fact]
-  public void UnauthorizedException_ShouldReturnCorrectMessage()
+  public void UnauthorizedException_ShouldReturnCorrectMessage_WithSingleMessage()
   {
     // Arrange
     var expectedMessage = "Unauthorized Error";
@@ -17,19 +22,44 @@ public class UnauthorizedExceptionTest
 
     // Assert
     Assert.Equal(expectedMessage, exception.Message);
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().FirstOrDefault());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.Unauthorized, exception.GetStatusCode());
   }
 
-  // Teste de unidade para o código de status HTTP.
+  // Teste para retornar a mensagem de erro correta com parâmetro de uma lista de mensagens.
   [Fact]
-  public void UnauthorizedException_ShouldReturnUnauthorizedStatusCode()
+  public void UnauthorizedException_ShouldReturnCorrectMessage_WithListMessages()
   {
     // Arrange
-    var exception = new UnauthorizedException("Unauthorized Error");
+    string[] expectedMessage = ["Unauthorized Error", "Another Unauthorized Error"];
 
     // Act
-    var statusCode = exception.GetStatusCode();
+    var exception = new UnauthorizedException(expectedMessage);
 
     // Assert
-    Assert.Equal(HttpStatusCode.Unauthorized, statusCode);
+    Assert.Equal(expectedMessage[0], exception.Message);
+    Assert.Equal(expectedMessage, exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetNotifications().Select(n => n.Message));
+    Assert.Equal(HttpStatusCode.Unauthorized, exception.GetStatusCode());
+  }
+
+  // Teste para retornar a mensagem de erro correta com parâmetro de notificação.
+  [Fact]
+  public void UnauthorizedException_ShouldReturnCorrectMessage_WithNotification()
+  {
+    // Arrange
+    string expectedMessage = "Unauthorized Error";
+    TestException testException = new();
+    testException.AddNotification(expectedMessage);
+
+    // Act
+    var exception = new UnauthorizedException(testException);
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().FirstOrDefault());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.Unauthorized, exception.GetStatusCode());
   }
 }

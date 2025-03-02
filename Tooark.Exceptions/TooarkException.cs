@@ -25,8 +25,11 @@ public abstract class TooarkException : Exception
   /// <param name="message">Mensagem de erro.</param>
   public TooarkException(string message) : base(message)
   {
-    // Inicializa a lista de mensagens de erro.
+    // Adiciona a mensagem de erro na lista.
     _errors.Add(message);
+    
+    // Adiciona a mensagem de erro na lista de notificações.
+    _notifications.Add(new NotificationItem(message));
   }
 
   /// <summary>
@@ -35,8 +38,15 @@ public abstract class TooarkException : Exception
   /// <param name="errors">Lista de mensagens de erro.</param>
   public TooarkException(IList<string> errors) : base(errors.Count > 0 ? errors[0] : null)
   {
-    // Inicializa a lista de mensagens de erro.
-    _errors = errors;
+    // Itera sobre as mensagens de erro e adiciona na lista.
+    foreach (var error in errors)
+    {
+      // Adiciona a mensagem de erro na lista.
+      _errors.Add(error);
+
+      // Adiciona a mensagem de erro na lista de notificações.
+      _notifications.Add(new NotificationItem(error));
+    }
   }
 
   /// <summary>

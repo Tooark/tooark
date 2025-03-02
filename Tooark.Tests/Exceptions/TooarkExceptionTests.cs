@@ -1,18 +1,24 @@
 using System.Net;
 using Tooark.Exceptions;
+using Tooark.Notifications;
 
 namespace Tooark.Tests.Exceptions;
 
 public class TooarkExceptionTests
 {
+  // Classe de exceção de teste que herda de TooarkException.
   private class TestTooarkException : TooarkException
   {
     public TestTooarkException(string message) : base(message) { }
     public TestTooarkException(IList<string> errors) : base(errors) { }
+    public TestTooarkException(Notification notification) : base(notification) { }
 
     public override HttpStatusCode GetStatusCode() => HttpStatusCode.BadRequest;
-
   }
+
+  // Classe de notificação de teste que herda de Notification.
+  private class TestNotification : Notification
+  { }
 
   // Teste de unidade para o construtor com uma única mensagem.
   [Fact]
@@ -42,6 +48,24 @@ public class TooarkExceptionTests
     // Assert
     Assert.Equal(errors.Count, exception.GetErrorMessages().Count);
     Assert.Equal(errors, exception.GetErrorMessages());
+  }
+
+  // Teste de unidade para o construtor com uma notificação.
+  [Fact]
+  public void Constructor_WithNotification_ShouldInitializeNotification()
+  {
+    // Arrange
+    string message = "Test error message";
+    var notification = new TestNotification();
+    notification.AddNotification(message);
+
+    // Act
+    var exception = new TestTooarkException(notification);
+
+    // Assert
+    Assert.Single(exception.GetNotifications());
+    Assert.Equal(message, exception.GetErrorMessages().FirstOrDefault());
+    Assert.Equal(message, exception.GetNotifications().FirstOrDefault()?.Message);
   }
 
   // Teste de unidade para a função GetStatusCode.
