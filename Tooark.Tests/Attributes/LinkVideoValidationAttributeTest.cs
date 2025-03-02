@@ -47,7 +47,7 @@ public class LinkVideoValidationAttributeTest
 
   // Teste de link válido passando parâmetros
   [Theory]
-  [InlineData("https://www.youtube.com/watch?v=b6-JNeXxN3s&list=RDMMb6-JNeXxN3s&start_radio=1", true, false, true)]
+  [InlineData("https://www.youtube.com/watch?v=b6-JNeXxN3s&list=RDMMb6-JNeXxN3s&start_radio=1", true, false, false)]
   [InlineData("https://vimeo.com/24812648", false, true, false)]
   [InlineData("https://www.dailymotion.com/video/x9fbqre", false, false, true)]
   public void IsValid_ShouldBeValid_WhenGivenParam(string? link, bool youtube, bool vimeo, bool dailymotion)
