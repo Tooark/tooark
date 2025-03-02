@@ -28,10 +28,12 @@ public sealed class LinkVideo : ValueObject
     static bool RegexValidation(string link, string pattern) => Regex.IsMatch(link, pattern, RegexOptions.None, TimeSpan.FromMilliseconds(300));
 
     // Verifica se o link é válido.
-    bool linkIsValid =
+    bool linkIsValid = !string.IsNullOrWhiteSpace(link) &&
+    (
       (youtube && RegexValidation(link, RegexPattern.YouTube)) ||
       (vimeo && RegexValidation(link, RegexPattern.Vimeo)) ||
-      (dailymotion && RegexValidation(link, RegexPattern.Dailymotion));
+      (dailymotion && RegexValidation(link, RegexPattern.Dailymotion))
+    );
 
     // Verifica se o link é válido.
     if (linkIsValid)
