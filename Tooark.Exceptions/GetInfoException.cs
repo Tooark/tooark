@@ -12,12 +12,6 @@ namespace Tooark.Exceptions;
 public class GetInfoException(string message) : TooarkException(message)
 {
   /// <summary>
-  /// Função virtual para obter as mensagens de erro.
-  /// </summary>
-  /// <returns>Lista de mensagens de erro.</returns>
-  public override List<string> GetErrorMessages() => [Message];
-
-  /// <summary>
   /// Função virtual para obter o status code da exceção.
   /// </summary>
   /// <returns>Status code da exceção. Padronizado para 400 (BadRequest).</returns>

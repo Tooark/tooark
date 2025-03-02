@@ -8,24 +8,37 @@ namespace Tooark.Exceptions;
 public abstract class TooarkException : Exception
 {
   /// <summary>
-  /// Construtor padrão.
+  /// Lista privada de mensagens de erro.
   /// </summary>
-  /// <param name="message">Mensagem de erro.</param>
-  public TooarkException(string message) : base(message) { }
+  private readonly IList<string> _errors;
+
 
   /// <summary>
-  /// Construtor que aceita uma exceção interna.
+  /// Construtor da classe.
   /// </summary>
   /// <param name="message">Mensagem de erro.</param>
-  /// <param name="innerException">Exceção interna.</param>
-  public TooarkException(string message, Exception innerException) : base(message, innerException) { }
+  public TooarkException(string message) : base(message)
+  {
+    // Inicializa a lista de mensagens de erro.
+    _errors = [message];
+  }
+
+  /// <summary>
+  /// Construtor da classe.
+  /// </summary>
+  /// <param name="errors">Lista de mensagens de erro.</param>
+  public TooarkException(IList<string> errors) : base(errors.FirstOrDefault())
+  {
+    // Inicializa a lista de mensagens de erro.
+    _errors = errors;
+  }
 
 
   /// <summary>
   /// Função abstrata para obter as mensagens de erro.
   /// </summary>
   /// <returns>Lista de mensagens de erro.</returns>
-  public abstract List<string> GetErrorMessages();
+  public virtual IList<string> GetErrorMessages() => _errors;
 
   /// <summary>
   /// Função abstrata para obter o status code da exceção.
