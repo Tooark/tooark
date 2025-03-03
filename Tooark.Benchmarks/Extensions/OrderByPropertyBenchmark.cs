@@ -56,18 +56,4 @@ public class OrderByPropertyBenchmark
     var queryable = _categories.AsEnumerable();
     _ = queryable.OrderByProperty("Subcategory.Name").ToList();
   }
-
-  [Benchmark]
-  public void QueryableComplexCollection()
-  {
-    var queryable = _categories.AsQueryable();
-    _ = queryable.OrderByProperty("ListSubCategory.Name", true, "Type", 1).ToList();
-  }
-
-  [Benchmark]
-  public void EnumerableComplexCollection()
-  {
-    var queryable = _categories.AsEnumerable();
-    _ = queryable.OrderByProperty("ListSubCategory.Name", true, "Type", 1).ToList();
-  }
 }
