@@ -12,18 +12,18 @@ public class FileEntityTests
     public TestFileEntity() { }
 
     // Construtor com parâmetros base
-    public TestFileEntity(string fileUrl, string name, Guid createdBy) :
-    base(fileUrl, name, createdBy)
+    public TestFileEntity(string fileName, string title, Guid createdBy) :
+    base(fileName, title, createdBy)
     { }
 
     // Construtor com parâmetros e URL pública
-    public TestFileEntity(string fileUrl, string name, string publicUrl, Guid createdBy) :
-    base(fileUrl, name, publicUrl, createdBy)
+    public TestFileEntity(string fileName, string title, string link, Guid createdBy) :
+    base(fileName, title, link, createdBy)
     { }
 
     // Construtor com parâmetros, URL pública, formato e tipo
-    public TestFileEntity(string fileUrl, string name, string publicUrl, string fileFormat, EFileType type, Guid createdBy) :
-    base(fileUrl, name, publicUrl, fileFormat, type, createdBy)
+    public TestFileEntity(string fileName, string title, string link, string fileFormat, EFileType type, long size, Guid createdBy) :
+    base(fileName, title, link, fileFormat, type, size, createdBy)
     { }
   }
 
@@ -36,9 +36,9 @@ public class FileEntityTests
 
     // Assert
     Assert.True(fileEntity.IsValid);
-    Assert.Null(fileEntity.FileUrl);
-    Assert.Null(fileEntity.Name);
-    Assert.Null(fileEntity.PublicUrl);
+    Assert.Null(fileEntity.FileName);
+    Assert.Null(fileEntity.Title);
+    Assert.Null(fileEntity.Link);
     Assert.Equal(Guid.Empty, fileEntity.CreatedBy);
   }
 
@@ -47,18 +47,18 @@ public class FileEntityTests
   public void Constructor_ShouldAssignValues_WhenValidParameters()
   {
     // Arrange
-    var fileUrl = "https://example.com/file";
-    var name = "Test File";
+    var fileName = "https://example.com/file";
+    var title = "Test File";
     var createdBy = Guid.NewGuid();
 
     // Act
-    var fileEntity = new TestFileEntity(fileUrl, name, createdBy);
+    var fileEntity = new TestFileEntity(fileName, title, createdBy);
 
     // Assert
     Assert.True(fileEntity.IsValid);
-    Assert.Equal(fileUrl, fileEntity.FileUrl);
-    Assert.Equal(name, fileEntity.Name);
-    Assert.Equal(fileUrl, fileEntity.PublicUrl);
+    Assert.Equal(fileName, fileEntity.FileName);
+    Assert.Equal(title, fileEntity.Title);
+    Assert.Equal(fileName, fileEntity.Link);
     Assert.Equal(createdBy, fileEntity.CreatedBy);
   }
 
@@ -67,19 +67,19 @@ public class FileEntityTests
   public void Constructor_ShouldAssignValues_WhenValidParametersWithPublicUrl()
   {
     // Arrange
-    var fileUrl = "https://example.com/file";
-    var name = "Test File";
-    var publicUrl = "https://example.com/publicfile";
+    var fileName = "https://example.com/file";
+    var title = "Test File";
+    var link = "https://example.com/publicfile";
     var createdBy = Guid.NewGuid();
 
     // Act
-    var fileEntity = new TestFileEntity(fileUrl, name, publicUrl, createdBy);
+    var fileEntity = new TestFileEntity(fileName, title, link, createdBy);
 
     // Assert
     Assert.True(fileEntity.IsValid);
-    Assert.Equal(fileUrl, fileEntity.FileUrl);
-    Assert.Equal(name, fileEntity.Name);
-    Assert.Equal(publicUrl, fileEntity.PublicUrl);
+    Assert.Equal(fileName, fileEntity.FileName);
+    Assert.Equal(title, fileEntity.Title);
+    Assert.Equal(link, fileEntity.Link);
     Assert.Equal(createdBy, fileEntity.CreatedBy);
   }
 
@@ -88,22 +88,24 @@ public class FileEntityTests
   public void Constructor_ShouldAssignValues_WhenValidParametersWithExtensionAndType()
   {
     // Arrange
-    var fileUrl = "https://example.com/file";
-    var name = "Test File";
-    var publicUrl = "https://example.com/publicfile";
+    var fileName = "https://example.com/file";
+    var title = "Test File";
+    var link = "https://example.com/publicfile";
     var fileFormat = ".txt";
     var type = EFileType.Unknown;
+    var size = 1024;
     var createdBy = Guid.NewGuid();
 
     // Act
-    var fileEntity = new TestFileEntity(fileUrl, name, publicUrl, fileFormat, type, createdBy);
+    var fileEntity = new TestFileEntity(fileName, title, link, fileFormat, type, size, createdBy);
 
     // Assert
-    Assert.Equal(fileUrl, fileEntity.FileUrl);
-    Assert.Equal(name, fileEntity.Name);
-    Assert.Equal(publicUrl, fileEntity.PublicUrl);
+    Assert.Equal(fileName, fileEntity.FileName);
+    Assert.Equal(title, fileEntity.Title);
+    Assert.Equal(link, fileEntity.Link);
     Assert.Equal(fileFormat, fileEntity.FileFormat);
     Assert.Equal(type, fileEntity.Type);
+    Assert.Equal(size, fileEntity.Size);
     Assert.Equal(createdBy, fileEntity.CreatedBy);
   }
 
@@ -112,21 +114,22 @@ public class FileEntityTests
   public void Constructor_ShouldGenerateNotification_WhenInvalidFileUrl()
   {
     // Arrange
-    var fileUrl = "invalid-url";
-    var name = "Test File";
+    var fileName = "invalid-url";
+    var title = "Test File";
     var createdBy = Guid.NewGuid();
 
     // Act
-    var fileEntity = new TestFileEntity(fileUrl, name, createdBy);
+    var fileEntity = new TestFileEntity(fileName, title, createdBy);
 
     // Assert
     Assert.False(fileEntity.IsValid);
-    Assert.Equal("Field.Invalid;FileUrl", fileEntity.Notifications.First());
-    Assert.Null(fileEntity.FileUrl);
-    Assert.Null(fileEntity.Name);
-    Assert.Null(fileEntity.PublicUrl);
+    Assert.Equal("Field.Invalid;FileName", fileEntity.Notifications.First());
+    Assert.Null(fileEntity.FileName);
+    Assert.Null(fileEntity.Title);
+    Assert.Null(fileEntity.Link);
     Assert.Null(fileEntity.FileFormat);
     Assert.Equal(EFileType.Unknown, fileEntity.Type);
+    Assert.Equal(0, fileEntity.Size);
     Assert.Equal(createdBy, fileEntity.CreatedBy);
   }
 
@@ -135,21 +138,22 @@ public class FileEntityTests
   public void Constructor_ShouldGenerateNotification_WhenNameIsEmpty()
   {
     // Arrange
-    var fileUrl = "https://example.com/file";
-    var name = "";
+    var fileName = "https://example.com/file";
+    var title = "";
     var createdBy = Guid.NewGuid();
 
     // Act
-    var fileEntity = new TestFileEntity(fileUrl, name, createdBy);
+    var fileEntity = new TestFileEntity(fileName, title, createdBy);
 
     // Assert
     Assert.False(fileEntity.IsValid);
-    Assert.Contains("Field.Required;Name", fileEntity.Notifications.First());
-    Assert.Null(fileEntity.FileUrl);
-    Assert.Null(fileEntity.Name);
-    Assert.Null(fileEntity.PublicUrl);
+    Assert.Contains("Field.Required;Title", fileEntity.Notifications.First());
+    Assert.Null(fileEntity.FileName);
+    Assert.Null(fileEntity.Title);
+    Assert.Null(fileEntity.Link);
     Assert.Null(fileEntity.FileFormat);
     Assert.Equal(EFileType.Unknown, fileEntity.Type);
+    Assert.Equal(0, fileEntity.Size);
     Assert.Equal(createdBy, fileEntity.CreatedBy);
 
   }
@@ -159,22 +163,23 @@ public class FileEntityTests
   public void Constructor_ShouldGenerateNotification_WhenPublicUrlIsInvalid()
   {
     // Arrange
-    var fileUrl = "https://example.com/file";
-    var name = "Test File";
-    var publicUrl = "invalid-url";
+    var fileName = "https://example.com/file";
+    var title = "Test File";
+    var link = "invalid-url";
     var createdBy = Guid.NewGuid();
 
     // Act
-    var fileEntity = new TestFileEntity(fileUrl, name, publicUrl, createdBy);
+    var fileEntity = new TestFileEntity(fileName, title, link, createdBy);
 
     // Assert
     Assert.False(fileEntity.IsValid);
-    Assert.Equal("Field.Invalid;PublicUrl", fileEntity.Notifications.First());
-    Assert.Null(fileEntity.FileUrl);
-    Assert.Null(fileEntity.Name);
-    Assert.Null(fileEntity.PublicUrl);
+    Assert.Equal("Field.Invalid;Link", fileEntity.Notifications.First());
+    Assert.Null(fileEntity.FileName);
+    Assert.Null(fileEntity.Title);
+    Assert.Null(fileEntity.Link);
     Assert.Null(fileEntity.FileFormat);
     Assert.Equal(EFileType.Unknown, fileEntity.Type);
+    Assert.Equal(0, fileEntity.Size);
     Assert.Equal(createdBy, fileEntity.CreatedBy);
   }
 
@@ -183,24 +188,26 @@ public class FileEntityTests
   public void Constructor_ShouldGenerateNotification_WhenFileFormatIsInvalid()
   {
     // Arrange
-    var fileUrl = "https://example.com/file";
-    var name = "Test File";
-    var publicUrl = "https://example.com/file";
+    var fileName = "https://example.com/file";
+    var title = "Test File";
+    var link = "https://example.com/file";
     var fileFormat = "";
     var type = EFileType.Unknown;
+    var size = 1024;
     var createdBy = Guid.NewGuid();
 
     // Act
-    var fileEntity = new TestFileEntity(fileUrl, name, publicUrl, fileFormat, type, createdBy);
+    var fileEntity = new TestFileEntity(fileName, title, link, fileFormat, type, size, createdBy);
 
     // Assert
     Assert.False(fileEntity.IsValid);
     Assert.Equal("Field.Required;FileFormat", fileEntity.Notifications.First());
-    Assert.Null(fileEntity.FileUrl);
-    Assert.Null(fileEntity.Name);
-    Assert.Null(fileEntity.PublicUrl);
+    Assert.Null(fileEntity.FileName);
+    Assert.Null(fileEntity.Title);
+    Assert.Null(fileEntity.Link);
     Assert.Null(fileEntity.FileFormat);
     Assert.Equal(EFileType.Unknown, fileEntity.Type);
+    Assert.Equal(size, fileEntity.Size);
     Assert.Equal(createdBy, fileEntity.CreatedBy);
   }
 }
