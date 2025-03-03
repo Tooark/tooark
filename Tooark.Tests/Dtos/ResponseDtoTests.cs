@@ -286,4 +286,48 @@ public class ResponseDtoTests
     Assert.Null(responseDto.Pagination);
     Assert.Empty(responseDto.Metadata);
   }
+
+  // Teste com o construtor que recebe notificação e opção de uso de código de erro parâmetro false
+  [Fact]
+  public void Constructor_WithNotificationAndWithoutCode_ShouldReturnListError()
+  {
+    // Arrange
+    var message = "Error 1";
+    var key = "key";
+    var code = "Test";
+    var withCode = false;
+    var notification = new ResponseTest();
+    notification.AddNotification(message, key, code);
+
+    // Act
+    ResponseDto<ResponseTest> responseDto = new(notification, withCode);
+
+    // Assert
+    Assert.Null(responseDto.Data?.Messages);
+    Assert.Equal(message, responseDto.Errors.First());
+    Assert.Null(responseDto.Pagination);
+    Assert.Empty(responseDto.Metadata);
+  }
+
+  // Teste com o construtor que recebe notificação e opção de uso de código de erro parâmetro true
+  [Fact]
+  public void Constructor_WithNotificationAndWithCode_ShouldReturnListError()
+  {
+    // Arrange
+    var message = "Error 1";
+    var key = "key";
+    var code = "Test";
+    var withCode = true;
+    var notification = new ResponseTest();
+    notification.AddNotification(message, key, code);
+
+    // Act
+    ResponseDto<ResponseTest> responseDto = new(notification, withCode);
+
+    // Assert
+    Assert.Null(responseDto.Data?.Messages);
+    Assert.Equal($"{code}: {message}", responseDto.Errors.First());
+    Assert.Null(responseDto.Pagination);
+    Assert.Empty(responseDto.Metadata);
+  }
 }
