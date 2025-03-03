@@ -207,7 +207,7 @@ public class FileEntityTests
     Assert.Null(fileEntity.Link);
     Assert.Null(fileEntity.FileFormat);
     Assert.Equal(EFileType.Unknown, fileEntity.Type);
-    Assert.Equal(size, fileEntity.Size);
+    Assert.Equal(0, fileEntity.Size);
     Assert.Equal(createdBy, fileEntity.CreatedBy);
   }
 }
