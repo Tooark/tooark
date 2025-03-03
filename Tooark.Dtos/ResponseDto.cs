@@ -141,6 +141,25 @@ public class ResponseDto<T> : Dto
     Errors = [.. errors.Select(Localizer)];
   }
 
+  /// <summary>
+  /// Construtor com notificação e opção de uso de código de erro.
+  /// </summary>
+  /// <param name="notification">Notificação com itens de erro.</param>
+  /// <param name="withCode">Indicador se mensagem é com código de erro.</param>
+  public ResponseDto(Notification notification, bool withCode)
+  {
+    // Função para adicionar código de erro a string caso selecionado
+    string stringCode(string value) => withCode ? $"{value}: " : "";
+
+    // Captura as mensagens de erro das notificações
+    var errors = notification.Notifications
+      .Select(x => $"{stringCode(x.Code)}{Localizer(x.Message)}")
+      .ToList();
+
+    // Atribui as mensagens de erro com as strings localizadas correspondentes
+    Errors = [.. errors.Select(Localizer)];
+  }
+
 
   /// <summary>
   /// Adiciona dados de paginação.
