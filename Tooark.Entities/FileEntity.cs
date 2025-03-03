@@ -15,18 +15,18 @@ namespace Tooark.Entities;
 public abstract class FileEntity : InitialEntity
 {
   /// <summary>
-  /// URL do arquivo para utilização em APIs.
+  /// Nome do arquivo incluindo path do bucket.
   /// </summary>
   /// <value>
-  /// A URL do arquivo é do tipo <see cref="string"/>.
+  /// O nome do arquivo é do tipo <see cref="string"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'fileurl' é do tipo 'text' e é obrigatório.
+  /// A coluna correspondente no banco de dados é 'filename' é do tipo 'text' e é obrigatório.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
-  [Column("fileurl", TypeName = "text")]
+  [Column("filename", TypeName = "text")]
   [Required]
-  public string FileUrl { get; set; } = null!;
+  public string FileName { get; set; } = null!;
 
   /// <summary>
   /// Título do arquivo para exibição.
@@ -35,26 +35,26 @@ public abstract class FileEntity : InitialEntity
   /// O título do arquivo é do tipo <see cref="string"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'name' é do tipo 'varchar(255)' e é obrigatório.
+  /// A coluna correspondente no banco de dados é 'title' é do tipo 'varchar(255)' e é obrigatório.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
-  [Column("name", TypeName = "varchar(255)")]
+  [Column("title", TypeName = "varchar(255)")]
   [Required]
-  public string Name { get; set; } = null!;
+  public string Title { get; set; } = null!;
 
   /// <summary>
-  /// URL pública do arquivo para utilização em links e páginas web.
+  /// Link do arquivo para utilização em páginas web.
   /// </summary>
   /// <value>
-  /// A URL pública do arquivo é do tipo <see cref="string"/>.
+  /// O link público do arquivo é do tipo <see cref="string"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'publicurl' é do tipo 'text' e é obrigatório.
+  /// A coluna correspondente no banco de dados é 'link' é do tipo 'text' e é obrigatório.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
-  [Column("publicurl", TypeName = "text")]
+  [Column("link", TypeName = "text")]
   [Required]
-  public string? PublicUrl { get; set; } = null;
+  public string? Link { get; set; } = null;
 
   /// <summary>
   /// Formato do arquivo.
@@ -82,6 +82,19 @@ public abstract class FileEntity : InitialEntity
   [Column("type", TypeName = "int")]
   public EFileType Type { get; set; } = EFileType.Unknown;
 
+  /// <summary>
+  /// Tamanho do arquivo.
+  /// </summary>
+  /// <value>
+  /// O tamanho do arquivo é do tipo <see cref="long"/>.
+  /// </value>
+  /// <remarks>
+  /// A coluna correspondente no banco de dados é 'size' é do tipo 'bigint'.
+  /// </remarks>
+  [DatabaseGenerated(DatabaseGeneratedOption.None)]
+  [Column("size", TypeName = "bigint")]
+  public long Size { get; set; } = 0;
+
 
   /// <summary>
   /// Construtor da classe FileEntity.
@@ -92,15 +105,15 @@ public abstract class FileEntity : InitialEntity
   /// <summary>
   /// Construtor da classe FileEntity.
   /// </summary>
-  /// <param name="fileUrl">A URL do arquivo.</param>
-  /// <param name="name">O título do arquivo.</param>
+  /// <param name="fileName">O nome do arquivo.</param>
+  /// <param name="title">O título do arquivo.</param>
   /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  protected FileEntity(string fileUrl, string name, Guid createdBy)
+  protected FileEntity(string fileName, string title, Guid createdBy)
   {
     // Valida os parâmetros
     AddNotifications(new Validation()
-      .IsUrl(fileUrl, "FileUrl", "Field.Invalid;FileUrl")
-      .IsNotNullOrEmpty(name, "Name", "Field.Required;Name")
+      .IsUrl(fileName, "FileName", "Field.Invalid;FileName")
+      .IsNotNullOrEmpty(title, "Title", "Field.Required;Title")
     );
 
     // Define o identificador do criador
@@ -109,26 +122,26 @@ public abstract class FileEntity : InitialEntity
     // Verifica se não houve notificações de erro
     if (IsValid)
     {
-      FileUrl = fileUrl;
-      Name = name;
-      PublicUrl = fileUrl;
+      FileName = fileName;
+      Title = title;
+      Link = fileName;
     }
   }
 
   /// <summary>
   /// Construtor da classe FileEntity.
   /// </summary>
-  /// <param name="fileUrl">A URL do arquivo.</param>
-  /// <param name="name">O título do arquivo.</param>
-  /// <param name="publicUrl">A URL pública do arquivo. Parâmetro opcional.</param>
+  /// <param name="fileName">O nome do arquivo.</param>
+  /// <param name="title">O título do arquivo.</param>
+  /// <param name="link">O link do arquivo.</param>
   /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  protected FileEntity(string fileUrl, string name, string publicUrl, Guid createdBy)
+  protected FileEntity(string fileName, string title, string link, Guid createdBy)
   {
     // Valida os parâmetros
     AddNotifications(new Validation()
-      .IsUrl(fileUrl, "FileUrl", "Field.Invalid;FileUrl")
-      .IsNotNullOrEmpty(name, "Name", "Field.Required;Name")
-      .IsUrl(publicUrl, "PublicUrl", "Field.Invalid;PublicUrl")
+      .IsUrl(fileName, "FileName", "Field.Invalid;FileName")
+      .IsNotNullOrEmpty(title, "Title", "Field.Required;Title")
+      .IsUrl(link, "Link", "Field.Invalid;Link")
     );
 
     // Define o identificador do criador
@@ -137,30 +150,32 @@ public abstract class FileEntity : InitialEntity
     // Verifica se não houve notificações de erro
     if (IsValid)
     {
-      FileUrl = fileUrl;
-      Name = name;
-      PublicUrl = publicUrl;
+      FileName = fileName;
+      Title = title;
+      Link = link;
     }
   }
 
   /// <summary>
   /// Construtor da classe FileEntity.
   /// </summary>
-  /// <param name="fileUrl">A URL do arquivo.</param>
-  /// <param name="name">O título do arquivo.</param>
-  /// <param name="publicUrl">A URL pública do arquivo.</param>
+  /// <param name="fileName">O nome do arquivo.</param>
+  /// <param name="title">O título do arquivo.</param>
+  /// <param name="link">O link do arquivo.</param>
   /// <param name="fileFormat">O formato do arquivo.</param>
   /// <param name="type">O tipo do arquivo.</param>
+  /// <param name="size">O tamanho do arquivo.</param>
   /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  protected FileEntity(string fileUrl, string name, string publicUrl, string fileFormat, EFileType type, Guid createdBy)
+  protected FileEntity(string fileName, string title, string link, string fileFormat, EFileType type, long size, Guid createdBy)
   {
     // Valida os parâmetros
     AddNotifications(new Validation()
-      .IsUrl(fileUrl, "FileUrl", "Field.Invalid;FileUrl")
-      .IsNotNullOrEmpty(name, "Name", "Field.Required;Name")
-      .IsUrl(publicUrl, "PublicUrl", "Field.Invalid;PublicUrl")
+      .IsUrl(fileName, "FileName", "Field.Invalid;FileName")
+      .IsNotNullOrEmpty(title, "Title", "Field.Required;Title")
+      .IsUrl(link, "Link", "Field.Invalid;Link")
       .IsNotNullOrEmpty(fileFormat, "FileFormat", "Field.Required;FileFormat")
       .IsNotNullOrEmpty(type, "Type", "Field.Required;Type")
+      .IsGreaterOrEquals(size, 0, "Size", "Field.Invalid;Size")
     );
 
     // Define o identificador do criador
@@ -169,11 +184,12 @@ public abstract class FileEntity : InitialEntity
     // Verifica se não houve notificações de erro
     if (IsValid)
     {
-      FileUrl = fileUrl;
-      Name = name;
-      PublicUrl = publicUrl;
+      FileName = fileName;
+      Title = title;
+      Link = link;
       FileFormat = fileFormat;
       Type = type;
+      Size = size;
     }
   }
 }
