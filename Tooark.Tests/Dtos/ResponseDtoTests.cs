@@ -12,7 +12,7 @@ public class ResponseDtoTests
   public ResponseDtoTests()
   {
     var services = new ServiceCollection();
-    services.AddDto();
+    services.AddTooarkDtos();
   }
 
   // Cria uma classe que estende notificação para testes

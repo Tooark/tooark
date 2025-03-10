@@ -20,7 +20,7 @@ public static partial class TooarkDependencyInjection
     services.AddJsonStringLocalizer();
 
     // Adiciona o serviço StringLocalizer para Dto
-    services.AddDto();
+    services.AddTooarkDtos();
 
     // Retorna a coleção de serviços
     return services;

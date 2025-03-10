@@ -5,21 +5,21 @@ using Tooark.Extensions.Factories;
 namespace Tooark.Extensions.Injections;
 
 /// <summary>
-/// Classe de extensão para injeção de dependência do projeto Tooark.Extensions.
+/// Classe de extensão para adicionar os serviços de localização de recursos ao container de injeção de dependência.
 /// </summary>
-public static partial class TooarkDependencyInjection
+public static class TooarkJsonStringLocalizerDependencyInjection
 {
   /// <summary>
-  /// Adiciona o serviço JsonStringLocalizer com injeção de dependência.
+  /// Adiciona o serviço JsonStringLocalizer ao container de injeção de dependência.
   /// </summary>
-  /// <param name="services">A coleção de serviços para adicionar o serviço JsonStringLocalizer.</param>
-  /// <returns>A coleção de serviços com o serviço JsonStringLocalizer adicionado.</returns>
+  /// <param name="services">Coleção de serviços.</param>
+  /// <returns>A coleção de serviços com o serviço de localização de recursos adicionado.</returns>
   public static IServiceCollection AddJsonStringLocalizer(this IServiceCollection services)
   {
     // Adiciona o serviço de cache distribuído
     services.AddDistributedMemoryCache();
 
-    // Adiciona o serviço de localização de recursos
+    // Adiciona a pasta de recursos
     services.AddLocalization(options => options.ResourcesPath = "Resources");
 
     // Adiciona o serviço de localização de recurso padrão
@@ -28,12 +28,14 @@ public static partial class TooarkDependencyInjection
     // Adiciona o serviço de localização de recursos com cache distribuído e opções de configuração
     services.AddTransient<IStringLocalizer>(provider =>
     {
+      // Obtenção do serviço de localização de recurso
       var factory = provider.GetRequiredService<IStringLocalizerFactory>();
 
+      // Criação do serviço de localização de recurso
       return factory.Create(typeof(JsonStringLocalizerExtension));
     });
 
-    // Retorna a coleção de serviços
+    // Retorna os serviços
     return services;
   }
 }
