@@ -1,4 +1,4 @@
-namespace Tooark.Tests.Moq.Model.Category;
+namespace Tooark.Tests.Moq.Entities.Category;
 
 public class Category
 {

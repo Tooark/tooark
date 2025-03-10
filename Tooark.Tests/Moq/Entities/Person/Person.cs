@@ -1,4 +1,4 @@
-namespace Tooark.Tests.Moq.Model.Person;
+namespace Tooark.Tests.Moq.Entities.Person;
 
 public class Person(string name, int age)
 {

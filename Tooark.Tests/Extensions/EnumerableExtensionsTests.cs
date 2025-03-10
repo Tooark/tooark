@@ -1,6 +1,6 @@
 using System.Text;
 using Tooark.Extensions;
-using Tooark.Tests.Moq.Model.Category;
+using Tooark.Tests.Moq.Entities.Category;
 
 namespace Tooark.Tests.Extensions;
 
