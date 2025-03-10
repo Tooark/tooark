@@ -5,16 +5,16 @@ using Tooark.Extensions.Injections;
 namespace Tooark.Dtos.Injections;
 
 /// <summary>
-/// Classe de extensão para injeção de dependência do projeto Tooark.Dtos.
+/// Classe de extensão para adicionar os objetos de transferência de dados (Dto) ao container de injeção de dependência.
 /// </summary>
 public static partial class TooarkDependencyInjection
 {
   /// <summary>
-  /// Adiciona o StringLocalizer para Dto com injeção de dependência.
+  /// Adiciona o serviço de localização de recursos com o tipo Dto ao container de injeção de dependência.
   /// </summary>
-  /// <param name="services">A coleção de serviços para adicionar o StringLocalizer para Dto.</param>
-  /// <returns>A coleção de serviços com o StringLocalizer para Dto adicionado.</returns>
-  public static IServiceCollection AddDto(this IServiceCollection services)
+  /// <param name="services">Coleção de serviços.</param>
+  /// <returns>A coleção de serviços com o serviço de localização de recursos com o tipo Dto adicionado.</returns>
+  public static IServiceCollection AddTooarkDtos(this IServiceCollection services)
   {
     // Adiciona o serviço JsonStringLocalizer
     services.AddJsonStringLocalizer();
@@ -22,12 +22,16 @@ public static partial class TooarkDependencyInjection
     // Adiciona o serviço de localização de recurso padrão
     services.AddTransient<IStringLocalizer, StringLocalizer<Dto>>();
 
-     // Configura o localizador de strings para a classe Dto
+    // Cria o provedor de serviços
     var serviceProvider = services.BuildServiceProvider();
+
+    // Obtenção do serviço de localização de recurso
     var localizer = serviceProvider.GetRequiredService<IStringLocalizer>();
+
+    // Configura o tipo Dto
     Dto.Configure(localizer);
 
-    // Retorna a coleção de serviços
+    // Retorna os serviços
     return services;
   }
 }
