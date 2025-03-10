@@ -1,6 +1,6 @@
 using System.Globalization;
 using Tooark.Exceptions;
-using Tooark.Tests.Moq.Model.Language;
+using Tooark.Tests.Moq.Entities.Language;
 using Tooark.Utils;
 
 namespace Tooark.Tests.Utils;

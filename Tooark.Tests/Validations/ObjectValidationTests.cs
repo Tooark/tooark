@@ -1,4 +1,4 @@
-using Tooark.Tests.Moq.Model.Person;
+using Tooark.Tests.Moq.Entities.Person;
 using Tooark.Validations;
 
 namespace Tooark.Tests.Validations;
