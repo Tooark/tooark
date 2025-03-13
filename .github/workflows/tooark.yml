@@ -44,10 +44,10 @@ jobs:
         dotnet pack Tooark.Attributes/Tooark.Attributes.csproj --configuration Release /p:NoWarn="1591"
         dotnet pack Tooark/Tooark.csproj --configuration Release /p:NoWarn="1591"
 
-    - name: Extract version from csproj
+    - name: Extract version from Directory.Build.props
       id: extract_version
       run: |
-        VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" Tooark/Tooark.csproj)
+        VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" Directory.Build.props)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
 
     - name: Check if the version tag exists
