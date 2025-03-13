@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <PackageId>Tooark.ValueObjects</PackageId>
-    <Title>Tooark.ValueObjects</Title>
+    <PackageId>Tooark.Attributes</PackageId>
+    <Title>Tooark.Attributes</Title>
     <Authors>Paulo Sergio de Freitas Junior</Authors>
     <PackageTags>toolkit, attributes, validation, .NET</PackageTags>
     <Summary>Management of attribute validators for .NET projects.</Summary>
