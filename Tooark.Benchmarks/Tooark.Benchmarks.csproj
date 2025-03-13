@@ -5,6 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <SonarQubeExclude>true</SonarQubeExclude>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tooark\Tooark.csproj" />
+    <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
   </ItemGroup>
 
 </Project>

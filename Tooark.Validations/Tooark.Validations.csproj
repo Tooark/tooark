@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageId>Tooark.Validations</PackageId>
+    <Title>Tooark.Validations</Title>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <PackageTags>toolkit, enums, validation, .NET</PackageTags>
+    <Summary>Management of validations and standards for .NET projects.</Summary>
+    <PackageDescription>Package for managing validations and standards for .NET applications.</PackageDescription>
+    <Description>Library for type validation and standards, providing methods to ensure data integrity and compliance for .NET projects.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Resources\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
+  </ItemGroup>
+
+</Project>

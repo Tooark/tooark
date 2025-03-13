@@ -1,28 +1,32 @@
-using Tooark.Exceptions;
 using Tooark.ValueObjects;
 
 namespace Tooark.Tests.ValueObjects;
 
 public class EmailTests
 {
-  // Testa se o construtor da classe Email cria um objeto válido a partir de um endereço de email válido
+  // Testa se o endereço de email é válido a partir de um endereço de email válido
   [Theory]
   [InlineData("teste@example.com")] // Email válido
   [InlineData("te.te@example.com")] // Email válido
   [InlineData("te-te@example.com")] // Email válido
   [InlineData("te_te@example.com")] // Email válido
   [InlineData("teste@exa-ple.com")] // Email válido
-  public void Constructor_CreatesValidEmail_WhenGivenValidAddress(string validEmail)
+  [InlineData("TESTE@EXAMPLE.COM")] // Email válido
+  [InlineData("TE.TE@EXAMPLE.COM")] // Email válido
+  [InlineData("TE-TE@EXAMPLE.COM")] // Email válido
+  [InlineData("TE_TE@EXAMPLE.COM")] // Email válido
+  [InlineData("TESTE@EXA-PLE.COM")] // Email válido
+  public void Email_ShouldBeValid_WhenGivenValidEmail(string emailParam)
   {
-    // Act
-    Email email = new(validEmail);
+    // Arrange & Act
+    Email email = new(emailParam);
 
     // Assert
-    Assert.Equal(validEmail, email.Value);
-    Assert.Equal(validEmail, (string)email);
+    Assert.True(email.IsValid);
+    Assert.Equal(emailParam.ToLowerInvariant().Trim(), email.Value);
   }
 
-  // Testa se o construtor da classe Email lança uma exceção de argumento inválido a partir de um endereço de email inválido
+  // Testa se o endereço de email é inválido a partir de um endereço de email inválido
   [Theory]
   [InlineData(".test@example.com")] // Email iniciado com .
   [InlineData("-test@example.com")] // Email iniciado com -
@@ -58,58 +62,49 @@ public class EmailTests
   [InlineData("test@")] // Domínio ausente
   [InlineData("")] // Email vazio
   [InlineData(null)] // Email nulo
-  public void Constructor_ThrowsAppException_WhenGivenInvalidAddress(string? email)
+  public void Email_ShouldBeInvalid_WhenGivenInvalidEmail(string? emailParam)
   {
-    // Arrange
-    var invalidEmail = email;
+    // Arrange & Act
+    var email = new Email(emailParam!);
 
-    // Act & Assert
-    var exception = Assert.Throws<AppException>(() => new Email(invalidEmail!));
-    Assert.Equal("Field.Invalid;Email", exception.Message);
+    // Assert
+    Assert.False(email.IsValid);
+    Assert.Null(email.Value);
   }
 
-  // Testa se o construtor da classe Email lança uma exceção de argumento inválido a partir de um endereço de email nulo
+  // Testa se o método ToString retorna o endereço de email
   [Fact]
-  public void Constructor_ThrowsAppException_WhenGivenNullAddress()
-  {
-    // Arrange
-    string nullEmail = null!;
-
-    // Act & Assert
-    var exception = Assert.Throws<AppException>(() => new Email(nullEmail));
-    Assert.Equal("Field.Invalid;Email", exception.Message);
-  }
-
-  // Testa se o construtor da classe Email lança uma exceção de argumento inválido a partir de um endereço de email vazio
-  [Fact]
-  public void Constructor_ThrowsAppException_WhenGivenEmptyAddress()
-  {
-    // Arrange
-    var emptyEmail = "";
-
-    // Act & Assert
-    var exception = Assert.Throws<AppException>(() => new Email(emptyEmail));
-    Assert.Equal("Field.Invalid;Email", exception.Message);
-  }
-
-  // Testa se o método ToString retorna o valor do endereço de email
-  [Fact]
-  public void ToString_ShouldReturnValue()
+  public void Email_ShouldReturnCorrectStringRepresentation()
   {
     // Arrange
     var validEmail = "test@example.com";
+    var email = new Email(validEmail);
 
     // Act
-    var email = new Email(validEmail);
-    var result = email.ToString();
+    var emailString = email.ToString();
 
     // Assert
-    Assert.Equal(validEmail, result);
+    Assert.Equal(validEmail.ToLowerInvariant().Trim(), emailString);
   }
 
-  // Testa se o operador implícito de conversão de string para Email funciona corretamente
+  // Testa se o endereço de email está sendo convertido para string implicitamente
   [Fact]
-  public void ImplicitOperator_ConvertsStringToEmail()
+  public void Email_ShouldConvertToStringImplicitly()
+  {
+    // Arrange
+    var validEmail = "test@example.com";
+    var email = new Email(validEmail);
+
+    // Act
+    string emailString = email;
+
+    // Assert
+    Assert.Equal(validEmail.ToLowerInvariant().Trim(), emailString);
+  }
+
+  // Testa se o endereço de email está sendo convertido de string implicitamente
+  [Fact]
+  public void Email_ShouldConvertFromStringImplicitly()
   {
     // Arrange
     var validEmail = "test@example.com";
@@ -118,21 +113,7 @@ public class EmailTests
     Email email = validEmail;
 
     // Assert
-    Assert.Equal(validEmail, email.Value);
-    Assert.Equal(validEmail, (string)email);
-  }
-
-  // Testa se o operador implícito de conversão de Email para string funciona corretamente
-  [Fact]
-  public void ImplicitOperator_ConvertsEmailToString()
-  {
-    // Arrange
-    string validEmail = "test@example.com";
-
-    // Act
-    string email = new Email(validEmail);
-
-    // Assert
-    Assert.Equal(validEmail, email);
+    Assert.True(email.IsValid);
+    Assert.Equal(validEmail.ToLowerInvariant().Trim(), email.Value);
   }
 }

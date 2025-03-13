@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageId>Tooark.Entities</PackageId>
+    <Title>Tooark.Entities</Title>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <PackageTags>toolkit, entities, .NET, management, creation</PackageTags>
+    <Summary>Management of base entities in .NET projects.</Summary>
+    <PackageDescription>Package for managing base entities in .NET applications.</PackageDescription>
+    <Description>Library to management and maintenance of base entities in .NET projects.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Resources\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
+    <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
+    <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

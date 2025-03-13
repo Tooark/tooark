@@ -1,0 +1,6 @@
+{
+  "a": "Hello",
+  "b": "Hello, {0}",
+  "c": "Hello, {0} {1} {2}",
+  "z": "Default"
+}

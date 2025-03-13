@@ -2,40 +2,36 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <PackageId>Tooark</PackageId>
-    <Version>1.9.0</Version>
-    <Authors>Paulo Sergio de Freitas Junior</Authors>
-    <Company>Grupo Jacto</Company>
-    <PackageDescription>Set of tools and functions for C# projects</PackageDescription>
-    <Description>Set of tools and functions for C# projects</Description>
-    <RepositoryUrL>https://github.com/Grupo-Jacto/tooark</RepositoryUrL>
-    <PackageProjectUrl>https://github.com/Grupo-Jacto/tooark</PackageProjectUrl>
-    <PackageIcon>icon.jpg</PackageIcon>
-    <PackageTags>toolkit</PackageTags>
     <Title>Tooark</Title>
-    <Summary>Set of tools and functions for C# projects</Summary>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
-    <NoWarn>$(NoWarn);1591</NoWarn>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <PackageTags>toolkit, management, resources, functionality, .NET</PackageTags>
+    <Summary>Tooark management for .NET projects.</Summary>
+    <PackageDescription>Package with all Tooark resources for .NET applications.</PackageDescription>
+    <Description>Library with all Tooark resources and features aimed at .NET projects.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\Media\icon.jpg" Pack="true" PackagePath="\" />
     <None Update="Resources\**\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.410.1" />
-    <PackageReference Include="Google.Cloud.Storage.V1" Version="4.10.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.11" />
+    <ProjectReference Include="..\Tooark.Attributes\Tooark.Attributes.csproj" />
+    <ProjectReference Include="..\Tooark.Dtos\Tooark.Dtos.csproj" />
+    <ProjectReference Include="..\Tooark.Entities\Tooark.Entities.csproj" />
+    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
+    <ProjectReference Include="..\Tooark.Extensions\Tooark.Extensions.csproj" />
+    <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
+    <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
+    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
+    <ProjectReference Include="..\Tooark.ValueObjects\Tooark.ValueObjects.csproj" />
   </ItemGroup>
+
+  <!-- <ItemGroup>
+    <SonarQubeSetting Include="sonar.coverage.exclusions">
+      <Value>**/FileName1.cs, **/FileName2.cs</Value>
+    </SonarQubeSetting>
+  </ItemGroup> -->
 </Project>

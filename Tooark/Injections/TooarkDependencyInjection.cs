@@ -1,36 +1,28 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tooark.Options;
+using Tooark.Dtos.Injections;
+using Tooark.Extensions.Injections;
 
 namespace Tooark.Injections;
 
 /// <summary>
-/// Classe de extensão para configurar e adicionar serviços específicos da Tooark ao contêiner de injeção de dependência.
+/// Classe de extensão para injeção de dependência do projeto Tooark.
 /// </summary>
 public static partial class TooarkDependencyInjection
 {
   /// <summary>
-  /// Adiciona e configura os serviços da Tooark, incluindo serviços HTTP e RabbitMQ.
+  /// Adiciona as injeções de dependência dos projetos Tooark.
   /// </summary>
-  /// <param name="services">A coleção de serviços para adicionar os serviços da Tooark.</param>
-  /// <param name="configuration">A configuração da aplicação.</param>
-  /// <param name="localizerOptions">Configurações para o serviço de localização de recursos. Parâmetro opcional.</param>
-  /// <returns>A coleção de serviços com os serviços da Tooark adicionados.</returns>
-  public static IServiceCollection AddTooarkServices(
-    this IServiceCollection services,
-    IConfiguration? configuration = null,
-    LocalizerOptions? localizerOptions = null
-  )
+  /// <param name="services">A coleção de serviços para adicionar o serviço.</param>
+  /// <returns>A coleção de serviços adicionados.</returns>
+  public static IServiceCollection AddTooarkService(this IServiceCollection services)
   {
-    services.AddHttpClientService();
-    services.AddJsonStringLocalizer(localizerOptions);
-    services.AddAppException();
+    // Adiciona o serviço JsonStringLocalizer
+    services.AddJsonStringLocalizer();
 
-    if(configuration is not null)
-    {
-      services.AddBucketService(configuration);
-    }
+    // Adiciona o serviço StringLocalizer para Dto
+    services.AddTooarkDtos();
 
+    // Retorna a coleção de serviços
     return services;
   }
 }

@@ -8,7 +8,7 @@ public class MockFileInfo(string content) : IFileInfo
 
   public bool Exists => true;
   public long Length => _content.Length;
-  public string PhysicalPath => null;
+  public string PhysicalPath => string.Empty;
   public string Name => "MockFile";
   public DateTimeOffset LastModified => DateTimeOffset.Now;
   public bool IsDirectory => false;

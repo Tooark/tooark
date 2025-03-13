@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageId>Tooark.Extensions</PackageId>
+    <Title>Tooark.Extensions</Title>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <PackageTags>toolkit, extensions, utilities, .NET</PackageTags>
+    <Summary>Management of extensions and utilities for .NET projects.</Summary>
+    <PackageDescription>Package for managing extensions and utilities for .NET applications.</PackageDescription>
+    <Description>Library for managing extensions and utilities, facilitating the development and maintenance of .NET projects.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Resources\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.13" />
+  </ItemGroup>
+
+</Project>
