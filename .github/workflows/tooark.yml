@@ -1,0 +1,111 @@
+name: Build and deploy package
+
+on:
+  push:
+    branches:
+      - main123
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up .Net Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: "8.0.x"
+        source-url: https://nuget.pkg.github.com/Tooark/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    - name: Build with .NET
+      run: dotnet build --configuration Release
+
+    - name: Tests with .NET
+      run: dotnet test
+
+    - name: Create the packages
+      run: |
+        dotnet pack Tooark.Notifications/Tooark.Notifications.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.Validations/Tooark.Validations.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.Enums/Tooark.Enums.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.ValueObjects/Tooark.ValueObjects.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.Utils/Tooark.Utils.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.Extensions/Tooark.Extensions.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.Entities/Tooark.Entities.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.Dtos/Tooark.Dtos.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.Attributes/Tooark.Attributes.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark/Tooark.csproj --configuration Release /p:NoWarn="1591"
+
+    - name: Extract version from csproj
+      id: extract_version
+      run: |
+        VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" Tooark/Tooark.csproj)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: Check if the version tag exists
+      id: check_tag
+      run: |
+        if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+          echo "Tag exists"
+          echo "::set-output name=has_tag::true"
+        else
+          echo "Tag does not exist"
+          echo "::set-output name=has_tag::false"
+        fi
+
+    - name: Create a new tag and release if necessary
+      if: steps.check_tag.outputs.has_tag == 'false'
+      run: |
+        git tag "v${{ env.VERSION }}"
+        git push origin "v${{ env.VERSION }}"
+        curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/Tooark/tooark/releases \
+          -d @- <<EOF
+          {
+            "tag_name": "v${{ env.VERSION }}",
+            "target_commitish": "main",
+            "name": "Release v${{ env.VERSION }}",
+            "body": "Automated release for version v${{ env.VERSION }}",
+            "draft": false,
+            "prerelease": false
+          }
+
+    - name: Publish Tooark.Notifications to NuGet
+      run: dotnet nuget push Tooark.Notifications/bin/Release/Tooark.Notifications.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.Validations to NuGet
+      run: dotnet nuget push Tooark.Validations/bin/Release/Tooark.Validations.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.Enums to NuGet
+      run: dotnet nuget push Tooark.Enums/bin/Release/Tooark.Enums.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.ValueObjects to NuGet
+      run: dotnet nuget push Tooark.ValueObjects/bin/Release/Tooark.ValueObjects.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.Utils to NuGet
+      run: dotnet nuget push Tooark.Utils/bin/Release/Tooark.Utils.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.Extensions to NuGet
+      run: dotnet nuget push Tooark.Extensions/bin/Release/Tooark.Extensions.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.Entities to NuGet
+      run: dotnet nuget push Tooark.Entities/bin/Release/Tooark.Entities.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.Dtos to NuGet
+      run: dotnet nuget push Tooark.Dtos/bin/Release/Tooark.Dtos.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.Attributes to NuGet
+      run: dotnet nuget push Tooark.Attributes/bin/Release/Tooark.Attributes.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark to NuGet
+      run: dotnet nuget push Tooark/bin/Release/Tooark.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
