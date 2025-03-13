@@ -18,20 +18,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
+    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
+    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
     <ProjectReference Include="..\Tooark.Attributes\Tooark.Attributes.csproj" />
+    <ProjectReference Include="..\Tooark.Exceptions\Tooark.Exceptions.csproj" />
+    <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
+    <ProjectReference Include="..\Tooark.Extensions\Tooark.Extensions.csproj" />
     <ProjectReference Include="..\Tooark.Dtos\Tooark.Dtos.csproj" />
     <ProjectReference Include="..\Tooark.Entities\Tooark.Entities.csproj" />
-    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
-    <ProjectReference Include="..\Tooark.Extensions\Tooark.Extensions.csproj" />
-    <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
-    <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
-    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
     <ProjectReference Include="..\Tooark.ValueObjects\Tooark.ValueObjects.csproj" />
   </ItemGroup>
-
-  <!-- <ItemGroup>
-    <SonarQubeSetting Include="sonar.coverage.exclusions">
-      <Value>**/FileName1.cs, **/FileName2.cs</Value>
-    </SonarQubeSetting>
-  </ItemGroup> -->
 </Project>
