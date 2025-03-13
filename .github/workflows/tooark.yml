@@ -33,21 +33,21 @@ jobs:
 
     - name: Create the packages
       run: |
-        dotnet pack Tooark.Notifications/Tooark.Notifications.csproj --configuration Release /p:NoWarn="1591"
-        dotnet pack Tooark.Validations/Tooark.Validations.csproj --configuration Release /p:NoWarn="1591"
-        dotnet pack Tooark.Enums/Tooark.Enums.csproj --configuration Release /p:NoWarn="1591"
-        dotnet pack Tooark.ValueObjects/Tooark.ValueObjects.csproj --configuration Release /p:NoWarn="1591"
-        dotnet pack Tooark.Utils/Tooark.Utils.csproj --configuration Release /p:NoWarn="1591"
-        dotnet pack Tooark.Extensions/Tooark.Extensions.csproj --configuration Release /p:NoWarn="1591"
-        dotnet pack Tooark.Entities/Tooark.Entities.csproj --configuration Release /p:NoWarn="1591"
-        dotnet pack Tooark.Dtos/Tooark.Dtos.csproj --configuration Release /p:NoWarn="1591"
-        dotnet pack Tooark.Attributes/Tooark.Attributes.csproj --configuration Release /p:NoWarn="1591"
-        dotnet pack Tooark/Tooark.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.Notifications/Tooark.Notifications.csproj --configuration Release /p:NoWarn="1591" -p:NoDefaultExcludes=true
+        dotnet pack Tooark.Validations/Tooark.Validations.csproj --configuration Release /p:NoWarn="1591" -p:NoDefaultExcludes=true
+        dotnet pack Tooark.Enums/Tooark.Enums.csproj --configuration Release /p:NoWarn="1591" -p:NoDefaultExcludes=true
+        dotnet pack Tooark.ValueObjects/Tooark.ValueObjects.csproj --configuration Release /p:NoWarn="1591" -p:NoDefaultExcludes=true
+        dotnet pack Tooark.Utils/Tooark.Utils.csproj --configuration Release /p:NoWarn="1591" -p:NoDefaultExcludes=true
+        dotnet pack Tooark.Extensions/Tooark.Extensions.csproj --configuration Release /p:NoWarn="1591" -p:NoDefaultExcludes=true
+        dotnet pack Tooark.Entities/Tooark.Entities.csproj --configuration Release /p:NoWarn="1591" -p:NoDefaultExcludes=true
+        dotnet pack Tooark.Dtos/Tooark.Dtos.csproj --configuration Release /p:NoWarn="1591" -p:NoDefaultExcludes=true
+        dotnet pack Tooark.Attributes/Tooark.Attributes.csproj --configuration Release /p:NoWarn="1591" -p:NoDefaultExcludes=true
+        dotnet pack Tooark/Tooark.csproj --configuration Release /p:NoWarn="1591" -p:NoDefaultExcludes=true
 
-    - name: Extract version from csproj
+    - name: Extract version from Directory.Build.props
       id: extract_version
       run: |
-        VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" Tooark/Tooark.csproj)
+        VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" Directory.Build.props)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
 
     - name: Check if the version tag exists
