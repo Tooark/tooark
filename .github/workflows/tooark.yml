@@ -36,12 +36,13 @@ jobs:
         dotnet pack Tooark.Notifications/Tooark.Notifications.csproj --configuration Release /p:NoWarn="1591"
         dotnet pack Tooark.Validations/Tooark.Validations.csproj --configuration Release /p:NoWarn="1591"
         dotnet pack Tooark.Enums/Tooark.Enums.csproj --configuration Release /p:NoWarn="1591"
-        dotnet pack Tooark.ValueObjects/Tooark.ValueObjects.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.Attributes/Tooark.Attributes.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.Exceptions/Tooark.Exceptions.csproj --configuration Release /p:NoWarn="1591"
         dotnet pack Tooark.Utils/Tooark.Utils.csproj --configuration Release /p:NoWarn="1591"
         dotnet pack Tooark.Extensions/Tooark.Extensions.csproj --configuration Release /p:NoWarn="1591"
-        dotnet pack Tooark.Entities/Tooark.Entities.csproj --configuration Release /p:NoWarn="1591"
         dotnet pack Tooark.Dtos/Tooark.Dtos.csproj --configuration Release /p:NoWarn="1591"
-        dotnet pack Tooark.Attributes/Tooark.Attributes.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.Entities/Tooark.Entities.csproj --configuration Release /p:NoWarn="1591"
+        dotnet pack Tooark.ValueObjects/Tooark.ValueObjects.csproj --configuration Release /p:NoWarn="1591"
         dotnet pack Tooark/Tooark.csproj --configuration Release /p:NoWarn="1591"
 
     - name: Extract version from Directory.Build.props
@@ -54,11 +55,11 @@ jobs:
       id: check_tag
       run: |
         if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
-          echo "Tag exists"
-          echo "::set-output name=has_tag::true"
+          # echo "Tag exists"
+          echo "has_tag=true" >> $GITHUB_ENV
         else
           echo "Tag does not exist"
-          echo "::set-output name=has_tag::false"
+          echo "has_tag=false" >> $GITHUB_ENV
         fi
 
     - name: Create a new tag and release if necessary
