@@ -5,6 +5,8 @@ on:
     branches:
       - main
   workflow_dispatch:
+env:
+  VERSION: 0.0.0
 
 jobs:
   build-and-deploy:
@@ -21,9 +23,6 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: "8.0.x"
-        source-url: https://nuget.pkg.github.com/Tooark/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Build with .NET
       run: dotnet build --configuration Release
@@ -55,7 +54,7 @@ jobs:
       id: check_tag
       run: |
         if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
-          # echo "Tag exists"
+          echo "Tag v${{ env.VERSION }} exists"
           echo "has_tag=true" >> $GITHUB_ENV
         else
           echo "Tag does not exist"
