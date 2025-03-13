@@ -4,7 +4,7 @@
   "Blocked": "Bloqueado",
   "Bucket.BucketNameEmpty": "El nombre del depósito está vacío.",
   "Bucket.BucketNotFound": "El cubo no fue encontrado.",
-  "Bucket.BucketOptionsEmpty": "La configuración del depósito está vacía.",
+  "Bucket.StorageOptionsEmpty": "La configuración del depósito está vacía.",
   "Bucket.CloudProviderEmpty": "El proveedor de la nube no ha sido definido.",
   "Bucket.CredentialsEmpty": "{0} credenciales no fueron proporcionadas.",
   "Bucket.FileErrorDeleting": "Error al eliminar el archivo del depósito.",

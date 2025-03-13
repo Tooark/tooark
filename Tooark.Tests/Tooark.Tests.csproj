@@ -26,7 +26,6 @@
     <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
     <ProjectReference Include="..\Tooark.ValueObjects\Tooark.ValueObjects.csproj" />
     <ProjectReference Include="..\Tooark\Tooark.csproj" />
-    <ProjectReference Include="..\Tooark.Storages\Tooark.Storages.csproj" />
     <ProjectReference Include="..\Tooark.Exceptions\Tooark.Exceptions.csproj" />
   </ItemGroup>
 
