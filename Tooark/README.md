@@ -20,6 +20,10 @@ Descrição: Este pacote define as entidades do domínio utilizadas na aplicaç�
 
 Descrição: Este pacote contém definições de enums utilizados em várias partes da aplicação.
 
+### Tooark.Exceptions
+
+Descrição: Este pacote fornece exceções personalizadas para uso em projetos .NET.
+
 ### Tooark.Extensions
 
 Descrição: Este pacote fornece métodos de extensão para tipos e classes comuns do .NET.
