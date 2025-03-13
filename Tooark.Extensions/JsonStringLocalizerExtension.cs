@@ -224,7 +224,7 @@ internal class InternalJsonStringLocalizer
     {
       // Lendo texto do arquivo JSON padrão
       var defaultJson = ReadJsonFile(defaultFilePath);
-      var additionalJson = !string.IsNullOrEmpty(additionalFilePath) && FileExists(additionalFilePath) ? ReadJsonFile(additionalFilePath) : null;
+      var additionalJson = !string.IsNullOrEmpty(additionalFilePath) ? ReadJsonFile(additionalFilePath) : null;
 
       // Mesclando os dois JSONs, dando prioridade ao JSON adicional
       var combinedJson = MergeJson(defaultJson, additionalJson);
@@ -270,6 +270,13 @@ internal class InternalJsonStringLocalizer
   /// <returns>Documento JSON.</returns>
   private static JsonDocument ReadJsonFile(string filePath)
   {
+    // Verifica se o arquivo existe
+    if (!FileExists(filePath))
+    {
+      // Retorna nulo se o arquivo não existir
+      return JsonDocument.Parse("{}");
+    }
+
     // Lendo texto do arquivo JSON
     using var additionalResourceStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
