@@ -482,5 +482,10 @@ appsettings.*.json
 # Folder sonarqube
 .sonarqube/
 
+# Folder scripts
+scripts/**
+!scripts/example-run-sonarqube-local.ps1
+!scripts/example-run-sonarqube-local.sh
+
 # Arquivo de documentação
-Tooark.xml
+*.xml

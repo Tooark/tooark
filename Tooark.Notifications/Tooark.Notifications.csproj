@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageId>Tooark.Notifications</PackageId>
+    <Title>Tooark.Notifications</Title>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <PackageTags>toolkit, notifications, alerts, .NET</PackageTags>
+    <Summary>Management of notifications and alerts for .NET projects.</Summary>
+    <PackageDescription>Package for creating and managing notifications and alerts for .NET applications.</PackageDescription>
+    <Description>Library for creating and managing notifications and alerts, facilitating communication and monitoring for .NET projects.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Resources\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -8,8 +8,8 @@ namespace Tooark.Benchmarks.Utils;
 [MemoryDiagnoser]
 public class NormalizedBenchmark
 {
-  static readonly List<string> _strings = new()
-  {
+  static readonly List<string> _strings =
+  [
     "Olá, eu sou o Tooark!",
     "¿Qué tal? Me llamo Tooark.",
     "Wie geht's? Ich heiße Tooark.",
@@ -143,25 +143,25 @@ public class NormalizedBenchmark
     "R7ïRwúõbäN",
     "K0êbnRDìYY",
     "rdKUývûuvl"
-  };
+  ];
 
   [Benchmark(Baseline = true)]
-  public void NormalizeValue()
+  public static void NormalizeValue()
   {
     // Normaliza cada string da lista usando o método NormalizeValue
     foreach (string s in _strings)
     {
-      _ = Util.NormalizeValue(s);
+      _ = Normalize.Value(s);
     }
   }
 
   [Benchmark]
-  public void NormalizeValueRegex()
+  public static void NormalizeValueRegex()
   {
     // Normaliza cada string da lista usando o método NormalizeValueFor
     foreach (string s in _strings)
     {
-      _ = Util.NormalizeValueRegex(s);
+      _ = Normalize.ValueRegex(s);
     }
   }
 }

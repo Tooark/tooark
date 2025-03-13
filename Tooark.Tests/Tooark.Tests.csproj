@@ -10,6 +10,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="Resources\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tooark.Attributes\Tooark.Attributes.csproj" />
+    <ProjectReference Include="..\Tooark.Dtos\Tooark.Dtos.csproj" />
+    <ProjectReference Include="..\Tooark.Entities\Tooark.Entities.csproj" />
+    <ProjectReference Include="..\Tooark.Enums\Tooark.Enums.csproj" />
+    <ProjectReference Include="..\Tooark.Extensions\Tooark.Extensions.csproj" />
+    <ProjectReference Include="..\Tooark.Notifications\Tooark.Notifications.csproj" />
+    <ProjectReference Include="..\Tooark.Utils\Tooark.Utils.csproj" />
+    <ProjectReference Include="..\Tooark.Validations\Tooark.Validations.csproj" />
+    <ProjectReference Include="..\Tooark.ValueObjects\Tooark.ValueObjects.csproj" />
+    <ProjectReference Include="..\Tooark\Tooark.csproj" />
+    <ProjectReference Include="..\Tooark.Exceptions\Tooark.Exceptions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="aWSSDK.S3" Version="3.7.415.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="Moq" Version="4.20.70" />
@@ -23,10 +46,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Tooark\Tooark.csproj" />
   </ItemGroup>
 
 </Project>
