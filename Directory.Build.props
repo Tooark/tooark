@@ -2,17 +2,23 @@
 
   <PropertyGroup>
     <Version>2.0.1</Version>
-    <RepositoryUrL>https://github.com/Tooark/tooark</RepositoryUrL>
-    <PackageProjectUrl>https://github.com/Tooark/tooark</PackageProjectUrl>
+    <Owners>Tooark</Owners>
+    <Company>Tooark</Company>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Company>Tooark</Company>
     <PackageIcon>icon.jpg</PackageIcon>
+    <RepositoryUrL>https://github.com/Tooark/tooark</RepositoryUrL>
+    <PackageProjectUrl>https://github.com/Tooark/tooark</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>$(OutputPath)$(MSBuildProjectName).xml</DocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
     <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <Deterministic>true</Deterministic>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
