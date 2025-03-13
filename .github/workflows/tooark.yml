@@ -3,7 +3,7 @@ name: Build and deploy package
 on:
   push:
     branches:
-      - main123
+      - main
   workflow_dispatch:
 
 jobs:
