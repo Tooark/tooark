@@ -4,7 +4,7 @@
   "Blocked": "Blocked",
   "Bucket.BucketNameEmpty": "Bucket name is empty.",
   "Bucket.BucketNotFound": "Bucket not found.",
-  "Bucket.BucketOptionsEmpty": "Bucket settings are empty.",
+  "Bucket.StorageOptionsEmpty": "Bucket settings are empty.",
   "Bucket.CloudProviderEmpty": "Cloud provider not defined.",
   "Bucket.CredentialsEmpty": "{0} credentials not provided.",
   "Bucket.FileErrorDeleting": "Error deleting file from bucket.",
