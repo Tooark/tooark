@@ -1,0 +1,54 @@
+using Tooark.Validations;
+
+namespace Tooark.ValueObjects;
+
+/// <summary>
+/// Representa um Guid do Atualizado Por.
+/// </summary>
+public sealed class UpdatedBy : ValueObject
+{
+  /// <summary>
+  /// Valor privado do Guid do Atualizado Por.
+  /// </summary>
+  private readonly Guid _value = Guid.Empty;
+
+  /// <summary>
+  /// Inicializa uma nova instância da classe UpdatedBy com o valor especificado.
+  /// </summary>
+  /// <param name="value">O valor do Guid do Atualizado Por a ser validado.</param>
+  public UpdatedBy(Guid value)
+  {
+    // Adiciona as notificações de validação do Guid do Atualizado Por.
+    AddNotifications(new Validation()
+      .IsNotEmpty(value, "UpdatedBy", "Field.Invalid;UpdatedBy")
+    );
+
+    // Verifica é valido então não existe notificação
+    if (IsValid)
+    {
+      // Define o valor do Guid do Atualizado Por
+      _value = value;
+    }
+  }
+
+
+  /// <summary>
+  /// Obtém o valor do Guid do Atualizado Por.
+  /// </summary>
+  public Guid Value { get => _value; }
+
+
+  /// <summary>
+  /// Define uma conversão implícita de um objeto UpdatedBy para uma Guid.
+  /// </summary>
+  /// <param name="email">O objeto UpdatedBy a ser convertido.</param>
+  /// <returns>Uma Guid que representa o valor do UpdatedBy.</returns>
+  public static implicit operator Guid(UpdatedBy email) => email._value;
+
+  /// <summary>
+  /// Define uma conversão implícita de uma Guid para um objeto UpdatedBy.
+  /// </summary>
+  /// <param name="value">A Guid a ser convertida em um objeto UpdatedBy.</param>
+  /// <returns>Um objeto UpdatedBy criado a partir do Guid fornecida.</returns>
+  public static implicit operator UpdatedBy(Guid value) => new(value);
+}
