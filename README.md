@@ -1,14 +1,28 @@
 # Tooark
 
-Biblioteca de ferramentas C# para facilitar o desenvolvimento de aplicações. [Link](/Functionality.md).
+Biblioteca com todos os recursos do Tooark e funcionalidades voltadas para projetos .NET [Link](/Tooark/README.md).
+
+| Package                | Version                                                                                                | Downloads                                                                                               |
+| ---------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `Tooark`               | [![NuGet](https://img.shields.io/nuget/v/Tooark.svg)](https://nuget.org/packages/Tooark)               | [![Nuget](https://img.shields.io/nuget/dt/Tooark.svg)](https://nuget.org/packages/Tooark)               |
+| `Tooark.Attributes`    | [![NuGet](https://img.shields.io/nuget/v/Tooark.svg)](https://nuget.org/packages/Tooark.Attributes)    | [![Nuget](https://img.shields.io/nuget/dt/Tooark.svg)](https://nuget.org/packages/Tooark.Attributes)    |
+| `Tooark.Dtos`          | [![NuGet](https://img.shields.io/nuget/v/Tooark.svg)](https://nuget.org/packages/Tooark.Dtos)          | [![Nuget](https://img.shields.io/nuget/dt/Tooark.svg)](https://nuget.org/packages/Tooark.Dtos)          |
+| `Tooark.Entities`      | [![NuGet](https://img.shields.io/nuget/v/Tooark.svg)](https://nuget.org/packages/Tooark.Entities)      | [![Nuget](https://img.shields.io/nuget/dt/Tooark.svg)](https://nuget.org/packages/Tooark.Entities)      |
+| `Tooark.Exceptions`    | [![NuGet](https://img.shields.io/nuget/v/Tooark.svg)](https://nuget.org/packages/Tooark.Exceptions)    | [![Nuget](https://img.shields.io/nuget/dt/Tooark.svg)](https://nuget.org/packages/Tooark.Exceptions)    |
+| `Tooark.Extensions`    | [![NuGet](https://img.shields.io/nuget/v/Tooark.svg)](https://nuget.org/packages/Tooark.Extensions)    | [![Nuget](https://img.shields.io/nuget/dt/Tooark.svg)](https://nuget.org/packages/Tooark.Extensions)    |
+| `Tooark.Enums`         | [![NuGet](https://img.shields.io/nuget/v/Tooark.svg)](https://nuget.org/packages/Tooark.Enums)         | [![Nuget](https://img.shields.io/nuget/dt/Tooark.svg)](https://nuget.org/packages/Tooark.Enums)         |
+| `Tooark.Notifications` | [![NuGet](https://img.shields.io/nuget/v/Tooark.svg)](https://nuget.org/packages/Tooark.Notifications) | [![Nuget](https://img.shields.io/nuget/dt/Tooark.svg)](https://nuget.org/packages/Tooark.Notifications) |
+| `Tooark.Validations`   | [![NuGet](https://img.shields.io/nuget/v/Tooark.svg)](https://nuget.org/packages/Tooark.Validations)   | [![Nuget](https://img.shields.io/nuget/dt/Tooark.svg)](https://nuget.org/packages/Tooark.Validations)   |
+| `Tooark.ValueObjects`  | [![NuGet](https://img.shields.io/nuget/v/Tooark.svg)](https://nuget.org/packages/Tooark.ValueObjects)  | [![Nuget](https://img.shields.io/nuget/dt/Tooark.svg)](https://nuget.org/packages/Tooark.ValueObjects)  |
+| `Tooark.Utils`         | [![NuGet](https://img.shields.io/nuget/v/Tooark.svg)](https://nuget.org/packages/Tooark.Utils)         | [![Nuget](https://img.shields.io/nuget/dt/Tooark.svg)](https://nuget.org/packages/Tooark.Utils)         |
 
 ---
 
 ## Criar ou revisar funcionalidades
 
-Clone o projeto (tem que ter missão de acesso)
+Clone o projeto (tem que ter permissão de acesso)
 
-`git clone https://github.com/Grupo-Jacto/tooark.git`
+`git clone https://github.com/Tooark/tooark.git`
 
 Acesse a pasta do projeto
 
@@ -146,6 +160,6 @@ builder.Services.AddSwaggerGen(c =>
 Os seguintes colaboradores estão trabalhando no microsserviço:
 
 | <img src="https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/62472c0ead6b7e006aa6225d/1adc1b60-182e-4cd2-9cad-668c8bf02ed0/128" width=150> |
-| :---: |
-| **Paulo Freitas** |
-| <paulo.freitas@grupojacto.com.br> |
+| :-----------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                       **Paulo Freitas**                                                                       |
+|                                                               <paulo.freitas@grupojacto.com.br>                                                               |
