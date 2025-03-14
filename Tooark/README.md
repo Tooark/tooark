@@ -1,6 +1,6 @@
 # Tooark
 
-Biblioteca com todos os recursos do Tooark e funcionalidades voltadas para projetos .NET.
+Biblioteca com todos os recursos e funcionalidades do Tooark voltadas para projetos .NET.
 
 ## Recursos disponíveis
 

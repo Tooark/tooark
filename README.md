@@ -1,6 +1,6 @@
 # Tooark
 
-Biblioteca com todos os recursos do Tooark e funcionalidades voltadas para projetos .NET [Link](/Tooark/README.md).
+Projeto com todos os recursos e funcionalidades do Tooark voltadas para projetos .NET [Link](/Tooark/README.md).
 
 | Package                | Version                                                                                                | Downloads                                                                                               |
 | ---------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
