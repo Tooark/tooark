@@ -4,43 +4,43 @@ Biblioteca com todos os recursos do Tooark e funcionalidades voltadas para proje
 
 ## Recursos disponíveis
 
-### Tooark.Attributes
+### [Tooark.Attributes](./Tooark.Attributes/README.md)
 
 Descrição: Este pacote fornece atributos personalizados para uso em projetos .NET.
 
-### Tooark.Dtos
+### [Tooark.Dtos](./Tooark.Attributes/README.md)
 
 Descrição: Este pacote contém objetos de transferência de dados (DTOs) para facilitar a comunicação entre camadas da aplicação.
 
-### Tooark.Entities
+### [Tooark.Entities](./Tooark.Attributes/README.md)
 
 Descrição: Este pacote define as entidades do domínio utilizadas na aplicação.
 
-### Tooark.Enums
+### [Tooark.Enums](./Tooark.Attributes/README.md)
 
 Descrição: Este pacote contém definições de enums utilizados em várias partes da aplicação.
 
-### Tooark.Exceptions
+### [Tooark.Exceptions](./Tooark.Attributes/README.md)
 
 Descrição: Este pacote fornece exceções personalizadas para uso em projetos .NET.
 
-### Tooark.Extensions
+### [Tooark.Extensions](./Tooark.Attributes/README.md)
 
 Descrição: Este pacote fornece métodos de extensão para tipos e classes comuns do .NET.
 
-### Tooark.Notifications
+### [Tooark.Notifications](./Tooark.Attributes/README.md)
 
 Descrição: Este pacote oferece funcionalidades para gerenciamento de notificações e mensagens na aplicação.
 
-### Tooark.Utils
+### [Tooark.Utils](./Tooark.Attributes/README.md)
 
 Descrição: Este pacote contém utilitários e funções auxiliares para diversas operações.
 
-### Tooark.Validations
+### [Tooark.Validations](./Tooark.Attributes/README.md)
 
 Descrição: Este pacote fornece funcionalidades de validação para dados e entidades.
 
-### Tooark.ValueObjects
+### [Tooark.ValueObjects](./Tooark.Attributes/README.md)
 
 Descrição: Este pacote define objetos de valor utilizados na aplicação.
 
