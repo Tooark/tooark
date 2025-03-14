@@ -81,31 +81,34 @@ jobs:
           }
 
     - name: Publish Tooark.Notifications to NuGet
-      run: dotnet nuget push Tooark.Notifications/bin/Release/Tooark.Notifications.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push Tooark.Notifications/bin/Release/Tooark.Notifications.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
 
     - name: Publish Tooark.Validations to NuGet
-      run: dotnet nuget push Tooark.Validations/bin/Release/Tooark.Validations.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
-
+      run: dotnet nuget push Tooark.Validations/bin/Release/Tooark.Validations.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+      
     - name: Publish Tooark.Enums to NuGet
-      run: dotnet nuget push Tooark.Enums/bin/Release/Tooark.Enums.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
-
-    - name: Publish Tooark.ValueObjects to NuGet
-      run: dotnet nuget push Tooark.ValueObjects/bin/Release/Tooark.ValueObjects.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
-
-    - name: Publish Tooark.Utils to NuGet
-      run: dotnet nuget push Tooark.Utils/bin/Release/Tooark.Utils.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
-
-    - name: Publish Tooark.Extensions to NuGet
-      run: dotnet nuget push Tooark.Extensions/bin/Release/Tooark.Extensions.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
-
-    - name: Publish Tooark.Entities to NuGet
-      run: dotnet nuget push Tooark.Entities/bin/Release/Tooark.Entities.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
-
-    - name: Publish Tooark.Dtos to NuGet
-      run: dotnet nuget push Tooark.Dtos/bin/Release/Tooark.Dtos.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push Tooark.Enums/bin/Release/Tooark.Enums.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
 
     - name: Publish Tooark.Attributes to NuGet
-      run: dotnet nuget push Tooark.Attributes/bin/Release/Tooark.Attributes.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push Tooark.Attributes/bin/Release/Tooark.Attributes.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.Exceptions to NuGet
+      run: dotnet nuget push Tooark.Exceptions/bin/Release/Tooark.Exceptions.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.Utils to NuGet
+      run: dotnet nuget push Tooark.Utils/bin/Release/Tooark.Utils.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.Extensions to NuGet
+      run: dotnet nuget push Tooark.Extensions/bin/Release/Tooark.Extensions.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.Dtos to NuGet
+      run: dotnet nuget push Tooark.Dtos/bin/Release/Tooark.Dtos.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.Entities to NuGet  
+      run: dotnet nuget push Tooark.Entities/bin/Release/Tooark.Entities.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+
+    - name: Publish Tooark.ValueObjects to NuGet  
+      run: dotnet nuget push Tooark.ValueObjects/bin/Release/Tooark.ValueObjects.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
 
     - name: Publish Tooark to NuGet
-      run: dotnet nuget push Tooark/bin/Release/Tooark.${{ env.VERSION }}.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push Tooark/bin/Release/Tooark.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
