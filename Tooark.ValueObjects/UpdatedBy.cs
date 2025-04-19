@@ -41,9 +41,9 @@ public sealed class UpdatedBy : ValueObject
   /// <summary>
   /// Define uma conversão implícita de um objeto UpdatedBy para uma Guid.
   /// </summary>
-  /// <param name="email">O objeto UpdatedBy a ser convertido.</param>
+  /// <param name="updatedBy">O objeto UpdatedBy a ser convertido.</param>
   /// <returns>Uma Guid que representa o valor do UpdatedBy.</returns>
-  public static implicit operator Guid(UpdatedBy email) => email._value;
+  public static implicit operator Guid(UpdatedBy updatedBy) => updatedBy._value;
 
   /// <summary>
   /// Define uma conversão implícita de uma Guid para um objeto UpdatedBy.
