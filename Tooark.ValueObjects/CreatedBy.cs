@@ -41,9 +41,9 @@ public sealed class CreatedBy : ValueObject
   /// <summary>
   /// Define uma conversão implícita de um objeto CreatedBy para uma Guid.
   /// </summary>
-  /// <param name="email">O objeto CreatedBy a ser convertido.</param>
+  /// <param name="createdBy">O objeto CreatedBy a ser convertido.</param>
   /// <returns>Uma Guid que representa o valor do CreatedBy.</returns>
-  public static implicit operator Guid(CreatedBy email) => email._value;
+  public static implicit operator Guid(CreatedBy createdBy) => createdBy._value;
 
   /// <summary>
   /// Define uma conversão implícita de uma Guid para um objeto CreatedBy.
