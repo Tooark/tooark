@@ -2,7 +2,7 @@ using Tooark.ValueObjects;
 
 namespace Tooark.Tests.ValueObjects;
 
-public class CreatedByTest
+public class CreatedByTests
 {
   // Teste criado para validar a criação de um CreatedBy válido.
   [Fact]
