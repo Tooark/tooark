@@ -30,7 +30,7 @@ public sealed class FileStorage : ValueObject
 
     // Se o nome do arquivo do storage não for informado, define o nome como o link
     name = string.IsNullOrWhiteSpace(name) ? link : name;
-
+    
     // Verifica se é válido então não existe notificação
     if (IsValid)
     {
