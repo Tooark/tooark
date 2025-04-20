@@ -26,7 +26,7 @@ public sealed class FileStorage : ValueObject
   public FileStorage(ProtocolHttp link, string? name = null)
   {
     // Se o nome do arquivo do storage não for informado, define o nome como o link
-    name ??= link;
+    name = string.IsNullOrWhiteSpace(name) ? link : name;
 
     // Adiciona as notificações de validação do arquivo do storage
     AddNotifications(new Validation()
