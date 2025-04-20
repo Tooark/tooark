@@ -33,7 +33,7 @@ public class FileStorageTests
   [InlineData(" ")]
   [InlineData("")]
   [InlineData(null)]
-  public void FileStorage_ShouldBeInvalid_WhenParamIsInvalid(ProtocolHttp? valueParam)
+  public void FileStorage_ShouldBeInvalid_WhenParamIsInvalid(string? valueParam)
   {
     // Arrange & Act
     var linkStorage = new FileStorage(valueParam!);
