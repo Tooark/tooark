@@ -26,6 +26,13 @@ Biblioteca gerenciamento de Value Objects pré-definidos e validados, garantindo
 - [ProtocolHttp](#20-protocolhttp)
 - [ProtocolWs](#21-protocolws)
 - [Url](#22-url)
+- [Name](#23-name)
+- [Title](#24-title)
+- [Description](#25-description)
+- [Keyword](#26-keyword)
+- [DeletedBy](#27-deletedby)
+- [RestoredBy](#28-restoredby)
+- [FileStorage](#29-filestorage)
 
 ## Value Objects
 
@@ -345,6 +352,102 @@ Representa uma URL válida.
 - `Url(string value)`: Converte implicitamente uma string para um objeto Url.
 
 [**Exemplo de Uso**](#url)
+
+### 23. Name
+
+**Funcionalidade:**
+Representa um nome válido.
+
+**Métodos:**
+
+- `Name.Value`: Obtém o valor do nome.
+- `ToString()`: Retorna o valor do nome.
+- `string(Name name)`: Converte implicitamente um objeto Name para uma string.
+- `Name(string value)`: Converte implicitamente uma string para um objeto Name.
+
+[**Exemplo de Uso**](#name)
+
+### 24. Title
+
+**Funcionalidade:**
+Representa um título válido.
+
+**Métodos:**
+
+- `Title.Value`: Obtém o valor do título.
+- `ToString()`: Retorna o valor do título.
+- `string(Title title)`: Converte implicitamente um objeto Title para uma string.
+- `Title(string value)`: Converte implicitamente uma string para um objeto Title.
+
+[**Exemplo de Uso**](#title)
+
+### 25. Description
+
+**Funcionalidade:**
+Representa uma descrição válida.
+
+**Métodos:**
+
+- `Description.Value`: Obtém o valor da descrição.
+- `ToString()`: Retorna o valor da descrição.
+- `string(Description description)`: Converte implicitamente um objeto Description para uma string.
+- `Description(string value)`: Converte implicitamente uma string para um objeto Description.
+
+[**Exemplo de Uso**](#description)
+
+### 26. Keyword
+
+**Funcionalidade:**
+Representa uma palavra-chave válida.
+
+**Métodos:**
+
+- `Keyword.Value`: Obtém o valor da palavra-chave.
+- `ToString()`: Retorna o valor da palavra-chave.
+- `string(Keyword keyword)`: Converte implicitamente um objeto Keyword para uma string.
+- `Keyword(string value)`: Converte implicitamente uma string para um objeto Keyword.
+
+[**Exemplo de Uso**](#keyword)
+
+### 27. DeletedBy
+
+**Funcionalidade:**
+Representa um usuário que excluiu um item.
+
+**Métodos:**
+
+- `DeletedBy.Value`: Obtém o valor do usuário que excluiu o item.
+- `Guid(DeletedBy deletedBy)`: Converte implicitamente um objeto DeletedBy para uma Guid.
+- `DeletedBy(Guid value)`: Converte implicitamente uma Guid para um objeto DeletedBy.
+
+[**Exemplo de Uso**](#deletedby)
+
+### 28. RestoredBy
+
+**Funcionalidade:**
+Representa um usuário que restaurou um item.
+
+**Métodos:**
+
+- `RestoredBy.Value`: Obtém o valor do usuário que restaurou o item.
+- `Guid(RestoredBy restoredBy)`: Converte implicitamente um objeto RestoredBy para uma Guid.
+- `RestoredBy(Guid value)`: Converte implicitamente uma Guid para um objeto RestoredBy.
+
+[**Exemplo de Uso**](#restoredby)
+
+### 29. FileStorage
+
+**Funcionalidade:**
+Representa um dados de um objeto em um bucket.
+
+**Métodos:**
+
+- `FileStorage.Value`: Obtém o valor dos dados armazenados.
+- `ToString()`: Retorna o valor dos dados armazenados.
+- `string(FileStorage fileStorage)`: Converte implicitamente um objeto FileStorage para uma string.
+- `FileStorage(string value)`: Converte implicitamente uma string para um objeto FileStorage.
+
+[**Exemplo de Uso**](#filestorage)
 
 ## Exemplos de Uso
 
@@ -831,6 +934,172 @@ Url url = "https://example.com";
 if (url.IsValid)
 {
   Console.WriteLine($"Protocolo válido: {url.Value}");
+}
+```
+
+### Name
+
+[Informações](#23-name)
+
+```csharp
+var name = new Name("John Doe");
+
+if (name.IsValid)
+{
+  Console.WriteLine($"Nome válido: {name.Value}");
+  Console.WriteLine($"Nome normalizado: {name.Normalized}");
+}
+```
+
+```csharp
+Name name = "John Doe";
+
+if (name.IsValid)
+{
+  Console.WriteLine($"Nome válido: {name.Value}");
+  Console.WriteLine($"Nome normalizado: {name.Normalized}");
+}
+```
+
+### Title
+
+[Informações](#24-title)
+
+```csharp
+var title = new Title("Software Engineer");
+
+if (title.IsValid)
+{
+  Console.WriteLine($"Título válido: {title.Value}");
+  Console.WriteLine($"Título normalizado: {title.Normalized}");
+}
+```
+
+```csharp
+Title title = "Software Engineer";
+
+if (title.IsValid)
+{
+  Console.WriteLine($"Título válido: {title.Value}");
+  Console.WriteLine($"Título normalizado: {title.Normalized}");
+}
+```
+
+### Description
+
+[Informações](#25-description)
+
+```csharp
+var description = new Description("This is a sample description.");
+
+if (description.IsValid)
+{
+  Console.WriteLine($"Descrição válida: {description.Value}");
+  Console.WriteLine($"Descrição normalizada: {description.Normalized}");
+}
+```
+
+```csharp
+Description description = "This is a sample description.";
+
+if (description.IsValid)
+{
+  Console.WriteLine($"Descrição válida: {description.Value}");
+  Console.WriteLine($"Descrição normalizada: {description.Normalized}");
+}
+```
+
+### Keyword
+
+[Informações](#26-keyword)
+
+```csharp
+var keyword = new Keyword("sample");
+
+if (keyword.IsValid)
+{
+  Console.WriteLine($"Palavra-chave válida: {keyword.Value}");
+  Console.WriteLine($"Palavra-chave normalizada: {keyword.Normalized}");
+}
+```
+
+```csharp
+Keyword keyword = "sample";
+
+if (keyword.IsValid)
+{
+  Console.WriteLine($"Palavra-chave válida: {keyword.Value}");
+  Console.WriteLine($"Palavra-chave normalizada: {keyword.Normalized}");
+}
+```
+
+### DeletedBy
+
+[Informações](#27-deletedby)
+
+```csharp
+var deletedBy = new DeletedBy(Guid.NewGuid());
+
+if (deletedBy.IsValid)
+{
+  Console.WriteLine($"Usuário que excluiu: {deletedBy.Value}");
+}
+```
+
+```csharp
+DeletedBy deletedBy = Guid.NewGuid();
+
+if (deletedBy.IsValid)
+{
+  Console.WriteLine($"Usuário que excluiu: {deletedBy.Value}");
+}
+```
+
+### RestoredBy
+
+[Informações](#28-restoredby)
+
+```csharp
+var restoredBy = new RestoredBy(Guid.NewGuid());
+
+if (restoredBy.IsValid)
+{
+  Console.WriteLine($"Usuário que restaurou: {restoredBy.Value}");
+  Console.WriteLine($"Usuário que restaurou: {restoredBy.Normalized}");
+}
+```
+
+```csharp
+RestoredBy restoredBy = Guid.NewGuid();
+
+if (restoredBy.IsValid)
+{
+  Console.WriteLine($"Usuário que restaurou: {restoredBy.Value}");
+  Console.WriteLine($"Usuário que restaurou: {restoredBy.Normalized}");
+}
+```
+
+### FileStorage
+
+[Informações](#29-filestorage)
+
+```csharp
+var fileStorage = new FileStorage("https://example.com/path/file.txt", "/path/file.txt");
+
+if (fileStorage.IsValid)
+{
+  Console.WriteLine($"Dados armazenados: {fileStorage.Link}"); // output: https://example.com/path/file.txt
+  Console.WriteLine($"Nome do arquivo: {fileStorage.Name}"); // output: /path/file.txt
+}
+```
+
+```csharp
+FileStorage fileStorage = "https://example.com/file.txt";
+
+if (fileStorage.IsValid)
+{
+  Console.WriteLine($"Dados armazenados: {fileStorage.Link}"); // output: https://example.com/file.txt
+  Console.WriteLine($"Nome do arquivo: {fileStorage.Name}"); // output: https://example.com/file.txt
 }
 ```
 
