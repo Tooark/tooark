@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Tooark.ValueObjects;
 
 namespace Tooark.Entities;
 
@@ -52,7 +53,7 @@ public abstract class DetailedEntity : InitialEntity
   /// Cria uma nova instância da entidade detalhada.
   /// </summary>
   /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected DetailedEntity(Guid createdBy)
+  protected DetailedEntity(CreatedBy createdBy)
   {
     // Define o identificador do criador
     SetCreatedBy(createdBy);
@@ -63,7 +64,7 @@ public abstract class DetailedEntity : InitialEntity
   /// Define o identificador do criador e o atualizador da entidade.
   /// </summary>
   /// <param name="createdBy">O valor do identificador do criador a ser definido.</param>
-  public new void SetCreatedBy(Guid createdBy)
+  public new void SetCreatedBy(CreatedBy createdBy)
   {
     // Chama o método da classe base
     base.SetCreatedBy(createdBy);
@@ -80,15 +81,13 @@ public abstract class DetailedEntity : InitialEntity
   /// Define o identificador do atualizador da entidade e a data e hora da última atualização.
   /// </summary>
   /// <param name="updatedBy">O valor do identificador do atualizador a ser definido.</param>
-  public void SetUpdatedBy(Guid updatedBy)
+  public void SetUpdatedBy(UpdatedBy updatedBy)
   {
-    // Verifica se o parâmetro é vazio
-    if (updatedBy == Guid.Empty)
-    {
-      // Adiciona uma notificação de erro
-      AddNotification("IdentifierEmpty;UpdatedBy", "UpdatedBy", "T.ENT.DET1");
-    }
-    else
+    // Adiciona notificações
+    AddNotifications(updatedBy);
+    
+    // Verifica se não houve notificações de erro
+    if (IsValid)
     {
       // Define o identificador do atualizador
       UpdatedBy = updatedBy;

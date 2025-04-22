@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Tooark.Enums;
 using Tooark.Validations;
+using Tooark.ValueObjects;
 
 namespace Tooark.Entities;
 
@@ -105,88 +106,61 @@ public abstract class FileEntity : InitialEntity
   /// <summary>
   /// Construtor da classe FileEntity.
   /// </summary>
-  /// <param name="fileName">O nome do arquivo.</param>
+  /// <param name="file">O nome e link do arquivo.</param>
   /// <param name="title">O título do arquivo.</param>
   /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  protected FileEntity(string fileName, string title, Guid createdBy)
+  protected FileEntity(FileStorage file, string title, CreatedBy createdBy)
   {
     // Valida os parâmetros
-    AddNotifications(new Validation()
-      .IsUrl(fileName, "FileName", "Field.Invalid;FileName")
+    AddNotifications(
+      file,
+      new Validation()
       .IsNotNullOrEmpty(title, "Title", "Field.Required;Title")
     );
 
     // Define o identificador do criador
-    SetCreatedBy(createdBy);
+    SetCreatedBy(createdBy.Value);
 
     // Verifica se não houve notificações de erro
     if (IsValid)
     {
-      FileName = fileName;
+      FileName = file.Name;
       Title = title;
-      Link = fileName;
+      Link = file.Link;
     }
   }
 
   /// <summary>
   /// Construtor da classe FileEntity.
   /// </summary>
-  /// <param name="fileName">O nome do arquivo.</param>
+  /// <param name="file">O nome e link do arquivo.</param>
   /// <param name="title">O título do arquivo.</param>
-  /// <param name="link">O link do arquivo.</param>
-  /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  protected FileEntity(string fileName, string title, string link, Guid createdBy)
-  {
-    // Valida os parâmetros
-    AddNotifications(new Validation()
-      .IsUrl(fileName, "FileName", "Field.Invalid;FileName")
-      .IsNotNullOrEmpty(title, "Title", "Field.Required;Title")
-      .IsUrl(link, "Link", "Field.Invalid;Link")
-    );
-
-    // Define o identificador do criador
-    SetCreatedBy(createdBy);
-
-    // Verifica se não houve notificações de erro
-    if (IsValid)
-    {
-      FileName = fileName;
-      Title = title;
-      Link = link;
-    }
-  }
-
-  /// <summary>
-  /// Construtor da classe FileEntity.
-  /// </summary>
-  /// <param name="fileName">O nome do arquivo.</param>
-  /// <param name="title">O título do arquivo.</param>
-  /// <param name="link">O link do arquivo.</param>
   /// <param name="fileFormat">O formato do arquivo.</param>
   /// <param name="type">O tipo do arquivo.</param>
   /// <param name="size">O tamanho do arquivo.</param>
   /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  protected FileEntity(string fileName, string title, string link, string fileFormat, EFileType type, long size, Guid createdBy)
+  protected FileEntity(FileStorage file, string title, string fileFormat, EFileType type, long size, CreatedBy createdBy)
   {
     // Valida os parâmetros
-    AddNotifications(new Validation()
-      .IsUrl(fileName, "FileName", "Field.Invalid;FileName")
+    AddNotifications(
+      file,
+      new Validation()
+      .IsUrl(file, "FileName", "Field.Invalid;FileName")
       .IsNotNullOrEmpty(title, "Title", "Field.Required;Title")
-      .IsUrl(link, "Link", "Field.Invalid;Link")
       .IsNotNullOrEmpty(fileFormat, "FileFormat", "Field.Required;FileFormat")
       .IsNotNullOrEmpty(type, "Type", "Field.Required;Type")
       .IsGreaterOrEquals(size, 0, "Size", "Field.Invalid;Size")
     );
 
     // Define o identificador do criador
-    SetCreatedBy(createdBy);
+    SetCreatedBy(createdBy.Value);
 
     // Verifica se não houve notificações de erro
     if (IsValid)
     {
-      FileName = fileName;
+      FileName = file.Name;
       Title = title;
-      Link = link;
+      Link = file.Link;
       FileFormat = fileFormat;
       Type = type;
       Size = size;
