@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Tooark.Notifications;
-using Tooark.Validations;
 
 namespace Tooark.Entities;
 
