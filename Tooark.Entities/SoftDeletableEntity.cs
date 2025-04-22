@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Tooark.ValueObjects;
 
 namespace Tooark.Entities;
 
@@ -38,7 +39,7 @@ public abstract class SoftDeletableEntity : DetailedEntity
   /// Cria uma nova instância da entidade exclusão lógica.
   /// </summary>
   /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected SoftDeletableEntity(Guid createdBy)
+  protected SoftDeletableEntity(CreatedBy createdBy)
   {
     // Define o identificador do criador
     SetCreatedBy(createdBy);
@@ -49,10 +50,13 @@ public abstract class SoftDeletableEntity : DetailedEntity
   /// Marca a entidade como excluída logicamente.
   /// </summary>
   /// <param name="changedBy">O identificador do usuário que excluiu a entidade.</param>
-  public void SetDeleted(Guid changedBy)
+  public void SetDeleted(UpdatedBy changedBy)
   {
+    // Adiciona notificações de erro
+    AddNotifications(changedBy);
+
     // Verifica se o parâmetro é vazio
-    if (DeletedByValid(changedBy) && !Deleted)
+    if (IsValid && !Deleted)
     {
       // Define o identificador do usuário que excluiu a entidade
       SetUpdatedBy(changedBy);
@@ -66,10 +70,13 @@ public abstract class SoftDeletableEntity : DetailedEntity
   /// Marca a entidade como não excluída logicamente.
   /// </summary>
   /// <param name="changedBy">O identificador do usuário que restaurou a entidade.</param>
-  public void SetRestored(Guid changedBy)
+  public void SetRestored(UpdatedBy changedBy)
   {
+    // Adiciona notificações de erro
+    AddNotifications(changedBy);
+
     // Verifica se o parâmetro é vazio
-    if (DeletedByValid(changedBy) && Deleted)
+    if (IsValid && Deleted)
     {
       // Define o identificador do usuário que restaurou excluiu a entidade
       SetUpdatedBy(changedBy);
@@ -77,26 +84,5 @@ public abstract class SoftDeletableEntity : DetailedEntity
       // Define a entidade como não excluída
       Deleted = false;
     }
-  }
-
-  /// <summary>
-  /// Verifica se o identificador do usuário que excluiu ou restaurou a entidade é válido.
-  /// </summary>
-  /// <param name="changedBy">O identificador do usuário que excluiu ou restaurou a entidade.</param>
-  /// <returns>Verdadeiro se o identificador do usuário é válido.</returns>
-  private bool DeletedByValid(Guid changedBy)
-  {
-    // Verifica se o parâmetro é vazio
-    if (changedBy == Guid.Empty)
-    {
-      // Adiciona uma notificação de erro
-      AddNotification("IdentifierEmpty;ChangedBy", "ChangedBy", "T.ENT.SOF1");
-
-      // Retorna falso para indicar que o parâmetro é inválido
-      return false;
-    }
-
-    // Retorna verdadeiro para indicar que o parâmetro é válido
-    return true;
   }
 }
