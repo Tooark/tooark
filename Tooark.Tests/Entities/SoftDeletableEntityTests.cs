@@ -77,7 +77,7 @@ public class SoftDeletableEntityTests
     // Assert
     Assert.False(entity.IsValid);
     Assert.False(entity.Deleted);
-    Assert.Equal("IdentifierEmpty;ChangedBy", entity.Notifications.First());
+    Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
   }
 
   // Teste para marcar a entidade como restaurada
@@ -112,6 +112,6 @@ public class SoftDeletableEntityTests
     // Assert
     Assert.False(entity.IsValid);
     Assert.True(entity.Deleted);
-    Assert.Equal("IdentifierEmpty;ChangedBy", entity.Notifications.First());
+    Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
   }
 }

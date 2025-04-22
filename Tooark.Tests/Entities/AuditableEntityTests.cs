@@ -92,7 +92,7 @@ public class AuditableEntityTests
     Assert.False(entity.Deleted);
     Assert.Equal(userId, entity.DeletedBy);
     Assert.Null(entity.DeletedAt);
-    Assert.Equal("IdentifierEmpty;DeletedBy", entity.Notifications.First());
+    Assert.Equal("Field.Invalid;DeletedBy", entity.Notifications.First());
   }
 
   // Teste se SetRestored atribui valores corretos
@@ -137,6 +137,6 @@ public class AuditableEntityTests
     Assert.True(entity.Deleted);
     Assert.Equal(userId, entity.RestoredBy);
     Assert.Null(entity.RestoredAt);
-    Assert.Equal("IdentifierEmpty;RestoredBy", entity.Notifications.First());
+    Assert.Equal("Field.Invalid;RestoredBy", entity.Notifications.First());
   }
 }

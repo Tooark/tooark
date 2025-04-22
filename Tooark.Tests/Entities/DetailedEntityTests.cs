@@ -97,7 +97,7 @@ public class DetailedEntityTests
     Assert.False(entity.IsValid);
     Assert.Equal(Guid.Empty, entity.CreatedBy);
     Assert.Equal(Guid.Empty, entity.UpdatedBy);
-    Assert.Equal("IdentifierEmpty;CreatedBy", entity.Notifications.First());
+    Assert.Equal("Field.Invalid;CreatedBy", entity.Notifications.First());
   }
 
   // Testa se SetCreatedBy gera uma notificação ao tentar alterar o criador
@@ -135,6 +135,6 @@ public class DetailedEntityTests
     Assert.False(entity.IsValid);
     Assert.Equal(createdBy, entity.CreatedBy);
     Assert.Equal(createdBy, entity.UpdatedBy);
-    Assert.Equal("IdentifierEmpty;UpdatedBy", entity.Notifications.First());
+    Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
   }
 }
