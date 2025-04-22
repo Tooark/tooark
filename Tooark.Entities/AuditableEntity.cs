@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Tooark.ValueObjects;
 
 namespace Tooark.Entities;
 
@@ -107,7 +108,7 @@ public abstract class AuditableEntity : DetailedEntity
   /// Cria uma nova instância da entidade auditoria.
   /// </summary>
   /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected AuditableEntity(Guid createdBy)
+  protected AuditableEntity(CreatedBy createdBy)
   {
     // Define o identificador do criador
     SetCreatedBy(createdBy);
@@ -118,34 +119,28 @@ public abstract class AuditableEntity : DetailedEntity
   /// Marca a entidade como excluída.
   /// </summary>
   /// <param name="deletedBy">O valor do identificador do excluidor a ser definido.</param>
-  public void SetDeleted(Guid deletedBy)
+  public void SetDeleted(DeletedBy deletedBy)
   {
-    // Verifica se o parâmetro é vazio
-    if (deletedBy == Guid.Empty)
+    // Adiciona as notificações de erro
+    AddNotifications(deletedBy);
+
+    // Verifica se não houve notificações de erro e se a entidade não foi excluída
+    if (IsValid && !Deleted)
     {
-      // Adiciona uma notificação de erro
-      AddNotification("IdentifierEmpty;DeletedBy", "DeletedBy", "T.ENT.AUD1");
-    }
-    else
-    {
-      // Verifica se a entidade não foi excluída
-      if (!Deleted)
-      {
-        // Define o identificador do usuário que excluiu a entidade
-        SetUpdatedBy(deletedBy);
+      // Define o identificador do usuário que excluiu a entidade
+      SetUpdatedBy(deletedBy.Value);
 
-        // Incrementa a versão
-        IncrementVersion();
+      // Incrementa a versão
+      IncrementVersion();
 
-        // Define a entidade como excluída
-        Deleted = true;
+      // Define a entidade como excluída
+      Deleted = true;
 
-        // Define o identificador de quem excluiu a entidade
-        DeletedBy = deletedBy;
+      // Define o identificador de quem excluiu a entidade
+      DeletedBy = deletedBy;
 
-        // Define a data e hora da última exclusão
-        DeletedAt = DateTime.UtcNow;
-      }
+      // Define a data e hora da última exclusão
+      DeletedAt = DateTime.UtcNow;
     }
   }
 
@@ -153,35 +148,28 @@ public abstract class AuditableEntity : DetailedEntity
   /// Marca a entidade como restaurada.
   /// </summary>
   /// <param name="restoredBy">O valor do identificador do restaurador a ser definido.</param>
-  public void SetRestored(Guid restoredBy)
+  public void SetRestored(RestoredBy restoredBy)
   {
+    // Adiciona as notificações de erro
+    AddNotifications(restoredBy);
 
-    // Verifica se o parâmetro é vazio
-    if (restoredBy == Guid.Empty)
+    // Verifica se não houve notificações de erro e se a entidade foi excluída
+    if (IsValid && Deleted)
     {
-      // Adiciona uma notificação de erro
-      AddNotification("IdentifierEmpty;RestoredBy", "RestoredBy", "T.ENT.AUD2");
-    }
-    else
-    {
-      // Verifica se a entidade foi excluída
-      if (Deleted)
-      {
-        // Define o identificador do usuário que restaurou a entidade
-        SetUpdatedBy(restoredBy);
+      // Define o identificador do usuário que restaurou a entidade
+      SetUpdatedBy(restoredBy.Value);
 
-        // Incrementa a versão
-        IncrementVersion();
+      // Incrementa a versão
+      IncrementVersion();
 
-        // Define a entidade como não excluída
-        Deleted = false;
+      // Define a entidade como não excluída
+      Deleted = false;
 
-        // Define o identificador de quem restaurou a entidade
-        RestoredBy = restoredBy;
+      // Define o identificador de quem restaurou a entidade
+      RestoredBy = restoredBy;
 
-        // Define a data e hora da última restauração
-        RestoredAt = DateTime.UtcNow;
-      }
+      // Define a data e hora da última restauração
+      RestoredAt = DateTime.UtcNow;
     }
   }
 

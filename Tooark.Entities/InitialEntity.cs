@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Tooark.ValueObjects;
 
 namespace Tooark.Entities;
 
@@ -52,7 +53,7 @@ public abstract class InitialEntity : BaseEntity
   /// Cria uma nova instância da entidade inicial.
   /// </summary>
   /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected InitialEntity(Guid createdBy)
+  protected InitialEntity(CreatedBy createdBy)
   {
     // Define o identificador do criador
     SetCreatedBy(createdBy);
@@ -63,7 +64,7 @@ public abstract class InitialEntity : BaseEntity
   /// Define o identificador do criador da entidade e a data e hora de criação.
   /// </summary>
   /// <param name="createdBy">O valor do identificador do criador a ser definido.</param>
-  public void SetCreatedBy(Guid createdBy)
+  public void SetCreatedBy(CreatedBy createdBy)
   {
     // Verifica se o identificador da entidade é vazio
     if (CreatedBy != Guid.Empty)
@@ -73,13 +74,11 @@ public abstract class InitialEntity : BaseEntity
     }
     else
     {
-      // Verifica se o parâmetro é vazio
-      if (createdBy == Guid.Empty)
-      {
-        // Adiciona uma notificação de erro
-        AddNotification("IdentifierEmpty;CreatedBy", "CreatedBy", "T.ENT.INI2");
-      }
-      else
+      // Adiciona notificações
+      AddNotifications(createdBy);
+
+      // Verifica se não houve notificações de erro
+      if (IsValid)
       {
         // Define o identificador do criador
         CreatedBy = createdBy;

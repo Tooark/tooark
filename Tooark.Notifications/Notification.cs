@@ -196,8 +196,12 @@ public abstract class Notification
     // Itera sobre a coleção de notificações
     foreach (var notification in notifications)
     {
-      // Adiciona o notificável à lista de notificações
-      AddNotifications(notification);
+      // Verifica se a notificação não é nula
+      if (notification != null)
+      {
+        // Adiciona o notificável à lista de notificações
+        AddNotifications(notification);
+      }
     }
   }
 

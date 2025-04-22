@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Tooark.ValueObjects;
 
 namespace Tooark.Entities;
 
@@ -39,7 +40,7 @@ public abstract class VersionedEntity : DetailedEntity
   /// Cria uma nova instância da entidade versionamento.
   /// </summary>
   /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected VersionedEntity(Guid createdBy)
+  protected VersionedEntity(CreatedBy createdBy)
   {
     // Define o identificador do criador
     SetCreatedBy(createdBy);
@@ -53,7 +54,7 @@ public abstract class VersionedEntity : DetailedEntity
   /// Este método deve ser chamado sempre que a entidade for atualizada.
   /// </remarks>
   /// <param name="updatedBy">O identificador do usuário que atualizou a entidade.</param>
-  public new void SetUpdatedBy(Guid updatedBy)
+  public new void SetUpdatedBy(UpdatedBy updatedBy)
   {
     // Chama o método da classe base
     base.SetUpdatedBy(updatedBy);
