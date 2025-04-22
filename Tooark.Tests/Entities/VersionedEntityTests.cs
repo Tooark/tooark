@@ -82,7 +82,7 @@ public class VersionedEntityTests
 
     // Assert
     Assert.False(entity.IsValid);
-    Assert.Equal("IdentifierEmpty;UpdatedBy", entity.Notifications.First());
+    Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
     Assert.Equal(version, updatedVersion);
   }
 }

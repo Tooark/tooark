@@ -77,7 +77,7 @@ public class InitialEntityTests
     // Assert
     Assert.False(entity.IsValid);
     Assert.Equal(createdBy, entity.CreatedBy);
-    Assert.Equal("IdentifierEmpty;CreatedBy", entity.Notifications.First());
+    Assert.Equal("Field.Invalid;CreatedBy", entity.Notifications.First());
   }
 
   // Teste se SetCreatedBy lança uma exceção ao tentar alterar o criador
