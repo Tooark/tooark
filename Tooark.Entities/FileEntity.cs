@@ -109,7 +109,7 @@ public abstract class FileEntity : InitialEntity
   /// <param name="file">O nome e link do arquivo.</param>
   /// <param name="title">O título do arquivo.</param>
   /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  protected FileEntity(FileStorage file, string title, CreatedBy createdBy)
+  protected FileEntity(FileStorage file, string title, CreatedBy createdBy) : base(createdBy)
   {
     // Valida os parâmetros
     AddNotifications(
@@ -117,9 +117,6 @@ public abstract class FileEntity : InitialEntity
       new Validation()
       .IsNotNullOrEmpty(title, "Title", "Field.Required;Title")
     );
-
-    // Define o identificador do criador
-    SetCreatedBy(createdBy.Value);
 
     // Verifica se não houve notificações de erro
     if (IsValid)
@@ -139,7 +136,7 @@ public abstract class FileEntity : InitialEntity
   /// <param name="type">O tipo do arquivo.</param>
   /// <param name="size">O tamanho do arquivo.</param>
   /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  protected FileEntity(FileStorage file, string title, string fileFormat, EFileType type, long size, CreatedBy createdBy)
+  protected FileEntity(FileStorage file, string title, string fileFormat, EFileType type, long size, CreatedBy createdBy) : base(createdBy)
   {
     // Valida os parâmetros
     AddNotifications(
@@ -151,9 +148,6 @@ public abstract class FileEntity : InitialEntity
       .IsNotNullOrEmpty(type, "Type", "Field.Required;Type")
       .IsGreaterOrEquals(size, 0, "Size", "Field.Invalid;Size")
     );
-
-    // Define o identificador do criador
-    SetCreatedBy(createdBy.Value);
 
     // Verifica se não houve notificações de erro
     if (IsValid)
