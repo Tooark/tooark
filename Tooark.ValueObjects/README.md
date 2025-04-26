@@ -33,6 +33,7 @@ Biblioteca gerenciamento de Value Objects pré-definidos e validados, garantindo
 - [DeletedBy](#27-deletedby)
 - [RestoredBy](#28-restoredby)
 - [FileStorage](#29-filestorage)
+- [DelimitedString](#30-delimitedstring)
 
 ## Value Objects
 
@@ -262,8 +263,8 @@ Representa um código postal válido.
 
 **Métodos:**
 
-- `ZipCode.Value`: Obtém o valor do código do idioma.
-- `ToString()`: Retorna o valor do código do idioma.
+- `ZipCode.Value`: Obtém o valor do código postal.
+- `ToString()`: Retorna o valor do código postal.
 - `string(ZipCode zipCode)`: Converte implicitamente um objeto ZipCode para uma string.
 - `ZipCode(string value)`: Converte implicitamente uma string para um objeto ZipCode.
 
@@ -448,6 +449,24 @@ Representa um dados de um objeto em um bucket.
 - `FileStorage(string value)`: Converte implicitamente uma string para um objeto FileStorage.
 
 [**Exemplo de Uso**](#filestorage)
+
+### 30. DelimitedString
+
+**Funcionalidade:**
+Representa uma string delimitada por ponto e vírgula.
+
+**Métodos:**
+
+- `DelimitedString.Value`: Obtém o valor da string delimitada.
+- `DelimitedString.Values`: Obtém a lista de valores da string delimitada.
+- `ToString()`: Retorna o valor da string delimitada.
+- `ToList()`: Retorna a lista de valores da string delimitada.
+- `string(DelimitedString delimitedString)`: Converte implicitamente um objeto DelimitedString para uma string.
+- `string[](DelimitedString delimitedString)`: Converte implicitamente um objeto DelimitedString para uma lista de strings.
+- `DelimitedString(string value)`: Converte implicitamente uma string para um objeto DelimitedString.
+- `DelimitedString(string[] values)`: Converte implicitamente uma lista de strings para um objeto DelimitedString.
+
+[**Exemplo de Uso**](#delimitedstring)
 
 ## Exemplos de Uso
 
@@ -854,7 +873,7 @@ if (protocol.IsValid)
 [Informações](#19-protocolftp)
 
 ```csharp
-var protocol = new ProtocolEmailReceiver("sftp://example.com");
+var protocol = new ProtocolFtp("sftp://example.com");
 
 if (protocol.IsValid)
 {
@@ -1100,6 +1119,30 @@ if (fileStorage.IsValid)
 {
   Console.WriteLine($"Dados armazenados: {fileStorage.Link}"); // output: https://example.com/file.txt
   Console.WriteLine($"Nome do arquivo: {fileStorage.Name}"); // output: https://example.com/file.txt
+}
+```
+
+### DelimitedString
+
+[Informações](#30-delimitedstring)
+
+```csharp
+var delimitedString = new DelimitedString("value1;value2;value3");
+
+if (delimitedString.IsValid)
+{
+  Console.WriteLine($"String delimitada: {delimitedString.Value}");
+  Console.WriteLine($"Lista de valores: {string.Join(", ", delimitedString.Values)}");
+}
+```
+
+```csharp
+DelimitedString delimitedString = ["value1", "value2", "value3"];
+
+if (delimitedString.IsValid)
+{
+  Console.WriteLine($"String delimitada: {delimitedString.Value}");
+  Console.WriteLine($"Lista de valores: {string.Join(", ", delimitedString.Values)}");
 }
 ```
 
