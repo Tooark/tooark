@@ -25,6 +25,10 @@ Classe base abstrata contemplando a definição de um identificador único para 
 
   - `Id` (Guid): Identificador único para a entidade.
 
+- **Coluna de Banco de Dados:**
+
+  - `id`: Tipo: `uuid`.
+
 - **Métodos:**
 
   - `SetId(Guid id)`: Define o identificador único para a entidade.
@@ -41,6 +45,11 @@ Classe base abstrata que herda de [`BaseEntity`](#1-entidade-base) e define camp
   - `CreatedBy` (Guid): Identificador do usuário que criou a entidade.
   - `CreatedAt` (DateTime): Data e hora de criação da entidade.
 
+- **Coluna de Banco de Dados:**
+
+  - `created_by`: Tipo: `uuid`.
+  - `created_at`: Tipo: `timestamp with time zone`.
+
 - **Métodos:**
 
   - `SetCreatedBy(Guid createdBy)`: Define o identificador do criador da entidade e a data e hora de criação.
@@ -54,6 +63,11 @@ Classe base abstrata que herda de [`InitialEntity`](#2-entidade-inicial) e defin
 
   - `UpdatedBy` (Guid): Identificador do usuário que atualizou a entidade pela última vez.
   - `UpdatedAt` (DateTime): Data e hora da última atualização da entidade.
+
+- **Coluna de Banco de Dados:**
+
+  - `updated_by`: Tipo: `uuid`.
+  - `updated_at`: Tipo: `timestamp with time zone`.
 
 - **Métodos:**
 
@@ -69,6 +83,10 @@ Classe base abstrata que herda de [`DetailedEntity`](#3-entidade-detalhada) e de
 
   - `Version` (long): Versão da entidade.
 
+- **Coluna de Banco de Dados:**
+
+  - `version`: Tipo: `bigint`.
+
 - **Métodos:**
 
   - `SetUpdatedBy(Guid updatedBy)`: Incrementa a versão da entidade ao atualizar.
@@ -81,6 +99,10 @@ Classe base abstrata que herda de [`DetailedEntity`](#3-entidade-detalhada) e de
 - **Propriedades:**
 
   - `Deleted` (bool): Indica se a entidade foi excluída logicamente.
+
+- **Coluna de Banco de Dados:**
+
+  - `deleted`: Tipo: `boolean`.
 
 - **Métodos:**
 
@@ -101,6 +123,14 @@ Classe base abstrata que herda de [`DetailedEntity`](#3-entidade-detalhada) e de
   - `RestoredBy` (Guid): Identificador do usuário que restaurou a entidade.
   - `RestoredAt` (DateTime?): Data e hora da restauração da entidade.
 
+- **Coluna de Banco de Dados:**
+
+  - `deleted`: Tipo: `boolean`.
+  - `deleted_by`: Tipo: `uuid`.
+  - `deleted_at`: Tipo: `timestamp with time zone`.
+  - `restored_by`: Tipo: `uuid`.
+  - `restored_at`: Tipo: `timestamp with time zone`.
+
 - **Métodos:**
 
   - `SetDeleted(Guid deletedBy)`: Marca a entidade como excluída, definindo o usuário e a data e hora da exclusão e incrementando a versão.
@@ -113,11 +143,21 @@ Classe base abstrata que herda de [`InitialEntity`](#2-entidade-inicial) e defin
 
 - **Propriedades:**
 
-  - `FileUrl` (string): URL do arquivo no bucket.
-  - `Name` (string): Nome do arquivo.
-  - `PublicUrl` (string): URL pública do arquivo.
+  - `FileName` (string): Nome do arquivo.
+  - `Title` (string): Título do arquivo.
+  - `Link` (string): Link do arquivo no bucket.
   - `FileFormat` (string): Formato do arquivo.
   - `Type` (EFileType): Tipo do arquivo.
+  - `Size` (long): Tamanho do arquivo em bytes.
+
+- **Coluna de Banco de Dados:**
+
+  - `file_name`: Tipo: `text`.
+  - `title`: Tipo: `varchar(255)`.
+  - `link`: Tipo: `text`.
+  - `file_format`: Tipo: `varchar(10)`.
+  - `type`: Tipo: `int`.
+  - `size`: Tipo: `bigint`.
 
 - **Construtores:**
 
@@ -338,6 +378,7 @@ public class Program
 - [Tooark.Enums](../Tooark.Enums/README.md)
 - [Tooark.Notifications](../Tooark.Notifications/README.md)
 - [Tooark.Utils](../Tooark.Utils/README.md)
+- [Tooark.ValueObjects](../Tooark.ValueObjects/README.md)
 
 ## Códigos de Erro para notificações
 

@@ -114,4 +114,58 @@ public class SoftDeletableEntityTests
     Assert.True(entity.Deleted);
     Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
   }
+
+  // Teste para verificar se a alteração não é permitida quando a entidade está excluída
+  [Fact]
+  public void ChangeNotAllowedIsDeleted_ShouldAddNotification_WhenEntityIsDeleted()
+  {
+    // Arrange
+    var entity = new TestSoftDeletableEntity();
+    var userId = Guid.NewGuid();
+    entity.SetDeleted(userId);
+
+    // Act
+    entity.ChangeNotAllowedIsDeleted();
+
+    // Assert
+    Assert.False(entity.IsValid);
+    Assert.Equal("ChangeNotAllowedIsDeleted", entity.Notifications.First().Key);
+  }
+
+  // Teste para não marcar a entidade como excluída quando já está excluída
+  [Fact]
+  public void SetDeleted_ShouldNotChangeState_WhenAlreadyDeleted()
+  {
+    // Arrange
+    var userId = Guid.NewGuid();
+    var entity = new TestSoftDeletableEntity(userId);
+    entity.SetDeleted(userId);
+
+    // Act
+    entity.SetDeleted(userId);
+
+    // Assert
+    Assert.True(entity.Deleted);
+    Assert.Equal(userId, entity.UpdatedBy);
+    Assert.Empty(entity.Notifications);
+  }
+
+  // Teste para não restaurar a entidade quando já está restaurada
+  [Fact]
+  public void SetRestored_ShouldNotChangeState_WhenAlreadyRestored()
+  {
+    // Arrange
+    var userId = Guid.NewGuid();
+    var entity = new TestSoftDeletableEntity(userId);
+    entity.SetDeleted(userId);
+    entity.SetRestored(userId);
+
+    // Act
+    entity.SetRestored(userId);
+
+    // Assert
+    Assert.False(entity.Deleted);
+    Assert.Equal(userId, entity.UpdatedBy);
+    Assert.Empty(entity.Notifications);
+  }
 }

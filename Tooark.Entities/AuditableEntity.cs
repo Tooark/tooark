@@ -11,9 +11,30 @@ namespace Tooark.Entities;
 /// <remarks>
 /// Herda de <see cref="DetailedEntity"/> para incluir informações para auditoria.
 /// Esta classe é usada para representar entidades que precisam de auditoria completa.
+/// Contém propriedades para armazenar informações sobre a versão da entidade, se foi excluída logicamente, e se foi restaurada.
 /// </remarks>
 public abstract class AuditableEntity : DetailedEntity
 {
+  #region Constructors
+
+  /// <summary>
+  /// Construtor vazio para a entidade AuditableEntity.
+  /// </summary>
+  /// <remarks>
+  /// Utilizado pelo Entity Framework.
+  /// </remarks>
+  protected AuditableEntity() { }
+
+  /// <summary>
+  /// Cria uma nova instância da entidade auditoria.
+  /// </summary>
+  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
+  protected AuditableEntity(CreatedBy createdBy) : base(createdBy) { }
+
+  #endregion
+
+  #region Properties
+
   /// <summary>
   /// Versão da entidade.
   /// </summary>
@@ -50,10 +71,10 @@ public abstract class AuditableEntity : DetailedEntity
   /// O identificador do excluidor é do tipo <see cref="Guid"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'deletedby' é do tipo 'uuid' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'deleted_by' é do tipo 'uuid' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
-  [Column("deletedby", TypeName = "uuid")]
+  [Column("deleted_by", TypeName = "uuid")]
   [Required]
   public Guid DeletedBy { get; private set; } = Guid.Empty;
 
@@ -64,10 +85,10 @@ public abstract class AuditableEntity : DetailedEntity
   /// A data e hora da exclusão é do tipo <see cref="DateTime"/> em UTC.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'deletedat' é do tipo 'timestamp with time zone' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'deleted_at' é do tipo 'timestamp with time zone' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
-  [Column("deletedat", TypeName = "timestamp with time zone")]
+  [Column("deleted_at", TypeName = "timestamp with time zone")]
   public DateTime? DeletedAt { get; private set; }
 
   /// <summary>
@@ -77,10 +98,10 @@ public abstract class AuditableEntity : DetailedEntity
   /// O identificador do restaurador é do tipo <see cref="Guid"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'restoredby' é do tipo 'uuid' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'restored_by' é do tipo 'uuid' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
-  [Column("restoredby", TypeName = "uuid")]
+  [Column("restored_by", TypeName = "uuid")]
   [Required]
   public Guid RestoredBy { get; private set; } = Guid.Empty;
 
@@ -91,29 +112,60 @@ public abstract class AuditableEntity : DetailedEntity
   /// A data e hora da restauração é do tipo <see cref="DateTime"/> em UTC.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'restoredat' é do tipo 'timestamp with time zone' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'restored_at' é do tipo 'timestamp with time zone' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
-  [Column("restoredat", TypeName = "timestamp with time zone")]
+  [Column("restored_at", TypeName = "timestamp with time zone")]
   public DateTime? RestoredAt { get; private set; }
 
+  #endregion
+
+  #region Private Methods
 
   /// <summary>
-  /// Cria uma nova instância da entidade auditoria.
+  /// Incrementa a versão da entidade.
   /// </summary>
-  protected AuditableEntity()
-  { }
-
-  /// <summary>
-  /// Cria uma nova instância da entidade auditoria.
-  /// </summary>
-  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected AuditableEntity(CreatedBy createdBy)
+  private void IncrementVersion()
   {
-    // Define o identificador do criador
-    SetCreatedBy(createdBy);
+    Version++;
   }
 
+  #endregion
+
+  #region Methods
+
+  /// <summary>
+  /// Verifica se a entidade foi excluída logicamente.
+  /// </summary>
+  /// <remarks>
+  /// Adiciona uma notificação se a entidade foi excluída logicamente e não pode ser alterada.
+  /// </remarks>
+  public void ChangeNotAllowedIsDeleted()
+  {
+    // Verifica se a entidade foi excluída logicamente.
+    if (Deleted)
+    {
+      AddNotification("ChangeNotAllowedIsDeleted", "Entity", "T.ENT.AUD1");
+    }
+  }
+
+  /// <summary>
+  /// Atualiza entidade e incrementa a versão.
+  /// </summary>
+  /// <param name="updatedBy">O valor do identificador do atualizador a ser definido.</param>
+  public new void SetUpdatedBy(UpdatedBy updatedBy)
+  {
+    // Adiciona as validações dos atributos.
+    AddNotifications(updatedBy);
+
+    // Verifica se não houve notificações de erro.
+    if (IsValid)
+    {
+      IncrementVersion();
+
+      base.SetUpdatedBy(updatedBy);
+    }
+  }
 
   /// <summary>
   /// Marca a entidade como excluída.
@@ -121,26 +173,17 @@ public abstract class AuditableEntity : DetailedEntity
   /// <param name="deletedBy">O valor do identificador do excluidor a ser definido.</param>
   public void SetDeleted(DeletedBy deletedBy)
   {
-    // Adiciona as notificações de erro
+    // Adiciona as validações dos atributos.
     AddNotifications(deletedBy);
 
-    // Verifica se não houve notificações de erro e se a entidade não foi excluída
+    // Verifica se não houve notificações de erros e se a entidade não foi excluída.
     if (IsValid && !Deleted)
     {
-      // Define o identificador do usuário que excluiu a entidade
-      SetUpdatedBy(deletedBy.Value);
-
-      // Incrementa a versão
-      IncrementVersion();
-
-      // Define a entidade como excluída
       Deleted = true;
-
-      // Define o identificador de quem excluiu a entidade
       DeletedBy = deletedBy;
-
-      // Define a data e hora da última exclusão
       DeletedAt = DateTime.UtcNow;
+
+      IncrementVersion();
     }
   }
 
@@ -150,35 +193,19 @@ public abstract class AuditableEntity : DetailedEntity
   /// <param name="restoredBy">O valor do identificador do restaurador a ser definido.</param>
   public void SetRestored(RestoredBy restoredBy)
   {
-    // Adiciona as notificações de erro
+    // Adiciona as validações dos atributos.
     AddNotifications(restoredBy);
 
-    // Verifica se não houve notificações de erro e se a entidade foi excluída
+    // Verifica se não houve notificações de erros e se a entidade foi excluída
     if (IsValid && Deleted)
     {
-      // Define o identificador do usuário que restaurou a entidade
-      SetUpdatedBy(restoredBy.Value);
-
-      // Incrementa a versão
-      IncrementVersion();
-
-      // Define a entidade como não excluída
       Deleted = false;
-
-      // Define o identificador de quem restaurou a entidade
       RestoredBy = restoredBy;
-
-      // Define a data e hora da última restauração
       RestoredAt = DateTime.UtcNow;
+
+      IncrementVersion();
     }
   }
 
-  /// <summary>
-  /// Incrementa a versão da entidade.
-  /// </summary>
-  private void IncrementVersion()
-  {
-    // Incrementa a versão
-    Version++;
-  }
+  #endregion
 }
