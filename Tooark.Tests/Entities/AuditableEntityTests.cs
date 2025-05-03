@@ -139,4 +139,71 @@ public class AuditableEntityTests
     Assert.Null(entity.RestoredAt);
     Assert.Equal("Field.Invalid;RestoredBy", entity.Notifications.First());
   }
+
+  // Teste para verificar se ChangeNotAllowedIsDeleted adiciona notificação quando a entidade está excluída
+  [Fact]
+  public void ChangeNotAllowedIsDeleted_ShouldAddNotification_WhenEntityIsDeleted()
+  {
+    // Arrange
+    var entity = new TestAuditableEntity();
+    var userId = Guid.NewGuid();
+    entity.SetDeleted(userId);
+
+    // Act
+    entity.ChangeNotAllowedIsDeleted();
+
+    // Assert
+    Assert.False(entity.IsValid);
+    Assert.Contains(entity.Notifications, n => n.Key == "ChangeNotAllowedIsDeleted");
+  }
+
+  // Teste para verificar se ChangeNotAllowedIsDeleted não adiciona notificação quando a entidade não está excluída
+  [Fact]
+  public void ChangeNotAllowedIsDeleted_ShouldNotAddNotification_WhenEntityIsNotDeleted()
+  {
+    // Arrange
+    var entity = new TestAuditableEntity();
+
+    // Act
+    entity.ChangeNotAllowedIsDeleted();
+
+    // Assert
+    Assert.True(entity.IsValid);
+    Assert.Empty(entity.Notifications);
+  }
+
+  // Teste para SetUpdatedBy incrementando a versão e atualizando o UpdatedBy
+  [Fact]
+  public void SetUpdatedBy_ShouldIncrementVersionAndSetUpdatedBy()
+  {
+    // Arrange
+    var entity = new TestAuditableEntity();
+    var userId = Guid.NewGuid();
+
+    // Act
+    entity.SetUpdatedBy(userId);
+
+    // Assert
+    Assert.True(entity.IsValid);
+    Assert.Equal(userId, entity.UpdatedBy);
+    Assert.Equal(2, entity.Version);
+  }
+
+  // Teste para SetUpdatedBy não alterar a entidade quando o identificador é inválido
+  [Fact]
+  public void SetUpdatedBy_ShouldNotUpdate_WhenUserIdIsInvalid()
+  {
+    // Arrange
+    var entity = new TestAuditableEntity();
+    var userId = Guid.Empty;
+
+    // Act
+    entity.SetUpdatedBy(userId);
+
+    // Assert
+    Assert.False(entity.IsValid);
+    Assert.Equal(Guid.Empty, entity.UpdatedBy);
+    Assert.Equal(1, entity.Version);
+    Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
+  }
 }

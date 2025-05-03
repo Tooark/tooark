@@ -14,6 +14,29 @@ namespace Tooark.Entities;
 /// </remarks>
 public abstract class InitialEntity : BaseEntity
 {
+  #region Constructors
+
+  /// <summary>
+  /// Construtor vazio para a entidade InitialEntity.
+  /// </summary>
+  /// <remarks>
+  /// Utilizado pelo Entity Framework.
+  /// </remarks>
+  protected InitialEntity() { }
+
+  /// <summary>
+  /// Cria uma nova instância da entidade inicial.
+  /// </summary>
+  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
+  protected InitialEntity(CreatedBy createdBy)
+  {
+    SetCreatedBy(createdBy);
+  }
+
+  #endregion
+
+  #region Properties
+
   /// <summary>
   /// Identificador do usuário que criou a entidade.
   /// </summary>
@@ -21,10 +44,10 @@ public abstract class InitialEntity : BaseEntity
   /// O identificador do criador é do tipo <see cref="Guid"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'createdby' é do tipo 'uuid' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'created_by', é do tipo 'uuid' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
-  [Column("createdby", TypeName = "uuid")]
+  [Column("created_by", TypeName = "uuid")]
   [Required]
   public Guid CreatedBy { get; private set; }
 
@@ -35,57 +58,41 @@ public abstract class InitialEntity : BaseEntity
   /// A data e hora de criação é do tipo <see cref="DateTime"/> em UTC.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'createdat' é do tipo 'timestamp with time zone' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'created_at', é do tipo 'timestamp with time zone' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
-  [Column("createdat", TypeName = "timestamp with time zone")]
+  [Column("created_at", TypeName = "timestamp with time zone")]
   [Required]
   public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 
+  #endregion
 
-  /// <summary>
-  /// Cria uma nova instância da entidade inicial.
-  /// </summary>
-  protected InitialEntity()
-  { }
-
-  /// <summary>
-  /// Cria uma nova instância da entidade inicial.
-  /// </summary>
-  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected InitialEntity(CreatedBy createdBy)
-  {
-    // Define o identificador do criador
-    SetCreatedBy(createdBy);
-  }
-
+  #region Methods
 
   /// <summary>
   /// Define o identificador do criador da entidade e a data e hora de criação.
   /// </summary>
   /// <param name="createdBy">O valor do identificador do criador a ser definido.</param>
-  public void SetCreatedBy(CreatedBy createdBy)
+  public virtual void SetCreatedBy(CreatedBy createdBy)
   {
-    // Verifica se o identificador da entidade é vazio
+    // Verifica se o identificador da entidade é vazio.
     if (CreatedBy != Guid.Empty)
     {
-      // Adiciona uma notificação de erro
       AddNotification("ChangeNotAllowed;CreatedBy", "CreatedBy", "T.ENT.INI1");
     }
     else
     {
-      // Adiciona notificações
+      // Adiciona as validações dos atributos.
       AddNotifications(createdBy);
 
-      // Verifica se não houve notificações de erro
+      // Verifica se não houve notificações de erros.
       if (IsValid)
       {
-        // Define o identificador do criador
         CreatedBy = createdBy;
-
-        // Define a data e hora de criação
         CreatedAt = DateTime.UtcNow;
       }
     }
   }
+
+  #endregion
 }

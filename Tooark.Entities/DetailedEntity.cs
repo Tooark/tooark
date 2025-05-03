@@ -14,6 +14,29 @@ namespace Tooark.Entities;
 /// </remarks>
 public abstract class DetailedEntity : InitialEntity
 {
+  #region Constructors
+
+  /// <summary>
+  /// Construtor vazio para a entidade DetailedEntity.
+  /// </summary>
+  /// <remarks>
+  /// Utilizado pelo Entity Framework.
+  /// </remarks>
+  protected DetailedEntity() { }
+
+  /// <summary>
+  /// Cria uma nova instância da entidade detalhada.
+  /// </summary>
+  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
+  protected DetailedEntity(CreatedBy createdBy)
+  {
+    SetCreatedBy(createdBy);
+  }
+
+  #endregion
+
+  #region Properties
+
   /// <summary>
   /// Identificador do usuário que atualizou a entidade pela última vez.
   /// </summary>
@@ -21,10 +44,10 @@ public abstract class DetailedEntity : InitialEntity
   /// O identificador do atualizador é do tipo <see cref="Guid"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'updatedby' é do tipo 'uuid' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'updated_by' é do tipo 'uuid' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
-  [Column("updatedby", TypeName = "uuid")]
+  [Column("updated_by", TypeName = "uuid")]
   [Required]
   public Guid UpdatedBy { get; private set; } = Guid.Empty;
 
@@ -35,44 +58,28 @@ public abstract class DetailedEntity : InitialEntity
   /// A data e hora da última atualização é do tipo <see cref="DateTime"/> em UTC.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'updatedat' é do tipo 'timestamp with time zone' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'updated_at' é do tipo 'timestamp with time zone' e é obrigatória.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
-  [Column("updatedat", TypeName = "timestamp with time zone")]
+  [Column("updated_at", TypeName = "timestamp with time zone")]
   [Required]
   public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
 
+  #endregion
 
-  /// <summary>
-  /// Cria uma nova instância da entidade detalhada.
-  /// </summary>
-  protected DetailedEntity()
-  { }
-
-  /// <summary>
-  /// Cria uma nova instância da entidade detalhada.
-  /// </summary>
-  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected DetailedEntity(CreatedBy createdBy)
-  {
-    // Define o identificador do criador
-    SetCreatedBy(createdBy);
-  }
-
+  #region Methods
 
   /// <summary>
   /// Define o identificador do criador e o atualizador da entidade.
   /// </summary>
   /// <param name="createdBy">O valor do identificador do criador a ser definido.</param>
-  public new void SetCreatedBy(CreatedBy createdBy)
+  public override void SetCreatedBy(CreatedBy createdBy)
   {
-    // Chama o método da classe base
     base.SetCreatedBy(createdBy);
 
-    // Verifica se não houve notificações de erro
-    if(IsValid)
+    // Verifica se não houve notificações de erro.
+    if (IsValid)
     {
-      // Define o identificador do atualizador
       UpdatedBy = createdBy;
     }
   }
@@ -81,19 +88,18 @@ public abstract class DetailedEntity : InitialEntity
   /// Define o identificador do atualizador da entidade e a data e hora da última atualização.
   /// </summary>
   /// <param name="updatedBy">O valor do identificador do atualizador a ser definido.</param>
-  public void SetUpdatedBy(UpdatedBy updatedBy)
+  public virtual void SetUpdatedBy(UpdatedBy updatedBy)
   {
-    // Adiciona notificações
+    // Adiciona as validações dos atributos.
     AddNotifications(updatedBy);
-    
-    // Verifica se não houve notificações de erro
+
+    // Verifica se não houve notificações de erros.
     if (IsValid)
     {
-      // Define o identificador do atualizador
       UpdatedBy = updatedBy;
-
-      // Define a data e hora da última atualização
       UpdatedAt = DateTime.UtcNow;
     }
   }
+
+  #endregion
 }

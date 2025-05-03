@@ -179,4 +179,58 @@ public class FileEntityTests
     Assert.Equal(0, fileEntity.Size);
     Assert.Equal(createdBy, fileEntity.CreatedBy);
   }
+
+  // Teste se o construtor gera notificação quando o tamanho do arquivo é inválido
+  [Fact]
+  public void Constructor_ShouldGenerateNotification_WhenFileSizeIsInvalid()
+  {
+    // Arrange
+    var file = new FileStorage("https://example.com/path/file.txt", "path/file.txt");
+    var title = "Test File";
+    var fileFormat = ".txt";
+    var type = EFileType.Unknown;
+    var size = -1; // Tamanho inválido
+    var createdBy = Guid.NewGuid();
+
+    // Act
+    var fileEntity = new TestFileEntity(file, title, fileFormat, type, size, createdBy);
+
+    // Assert
+    Assert.False(fileEntity.IsValid);
+    Assert.Equal("Field.Invalid;Size", fileEntity.Notifications.First());
+    Assert.Null(fileEntity.FileName);
+    Assert.Null(fileEntity.Title);
+    Assert.Null(fileEntity.Link);
+    Assert.Null(fileEntity.FileFormat);
+    Assert.Equal(EFileType.Unknown, fileEntity.Type);
+    Assert.Equal(0, fileEntity.Size);
+    Assert.Equal(createdBy, fileEntity.CreatedBy);
+  }
+
+  // Teste se o construtor gera notificação quando o tipo do arquivo é inválido
+  [Fact]
+  public void Constructor_ShouldGenerateNotification_WhenFileTypeIsInvalid()
+  {
+    // Arrange
+    var file = new FileStorage("https://example.com/path/file.txt", "path/file.txt");
+    var title = "Test File";
+    var fileFormat = ".txt";
+    var type = (EFileType)999; // Tipo inválido
+    var size = 1024;
+    var createdBy = Guid.NewGuid();
+
+    // Act
+    var fileEntity = new TestFileEntity(file, title, fileFormat, type, size, createdBy);
+
+    // Assert
+    Assert.False(fileEntity.IsValid);
+    Assert.Equal("Field.Required;Type", fileEntity.Notifications.First());
+    Assert.Null(fileEntity.FileName);
+    Assert.Null(fileEntity.Title);
+    Assert.Null(fileEntity.Link);
+    Assert.Null(fileEntity.FileFormat);
+    Assert.Equal(EFileType.Unknown, fileEntity.Type);
+    Assert.Equal(0, fileEntity.Size);
+    Assert.Equal(createdBy, fileEntity.CreatedBy);
+  }
 }

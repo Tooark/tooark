@@ -137,4 +137,41 @@ public class DetailedEntityTests
     Assert.Equal(createdBy, entity.UpdatedBy);
     Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
   }
+
+  // Testa se SetUpdatedBy atualiza corretamente quando chamado várias vezes
+  [Fact]
+  public void SetUpdatedBy_MultipleCalls_ShouldUpdateCorrectly()
+  {
+    // Arrange
+    var entity = new TestDetailedEntity();
+    var firstUpdatedBy = Guid.NewGuid();
+    var secondUpdatedBy = Guid.NewGuid();
+
+    // Act
+    entity.SetUpdatedBy(firstUpdatedBy);
+    entity.SetUpdatedBy(secondUpdatedBy);
+
+    // Assert
+    Assert.True(entity.IsValid);
+    Assert.Equal(secondUpdatedBy, entity.UpdatedBy);
+    Assert.True((DateTime.UtcNow - entity.UpdatedAt).TotalMinutes < 1);
+  }
+
+  // Testa se SetCreatedBy não altera UpdatedBy quando há erro de validação
+  [Fact]
+  public void SetCreatedBy_WithInvalidGuid_ShouldNotChangeUpdatedBy()
+  {
+    // Arrange
+    var entity = new TestDetailedEntity();
+    var validCreatedBy = Guid.NewGuid();
+    entity.SetCreatedBy(validCreatedBy);
+
+    // Act
+    entity.SetCreatedBy(Guid.Empty);
+
+    // Assert
+    Assert.False(entity.IsValid);
+    Assert.Equal(validCreatedBy, entity.CreatedBy);
+    Assert.Equal(validCreatedBy, entity.UpdatedBy);
+  }
 }

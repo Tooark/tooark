@@ -85,4 +85,15 @@ public class VersionedEntityTests
     Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
     Assert.Equal(version, updatedVersion);
   }
+
+  // Teste se o construtor sem parâmetros inicializa a versão corretamente
+  [Fact]
+  public void Constructor_WithoutParameters_ShouldInitializeVersionCorrectly()
+  {
+    // Arrange & Act
+    var entity = new TestVersionedEntity();
+
+    // Assert
+    Assert.Equal(1, entity.Version);
+  }
 }
