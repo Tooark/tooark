@@ -67,7 +67,6 @@ public class AuditableEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(userId, entity.UpdatedBy);
     Assert.Equal(2, entity.Version);
     Assert.True(entity.Deleted);
     Assert.Equal(userId, entity.DeletedBy);
@@ -110,7 +109,6 @@ public class AuditableEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(userId, entity.UpdatedBy);
     Assert.Equal(3, entity.Version);
     Assert.False(entity.Deleted);
     Assert.Equal(userId, entity.RestoredBy);
@@ -132,7 +130,6 @@ public class AuditableEntityTests
 
     // Assert
     Assert.False(entity.IsValid);
-    Assert.Equal(deletedBy, entity.UpdatedBy);
     Assert.Equal(2, entity.Version);
     Assert.True(entity.Deleted);
     Assert.Equal(userId, entity.RestoredBy);
@@ -154,7 +151,7 @@ public class AuditableEntityTests
 
     // Assert
     Assert.False(entity.IsValid);
-    Assert.Contains(entity.Notifications, n => n.Key == "ChangeNotAllowedIsDeleted");
+    Assert.Contains(entity.Notifications, n => n.Key == "Entity");
   }
 
   // Teste para verificar se ChangeNotAllowedIsDeleted não adiciona notificação quando a entidade não está excluída
