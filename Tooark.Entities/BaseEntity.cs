@@ -7,8 +7,22 @@ namespace Tooark.Entities;
 /// <summary>
 /// Classe base abstrata para entidades.
 /// </summary>
-public abstract class BaseEntity : Notification
+public abstract class BaseEntity : Notification, IEquatable<Guid>
 {
+  #region Constructors
+
+  /// <summary>
+  /// Construtor vazio para a entidade BaseEntity.
+  /// </summary>
+  /// <remarks>
+  /// Utilizado pelo Entity Framework.
+  /// </remarks>
+  protected BaseEntity() { }
+
+  #endregion
+
+  #region Properties
+
   /// <summary>
   /// Identificador único para a entidade.
   /// </summary>
@@ -25,6 +39,9 @@ public abstract class BaseEntity : Notification
   [Required]
   public Guid Id { get; private set; } = Guid.NewGuid();
 
+  #endregion
+  
+  #region Methods
 
   /// <summary>
   /// Define o identificador único para a entidade.
@@ -44,4 +61,22 @@ public abstract class BaseEntity : Notification
       Id = id;
     }
   }
+
+  #endregion
+
+  #region Equatable Implementation
+
+  /// <summary>
+  /// Compara o identificador da entidade com outro identificador.
+  /// </summary>
+  /// <param name="id">O identificador a ser comparado.</param>
+  /// <returns>Verdadeiro se os identificadores forem iguais, falso caso contrário.</returns>
+  public bool Equals(Guid id) => Id == id;
+
+  /// <summary>
+  /// Sobrecarga do método GetHashCode.
+  /// </summary>
+  public override int GetHashCode() => Id.GetHashCode();
+
+  #endregion
 }

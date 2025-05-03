@@ -135,10 +135,10 @@ bool isCustom = FileValid.IsCustom(formFile, permittedExtensions: new[] { ".TXT"
 using Tooark.Utils;
 
 string sequential = GenerateString.Sequential(27); // AA
-string password = GenerateString.Password(); // 1aB2cD3eF4gH
-string hex = GenerateString.Hexadecimal(); // 0x1A2B3C4D5E6F...
+string password = GenerateString.Password(); // 1aB2cD3eF4!@
+string hex = GenerateString.Hexadecimal(); // 1A2B3C4D5E6F...
 string guid = GenerateString.GuidCode(); // 1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P
-string token = GenerateString.Token(); // 1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P...
+string token = GenerateString.Token(); // 1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6PADE123E21...
 ```
 
 ### Busca de Informações

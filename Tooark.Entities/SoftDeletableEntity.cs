@@ -14,6 +14,26 @@ namespace Tooark.Entities;
 /// </remarks>
 public abstract class SoftDeletableEntity : DetailedEntity
 {
+  #region Constructors
+
+  /// <summary>
+  /// Construtor vazio para a entidade SoftDeletableEntity.
+  /// </summary>
+  /// <remarks>
+  /// Utilizado pelo Entity Framework.
+  /// </remarks>
+  protected SoftDeletableEntity() { }
+
+  /// <summary>
+  /// Cria uma nova instância da entidade exclusão lógica.
+  /// </summary>
+  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
+  protected SoftDeletableEntity(CreatedBy createdBy) : base(createdBy) { }
+
+  #endregion
+
+  #region Properties
+
   /// <summary>
   /// Indica se a entidade foi excluída logicamente.
   /// </summary>
@@ -28,23 +48,24 @@ public abstract class SoftDeletableEntity : DetailedEntity
   [Required]
   public bool Deleted { get; private set; } = false;
 
+  #endregion
+
+  #region Methods
 
   /// <summary>
-  /// Cria uma nova instância da entidade exclusão lógica.
+  /// Verifica se a entidade foi excluída logicamente.
   /// </summary>
-  protected SoftDeletableEntity()
-  { }
-
-  /// <summary>
-  /// Cria uma nova instância da entidade exclusão lógica.
-  /// </summary>
-  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected SoftDeletableEntity(CreatedBy createdBy)
+  /// <remarks>
+  /// Adiciona uma notificação se a entidade foi excluída logicamente e não pode ser alterada.
+  /// </remarks>
+  public void ChangeNotAllowedIsDeleted()
   {
-    // Define o identificador do criador
-    SetCreatedBy(createdBy);
+    // Verifica se a entidade foi excluída logicamente.
+    if (Deleted)
+    {
+      AddNotification("ChangeNotAllowedIsDeleted", "Entity", "T.ENT.SOF1");
+    }
   }
-
 
   /// <summary>
   /// Marca a entidade como excluída logicamente.
@@ -52,17 +73,15 @@ public abstract class SoftDeletableEntity : DetailedEntity
   /// <param name="changedBy">O identificador do usuário que excluiu a entidade.</param>
   public void SetDeleted(UpdatedBy changedBy)
   {
-    // Adiciona notificações de erro
+    // Adiciona as validações dos atributos.
     AddNotifications(changedBy);
 
-    // Verifica se o parâmetro é vazio
+    // Verifica se não houve notificações de erros e se a entidade não foi excluída.
     if (IsValid && !Deleted)
     {
-      // Define o identificador do usuário que excluiu a entidade
-      SetUpdatedBy(changedBy);
-
-      // Define a entidade como excluída
       Deleted = true;
+
+      SetUpdatedBy(changedBy);
     }
   }
 
@@ -72,17 +91,17 @@ public abstract class SoftDeletableEntity : DetailedEntity
   /// <param name="changedBy">O identificador do usuário que restaurou a entidade.</param>
   public void SetRestored(UpdatedBy changedBy)
   {
-    // Adiciona notificações de erro
+    // Adiciona as validações dos atributos.
     AddNotifications(changedBy);
 
-    // Verifica se o parâmetro é vazio
+    // Verifica se não houve notificações de erros e se a entidade foi excluída.
     if (IsValid && Deleted)
     {
-      // Define o identificador do usuário que restaurou excluiu a entidade
-      SetUpdatedBy(changedBy);
-
-      // Define a entidade como não excluída
       Deleted = false;
+
+      SetUpdatedBy(changedBy);
     }
   }
+
+  #endregion
 }

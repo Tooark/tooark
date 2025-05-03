@@ -14,6 +14,26 @@ namespace Tooark.Entities;
 /// </remarks>
 public abstract class VersionedEntity : DetailedEntity
 {
+  #region Constructors
+
+  /// <summary>
+  /// Construtor vazio para a entidade VersionedEntity.
+  /// </summary>
+  /// <remarks>
+  /// Utilizado pelo Entity Framework.
+  /// </remarks>
+  protected VersionedEntity() { }
+  
+  /// <summary>
+  /// Cria uma nova instância da entidade versionamento.
+  /// </summary>
+  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
+  protected VersionedEntity(CreatedBy createdBy) : base(createdBy) { }
+
+  #endregion
+
+  #region Properties
+
   /// <summary>
   /// Versão da entidade.
   /// </summary>
@@ -29,23 +49,21 @@ public abstract class VersionedEntity : DetailedEntity
   [Required]
   public long Version { get; private set; } = 1;
 
-  
-  /// <summary>
-  /// Cria uma nova instância da entidade versionamento.
-  /// </summary>
-  protected VersionedEntity()
-  { }
+  #endregion
+
+  #region Private Methods
 
   /// <summary>
-  /// Cria uma nova instância da entidade versionamento.
+  /// Incrementa a versão da entidade.
   /// </summary>
-  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected VersionedEntity(CreatedBy createdBy)
+  private void IncrementVersion()
   {
-    // Define o identificador do criador
-    SetCreatedBy(createdBy);
+    Version++;
   }
 
+  #endregion
+
+  #region Methods
 
   /// <summary>
   /// Incrementa a versão da entidade.
@@ -54,25 +72,19 @@ public abstract class VersionedEntity : DetailedEntity
   /// Este método deve ser chamado sempre que a entidade for atualizada.
   /// </remarks>
   /// <param name="updatedBy">O identificador do usuário que atualizou a entidade.</param>
-  public new void SetUpdatedBy(UpdatedBy updatedBy)
+  public override void SetUpdatedBy(UpdatedBy updatedBy)
   {
-    // Chama o método da classe base
-    base.SetUpdatedBy(updatedBy);
-    
-    // Verifica se não houve notificações de erro
+    // Adiciona as validações dos atributos.
+    AddNotifications(updatedBy);
+
+    // Verifica se não houve notificações de erro.
     if (IsValid)
     {
-      // Incrementa a versão
       IncrementVersion();
+
+      base.SetUpdatedBy(updatedBy); // Chama a lógica da classe base.
     }
   }
 
-  /// <summary>
-  /// Incrementa a versão da entidade.
-  /// </summary>
-  private void IncrementVersion()
-  {
-    // Incrementa a versão
-    Version++;
-  }
+  #endregion
 }

@@ -52,4 +52,49 @@ public class BaseEntityTests
     Assert.Equal("IdentifierEmpty;Id", entity.Notifications.First());
     Assert.Equal(originalId, entity.Id);
   }
+
+  // Teste se Equals retorna verdadeiro para o mesmo Guid
+  [Fact]
+  public void Equals_WithSameGuid_ShouldReturnTrue()
+  {
+    // Arrange
+    var entity = new TestEntity();
+    var sameId = entity.Id;
+
+    // Act
+    var result = entity.Equals(sameId);
+
+    // Assert
+    Assert.True(result);
+  }
+
+  // Teste se Equals retorna falso para um Guid diferente
+  [Fact]
+  public void Equals_WithDifferentGuid_ShouldReturnFalse()
+  {
+    // Arrange
+    var entity = new TestEntity();
+    var differentId = Guid.NewGuid();
+
+    // Act
+    var result = entity.Equals(differentId);
+
+    // Assert
+    Assert.False(result);
+  }
+
+  // Teste se GetHashCode retorna o hash correto do Id
+  [Fact]
+  public void GetHashCode_ShouldReturnIdHashCode()
+  {
+    // Arrange
+    var entity = new TestEntity();
+    var expectedHashCode = entity.Id.GetHashCode();
+
+    // Act
+    var result = entity.GetHashCode();
+
+    // Assert
+    Assert.Equal(expectedHashCode, result);
+  }
 }
