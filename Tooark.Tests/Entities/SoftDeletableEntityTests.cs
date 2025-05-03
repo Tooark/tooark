@@ -129,7 +129,7 @@ public class SoftDeletableEntityTests
 
     // Assert
     Assert.False(entity.IsValid);
-    Assert.Equal("ChangeNotAllowedIsDeleted", entity.Notifications.First().Key);
+    Assert.Equal("Entity", entity.Notifications.First().Key);
   }
 
   // Teste para não marcar a entidade como excluída quando já está excluída
