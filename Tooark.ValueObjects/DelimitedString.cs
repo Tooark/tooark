@@ -106,6 +106,13 @@ public class DelimitedString : ValueObject
   public static implicit operator string[](DelimitedString delimitedString) => delimitedString._values;
 
   /// <summary>
+  /// Conversão implícita de DelimitedString para lista de strings.
+  /// </summary>
+  /// <param name="delimitedString">Instância de DelimitedString.</param>
+  /// <returns>Lista de strings.</returns>
+  public static implicit operator List<string>(DelimitedString delimitedString) => new([.. delimitedString._values]);
+
+  /// <summary>
   /// Conversão implícita de string para DelimitedString.
   /// </summary>
   /// <param name="value">String delimitada.</param>
@@ -118,4 +125,11 @@ public class DelimitedString : ValueObject
   /// <param name="values">Lista de strings.</param>
   /// <returns>Instância de DelimitedString.</returns>
   public static implicit operator DelimitedString(string[] values) => new(values);
+
+  /// <summary>
+  /// Conversão implícita de lista de strings para DelimitedString.
+  /// </summary>
+  /// <param name="values">Lista de strings.</param>
+  /// <returns>Instância de DelimitedString.</returns>
+  public static implicit operator DelimitedString(List<string> values) => new([.. values]);
 }
