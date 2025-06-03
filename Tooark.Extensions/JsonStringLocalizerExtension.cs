@@ -246,10 +246,10 @@ internal class InternalJsonStringLocalizer
     string complement = defaultFile ? ".default" : "";
 
     // Caminho relativo para o arquivo JSON
-    string relativeFilePath = $"Resources/{culture}{complement}.json";
+    string relativeFilePath = Path.Combine("Resources", $"{culture}{complement}.json");
 
     // Retorna o caminho completo do arquivo JSON
-    return Path.GetFullPath(relativeFilePath);
+    return Path.Combine(AppContext.BaseDirectory, relativeFilePath);
   }
 
   /// <summary>
