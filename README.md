@@ -4,13 +4,13 @@
 
 Tooark é uma biblioteca voltada para projetos .NET, oferecendo uma coleção de pacotes modulares que facilitam o desenvolvimento de aplicações robustas e escaláveis. Cada pacote foi projetado para atender a necessidades específicas, como validações, notificações, manipulação de objetos de valor, entre outros.
 
-Para instalar o Tooark completo na versão mais recente, use o seguinte comando no seu terminal:
+O pacote Tooark está disponível no **[Nuget Registry](https://www.nuget.org/profiles/Tooark)**, use o seguinte comando no seu terminal:
 
 ```bash
 dotnet add package Tooark
 ```
 
-O código do projeto com todos os recursos e funcionalidades do Tooark voltadas para projetos .NET [Link](/Tooark/README.md).
+O código do projeto com todos os recursos e funcionalidades do Tooark voltadas para projetos .NET estão disponíveis no [link](/Tooark/README.md).
 
 | Package                | Version                                                                                                              | Downloads                                                                                                             | Individual Install                        |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
@@ -38,10 +38,9 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull re
 
 Os seguintes usuários estão contribuindo para o projeto:
 
-| <img src="https://avatars.githubusercontent.com/u/137942353?v=4" width=150> | <img src="https://avatars.githubusercontent.com/u/27088472?v=4" width=150> |
-| :-------------------------------------------------------------------------: | :------------------------------------------------------------------------: |
-|                              **Paulo Freitas**                              |                             **Paulo Freitas**                              |
-|                 [GitHub](https://github.com/paulofreitas91)                 |                 [GitHub](https://github.com/paulosfjunior)                 |
+| <img src="https://avatars.githubusercontent.com/u/137942353?v=4" width=120> | <img src="https://avatars.githubusercontent.com/u/27088472?v=4" width=120> | <img src="https://avatars.githubusercontent.com/u/59488993?v=4" width=120> |
+| :-------------------------------------------------------------------------: | :------------------------------------------------------------------------: | :------------------------------------------------------------------------: |
+|           [**Paulo Freitas**](https://github.com/paulofreitas91)            |           [**Paulo Freitas**](https://github.com/paulosfjunior)            |              [**Davi Menon**](https://github.com/davidutramn)              |
 
 ---
 

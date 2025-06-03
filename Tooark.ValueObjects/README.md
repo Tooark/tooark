@@ -2,6 +2,29 @@
 
 Biblioteca gerenciamento de Value Objects pré-definidos e validados, garantindo a integridade e consistência dos dados para projetos .NET.
 
+## Configuração
+
+Para utilizar os resources disponíveis, adicione a seguinte linha no seu arquivo `.csproj`:
+
+```xml
+<Target Name="CopyNugetContentFiles" AfterTargets="Build">
+  <ItemGroup>
+    <NugetContentFiles Include="$(NuGetPackageRoot)\**\Resources\**\*.json" />
+  </ItemGroup>
+  <Copy SourceFiles="@(NugetContentFiles)" DestinationFolder="$(OutDir)Resources" SkipUnchangedFiles="true" />
+</Target>
+```
+
+Adicione a seguinte linha no seu arquivo `Program.cs`:
+
+```csharp
+// Importando o namespace necessário
+using Tooark.ValueObjects.Injections;
+
+// Nas suas configurações de serviços
+services.AddTooarkValueObjects();
+```
+
 ## Conteúdo
 
 - [Cpf](#1-cpf)
@@ -1149,6 +1172,7 @@ if (delimitedString.IsValid)
 ## Dependências
 
 - [Tooark.Enums](../Tooark.Enums/README.md)
+- [Tooark.Extensions](../Tooark.Extensions/README.md)
 - [Tooark.Validations](../Tooark.Validations/README.md)
 
 ## Contribuição

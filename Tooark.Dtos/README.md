@@ -2,6 +2,29 @@
 
 Biblioteca para gerenciamento e manutenção de DTOs base em projetos .NET.
 
+## Configuração
+
+Para utilizar os resources disponíveis, adicione a seguinte linha no seu arquivo `.csproj`:
+
+```xml
+<Target Name="CopyNugetContentFiles" AfterTargets="Build">
+  <ItemGroup>
+    <NugetContentFiles Include="$(NuGetPackageRoot)\**\Resources\**\*.json" />
+  </ItemGroup>
+  <Copy SourceFiles="@(NugetContentFiles)" DestinationFolder="$(OutDir)Resources" SkipUnchangedFiles="true" />
+</Target>
+```
+
+Adicione a seguinte linha no seu arquivo `Program.cs`:
+
+```csharp
+// Importando o namespace necessário
+using Tooark.Dtos.Injections;
+
+// Nas suas configurações de serviços
+services.AddTooarkDtos();
+```
+
 ## Conteúdo
 
 - [Dto](#1-dto)

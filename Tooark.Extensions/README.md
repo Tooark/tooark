@@ -2,6 +2,29 @@
 
 Biblioteca gerenciar extensões e utilitários, facilitando o desenvolvimento e a manutenção de projetos .NET.
 
+## Configuração
+
+Para utilizar os resources disponíveis, adicione a seguinte linha no seu arquivo `.csproj`:
+
+```xml
+<Target Name="CopyNugetContentFiles" AfterTargets="Build">
+  <ItemGroup>
+    <NugetContentFiles Include="$(NuGetPackageRoot)\**\Resources\**\*.json" />
+  </ItemGroup>
+  <Copy SourceFiles="@(NugetContentFiles)" DestinationFolder="$(OutDir)Resources" SkipUnchangedFiles="true" />
+</Target>
+```
+
+Adicione a seguinte linha no seu arquivo `Program.cs`:
+
+```csharp
+// Importando o namespace necessário
+using Tooark.Extensions.Injections;
+
+// Nas suas configurações de serviços
+services.AddTooarkExtensions();
+```
+
 ## Conteúdo
 
 - [EnumerableExtensions](#1-extensão-de-enumeráveis)
@@ -226,10 +249,10 @@ string snakeCaseValue = value.FromKebabToSnakeCase(); // hello_world
 
 ## Arquivos de Recursos Multiculturais
 
-- [en-US.json](./Resources/en-US.default.json)
-- [es-ES.json](./Resources/es-ES.default.json)
-- [pt-BR.json](./Resources/pt-BR.default.json)
-- [pt-PT.json](./Resources/pt-PT.default.json)
+- [en-US.default.json](./Resources/en-US.default.json)
+- [es-ES.default.json](./Resources/es-ES.default.json)
+- [pt-BR.default.json](./Resources/pt-BR.default.json)
+- [pt-PT.default.json](./Resources/pt-PT.default.json)
 
 ## Dependências
 

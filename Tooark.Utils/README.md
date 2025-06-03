@@ -177,6 +177,7 @@ string normalizedValueRegex = Normalize.ValueRegex("Olá Mundo!"); // OLAMUNDO
 ## Dependências
 
 - [Microsoft.AspNetCore.Http](https://www.nuget.org/packages/Microsoft.AspNetCore.Http/)
+- [Tooark.Exceptions](../Tooark.Exceptions/README.md)
 - [Tooark.Validations](../Tooark.Validations/README.md)
 
 ## Contribuição
