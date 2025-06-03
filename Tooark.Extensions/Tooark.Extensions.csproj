@@ -13,9 +13,9 @@
 
   <ItemGroup>
     <None Update="Resources\**\*.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
-      <PackagePath>contentFiles\any\$(TargetFramework)\Resources\</PackagePath>
+      <PackagePath>contentFiles/any/any/Resources/</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
