@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Tooark.Dtos.Injections;
 using Tooark.Extensions.Injections;
+using Tooark.ValueObjects.Injections;
 
 namespace Tooark.Injections;
 
@@ -16,11 +17,14 @@ public static partial class TooarkDependencyInjection
   /// <returns>A coleção de serviços adicionados.</returns>
   public static IServiceCollection AddTooarkService(this IServiceCollection services)
   {
-    // Adiciona o serviço JsonStringLocalizer
-    services.AddJsonStringLocalizer();
-
-    // Adiciona o serviço StringLocalizer para Dto
+    // Adiciona as injeções de dependência Dtos
     services.AddTooarkDtos();
+
+    // Adiciona as injeções de dependência Extensions
+    services.AddTooarkExtensions();
+
+    // Adiciona as injeções de dependência ValueObjects
+    services.AddTooarkValueObjects();
 
     // Retorna a coleção de serviços
     return services;
