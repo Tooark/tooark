@@ -6,6 +6,51 @@ public class PaginationDtoTests
 {
   private class PaginationTests : SearchDto { }
 
+  // Teste para verificar se os valores padrões são atribuídos corretamente com apenas total.
+  [Fact]
+  public void PaginationDto_WithoutQueryString_ShouldSetTotalOnly()
+  {
+    // Arrange
+    var total = 100;
+
+    // Act
+    var paginationDto = new PaginationDto(total);
+
+    // Assert
+    Assert.Equal(total, paginationDto.Total);
+    Assert.Equal(0, paginationDto.PageSize);
+    Assert.Equal(0, paginationDto.PageIndex);
+    Assert.Null(paginationDto.Previous);
+    Assert.Null(paginationDto.Next);
+    Assert.Null(paginationDto.CurrentLink);
+    Assert.Null(paginationDto.PreviousLink);
+    Assert.Null(paginationDto.NextLink);
+  }
+
+  // Teste para verificar se os valores padrões são atribuídos corretamente com apenas request.
+  [Fact]
+  public void PaginationDto_WithoutQueryString_ShouldSetRequestOnly() 
+  {
+    // Arrange
+    var context = new DefaultHttpContext();
+    context.Request.Scheme = "http";
+    context.Request.Host = new HostString("example.com");
+    context.Request.Path = "/api/test";
+
+    // Act
+    var paginationDto = new PaginationDto(context.Request);
+
+    // Assert
+    Assert.Equal(0, paginationDto.Total);
+    Assert.Equal(0, paginationDto.PageSize);
+    Assert.Equal(0, paginationDto.PageIndex);
+    Assert.Null(paginationDto.Previous);
+    Assert.Null(paginationDto.Next);
+    Assert.Equal("http://example.com/api/test", paginationDto.CurrentLink);
+    Assert.Null(paginationDto.PreviousLink);
+    Assert.Null(paginationDto.NextLink);
+  }
+
   // Teste para verificar se os valores padrões são atribuídos corretamente.
   [Fact]
   public void PaginationDto_WithoutQueryString_ShouldSetDefaultValues()
