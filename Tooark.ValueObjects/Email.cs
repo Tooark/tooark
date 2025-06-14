@@ -7,6 +7,20 @@ namespace Tooark.ValueObjects;
 /// </summary>
 public sealed class Email : ValueObject
 {
+  #region Constants
+
+  /// <summary>
+  /// Tamanho mínimo do email.
+  /// </summary>
+  public const int MinLength = 6;
+
+  /// <summary>
+  /// Tamanho máximo do email.
+  /// </summary>
+  public const int MaxLength = 255;
+
+  #endregion
+
   /// <summary>
   /// Valor privado do email.
   /// </summary>
@@ -20,6 +34,7 @@ public sealed class Email : ValueObject
   {
     // Adiciona as notificações de validação do email
     AddNotifications(new Validation()
+      .IsBetween(value, MinLength, MaxLength, "Email")
       .IsEmail(value, "Email", "Field.Invalid;Email")
     );
 

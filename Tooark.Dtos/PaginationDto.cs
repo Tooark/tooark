@@ -9,54 +9,29 @@ namespace Tooark.Dtos;
 /// </summary>
 public class PaginationDto
 {
-  /// <summary>
-  /// Total de registros.
-  /// </summary>
-  /// <value>Valor padrão é: 0.</value>
-  public long Total { get; private set; } = 0;
+  #region Constructors
 
   /// <summary>
-  /// Tamanho da página.
+  /// Construtor com parâmetro de total de registros.
   /// </summary>
-  /// <value>Valor padrão é: 0.</value>
-  public long PageSize { get; set; } = 0;
+  /// <param name="total">Total de registros.</param>
+  /// <returns>Retorna um objeto de paginação.</returns>
+  public PaginationDto(long total)
+  {
+    // Total de registros
+    Total = total;
+  }
 
   /// <summary>
-  /// Índice da página.
+  /// Construtor com parâmetro de requisição.
   /// </summary>
-  /// <value>Valor padrão é: 0.</value>
-  public long PageIndex { get; set; } = 0;
-
-  /// <summary>
-  /// Índice da página anterior.
-  /// </summary>
-  /// <value>Valor padrão é: nulo.</value>
-  public long? Previous { get; set; } = null;
-
-  /// <summary>
-  /// Índice da página seguinte.
-  /// </summary>
-  /// <value>Valor padrão é: nulo.</value>
-  public long? Next { get; set; } = null;
-
-  /// <summary>
-  /// Link da página atual.
-  /// </summary>
-  /// <value>Valor padrão é: nulo.</value>
-  public string? CurrentLink { get; set; } = null;
-
-  /// <summary>
-  /// Link da página anterior.
-  /// </summary>
-  /// <value>Valor padrão é: nulo.</value>
-  public string? PreviousLink { get; set; } = null;
-
-  /// <summary>
-  /// Link da página seguinte.
-  /// </summary>
-  /// <value>Valor padrão é: nulo.</value>
-  public string? NextLink { get; set; } = null;
-
+  /// <param name="request">Requisição HTTP atual.</param>
+  /// <returns>Retorna um objeto de paginação.</returns>
+  public PaginationDto(HttpRequest request)
+  {
+    // Monta o link atual da requisição
+    CurrentLink = BuildCurrentLink(request);
+  }
 
   /// <summary>
   /// Construtor com parâmetros de total de registros e requisição.
@@ -183,6 +158,71 @@ public class PaginationDto
     }
   }
 
+  #endregion
+
+  #region Properties
+
+  /// <summary>
+  /// Total de registros.
+  /// </summary>
+  /// <value>Valor padrão é: 0.</value>
+  public long Total { get; private set; } = 0;
+
+  /// <summary>
+  /// Tamanho da página.
+  /// </summary>
+  /// <value>Valor padrão é: 0.</value>
+  public long PageSize { get; set; } = 0;
+
+  /// <summary>
+  /// Índice da página.
+  /// </summary>
+  /// <value>Valor padrão é: 0.</value>
+  public long PageIndex { get; set; } = 0;
+
+  /// <summary>
+  /// Índice da página anterior.
+  /// </summary>
+  /// <value>Valor padrão é: nulo.</value>
+  public long? Previous { get; set; } = null;
+
+  /// <summary>
+  /// Índice da página seguinte.
+  /// </summary>
+  /// <value>Valor padrão é: nulo.</value>
+  public long? Next { get; set; } = null;
+
+  /// <summary>
+  /// Link da página atual.
+  /// </summary>
+  /// <value>Valor padrão é: nulo.</value>
+  public string? CurrentLink { get; set; } = null;
+
+  /// <summary>
+  /// Link da página anterior.
+  /// </summary>
+  /// <value>Valor padrão é: nulo.</value>
+  public string? PreviousLink { get; set; } = null;
+
+  /// <summary>
+  /// Link da página seguinte.
+  /// </summary>
+  /// <value>Valor padrão é: nulo.</value>
+  public string? NextLink { get; set; } = null;
+
+  #endregion
+
+  #region Private Methods
+
+  /// <summary>
+  /// Helper para montar o link atual da requisição.
+  /// </summary>
+  /// <param name="request">Requisição HTTP atual.</param>
+  /// <returns>Retorna o link completo da requisição.</returns>
+  private static string BuildCurrentLink(HttpRequest request)
+  {
+    return $"{request.Scheme}://{request.Host}{request.Path}{request.QueryString}";
+  }
 
   /// <summary>
   /// Função para obter o valor de um parâmetro da QueryString.
@@ -253,4 +293,6 @@ public class PaginationDto
       NextLink = GenerateLink(baseUrl, query, index + 1);
     }
   }
+
+  #endregion
 }
