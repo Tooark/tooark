@@ -79,6 +79,9 @@ Extensões para manipulação de strings.
 
 **Métodos:**
 
+- `ToBase64`: Converte uma string para Base64.
+- `FromBase64`: Converte uma string Base64 de volta para uma string normal.
+- `ToSlug`: Converte uma string para um formato de slug.
 - `ToNormalize`: Normaliza uma string removendo espaços, convertendo para maiúscula e substituindo caracteres especiais.
 - `ToNormalizeRegex`: Normaliza uma string removendo espaços, convertendo para maiúscula e substituindo caracteres especiais usando expressões regulares.
 - `FromSnakeToPascalCase`: Converte uma string de snake_case para PascalCase.
@@ -174,6 +177,30 @@ var localizedString = _localizer["Field.Empty", "Name"]; // "O campo Name está 
 ```
 
 ### Extensões de String
+
+**ToBase64:**
+
+```csharp
+using Tooark.Extensions;
+string value = "Hello World!";
+string base64Value = value.ToBase64(); // SGVsbG8gV29ybGQh
+```
+
+**FromBase64:**
+
+```csharp
+using Tooark.Extensions;
+string base64Value = "SGVsbG8gV29ybGQh";
+string normalValue = base64Value.FromBase64(); // Hello World!
+```
+
+**ToSlug:**
+
+```csharp
+using Tooark.Extensions;
+string value = "Hello World!";
+string slugValue = value.ToSlug(); // hello-world
+```
 
 **ToNormalize:**
 

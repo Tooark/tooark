@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Tooark.Dtos;
 
 /// <summary>
@@ -5,6 +7,8 @@ namespace Tooark.Dtos;
 /// </summary>
 public abstract class SearchDto : Dto
 {
+  #region Private Properties
+
   /// <summary>
   /// Índice privado da paginação.
   /// </summary>
@@ -15,6 +19,9 @@ public abstract class SearchDto : Dto
   /// </summary>
   private long pageSize = 50;
 
+  #endregion
+
+  #region Properties
 
   /// <summary>
   /// Informação a ser procurada.
@@ -38,6 +45,7 @@ public abstract class SearchDto : Dto
   /// Índice lógico da paginação.
   /// </summary>
   /// <value>Parâmetro padrão é 0.</value>
+  [JsonIgnore]
   public long PageIndexLogical
   {
     get => pageIndex > 0 ? pageIndex - 1 : 0;
@@ -55,4 +63,6 @@ public abstract class SearchDto : Dto
     get => pageSize;
     set => pageSize = value < 0 ? 0 : value;
   }
+
+  #endregion
 }
