@@ -53,9 +53,9 @@ public class DelimitedString : ValueObject
   /// <param name="values">Os valores a serem concatenados na string delimitada.</param>
   public DelimitedString(params string[] values)
   {
-    // Adiciona as notificações de validação da lista de strings
+    // Adiciona as notificações de validação da array de strings
     AddNotifications(new Validation()
-      .IsGreater(values, 0, nameof(DelimitedString), "Field.Invalid;DelimitedString")
+      .IsGreater(values.Length, 0, nameof(DelimitedString), "Field.Invalid;DelimitedString")
     );
 
     // Verifica se é válido então não existe notificação
@@ -64,6 +64,26 @@ public class DelimitedString : ValueObject
       // Define o valor e a lista de valores da string delimitada
       _value = string.Join(DefaultDelimiter, values);
       _values = values;
+    }
+  }
+
+  /// <summary>
+  /// Inicializa uma nova instância da classe DelimitedString com os valores especificados.
+  /// </summary>
+  /// <param name="values">Os valores a serem concatenados na string delimitada.</param>
+  public DelimitedString(List<string> values)
+  {
+    // Adiciona as notificações de validação da lista de strings
+    AddNotifications(new Validation()
+      .IsGreater(values.Count, 0, nameof(DelimitedString), "Field.Invalid;DelimitedString")
+    );
+
+    // Verifica se é válido então não existe notificação
+    if (IsValid)
+    {
+      // Define o valor e a lista de valores da string delimitada
+      _value = string.Join(DefaultDelimiter, values);
+      _values = [.. values];
     }
   }
 
@@ -86,10 +106,16 @@ public class DelimitedString : ValueObject
   public override string ToString() => _value;
 
   /// <summary>
+  /// Converte a string delimitada em uma array de strings.
+  /// </summary>
+  /// <returns>Array de strings.</returns>
+  public string[] ToArray() => _values;
+
+  /// <summary>
   /// Converte a string delimitada em uma lista de strings.
   /// </summary>
   /// <returns>Lista de strings.</returns>
-  public string[] ToList() => _values;
+  public List<string> ToList() => [.. _values];
 
   /// <summary>
   /// Conversão implícita de DelimitedString para string.
@@ -99,10 +125,10 @@ public class DelimitedString : ValueObject
   public static implicit operator string(DelimitedString delimitedString) => delimitedString._value;
 
   /// <summary>
-  /// Conversão implícita de DelimitedString para lista de strings.
+  /// Conversão implícita de DelimitedString para array de strings.
   /// </summary>
   /// <param name="delimitedString">Instância de DelimitedString.</param>
-  /// <returns>Lista de strings.</returns>
+  /// <returns>Array de strings.</returns>
   public static implicit operator string[](DelimitedString delimitedString) => delimitedString._values;
 
   /// <summary>
@@ -120,9 +146,9 @@ public class DelimitedString : ValueObject
   public static implicit operator DelimitedString(string value) => new(value);
 
   /// <summary>
-  /// Conversão implícita de lista de strings para DelimitedString.
+  /// Conversão implícita de array de strings para DelimitedString.
   /// </summary>
-  /// <param name="values">Lista de strings.</param>
+  /// <param name="values">Array de strings.</param>
   /// <returns>Instância de DelimitedString.</returns>
   public static implicit operator DelimitedString(string[] values) => new(values);
 
@@ -131,5 +157,5 @@ public class DelimitedString : ValueObject
   /// </summary>
   /// <param name="values">Lista de strings.</param>
   /// <returns>Instância de DelimitedString.</returns>
-  public static implicit operator DelimitedString(List<string> values) => new([.. values]);
+  public static implicit operator DelimitedString(List<string> values) => new(values);
 }
