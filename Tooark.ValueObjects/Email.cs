@@ -34,15 +34,15 @@ public sealed class Email : ValueObject
   {
     // Adiciona as notificações de validação do email
     AddNotifications(new Validation()
-      .IsBetween(value, MinLength, MaxLength, "Email")
-      .IsEmail(value, "Email", "Field.Invalid;Email")
+      .IsBetween(value ?? "", MinLength, MaxLength, "Email")
+      .IsEmail(value ?? "", "Email", "Field.Invalid;Email")
     );
 
     // Verifica é valido então não existe notificação
     if (IsValid)
     {
       // Define o valor do email em minúsculas e sem espaços em branco no início e no final
-      _value = value.ToLowerInvariant().Trim();
+      _value = value!.ToLowerInvariant().Trim();
     }
   }
 
