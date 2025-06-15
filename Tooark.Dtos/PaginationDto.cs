@@ -57,10 +57,10 @@ public class PaginationDto
       var query = QueryHelpers.ParseQuery(request.QueryString.ToString());
 
       // Define o índice da página da requisição
-      PageIndex = GetQueryValue("PageIndex", query);
+      PageIndex = GetQueryValue("SearchDto.PageIndex", query);
 
       // Define o tamanho da página da requisição
-      PageSize = GetQueryValue("PageSize", query);
+      PageSize = GetQueryValue("SearchDto.PageSize", query);
 
       // Se existir parâmetro Index e Size de paginação. E o tamanho da pagina for menor que o total de registros
       if (PageSize > 0 && PageIndex >= 0 && PageSize < Total)
@@ -104,7 +104,7 @@ public class PaginationDto
       var query = QueryHelpers.ParseQuery(request.QueryString.ToString());
 
       // Atualiza o tamanho da página na QueryString
-      query["PageSize"] = PageSize.ToString();
+      query["SearchDto.PageSize"] = PageSize.ToString();
 
       // Define informações da página anterior
       SetPrevious(previous + 1, baseUrl, query);
@@ -144,11 +144,11 @@ public class PaginationDto
       if (!string.IsNullOrEmpty(searchDto.Search))
       {
         // Atualiza parâmetro de busca na QueryString
-        query["Search"] = searchDto.Search;
+        query["SearchDto.Search"] = searchDto.Search;
       }
 
       // Atualiza o tamanho da página na QueryString
-      query["PageSize"] = PageSize.ToString();
+      query["SearchDto.PageSize"] = PageSize.ToString();
 
       // Define informações da página anterior
       SetPrevious(PageIndex, baseUrl, query);
@@ -172,43 +172,43 @@ public class PaginationDto
   /// Tamanho da página.
   /// </summary>
   /// <value>Valor padrão é: 0.</value>
-  public long PageSize { get; set; } = 0;
+  public long PageSize { get; private set; } = 10;
 
   /// <summary>
   /// Índice da página.
   /// </summary>
   /// <value>Valor padrão é: 0.</value>
-  public long PageIndex { get; set; } = 0;
+  public long PageIndex { get; private set; } = 1;
 
   /// <summary>
   /// Índice da página anterior.
   /// </summary>
   /// <value>Valor padrão é: nulo.</value>
-  public long? Previous { get; set; } = null;
+  public long? Previous { get; private set; } = null;
 
   /// <summary>
   /// Índice da página seguinte.
   /// </summary>
   /// <value>Valor padrão é: nulo.</value>
-  public long? Next { get; set; } = null;
+  public long? Next { get; private set; } = null;
 
   /// <summary>
   /// Link da página atual.
   /// </summary>
   /// <value>Valor padrão é: nulo.</value>
-  public string? CurrentLink { get; set; } = null;
+  public string? CurrentLink { get; private set; } = null;
 
   /// <summary>
   /// Link da página anterior.
   /// </summary>
   /// <value>Valor padrão é: nulo.</value>
-  public string? PreviousLink { get; set; } = null;
+  public string? PreviousLink { get; private set; } = null;
 
   /// <summary>
   /// Link da página seguinte.
   /// </summary>
   /// <value>Valor padrão é: nulo.</value>
-  public string? NextLink { get; set; } = null;
+  public string? NextLink { get; private set; } = null;
 
   #endregion
 
@@ -250,7 +250,7 @@ public class PaginationDto
   private static string? GenerateLink(string baseUrl, Dictionary<string, StringValues> query, long pageIndex)
   {
     // Atualiza o índice da página na QueryString
-    query["PageIndex"] = pageIndex.ToString();
+    query["SearchDto.PageIndex"] = pageIndex.ToString();
 
     // Retorna o link de paginação.
     return $"{baseUrl}{QueryString.Create(query)}";

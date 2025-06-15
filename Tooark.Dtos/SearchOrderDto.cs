@@ -3,7 +3,7 @@ namespace Tooark.Dtos;
 /// <summary>
 /// Classe para parâmetros de busca com parâmetro de ordenação.
 /// </summary>
-public abstract class SearchOrderDto : SearchDto
+public class SearchOrderDto : SearchDto
 {
   /// <summary>
   /// Referencia a ser ordenada.
