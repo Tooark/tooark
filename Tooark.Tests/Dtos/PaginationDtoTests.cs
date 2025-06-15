@@ -4,8 +4,6 @@ namespace Tooark.Tests.Dtos;
 
 public class PaginationDtoTests
 {
-  private class PaginationTests : SearchDto { }
-
   // Teste para verificar se os valores padrões são atribuídos corretamente com apenas total.
   [Fact]
   public void PaginationDto_WithoutQueryString_ShouldSetTotalOnly()
@@ -18,8 +16,8 @@ public class PaginationDtoTests
 
     // Assert
     Assert.Equal(total, paginationDto.Total);
-    Assert.Equal(0, paginationDto.PageSize);
-    Assert.Equal(0, paginationDto.PageIndex);
+    Assert.Equal(10, paginationDto.PageSize);
+    Assert.Equal(1, paginationDto.PageIndex);
     Assert.Null(paginationDto.Previous);
     Assert.Null(paginationDto.Next);
     Assert.Null(paginationDto.CurrentLink);
@@ -29,7 +27,7 @@ public class PaginationDtoTests
 
   // Teste para verificar se os valores padrões são atribuídos corretamente com apenas request.
   [Fact]
-  public void PaginationDto_WithoutQueryString_ShouldSetRequestOnly() 
+  public void PaginationDto_WithoutQueryString_ShouldSetRequestOnly()
   {
     // Arrange
     var context = new DefaultHttpContext();
@@ -42,8 +40,8 @@ public class PaginationDtoTests
 
     // Assert
     Assert.Equal(0, paginationDto.Total);
-    Assert.Equal(0, paginationDto.PageSize);
-    Assert.Equal(0, paginationDto.PageIndex);
+    Assert.Equal(10, paginationDto.PageSize);
+    Assert.Equal(1, paginationDto.PageIndex);
     Assert.Null(paginationDto.Previous);
     Assert.Null(paginationDto.Next);
     Assert.Equal("http://example.com/api/test", paginationDto.CurrentLink);
@@ -86,7 +84,7 @@ public class PaginationDtoTests
     context.Request.Scheme = "http";
     context.Request.Host = new HostString("example.com");
     context.Request.Path = "/api/test";
-    context.Request.QueryString = new QueryString("?PageIndex=1&PageSize=10&Param=Abc123");
+    context.Request.QueryString = new QueryString("?SearchDto.PageIndex=1&SearchDto.PageSize=10&Param=Abc123");
 
     // Act
     var paginationDto = new PaginationDto(total, context.Request);
@@ -97,9 +95,9 @@ public class PaginationDtoTests
     Assert.Equal(1, paginationDto.PageIndex);
     Assert.Equal(0, paginationDto.Previous);
     Assert.Equal(2, paginationDto.Next);
-    Assert.Equal("http://example.com/api/test?PageIndex=1&PageSize=10&Param=Abc123", paginationDto.CurrentLink);
-    Assert.Equal("http://example.com/api/test?PageIndex=0&PageSize=10&Param=Abc123", paginationDto.PreviousLink);
-    Assert.Equal("http://example.com/api/test?PageIndex=2&PageSize=10&Param=Abc123", paginationDto.NextLink);
+    Assert.Equal("http://example.com/api/test?SearchDto.PageIndex=1&SearchDto.PageSize=10&Param=Abc123", paginationDto.CurrentLink);
+    Assert.Equal("http://example.com/api/test?SearchDto.PageIndex=0&SearchDto.PageSize=10&Param=Abc123", paginationDto.PreviousLink);
+    Assert.Equal("http://example.com/api/test?SearchDto.PageIndex=2&SearchDto.PageSize=10&Param=Abc123", paginationDto.NextLink);
   }
 
   // Teste para verificar se os valores são atribuídos corretamente com os parâmetros de paginação na request.
@@ -112,7 +110,7 @@ public class PaginationDtoTests
     context.Request.Scheme = "http";
     context.Request.Host = new HostString("example.com");
     context.Request.Path = "/api/test";
-    PaginationTests searchDto = new () { PageIndex = 1, PageSize = 10, Search = "Abc123" };
+    SearchDto searchDto = new("Abc123", 1, 10);
 
     // Act
     var paginationDto = new PaginationDto(total, searchDto, context.Request);
@@ -124,8 +122,8 @@ public class PaginationDtoTests
     Assert.Equal(0, paginationDto.Previous);
     Assert.Equal(2, paginationDto.Next);
     Assert.Equal("http://example.com/api/test", paginationDto.CurrentLink);
-    Assert.Equal("http://example.com/api/test?Search=Abc123&PageSize=10&PageIndex=0", paginationDto.PreviousLink);
-    Assert.Equal("http://example.com/api/test?Search=Abc123&PageSize=10&PageIndex=2", paginationDto.NextLink);
+    Assert.Equal("http://example.com/api/test?SearchDto.Search=Abc123&SearchDto.PageSize=10&SearchDto.PageIndex=0", paginationDto.PreviousLink);
+    Assert.Equal("http://example.com/api/test?SearchDto.Search=Abc123&SearchDto.PageSize=10&SearchDto.PageIndex=2", paginationDto.NextLink);
   }
 
   // Teste para verificar se os valores são atribuídos corretamente com os parâmetros de paginação no construtor e ignorando os da request.
@@ -138,7 +136,7 @@ public class PaginationDtoTests
     context.Request.Scheme = "http";
     context.Request.Host = new HostString("localhost");
     context.Request.Path = "/api/test";
-    context.Request.QueryString = new QueryString("?PageIndex=3&PageSize=20&Param=Abc123");
+    context.Request.QueryString = new QueryString("?SearchDto.PageIndex=3&SearchDto.PageSize=20&Param=Abc123");
 
     // Act
     var paginationDto = new PaginationDto(total, 10, 1, 0, 2, context.Request);
@@ -149,9 +147,9 @@ public class PaginationDtoTests
     Assert.Equal(1, paginationDto.PageIndex);
     Assert.Equal(0, paginationDto.Previous);
     Assert.Equal(2, paginationDto.Next);
-    Assert.Equal("http://localhost/api/test?PageIndex=3&PageSize=20&Param=Abc123", paginationDto.CurrentLink);
-    Assert.Equal("http://localhost/api/test?PageIndex=0&PageSize=10&Param=Abc123", paginationDto.PreviousLink);
-    Assert.Equal("http://localhost/api/test?PageIndex=2&PageSize=10&Param=Abc123", paginationDto.NextLink);
+    Assert.Equal("http://localhost/api/test?SearchDto.PageIndex=3&SearchDto.PageSize=20&Param=Abc123", paginationDto.CurrentLink);
+    Assert.Equal("http://localhost/api/test?SearchDto.PageIndex=0&SearchDto.PageSize=10&Param=Abc123", paginationDto.PreviousLink);
+    Assert.Equal("http://localhost/api/test?SearchDto.PageIndex=2&SearchDto.PageSize=10&Param=Abc123", paginationDto.NextLink);
   }
 
   // Teste para verificar se os valores são atribuídos corretamente com os parâmetros de paginação no construtor com request sem parâmetros de paginação.
@@ -175,8 +173,8 @@ public class PaginationDtoTests
     Assert.Equal(0, paginationDto.Previous);
     Assert.Equal(2, paginationDto.Next);
     Assert.Equal("http://localhost/api/test", paginationDto.CurrentLink);
-    Assert.Equal("http://localhost/api/test?PageSize=10&PageIndex=0", paginationDto.PreviousLink);
-    Assert.Equal("http://localhost/api/test?PageSize=10&PageIndex=2", paginationDto.NextLink);
+    Assert.Equal("http://localhost/api/test?SearchDto.PageSize=10&SearchDto.PageIndex=0", paginationDto.PreviousLink);
+    Assert.Equal("http://localhost/api/test?SearchDto.PageSize=10&SearchDto.PageIndex=2", paginationDto.NextLink);
   }
 
   // Teste para verificar limite de índice da página anterior.
@@ -189,7 +187,7 @@ public class PaginationDtoTests
     context.Request.Scheme = "http";
     context.Request.Host = new HostString("localhost");
     context.Request.Path = "/api/test";
-    context.Request.QueryString = new QueryString("?PageIndex=0&PageSize=10&Param=Abc123");
+    context.Request.QueryString = new QueryString("?SearchDto.PageIndex=1&SearchDto.PageSize=10&Param=Abc123");
 
     // Act
     var paginationDto = new PaginationDto(total, context.Request);
@@ -197,12 +195,12 @@ public class PaginationDtoTests
     // Assert
     Assert.Equal(total, paginationDto.Total);
     Assert.Equal(10, paginationDto.PageSize);
-    Assert.Equal(0, paginationDto.PageIndex);
-    Assert.Null(paginationDto.Previous);
-    Assert.Equal(1, paginationDto.Next);
-    Assert.Equal("http://localhost/api/test?PageIndex=0&PageSize=10&Param=Abc123", paginationDto.CurrentLink);
-    Assert.Null(paginationDto.PreviousLink);
-    Assert.Equal("http://localhost/api/test?PageIndex=1&PageSize=10&Param=Abc123", paginationDto.NextLink);
+    Assert.Equal(1, paginationDto.PageIndex);
+    Assert.Equal(0, paginationDto.Previous);
+    Assert.Equal(2, paginationDto.Next);
+    Assert.Equal("http://localhost/api/test?SearchDto.PageIndex=1&SearchDto.PageSize=10&Param=Abc123", paginationDto.CurrentLink);
+    Assert.Equal("http://localhost/api/test?SearchDto.PageIndex=0&SearchDto.PageSize=10&Param=Abc123", paginationDto.PreviousLink);
+    Assert.Equal("http://localhost/api/test?SearchDto.PageIndex=2&SearchDto.PageSize=10&Param=Abc123", paginationDto.NextLink);
   }
 
   // Teste para verificar limite de índice da página seguinte.
@@ -215,7 +213,7 @@ public class PaginationDtoTests
     context.Request.Scheme = "http";
     context.Request.Host = new HostString("localhost");
     context.Request.Path = "/api/test";
-    context.Request.QueryString = new QueryString("?PageIndex=9&PageSize=10&Param=Abc123");
+    context.Request.QueryString = new QueryString("?SearchDto.PageIndex=9&SearchDto.PageSize=10&Param=Abc123");
 
     // Act
     var paginationDto = new PaginationDto(total, context.Request);
@@ -226,8 +224,8 @@ public class PaginationDtoTests
     Assert.Equal(9, paginationDto.PageIndex);
     Assert.Equal(8, paginationDto.Previous);
     Assert.Null(paginationDto.Next);
-    Assert.Equal("http://localhost/api/test?PageIndex=9&PageSize=10&Param=Abc123", paginationDto.CurrentLink);
-    Assert.Equal("http://localhost/api/test?PageIndex=8&PageSize=10&Param=Abc123", paginationDto.PreviousLink);
+    Assert.Equal("http://localhost/api/test?SearchDto.PageIndex=9&SearchDto.PageSize=10&Param=Abc123", paginationDto.CurrentLink);
+    Assert.Equal("http://localhost/api/test?SearchDto.PageIndex=8&SearchDto.PageSize=10&Param=Abc123", paginationDto.PreviousLink);
     Assert.Null(paginationDto.NextLink);
   }
 

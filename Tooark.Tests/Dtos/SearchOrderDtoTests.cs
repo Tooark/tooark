@@ -4,16 +4,12 @@ namespace Tooark.Tests.Dtos;
 
 public class SearchOrderDtoTests
 {
-  // Cria uma classe que estende SearchOrderDto para testes
-  private class TestSearchOrderDto : SearchOrderDto { }
-
-
   // Teste de valores padrão
   [Fact]
   public void SearchOrder_ShouldDefaultValue()
   {
     // Arrange & Act
-    TestSearchOrderDto dto = new();
+    SearchOrderDto dto = new();
 
     // Assert
     Assert.Null(dto.OrderBy);
@@ -28,7 +24,7 @@ public class SearchOrderDtoTests
   public void OrderBy_ShouldBeSettable()
   {
     // Arrange & Act
-    TestSearchOrderDto dto = new();
+    SearchOrderDto dto = new();
     var expectedOrderBy = "TestField";
 
     // Act
@@ -47,7 +43,7 @@ public class SearchOrderDtoTests
   public void OrderAsc_ShouldBeSettable()
   {
     // Arrange & Act
-    TestSearchOrderDto dto = new();
+    SearchOrderDto dto = new();
     var expectedOrderAsc = false;
 
     // Act
