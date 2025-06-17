@@ -9,6 +9,25 @@ namespace Tooark.Dtos;
 /// </summary>
 public class PaginationDto
 {
+  #region Constants
+
+  /// <summary>
+  /// Chave para o parâmetro de busca.
+  /// </summary>
+  private const string SearchKey = "Search";
+
+  /// <summary>
+  /// Chave para o parâmetro de índice da página.
+  /// </summary>
+  private const string PageIndexKey = "PageIndex";
+
+  /// <summary>
+  /// Chave para o parâmetro de tamanho da página.
+  /// </summary>
+  private const string PageSizeKey = "PageSize";
+
+  #endregion
+
   #region Constructors
 
   /// <summary>
@@ -57,10 +76,10 @@ public class PaginationDto
       var query = QueryHelpers.ParseQuery(request.QueryString.ToString());
 
       // Define o índice da página da requisição
-      PageIndex = GetQueryValue("SearchDto.PageIndex", query);
+      PageIndex = GetQueryValue(PageIndexKey, query);
 
       // Define o tamanho da página da requisição
-      PageSize = GetQueryValue("SearchDto.PageSize", query);
+      PageSize = GetQueryValue(PageSizeKey, query);
 
       // Se existir parâmetro Index e Size de paginação. E o tamanho da pagina for menor que o total de registros
       if (PageSize > 0 && PageIndex >= 0 && PageSize < Total)
@@ -104,12 +123,14 @@ public class PaginationDto
       var query = QueryHelpers.ParseQuery(request.QueryString.ToString());
 
       // Atualiza o tamanho da página na QueryString
-      query["SearchDto.PageSize"] = PageSize.ToString();
+      query[PageSizeKey] = PageSize.ToString();
 
       // Define informações da página anterior
+      // Adiciona 1 ao índice anterior para alinhar com o cálculo de página (índices baseados em 0)
       SetPrevious(previous + 1, baseUrl, query);
 
       // Define informações da página seguinte
+      // Subtrai 1 do índice seguinte para alinhar com o cálculo de página (índices baseados em 0)
       SetNext(next - 1, baseUrl, query);
     }
   }
@@ -144,11 +165,11 @@ public class PaginationDto
       if (!string.IsNullOrEmpty(searchDto.Search))
       {
         // Atualiza parâmetro de busca na QueryString
-        query["SearchDto.Search"] = searchDto.Search;
+        query[SearchKey] = searchDto.Search;
       }
 
       // Atualiza o tamanho da página na QueryString
-      query["SearchDto.PageSize"] = PageSize.ToString();
+      query[PageSizeKey] = PageSize.ToString();
 
       // Define informações da página anterior
       SetPrevious(PageIndex, baseUrl, query);
@@ -250,7 +271,7 @@ public class PaginationDto
   private static string? GenerateLink(string baseUrl, Dictionary<string, StringValues> query, long pageIndex)
   {
     // Atualiza o índice da página na QueryString
-    query["SearchDto.PageIndex"] = pageIndex.ToString();
+    query[PageIndexKey] = pageIndex.ToString();
 
     // Retorna o link de paginação.
     return $"{baseUrl}{QueryString.Create(query)}";
