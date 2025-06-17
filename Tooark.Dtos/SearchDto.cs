@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Tooark.Extensions;
 
 namespace Tooark.Dtos;
 
@@ -8,6 +10,16 @@ namespace Tooark.Dtos;
 public class SearchDto : Dto
 {
   #region Private Properties
+
+  /// <summary>
+  /// Informação privada a ser procurada.
+  /// </summary>
+  private string? _search = null!;
+
+  /// <summary>
+  /// Cache para a informação normalizada.
+  /// </summary>
+  private string? _searchNormalized = null;
 
   /// <summary>
   /// Índice privado da paginação.
@@ -69,7 +81,33 @@ public class SearchDto : Dto
   /// <summary>
   /// Informação a ser procurada.
   /// </summary>
-  public string? Search { get; private set; }
+  public string? Search
+  {
+    get => _search;
+    set
+    {
+      _search = value;
+      _searchNormalized = null; // Invalida o cache ao alterar Search
+    }
+  }
+
+  /// <summary>
+  /// Informação a ser procurada normalizada.
+  /// </summary>
+  [BindNever]
+  [JsonIgnore]
+  public string? SearchNormalized
+  {
+    get
+    {
+      if (_searchNormalized == null && _search != null)
+      {
+        _searchNormalized = _search.ToNormalize();
+      }
+      
+      return _searchNormalized;
+    }
+  }
 
   /// <summary>
   /// Índice da paginação.
@@ -81,13 +119,14 @@ public class SearchDto : Dto
   public long PageIndex
   {
     get => _pageIndex;
-    private set => _pageIndex = value < 0 ? 0 : value;
+    set => _pageIndex = value < 0 ? 0 : value;
   }
 
   /// <summary>
   /// Índice lógico da paginação.
   /// </summary>
   /// <value>Parâmetro padrão é 0.</value>
+  [BindNever]
   [JsonIgnore]
   public long PageIndexLogical
   {
@@ -104,7 +143,7 @@ public class SearchDto : Dto
   public long PageSize
   {
     get => _pageSize;
-    private set => _pageSize = value < 0 ? 0 : value;
+    set => _pageSize = value < 0 ? 0 : value;
   }
 
   #endregion

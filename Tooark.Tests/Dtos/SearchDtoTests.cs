@@ -13,6 +13,7 @@ public class SearchDtoTests
 
     // Assert
     Assert.Null(dto.Search);
+    Assert.Null(dto.SearchNormalized);
     Assert.Equal(1, dto.PageIndex);
     Assert.Equal(0, dto.PageIndexLogical);
     Assert.Equal(50, dto.PageSize);
@@ -30,6 +31,7 @@ public class SearchDtoTests
 
     // Assert
     Assert.Null(dto.Search);
+    Assert.Null(dto.SearchNormalized);
     Assert.Equal(expected, dto.PageIndex);
     Assert.Equal(expectedLogical, dto.PageIndexLogical);
     Assert.Equal(size, dto.PageSize);
@@ -37,16 +39,17 @@ public class SearchDtoTests
 
   // Teste de Search
   [Theory]
-  [InlineData("test", "test")]
-  [InlineData(null, null)]
-  [InlineData("", "")]
-  public void Search_ShouldBeSetCorrectly(string? searchInput, string? expectedSearch)
+  [InlineData("test", "test", "TEST")]
+  [InlineData(null, null, null)]
+  [InlineData("", "", "")]
+  public void Search_ShouldBeSetCorrectly(string? searchInput, string? expectedSearch, string? expectedNormalized = null)
   {
     // Arrange & Act
     var dto = new SearchDto(searchInput);
 
     // Assert
     Assert.Equal(expectedSearch, dto.Search);
+    Assert.Equal(expectedNormalized, dto.SearchNormalized);
     Assert.Equal(1, dto.PageIndex);
     Assert.Equal(0, dto.PageIndexLogical);
     Assert.Equal(50, dto.PageSize);
@@ -61,6 +64,7 @@ public class SearchDtoTests
 
     // Assert
     Assert.Equal("test", dto.Search);
+    Assert.Equal("TEST", dto.SearchNormalized);
     Assert.Equal(2, dto.PageIndex);
     Assert.Equal(1, dto.PageIndexLogical);
     Assert.Equal(100, dto.PageSize);
