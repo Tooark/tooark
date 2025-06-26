@@ -103,7 +103,7 @@ internal static class InternalFileValid
       var ext = Path.GetExtension(file.FileName).ToUpperInvariant();
 
       // Verifica a extensão do arquivo para evitar ameaças de segurança associadas a tipos de arquivos desconhecidos
-      if (!string.IsNullOrEmpty(ext) && permittedExtensions.Contains<string>(ext))
+      if (!string.IsNullOrEmpty(ext) && permittedExtensions.Contains(ext))
       {
         // Verifica se a extensão do arquivo é válida
         return true;

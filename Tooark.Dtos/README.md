@@ -54,7 +54,7 @@ Classe para parâmetros de busca.
 
   - `Search`: Informação a ser procurada. Padrão: `nulo`.
   - `PageIndex`: Índice da paginação. Padrão: `0`.
-  - `PageSize`: Tamanho da paginação. Padrão: `50`.
+  - `PageSize`: Tamanho da paginação. Padrão: `10`.
 
 [**Exemplo de Uso**](#searchdto)
 

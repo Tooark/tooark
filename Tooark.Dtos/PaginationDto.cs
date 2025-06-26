@@ -82,7 +82,7 @@ public class PaginationDto
       PageSize = GetQueryValue(PageSizeKey, query);
 
       // Se existir parâmetro Index e Size de paginação. E o tamanho da pagina for menor que o total de registros
-      if (PageSize > 0 && PageIndex >= 0 && PageSize < Total)
+      if (PageSize > 0 && PageIndex >= 1 && PageSize < Total)
       {
         // Define informações da página anterior
         SetPrevious(PageIndex, baseUrl, query);
@@ -117,7 +117,7 @@ public class PaginationDto
     CurrentLink = $"{baseUrl}{request.QueryString}";
 
     // Se existir registros, Index e Size de paginação. E o tamanho da pagina for menor que o total de registros.
-    if (total > 0 && PageSize > 0 && PageIndex >= 0 && PageSize < Total)
+    if (total > 0 && PageSize > 0 && PageIndex >= 1 && PageSize < Total)
     {
       // QueryString da requisição
       var query = QueryHelpers.ParseQuery(request.QueryString.ToString());
@@ -126,11 +126,11 @@ public class PaginationDto
       query[PageSizeKey] = PageSize.ToString();
 
       // Define informações da página anterior
-      // Adiciona 1 ao índice anterior para alinhar com o cálculo de página (índices baseados em 0)
+      // Adiciona 1 ao índice anterior para alinhar com o cálculo de página
       SetPrevious(previous + 1, baseUrl, query);
 
       // Define informações da página seguinte
-      // Subtrai 1 do índice seguinte para alinhar com o cálculo de página (índices baseados em 0)
+      // Subtrai 1 do índice seguinte para alinhar com o cálculo de página
       SetNext(next - 1, baseUrl, query);
     }
   }
@@ -156,7 +156,7 @@ public class PaginationDto
     CurrentLink = $"{baseUrl}{request.QueryString}";
 
     // Se existir registros, Index e Size de paginação. E o tamanho da pagina for menor que o total de registros.
-    if (total > 0 && PageSize > 0 && PageIndex >= 0 && PageSize < Total)
+    if (total > 0 && PageSize > 0 && PageIndex >= 1 && PageSize < Total)
     {
       // QueryString da requisição
       var query = QueryHelpers.ParseQuery(request.QueryString.ToString());
@@ -286,7 +286,7 @@ public class PaginationDto
   private void SetPrevious(long index, string baseUrl, Dictionary<string, StringValues> query)
   {
     // Se a página atual não for a primeira
-    if (index > 0)
+    if (index > 1)
     {
       // Calcula o índice da página anterior
       Previous = index - 1;
