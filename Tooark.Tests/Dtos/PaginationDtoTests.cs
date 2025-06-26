@@ -93,10 +93,10 @@ public class PaginationDtoTests
     Assert.Equal(total, paginationDto.Total);
     Assert.Equal(10, paginationDto.PageSize);
     Assert.Equal(1, paginationDto.PageIndex);
-    Assert.Equal(0, paginationDto.Previous);
+    Assert.Null(paginationDto.Previous);
     Assert.Equal(2, paginationDto.Next);
     Assert.Equal("http://example.com/api/test?PageIndex=1&PageSize=10&Param=Abc123", paginationDto.CurrentLink);
-    Assert.Equal("http://example.com/api/test?PageIndex=0&PageSize=10&Param=Abc123", paginationDto.PreviousLink);
+    Assert.Null(paginationDto.PreviousLink);
     Assert.Equal("http://example.com/api/test?PageIndex=2&PageSize=10&Param=Abc123", paginationDto.NextLink);
   }
 
@@ -119,10 +119,10 @@ public class PaginationDtoTests
     Assert.Equal(total, paginationDto.Total);
     Assert.Equal(10, paginationDto.PageSize);
     Assert.Equal(1, paginationDto.PageIndex);
-    Assert.Equal(0, paginationDto.Previous);
+    Assert.Null(paginationDto.Previous);
     Assert.Equal(2, paginationDto.Next);
     Assert.Equal("http://example.com/api/test", paginationDto.CurrentLink);
-    Assert.Equal("http://example.com/api/test?Search=Abc123&PageSize=10&PageIndex=0", paginationDto.PreviousLink);
+    Assert.Null(paginationDto.PreviousLink);
     Assert.Equal("http://example.com/api/test?Search=Abc123&PageSize=10&PageIndex=2", paginationDto.NextLink);
   }
 
@@ -145,10 +145,10 @@ public class PaginationDtoTests
     Assert.Equal(total, paginationDto.Total);
     Assert.Equal(10, paginationDto.PageSize);
     Assert.Equal(1, paginationDto.PageIndex);
-    Assert.Equal(0, paginationDto.Previous);
+    Assert.Null(paginationDto.Previous);
     Assert.Equal(2, paginationDto.Next);
     Assert.Equal("http://localhost/api/test?PageIndex=3&PageSize=20&Param=Abc123", paginationDto.CurrentLink);
-    Assert.Equal("http://localhost/api/test?PageIndex=0&PageSize=10&Param=Abc123", paginationDto.PreviousLink);
+    Assert.Null(paginationDto.PreviousLink);
     Assert.Equal("http://localhost/api/test?PageIndex=2&PageSize=10&Param=Abc123", paginationDto.NextLink);
   }
 
@@ -170,10 +170,10 @@ public class PaginationDtoTests
     Assert.Equal(total, paginationDto.Total);
     Assert.Equal(10, paginationDto.PageSize);
     Assert.Equal(1, paginationDto.PageIndex);
-    Assert.Equal(0, paginationDto.Previous);
+    Assert.Null(paginationDto.Previous);
     Assert.Equal(2, paginationDto.Next);
     Assert.Equal("http://localhost/api/test", paginationDto.CurrentLink);
-    Assert.Equal("http://localhost/api/test?PageSize=10&PageIndex=0", paginationDto.PreviousLink);
+    Assert.Null(paginationDto.PreviousLink);
     Assert.Equal("http://localhost/api/test?PageSize=10&PageIndex=2", paginationDto.NextLink);
   }
 
@@ -196,10 +196,10 @@ public class PaginationDtoTests
     Assert.Equal(total, paginationDto.Total);
     Assert.Equal(10, paginationDto.PageSize);
     Assert.Equal(1, paginationDto.PageIndex);
-    Assert.Equal(0, paginationDto.Previous);
+    Assert.Null(paginationDto.Previous);
     Assert.Equal(2, paginationDto.Next);
     Assert.Equal("http://localhost/api/test?PageIndex=1&PageSize=10&Param=Abc123", paginationDto.CurrentLink);
-    Assert.Equal("http://localhost/api/test?PageIndex=0&PageSize=10&Param=Abc123", paginationDto.PreviousLink);
+    Assert.Null(paginationDto.PreviousLink);
     Assert.Equal("http://localhost/api/test?PageIndex=2&PageSize=10&Param=Abc123", paginationDto.NextLink);
   }
 

@@ -16,13 +16,13 @@ public class SearchDtoTests
     Assert.Null(dto.SearchNormalized);
     Assert.Equal(1, dto.PageIndex);
     Assert.Equal(0, dto.PageIndexLogical);
-    Assert.Equal(50, dto.PageSize);
+    Assert.Equal(10, dto.PageSize);
   }
 
   // Teste de Paginação com valores negativos e positivos para valores válidos
   [Theory]
-  [InlineData(-1, 10, 0, 0)]
-  [InlineData(0, 20, 0, 0)]
+  [InlineData(-1, 10, 1, 0)]
+  [InlineData(0, 20, 1, 0)]
   [InlineData(5, 30, 5, 4)]
   public void Pagination_ShouldBeSetCorrectly(int input, int size, int expected, int expectedLogical)
   {
@@ -52,7 +52,7 @@ public class SearchDtoTests
     Assert.Equal(expectedNormalized, dto.SearchNormalized);
     Assert.Equal(1, dto.PageIndex);
     Assert.Equal(0, dto.PageIndexLogical);
-    Assert.Equal(50, dto.PageSize);
+    Assert.Equal(10, dto.PageSize);
   }
 
   // Teste de Paginação e Search

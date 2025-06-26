@@ -29,7 +29,7 @@ public class SearchDto : Dto
   /// <summary>
   /// Tamanho privado da paginação.
   /// </summary>
-  private long _pageSize = 50;
+  private long _pageSize = 10;
 
   #endregion
 
@@ -119,7 +119,7 @@ public class SearchDto : Dto
   public long PageIndex
   {
     get => _pageIndex;
-    set => _pageIndex = value < 0 ? 0 : value;
+    set => _pageIndex = value < 1 ? 1 : value;
   }
 
   /// <summary>
@@ -130,13 +130,13 @@ public class SearchDto : Dto
   [JsonIgnore]
   public long PageIndexLogical
   {
-    get => _pageIndex > 0 ? _pageIndex - 1 : 0;
+    get => _pageIndex - 1;
   }
 
   /// <summary>
   /// Tamanho da paginação.
   /// </summary>
-  /// <value>Parâmetro padrão é 50.</value>
+  /// <value>Parâmetro padrão é 10.</value>
   /// <remarks>
   /// Utilizar valor 0 (zero) para ignorar tamanho.
   /// </remarks>

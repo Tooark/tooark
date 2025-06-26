@@ -16,7 +16,7 @@ public class SearchOrderDtoTests
     Assert.True(dto.OrderAsc);
     Assert.Null(dto.Search);
     Assert.Equal(1, dto.PageIndex);
-    Assert.Equal(50, dto.PageSize);
+    Assert.Equal(10, dto.PageSize);
   }
 
   // Teste para definir valor do OrderBy
@@ -35,7 +35,7 @@ public class SearchOrderDtoTests
     Assert.True(dto.OrderAsc);
     Assert.Null(dto.Search);
     Assert.Equal(1, dto.PageIndex);
-    Assert.Equal(50, dto.PageSize);
+    Assert.Equal(10, dto.PageSize);
   }
 
   // Teste para definir valor do OrderAsc
@@ -54,6 +54,6 @@ public class SearchOrderDtoTests
     Assert.False(dto.OrderAsc);
     Assert.Null(dto.Search);
     Assert.Equal(1, dto.PageIndex);
-    Assert.Equal(50, dto.PageSize);
+    Assert.Equal(10, dto.PageSize);
   }
 }
