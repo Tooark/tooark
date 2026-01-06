@@ -101,7 +101,33 @@ using Tooark.Securities.Injections;
 var builder = WebApplication.CreateBuilder(args);
 
 // Adiciona os serviços de segurança
-builder.Services.AddTooarkSecurity(builder.Configuration);
+builder.Services.AddTooarkSecurities(builder.Configuration);
+
+var app = builder.Build();
+```
+
+Ou, para adicionar apenas o serviço de token JWT:
+
+```csharp
+using Tooark.Securities.Injections;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Adiciona os serviços de segurança
+builder.Services.AddTooarkJwtToken(builder.Configuration);
+
+var app = builder.Build();
+```
+
+Ou, para adicionar apenas o serviço de criptografia:
+
+```csharp
+using Tooark.Securities.Injections;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Adiciona os serviços de segurança
+builder.Services.AddTooarkCryptography(builder.Configuration);
 
 var app = builder.Build();
 ```

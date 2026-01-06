@@ -26,9 +26,16 @@ Adicione a seguinte linha no seu arquivo `Program.cs`:
 ```csharp
 // Importando o namespace necessário
 using Tooark.Injections;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+var services = new ServiceCollection();
+
+IConfiguration configuration = new ConfigurationBuilder()
+  .Build();
 
 // Nas suas configurações de serviços
-services.AddTooarkService();
+services.AddTooarkService(configuration);
 ```
 
 ## Recursos disponíveis
