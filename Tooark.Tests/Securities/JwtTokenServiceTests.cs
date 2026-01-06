@@ -296,14 +296,14 @@ public class JwtTokenServiceTests
   public void Constructor_AsymmetricES_WithWrongCurve_ShouldThrowInvalidKeyCurve()
   {
     // Arrange
-    using var ecdsa = ECDsa.Create(ECCurve.CreateFromFriendlyName("secp192r1"));
+    using var ecdsa = ECDsa.Create(ECCurve.NamedCurves.nistP256);
 
     var privateKeyBytes = ecdsa.ExportPkcs8PrivateKey();
     var publicKeyBytes = ecdsa.ExportSubjectPublicKeyInfo();
 
     var jwtOptions = new JwtOptions
     {
-      Algorithm = "ES256",
+      Algorithm = "ES384",
       PrivateKey = Convert.ToBase64String(privateKeyBytes),
       PublicKey = Convert.ToBase64String(publicKeyBytes)
     };
@@ -424,15 +424,15 @@ public class JwtTokenServiceTests
   public void Constructor_AsymmetricES_WithWrongPublicKeyCurve_ShouldThrowInvalidKeyCurve()
   {
     // Arrange
-    using var ecdsaValid = ECDsa.Create(ECCurve.NamedCurves.nistP256);
-    using var ecdsaWrong = ECDsa.Create(ECCurve.CreateFromFriendlyName("secp192r1"));
+    using var ecdsaValid = ECDsa.Create(ECCurve.NamedCurves.nistP384);
+    using var ecdsaWrong = ECDsa.Create(ECCurve.NamedCurves.nistP256);
 
     var privateKeyBytes = ecdsaValid.ExportPkcs8PrivateKey();
     var publicKeyBytes = ecdsaWrong.ExportSubjectPublicKeyInfo();
 
     var jwtOptions = new JwtOptions
     {
-      Algorithm = "ES256",
+      Algorithm = "ES384",
       PrivateKey = Convert.ToBase64String(privateKeyBytes),
       PublicKey = Convert.ToBase64String(publicKeyBytes)
     };
