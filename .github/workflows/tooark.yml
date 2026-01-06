@@ -66,19 +66,23 @@ jobs:
         run: |
           git tag "v${{ env.VERSION }}"
           git push origin "v${{ env.VERSION }}"
+          
+          # Lê o conteúdo do arquivo de release notes
+          RELEASE_NOTES_FILE="Notes/v${{ env.VERSION }}.md"
+          if [ -f "$RELEASE_NOTES_FILE" ]; then
+            RELEASE_BODY=$(cat "$RELEASE_NOTES_FILE")
+          else
+            RELEASE_BODY="Automated release for version v${{ env.VERSION }}"
+          fi
+          
+          # Escapa o conteúdo para JSON
+          RELEASE_BODY_JSON=$(echo "$RELEASE_BODY" | jq -Rs .)
+          
           curl -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/Tooark/tooark/releases \
-            -d @- <<EOF
-            {
-              "tag_name": "v${{ env.VERSION }}",
-              "target_commitish": "main",
-              "name": "Release v${{ env.VERSION }}",
-              "body": "Automated release for version v${{ env.VERSION }}",
-              "draft": true,
-              "prerelease": false
-            }
+            -d "{\"tag_name\": \"v${{ env.VERSION }}\", \"target_commitish\": \"main\", \"name\": \"Release v${{ env.VERSION }}\", \"body\": $RELEASE_BODY_JSON, \"draft\": true, \"prerelease\": false}"
 
       - name: Publish Tooark.Notifications to NuGet
         run: dotnet nuget push Tooark.Notifications/bin/Release/Tooark.Notifications.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
