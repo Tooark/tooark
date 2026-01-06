@@ -61,6 +61,10 @@ Descrição: Este pacote fornece métodos de extensão para tipos e classes comu
 
 Descrição: Este pacote oferece funcionalidades para gerenciamento de notificações e mensagens na aplicação.
 
+### [Tooark.Securities](../Tooark.Securities/README.md)
+
+Descrição: Este pacote oferece funcionalidades para segurança, incluindo criptografia e autenticação.
+
 ### [Tooark.Utils](../Tooark.Utils/README.md)
 
 Descrição: Este pacote contém utilitários e funções auxiliares para diversas operações.
