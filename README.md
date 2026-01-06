@@ -22,9 +22,10 @@ O código do projeto com todos os recursos e funcionalidades do Tooark voltadas 
 | `Tooark.Extensions`    | [![NuGet](https://img.shields.io/nuget/v/Tooark.Extensions.svg)](https://nuget.org/packages/Tooark.Extensions)       | [![Nuget](https://img.shields.io/nuget/dt/Tooark.Extensions.svg)](https://nuget.org/packages/Tooark.Extensions)       | `dotnet add package Tooark.Extensions`    |
 | `Tooark.Enums`         | [![NuGet](https://img.shields.io/nuget/v/Tooark.Enums.svg)](https://nuget.org/packages/Tooark.Enums)                 | [![Nuget](https://img.shields.io/nuget/dt/Tooark.Enums.svg)](https://nuget.org/packages/Tooark.Enums)                 | `dotnet add package Tooark.Enums`         |
 | `Tooark.Notifications` | [![NuGet](https://img.shields.io/nuget/v/Tooark.Notifications.svg)](https://nuget.org/packages/Tooark.Notifications) | [![Nuget](https://img.shields.io/nuget/dt/Tooark.Notifications.svg)](https://nuget.org/packages/Tooark.Notifications) | `dotnet add package Tooark.Notifications` |
+| `Tooark.Securities`    | [![NuGet](https://img.shields.io/nuget/v/Tooark.Securities.svg)](https://nuget.org/packages/Tooark.Securities)       | [![Nuget](https://img.shields.io/nuget/dt/Tooark.Securities.svg)](https://nuget.org/packages/Tooark.Securities)       | `dotnet add package Tooark.Securities`    |
+| `Tooark.Utils`         | [![NuGet](https://img.shields.io/nuget/v/Tooark.Utils.svg)](https://nuget.org/packages/Tooark.Utils)                 | [![Nuget](https://img.shields.io/nuget/dt/Tooark.Utils.svg)](https://nuget.org/packages/Tooark.Utils)                 | `dotnet add package Tooark.Utils`         |
 | `Tooark.Validations`   | [![NuGet](https://img.shields.io/nuget/v/Tooark.Validations.svg)](https://nuget.org/packages/Tooark.Validations)     | [![Nuget](https://img.shields.io/nuget/dt/Tooark.Validations.svg)](https://nuget.org/packages/Tooark.Validations)     | `dotnet add package Tooark.Validations`   |
 | `Tooark.ValueObjects`  | [![NuGet](https://img.shields.io/nuget/v/Tooark.ValueObjects.svg)](https://nuget.org/packages/Tooark.ValueObjects)   | [![Nuget](https://img.shields.io/nuget/dt/Tooark.ValueObjects.svg)](https://nuget.org/packages/Tooark.ValueObjects)   | `dotnet add package Tooark.ValueObjects`  |
-| `Tooark.Utils`         | [![NuGet](https://img.shields.io/nuget/v/Tooark.Utils.svg)](https://nuget.org/packages/Tooark.Utils)                 | [![Nuget](https://img.shields.io/nuget/dt/Tooark.Utils.svg)](https://nuget.org/packages/Tooark.Utils)                 | `dotnet add package Tooark.Utils`         |
 
 ---
 
@@ -38,9 +39,9 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull re
 
 Os seguintes usuários estão contribuindo para o projeto:
 
-| <img src="https://avatars.githubusercontent.com/u/137942353?v=4" width=120> | <img src="https://avatars.githubusercontent.com/u/27088472?v=4" width=120> | <img src="https://avatars.githubusercontent.com/u/59488993?v=4" width=120> |
-| :-------------------------------------------------------------------------: | :------------------------------------------------------------------------: | :------------------------------------------------------------------------: |
-|           [**Paulo Freitas**](https://github.com/paulofreitas91)            |           [**Paulo Freitas**](https://github.com/paulosfjunior)            |              [**Davi Menon**](https://github.com/davidutramn)              |
+| <img src="https://avatars.githubusercontent.com/u/27088472?v=4" width=120> | <img src="https://avatars.githubusercontent.com/u/137942353?v=4" width=120> | <img src="https://avatars.githubusercontent.com/u/59488993?v=4" width=120> |
+| :------------------------------------------------------------------------: | :-------------------------------------------------------------------------: | :------------------------------------------------------------------------: |
+|           [**Paulo Freitas**](https://github.com/paulosfjunior)            |           [**Paulo Freitas**](https://github.com/paulofreitas91)            |              [**Davi Menon**](https://github.com/davidutramn)              |
 
 ---
 

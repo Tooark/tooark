@@ -17,10 +17,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tooark\Tooark.csproj" />
+    <ProjectReference Include="..\Tooark.Securities\Tooark.Securities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="aWSSDK.S3" />
+    <PackageReference Include="AWSSDK.S3" />
     <PackageReference Include="coverlet.msbuild">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
