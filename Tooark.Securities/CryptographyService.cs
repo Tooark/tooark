@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
+using Tooark.Securities.Interfaces;
 using Tooark.Securities.Options;
 
 namespace Tooark.Securities;
@@ -8,7 +9,7 @@ namespace Tooark.Securities;
 /// <summary>
 /// Serviço de criptografia para criptografar e descriptografar dados sensíveis.
 /// </summary>
-public class CryptographyService
+public class CryptographyService : ICryptographyService
 {
   #region Private Properties
 

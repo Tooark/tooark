@@ -1,28 +1,33 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tooark.Securities.Interfaces;
 using Tooark.Securities.Options;
 
 namespace Tooark.Securities.Injections;
 
 /// <summary>
-/// Classe de extensão para adicionar os serviços de extensões ao container de injeção de dependência.
+/// Classe para adicionar o serviços de injeção de dependência de Securities.
 /// </summary>
 public static partial class TooarkDependencyInjection
 {
   /// <summary>
-  /// Adiciona os serviços de extensões ao container de injeção de dependência, permitindo configuração de options.
+  /// Adiciona os serviços de Securities ao container de injeção de dependência, permitindo configuração de options.
   /// </summary>
   /// <param name="services">Coleção de serviços.</param>
   /// <param name="configuration">Configuração da aplicação (IConfiguration).</param>
-  /// <returns>A coleção de serviços com os serviços de extensões adicionados.</returns>
-  public static IServiceCollection AddTooarkSecurity(this IServiceCollection services, IConfiguration configuration)
+  /// <returns>A coleção de serviços com os serviços de Securities adicionados.</returns>
+  public static IServiceCollection AddTooarkSecurities(this IServiceCollection services, IConfiguration configuration)
   {
-    // Registra as opções do JWT a partir da configuração
-    services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.Section));
+    // Verifica se a seção de configuração do JWT existe antes de registrar os serviços relacionados
+    if (configuration.GetSection(JwtOptions.Section).Exists())
+    {
+      AddTooarkJwtToken(services, configuration);
+    }
 
-    // Registra o serviço de token JWT
-    services.AddSingleton<IJwtTokenService, JwtTokenService>();
+    // Verifica se a seção de configuração de Criptografia existe antes de registrar os serviços relacionados
+    if (configuration.GetSection(CryptographyOptions.Section).Exists())
+    {
+      AddTooarkCryptography(services, configuration);
+    }
 
     return services;
   }

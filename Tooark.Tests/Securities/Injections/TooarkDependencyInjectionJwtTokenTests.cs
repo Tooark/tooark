@@ -6,11 +6,11 @@ using Tooark.Securities.Options;
 
 namespace Tooark.Tests.Securities.Injections;
 
-public class TooarkDependencyInjectionTests
+public class TooarkDependencyInjectionJwtTokenTests
 {
-  // Teste para verificar se o método AddTooarkExtensions adiciona os serviços corretamente.
+  // Teste para verificar se o método AddTooarkJwtToken adiciona o serviço corretamente.
   [Fact]
-  public void AddTooarkExtensions_ShouldAddServices()
+  public void AddTooarkJwtToken_ShouldAddServices()
   {
     // Arrange
     var services = new ServiceCollection();
@@ -28,7 +28,7 @@ public class TooarkDependencyInjectionTests
       .Build();
 
     // Act
-    services.AddTooarkSecurity(configuration);
+    services.AddTooarkJwtToken(configuration);
     var provider = services.BuildServiceProvider();
     var jwtService = provider.GetService<IJwtTokenService>();
     var options = provider.GetService<Microsoft.Extensions.Options.IOptions<JwtOptions>>();
