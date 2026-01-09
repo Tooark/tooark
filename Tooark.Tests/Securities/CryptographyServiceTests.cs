@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using Tooark.Exceptions;
 using Tooark.Securities;
 using Tooark.Securities.Options;
 using MEOptions = Microsoft.Extensions.Options;
@@ -66,19 +67,19 @@ public class CryptographyServiceTests
 
   // Testa se o construtor lança exceções apropriadas para opções inválidas
   [Fact]
-  public void Constructor_WithNullOptions_ShouldThrowArgumentNullException()
+  public void Constructor_WithNullOptions_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     var options = new NullOptions();
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentNullException>(() => new CryptographyService(options));
-    Assert.Contains("Options.NotConfigured", ex.Message, StringComparison.OrdinalIgnoreCase);
+    var ex = Assert.Throws<InternalServerErrorException>(() => new CryptographyService(options));
+    Assert.Contains("Options.NotConfigured", ex.GetErrorMessages());
   }
 
   // Testa se o construtor lança exceção quando o segredo não está configurado
   [Fact]
-  public void Constructor_WithoutSecret_ShouldThrowArgumentException()
+  public void Constructor_WithoutSecret_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     var cryptoOptions = new CryptographyOptions
@@ -89,8 +90,8 @@ public class CryptographyServiceTests
     var options = MEOptions.Options.Create(cryptoOptions);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => new CryptographyService(options));
-    Assert.Equal("Cryptography.SecretNotConfigured", ex.Message);
+    var ex = Assert.Throws<InternalServerErrorException>(() => new CryptographyService(options));
+    Assert.Contains("Options.Cryptography.SecretNotConfigured", ex.GetErrorMessages());
   }
 
   // Testa se o construtor cria uma instância corretamente com opções válidas
@@ -145,15 +146,15 @@ public class CryptographyServiceTests
 
   // Testa a criptografia com texto nulo
   [Fact]
-  public void Encrypt_GCM_WithNullText_ShouldThrowArgumentException()
+  public void Encrypt_GCM_WithNullText_ShouldThrowBadRequestException()
   {
     // Arrange
     var options = MEOptions.Options.Create(GetGcmOptions());
     var service = new CryptographyService(options);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => service.Encrypt(null!));
-    Assert.Equal("Cryptography.PlainTextNotProvided", ex.Message);
+    var ex = Assert.Throws<BadRequestException>(() => service.Encrypt(null!));
+    Assert.Contains("Cryptography.PlainTextNotProvided", ex.GetErrorMessages());
   }
 
   // Testa a criptografia com texto vazio
@@ -214,15 +215,15 @@ public class CryptographyServiceTests
 
   // Testa a criptografia com texto nulo
   [Fact]
-  public void Encrypt_CBC_WithNullText_ShouldThrowArgumentException()
+  public void Encrypt_CBC_WithNullText_ShouldThrowBadRequestException()
   {
     // Arrange
     var options = MEOptions.Options.Create(GetCbcOptions());
     var service = new CryptographyService(options);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => service.Encrypt(null!));
-    Assert.Equal("Cryptography.PlainTextNotProvided", ex.Message);
+    var ex = Assert.Throws<BadRequestException>(() => service.Encrypt(null!));
+    Assert.Contains("Cryptography.PlainTextNotProvided", ex.GetErrorMessages());
   }
 
   // Testa a criptografia com texto vazio
@@ -308,20 +309,20 @@ public class CryptographyServiceTests
 
   // Testa a descriptografia com texto cifrado nulo
   [Fact]
-  public void Decrypt_GCM_WithNullCipherText_ShouldThrowArgumentException()
+  public void Decrypt_GCM_WithNullCipherText_ShouldThrowBadRequestException()
   {
     // Arrange
     var options = MEOptions.Options.Create(GetGcmOptions());
     var service = new CryptographyService(options);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => service.Decrypt(null!));
-    Assert.Equal("Cryptography.CipherTextNotProvided", ex.Message);
+    var ex = Assert.Throws<BadRequestException>(() => service.Decrypt(null!));
+    Assert.Contains("Cryptography.CipherTextNotProvided", ex.GetErrorMessages());
   }
 
   // Testa a descriptografia com texto cifrado muito curto
   [Fact]
-  public void Decrypt_GCM_WithTooShortCipherText_ShouldThrowArgumentException()
+  public void Decrypt_GCM_WithTooShortCipherText_ShouldThrowBadRequestException()
   {
     // Arrange
     var options = MEOptions.Options.Create(GetGcmOptions());
@@ -330,8 +331,8 @@ public class CryptographyServiceTests
     var shortData = Convert.ToBase64String(new byte[20]);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => service.Decrypt(shortData));
-    Assert.Equal("Cryptography.InvalidCipherText", ex.Message);
+    var ex = Assert.Throws<BadRequestException>(() => service.Decrypt(shortData));
+    Assert.Contains("Cryptography.InvalidCipherText", ex.GetErrorMessages());
   }
 
   // Testa a descriptografia com texto cifrado vazio
@@ -393,20 +394,20 @@ public class CryptographyServiceTests
 
   // Testa a descriptografia com texto cifrado nulo
   [Fact]
-  public void Decrypt_CBC_WithNullCipherText_ShouldThrowArgumentException()
+  public void Decrypt_CBC_WithNullCipherText_ShouldThrowBadRequestException()
   {
     // Arrange
     var options = MEOptions.Options.Create(GetCbcOptions());
     var service = new CryptographyService(options);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => service.Decrypt(null!));
-    Assert.Equal("Cryptography.CipherTextNotProvided", ex.Message);
+    var ex = Assert.Throws<BadRequestException>(() => service.Decrypt(null!));
+    Assert.Contains("Cryptography.CipherTextNotProvided", ex.GetErrorMessages());
   }
 
   // Testa a descriptografia com texto cifrado muito curto
   [Fact]
-  public void Decrypt_CBC_WithTooShortCipherText_ShouldThrowArgumentException()
+  public void Decrypt_CBC_WithTooShortCipherText_ShouldThrowBadRequestException()
   {
     // Arrange
     var options = MEOptions.Options.Create(GetCbcOptions());
@@ -415,8 +416,8 @@ public class CryptographyServiceTests
     var shortData = Convert.ToBase64String(new byte[16]);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => service.Decrypt(shortData));
-    Assert.Equal("Cryptography.InvalidCipherText", ex.Message);
+    var ex = Assert.Throws<BadRequestException>(() => service.Decrypt(shortData));
+    Assert.Contains("Cryptography.InvalidCipherText", ex.GetErrorMessages());
   }
 
   // Testa a descriptografia com texto cifrado vazio
@@ -498,15 +499,15 @@ public class CryptographyServiceTests
 
   // Testa a descriptografia com texto cifrado nulo
   [Fact]
-  public void Decrypt_CBCZeroIv_WithNullCipherText_ShouldThrowArgumentException()
+  public void Decrypt_CBCZeroIv_WithNullCipherText_ShouldThrowBadRequestException()
   {
     // Arrange
     var options = MEOptions.Options.Create(GetCbcZeroIvOptions());
     var service = new CryptographyService(options);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => service.Decrypt(null!));
-    Assert.Equal("Cryptography.CipherTextNotProvided", ex.Message);
+    var ex = Assert.Throws<BadRequestException>(() => service.Decrypt(null!));
+    Assert.Contains("Cryptography.CipherTextNotProvided", ex.GetErrorMessages());
   }
 
   #endregion

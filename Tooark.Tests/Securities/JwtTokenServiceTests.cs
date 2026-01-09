@@ -1,4 +1,7 @@
 using System.Security.Cryptography;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Tooark.Exceptions;
 using Tooark.Securities;
 using Tooark.Securities.Dtos;
 using Tooark.Securities.Options;
@@ -84,6 +87,9 @@ public class JwtTokenServiceTests
   // DTO de token JWT para testes
   private static JwtTokenDto GetTokenDto() => new(1, "user", 1);
 
+  // Mock do logger para testes
+  private static ILogger<JwtTokenService> GetMockLogger() => Mock.Of<ILogger<JwtTokenService>>();
+
   // Token JWT pré-gerado para testes de expiração
   private static readonly string JwtTokenExpired = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJsb2dpbiI6InVzZXIiLCJzZWN1cml0eSI6IjEiLCJuYmYiOjE3NjE5Mjg0MDgsImV4cCI6MTc2MTkyODQ1MywiaWF0IjoxNzYxOTI4NDA4LCJpc3MiOiJUZXN0SXNzdWVyIiwiYXVkIjoiVGVzdEF1ZGllbmNlIn0.M1iGoekiVJ0RnCMgk52Kc8rWjYzkFa5P0xakILzXCsc";
 
@@ -102,7 +108,7 @@ public class JwtTokenServiceTests
   {
     // Arrange
     var options = MEOptions.Options.Create(GetSymmetricOptions());
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
     var dto = GetTokenDto();
 
     // Act
@@ -124,7 +130,7 @@ public class JwtTokenServiceTests
   {
     // Arrange
     var options = MEOptions.Options.Create(GetAsymmetricRSOptions());
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
     var dto = GetTokenDto();
 
     // Act
@@ -146,7 +152,7 @@ public class JwtTokenServiceTests
   {
     // Arrange
     var options = MEOptions.Options.Create(GetAsymmetricPSOptions());
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
     var dto = GetTokenDto();
 
     // Act
@@ -168,7 +174,7 @@ public class JwtTokenServiceTests
   {
     // Arrange
     var options = MEOptions.Options.Create(GetAsymmetricESOptions());
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
     var dto = GetTokenDto();
 
     // Act
@@ -190,7 +196,7 @@ public class JwtTokenServiceTests
   {
     // Arrange
     var options = MEOptions.Options.Create(GetSymmetricOptions());
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
     var invalidToken = "invalid.token.value";
 
     // Act
@@ -207,7 +213,7 @@ public class JwtTokenServiceTests
   {
     // Arrange
     var options = MEOptions.Options.Create(GetSymmetricOptions());
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
     var token = JwtTokenExpired;
 
     // Act
@@ -220,19 +226,19 @@ public class JwtTokenServiceTests
 
   // Teste de construtor com opções nulas
   [Fact]
-  public void Constructor_WithNullOptions_ShouldThrowArgumentNullException()
+  public void Constructor_WithNullOptions_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     var options = new NullOptions();
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentNullException>(() => new JwtTokenService(options));
-    Assert.Contains("Options.NotConfigured", ex.Message, StringComparison.OrdinalIgnoreCase);
+    var ex = Assert.Throws<InternalServerErrorException>(() => new JwtTokenService(options, GetMockLogger()));
+    Assert.Contains("Options.NotConfigured", ex.GetErrorMessages());
   }
 
   // Teste de construtor simétrico sem secret configurado
   [Fact]
-  public void Constructor_SymmetricAlgorithmWithoutSecret_ShouldThrowArgumentException()
+  public void Constructor_SymmetricAlgorithmWithoutSecret_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     var jwtOptions = new JwtOptions
@@ -244,13 +250,13 @@ public class JwtTokenServiceTests
     var options = MEOptions.Options.Create(jwtOptions);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => new JwtTokenService(options));
-    Assert.Equal("Jwt.KeyNotConfigured", ex.Message);
+    var ex = Assert.Throws<InternalServerErrorException>(() => new JwtTokenService(options, GetMockLogger()));
+    Assert.Contains("Options.Jwt.SecretNotConfigured", ex.GetErrorMessages());
   }
 
   // Teste de construtor assimétrico sem chave pública
   [Fact]
-  public void Constructor_AsymmetricWithoutPublicKey_ShouldThrowArgumentException()
+  public void Constructor_AsymmetricWithoutPublicKey_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     var jwtOptions = new JwtOptions
@@ -263,13 +269,13 @@ public class JwtTokenServiceTests
     var options = MEOptions.Options.Create(jwtOptions);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => new JwtTokenService(options));
-    Assert.Equal("Jwt.KeyNotConfigured", ex.Message);
+    var ex = Assert.Throws<InternalServerErrorException>(() => new JwtTokenService(options, GetMockLogger()));
+    Assert.Contains("Options.Jwt.KeysNotConfigured", ex.GetErrorMessages());
   }
 
   // Teste de construtor assimétrico RSA com chave menor que 2048 bits
   [Fact]
-  public void Constructor_AsymmetricRS_WithSmallKey_ShouldThrowInvalidKeySize()
+  public void Constructor_AsymmetricRS_WithSmallKey_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     using var rsa = RSA.Create(1024);
@@ -287,13 +293,13 @@ public class JwtTokenServiceTests
     var options = MEOptions.Options.Create(jwtOptions);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => new JwtTokenService(options));
-    Assert.Equal("Jwt.InvalidKeySize", ex.Message);
+    var ex = Assert.Throws<InternalServerErrorException>(() => new JwtTokenService(options, GetMockLogger()));
+    Assert.Contains("Options.Jwt.PrivateKey.InvalidSize", ex.GetErrorMessages());
   }
 
   // Teste de construtor ECDsa com curva/tamanho incorreto
   [Fact]
-  public void Constructor_AsymmetricES_WithWrongCurve_ShouldThrowInvalidKeyCurve()
+  public void Constructor_AsymmetricES_WithWrongCurve_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     using var ecdsa = ECDsa.Create(ECCurve.NamedCurves.nistP256);
@@ -311,13 +317,13 @@ public class JwtTokenServiceTests
     var options = MEOptions.Options.Create(jwtOptions);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => new JwtTokenService(options));
-    Assert.Equal("Jwt.InvalidKeyCurve", ex.Message);
+    var ex = Assert.Throws<InternalServerErrorException>(() => new JwtTokenService(options, GetMockLogger()));
+    Assert.Contains("Options.Jwt.PrivateKey.InvalidCurve", ex.GetErrorMessages());
   }
 
   // Teste de construtor RSA com chaves inválidas
   [Fact]
-  public void Constructor_AsymmetricRS_WithInvalidKeys_ShouldThrowInvalidKey()
+  public void Constructor_AsymmetricRS_WithInvalidKeys_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     var invalidBase64 = Convert.ToBase64String(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 });
@@ -332,13 +338,13 @@ public class JwtTokenServiceTests
     var options = MEOptions.Options.Create(jwtOptions);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => new JwtTokenService(options));
-    Assert.Equal("Jwt.InvalidKey", ex.Message);
+    var ex = Assert.Throws<InternalServerErrorException>(() => new JwtTokenService(options, GetMockLogger()));
+    Assert.Contains("Options.Jwt.InvalidKey", ex.GetErrorMessages());
   }
 
   // Teste de criação de token com chave pública apenas (sem chave privada)
   [Fact]
-  public void Create_AsymmetricPublicKeyOnly_ShouldThrowKeyNotConfigured()
+  public void Create_AsymmetricPublicKeyOnly_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     using var rsa = RSA.Create(2048);
@@ -353,11 +359,11 @@ public class JwtTokenServiceTests
     };
 
     var options = MEOptions.Options.Create(jwtOptions);
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => service.Create(GetTokenDto()));
-    Assert.Equal("Jwt.KeyNotConfigured", ex.Message);
+    var ex = Assert.Throws<InternalServerErrorException>(() => service.Create(GetTokenDto()));
+    Assert.Contains("Options.Jwt.KeyNotConfigured;PrivateKey", ex.GetErrorMessages());
   }
 
   // Teste de validação com assinatura inválida
@@ -374,7 +380,7 @@ public class JwtTokenServiceTests
       ExpirationTime = 10
     });
 
-    var signingService = new JwtTokenService(optionsSigning);
+    var signingService = new JwtTokenService(optionsSigning, GetMockLogger());
     var token = signingService.Create(GetTokenDto());
     var optionsValidation = MEOptions.Options.Create(new JwtOptions
     {
@@ -385,7 +391,7 @@ public class JwtTokenServiceTests
       ExpirationTime = 10
     });
 
-    var validationService = new JwtTokenService(optionsValidation);
+    var validationService = new JwtTokenService(optionsValidation, GetMockLogger());
 
     // Act
     var result = validationService.Validate(token);
@@ -396,7 +402,7 @@ public class JwtTokenServiceTests
 
   // Teste de construtor RSA com chave pública menor que 2048 bits
   [Fact]
-  public void Constructor_AsymmetricRS_WithSmallPublicKey_ShouldThrowInvalidKeySize()
+  public void Constructor_AsymmetricRS_WithSmallPublicKey_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     using var rsaValid = RSA.Create(2048);
@@ -415,13 +421,13 @@ public class JwtTokenServiceTests
     var options = MEOptions.Options.Create(jwtOptions);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => new JwtTokenService(options));
-    Assert.Equal("Jwt.InvalidKeySize", ex.Message);
+    var ex = Assert.Throws<InternalServerErrorException>(() => new JwtTokenService(options, GetMockLogger()));
+    Assert.Contains("Options.Jwt.PublicKey.InvalidSize", ex.GetErrorMessages());
   }
 
   // Teste de construtor ECDsa com curva incorreta apenas na chave pública
   [Fact]
-  public void Constructor_AsymmetricES_WithWrongPublicKeyCurve_ShouldThrowInvalidKeyCurve()
+  public void Constructor_AsymmetricES_WithWrongPublicKeyCurve_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     using var ecdsaValid = ECDsa.Create(ECCurve.NamedCurves.nistP384);
@@ -440,13 +446,13 @@ public class JwtTokenServiceTests
     var options = MEOptions.Options.Create(jwtOptions);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => new JwtTokenService(options));
-    Assert.Equal("Jwt.InvalidKeyCurve", ex.Message);
+    var ex = Assert.Throws<InternalServerErrorException>(() => new JwtTokenService(options, GetMockLogger()));
+    Assert.Contains("Options.Jwt.PublicKey.InvalidCurve", ex.GetErrorMessages());
   }
 
   // Teste de construtor ECDsa com chaves inválidas
   [Fact]
-  public void Constructor_AsymmetricES_WithInvalidKeys_ShouldThrowInvalidKey()
+  public void Constructor_AsymmetricES_WithInvalidKeys_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     var invalidBase64 = Convert.ToBase64String(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 });
@@ -461,13 +467,13 @@ public class JwtTokenServiceTests
     var options = MEOptions.Options.Create(jwtOptions);
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => new JwtTokenService(options));
-    Assert.Equal("Jwt.InvalidKey", ex.Message);
+    var ex = Assert.Throws<InternalServerErrorException>(() => new JwtTokenService(options, GetMockLogger()));
+    Assert.Contains("Options.Jwt.InvalidKey", ex.GetErrorMessages());
   }
 
   // Teste de validação com apenas chave privada configurada
   [Fact]
-  public void Validate_WithPrivateKeyOnly_ShouldThrowKeyNotConfigured()
+  public void Validate_WithPrivateKeyOnly_ShouldThrowInternalServerErrorException()
   {
     // Arrange
     using var rsa = RSA.Create(2048);
@@ -480,11 +486,11 @@ public class JwtTokenServiceTests
     };
 
     var options = MEOptions.Options.Create(jwtOptions);
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
 
     // Act & Assert
-    var ex = Assert.Throws<ArgumentException>(() => service.Validate("any.token.here"));
-    Assert.Equal("Jwt.KeyNotConfigured", ex.Message);
+    var ex = Assert.Throws<InternalServerErrorException>(() => service.Validate("any.token.here"));
+    Assert.Contains("Options.Jwt.KeyNotConfigured;PublicKey", ex.GetErrorMessages());
   }
 
   // Teste de validação que retorna Token.InvalidSignature
@@ -493,7 +499,7 @@ public class JwtTokenServiceTests
   {
     // Arrange
     var options = MEOptions.Options.Create(GetSymmetricOptions());
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
     var malformedToken = MalformedToken;
 
     // Act
@@ -510,7 +516,7 @@ public class JwtTokenServiceTests
   {
     // Arrange
     var options = MEOptions.Options.Create(GetSymmetricOptions());
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
 
     // Act
     var result = service.Validate("");
@@ -525,7 +531,7 @@ public class JwtTokenServiceTests
   {
     // Arrange
     var options = MEOptions.Options.Create(GetSymmetricOptions());
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
     var dto = GetTokenDto();
 
     // Act
@@ -543,7 +549,7 @@ public class JwtTokenServiceTests
   {
     // Arrange
     var options = MEOptions.Options.Create(GetSymmetricOptions());
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
     var dto = GetTokenDto();
     var extraClaims = new[] { new System.Security.Claims.Claim("custom", "value") };
 
@@ -568,7 +574,7 @@ public class JwtTokenServiceTests
       ExpirationTime = 10
     };
     var options = MEOptions.Options.Create(jwtOptions);
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
     var dto = GetTokenDto();
 
     // Act
@@ -595,7 +601,7 @@ public class JwtTokenServiceTests
       ExpirationTime = 10
     };
     var options = MEOptions.Options.Create(jwtOptions);
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
     var dto = GetTokenDto();
 
     // Act
@@ -622,7 +628,7 @@ public class JwtTokenServiceTests
       ExpirationTime = 10
     };
     var options = MEOptions.Options.Create(jwtOptions);
-    var service = new JwtTokenService(options);
+    var service = new JwtTokenService(options, GetMockLogger());
     var dto = GetTokenDto();
 
     // Act
@@ -654,7 +660,7 @@ public class JwtTokenServiceTests
       ExpirationTime = 10
     });
 
-    var createService = new JwtTokenService(createOptions);
+    var createService = new JwtTokenService(createOptions, GetMockLogger());
     var token = createService.Create(GetTokenDto());
 
     var validateOptions = MEOptions.Options.Create(new JwtOptions
@@ -667,7 +673,7 @@ public class JwtTokenServiceTests
       ExpirationTime = 10
     });
 
-    var validateService = new JwtTokenService(validateOptions);
+    var validateService = new JwtTokenService(validateOptions, GetMockLogger());
 
     // Act
     var result = validateService.Validate(token);
