@@ -154,14 +154,4 @@ public class NormalizedBenchmark
       _ = Normalize.Value(s);
     }
   }
-
-  [Benchmark]
-  public static void NormalizeValueRegex()
-  {
-    // Normaliza cada string da lista usando o método NormalizeValueFor
-    foreach (string s in _strings)
-    {
-      _ = Normalize.ValueRegex(s);
-    }
-  }
 }

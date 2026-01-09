@@ -491,3 +491,7 @@ scripts/**
 
 # Arquivo de documentação
 *.xml
+
+# Script files
+*.ps1
+*.sh
