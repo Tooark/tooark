@@ -17,7 +17,19 @@ public abstract class BaseEntity : Notification, IEquatable<Guid>, IEquatable<Ba
   /// <remarks>
   /// Utilizado pelo Entity Framework.
   /// </remarks>
-  protected BaseEntity() { }
+  protected BaseEntity() => Id = Guid.NewGuid();
+
+  /// <summary>
+  /// Construtor para criar uma entidade com identificador definido.
+  /// </summary>
+  /// <remarks>
+  /// Útil para cenários de seed/testes/factories onde o Id precisa ser determinístico.
+  /// </remarks>
+  /// <param name="id">Identificador único da entidade.</param>
+  protected BaseEntity(Guid id)
+  {
+    SetId(id);
+  }
 
   #endregion
 
@@ -37,29 +49,39 @@ public abstract class BaseEntity : Notification, IEquatable<Guid>, IEquatable<Ba
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("id", TypeName = "uuid")]
   [Required]
-  public Guid Id { get; private set; } = Guid.NewGuid();
+  public Guid Id { get; private set; }
 
   #endregion
 
-  #region Methods
+  #region Protected Methods
 
   /// <summary>
   /// Define o identificador único para a entidade.
   /// </summary>
+  /// <remarks>
+  /// O Id deve ser efetivamente imutável após definido. Este método existe
+  /// apenas para ser usado internamente (ex.: construtores/factories) e não
+  /// permite trocar a identidade de uma entidade já criada.
+  /// </remarks>
   /// <param name="id">O valor do identificador a ser definido.</param>
-  public void SetId(Guid id)
+  protected void SetId(Guid id)
   {
     // Verifica se o identificador é vazio
     if (id == Guid.Empty)
     {
       // Adiciona uma notificação de erro
-      AddNotification("IdentifierEmpty;Id", "Id", "T.ENT.BAS1");
+      AddNotification("Empty;Id", "Id", "T.ENT.BAS1");
+      return;
     }
-    else
+
+    // Não permitir mutação de identidade após definição
+    if (Id != Guid.Empty && Id != id)
     {
-      // Define o identificador
-      Id = id;
+      AddNotification("ChangeBlocked;Id", "Id", "T.ENT.BAS2");
+      return;
     }
+
+    Id = id;
   }
 
   #endregion
@@ -85,16 +107,19 @@ public abstract class BaseEntity : Notification, IEquatable<Guid>, IEquatable<Ba
   /// <returns>Verdadeiro se as entidades forem iguais, falso caso contrário.</returns>
   public bool Equals(BaseEntity? other)
   {
+    // Verifica se a outra entidade é nula
     if (other is null)
     {
       return false;
     }
 
+    // Verifica se as referências são iguais
     if (ReferenceEquals(this, other))
     {
       return true;
     }
 
+    // Compara os identificadores das entidades
     return Id.Equals(other.Id);
   }
 

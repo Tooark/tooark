@@ -71,13 +71,11 @@ public class InitialEntityTests
     var createdBy = Guid.Empty;
     var entity = new TestInitialEntity();
 
-    // Act
-    entity.SetCreatedBy(createdBy);
-
-    // Assert
+    // Act & Assert
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetCreatedBy(createdBy));
     Assert.False(entity.IsValid);
     Assert.Equal(createdBy, entity.CreatedBy);
-    Assert.Equal("Field.Invalid;CreatedBy", entity.Notifications.First());
+    Assert.Contains("Field.Invalid;CreatedBy", ex.GetErrorMessages());
   }
 
   // Teste se SetCreatedBy lança uma exceção ao tentar alterar o criador
@@ -89,12 +87,10 @@ public class InitialEntityTests
     var entity = new TestInitialEntity();
     entity.SetCreatedBy(createdBy);
 
-    // Act
-    entity.SetCreatedBy(Guid.NewGuid());
-
-    // Assert
+    // Act & Assert
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetCreatedBy(Guid.NewGuid()));
     Assert.False(entity.IsValid);
     Assert.Equal(createdBy, entity.CreatedBy);
-    Assert.Equal("ChangeNotAllowed;CreatedBy", entity.Notifications.First());
+    Assert.Contains("ChangeBlocked;CreatedBy", ex.GetErrorMessages());
   }
 }

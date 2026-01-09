@@ -71,13 +71,11 @@ public class SoftDeletableEntityTests
     var entity = new TestSoftDeletableEntity();
     var userId = Guid.Empty;
 
-    // Act
-    entity.SetDeleted(userId);
-
-    // Assert
+    // Act & Assert
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetDeleted(userId));
     Assert.False(entity.IsValid);
     Assert.False(entity.Deleted);
-    Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
+    Assert.Contains("Field.Invalid;UpdatedBy", ex.GetErrorMessages());
   }
 
   // Teste para marcar a entidade como restaurada
@@ -106,18 +104,16 @@ public class SoftDeletableEntityTests
     var userId = Guid.NewGuid();
     entity.SetDeleted(userId);
 
-    // Act
-    entity.SetRestored(Guid.Empty);
-
-    // Assert
+    // Act & Assert
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetRestored(Guid.Empty));
     Assert.False(entity.IsValid);
     Assert.True(entity.Deleted);
-    Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
+    Assert.Contains("Field.Invalid;UpdatedBy", ex.GetErrorMessages());
   }
 
   // Teste para verificar se a alteração não é permitida quando a entidade está excluída
   [Fact]
-  public void ChangeNotAllowedIsDeleted_ShouldAddNotification_WhenEntityIsDeleted()
+  public void ValidateNotDeleted_ShouldAddNotification_WhenEntityIsDeleted()
   {
     // Arrange
     var entity = new TestSoftDeletableEntity();
@@ -125,47 +121,58 @@ public class SoftDeletableEntityTests
     entity.SetDeleted(userId);
 
     // Act
-    entity.ChangeNotAllowedIsDeleted();
+    entity.ValidateNotDeleted();
 
     // Assert
     Assert.False(entity.IsValid);
     Assert.Equal("Entity", entity.Notifications.First().Key);
   }
 
-  // Teste para não marcar a entidade como excluída quando já está excluída
+  // Teste para verificar se ValidateNotDeleted não adiciona notificação quando a entidade não está excluída
   [Fact]
-  public void SetDeleted_ShouldNotChangeState_WhenAlreadyDeleted()
+  public void ValidateNotDeleted_ShouldNotAddNotification_WhenEntityIsNotDeleted()
   {
     // Arrange
-    var userId = Guid.NewGuid();
-    var entity = new TestSoftDeletableEntity(userId);
-    entity.SetDeleted(userId);
+    var entity = new TestSoftDeletableEntity();
 
     // Act
-    entity.SetDeleted(userId);
+    entity.ValidateNotDeleted();
 
     // Assert
-    Assert.True(entity.Deleted);
-    Assert.Equal(userId, entity.UpdatedBy);
+    Assert.True(entity.IsValid);
     Assert.Empty(entity.Notifications);
   }
 
-  // Teste para não restaurar a entidade quando já está restaurada
+  // Teste para verificar se EnsureNotDeleted lança exceção quando a entidade está excluída
   [Fact]
-  public void SetRestored_ShouldNotChangeState_WhenAlreadyRestored()
+  public void EnsureNotDeleted_ShouldThrowException_WhenEntityIsDeleted()
   {
     // Arrange
+    var entity = new TestSoftDeletableEntity();
     var userId = Guid.NewGuid();
-    var entity = new TestSoftDeletableEntity(userId);
     entity.SetDeleted(userId);
-    entity.SetRestored(userId);
 
-    // Act
-    entity.SetRestored(userId);
+    // Act & Assert
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.EnsureNotDeleted());
 
     // Assert
-    Assert.False(entity.Deleted);
-    Assert.Equal(userId, entity.UpdatedBy);
+    Assert.False(entity.IsValid);
+    Assert.Contains(entity.Notifications, n => n.Key == "Entity");
+    Assert.Contains("Record.Deleted", ex.GetErrorMessages());
+  }
+
+  // Teste para verificar se EnsureNotDeleted não lança exceção quando a entidade não está excluída
+  [Fact]
+  public void EnsureNotDeleted_ShouldNotThrowException_WhenEntityIsNotDeleted()
+  {
+    // Arrange
+    var entity = new TestSoftDeletableEntity();
+
+    // Act
+    entity.EnsureNotDeleted();
+
+    // Assert
+    Assert.True(entity.IsValid);
     Assert.Empty(entity.Notifications);
   }
 }

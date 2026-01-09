@@ -30,7 +30,7 @@ public class AuditableEntityTests
     Assert.Equal(userId, entity.UpdatedBy);
     Assert.Equal(1, entity.Version);
     Assert.False(entity.Deleted);
-    Assert.Equal(userId, entity.DeletedBy);
+    Assert.Null(entity.DeletedBy);
     Assert.Null(entity.DeletedAt);
   }
 
@@ -50,7 +50,7 @@ public class AuditableEntityTests
     Assert.Equal(userId, entity.UpdatedBy);
     Assert.Equal(1, entity.Version);
     Assert.False(entity.Deleted);
-    Assert.Equal(Guid.Empty, entity.DeletedBy);
+    Assert.Null(entity.DeletedBy);
     Assert.Null(entity.DeletedAt);
   }
 
@@ -82,16 +82,17 @@ public class AuditableEntityTests
     var userId = Guid.Empty;
 
     // Act
-    entity.SetDeleted(userId);
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetDeleted(userId));
 
     // Assert
     Assert.False(entity.IsValid);
     Assert.Equal(userId, entity.UpdatedBy);
     Assert.Equal(1, entity.Version);
     Assert.False(entity.Deleted);
-    Assert.Equal(userId, entity.DeletedBy);
+    Assert.Null(entity.DeletedBy);
     Assert.Null(entity.DeletedAt);
     Assert.Equal("Field.Invalid;DeletedBy", entity.Notifications.First());
+    Assert.Contains("Field.Invalid;DeletedBy", ex.GetErrorMessages());
   }
 
   // Teste se SetRestored atribui valores corretos
@@ -126,20 +127,21 @@ public class AuditableEntityTests
     var userId = Guid.Empty;
 
     // Act
-    entity.SetRestored(userId);
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetRestored(userId));
 
     // Assert
     Assert.False(entity.IsValid);
     Assert.Equal(2, entity.Version);
     Assert.True(entity.Deleted);
-    Assert.Equal(userId, entity.RestoredBy);
+    Assert.Null(entity.RestoredBy);
     Assert.Null(entity.RestoredAt);
     Assert.Equal("Field.Invalid;RestoredBy", entity.Notifications.First());
+    Assert.Contains("Field.Invalid;RestoredBy", ex.GetErrorMessages());
   }
 
-  // Teste para verificar se ChangeNotAllowedIsDeleted adiciona notificação quando a entidade está excluída
+  // Teste para verificar se ValidateNotDeleted adiciona notificação quando a entidade está excluída
   [Fact]
-  public void ChangeNotAllowedIsDeleted_ShouldAddNotification_WhenEntityIsDeleted()
+  public void ValidateNotDeleted_ShouldAddNotification_WhenEntityIsDeleted()
   {
     // Arrange
     var entity = new TestAuditableEntity();
@@ -147,22 +149,55 @@ public class AuditableEntityTests
     entity.SetDeleted(userId);
 
     // Act
-    entity.ChangeNotAllowedIsDeleted();
+    entity.ValidateNotDeleted();
 
     // Assert
     Assert.False(entity.IsValid);
     Assert.Contains(entity.Notifications, n => n.Key == "Entity");
   }
 
-  // Teste para verificar se ChangeNotAllowedIsDeleted não adiciona notificação quando a entidade não está excluída
+  // Teste para verificar se ValidateNotDeleted não adiciona notificação quando a entidade não está excluída
   [Fact]
-  public void ChangeNotAllowedIsDeleted_ShouldNotAddNotification_WhenEntityIsNotDeleted()
+  public void ValidateNotDeleted_ShouldNotAddNotification_WhenEntityIsNotDeleted()
   {
     // Arrange
     var entity = new TestAuditableEntity();
 
     // Act
-    entity.ChangeNotAllowedIsDeleted();
+    entity.ValidateNotDeleted();
+
+    // Assert
+    Assert.True(entity.IsValid);
+    Assert.Empty(entity.Notifications);
+  }
+
+  // Teste para verificar se EnsureNotDeleted lança exceção quando a entidade está excluída
+  [Fact]
+  public void EnsureNotDeleted_ShouldThrowException_WhenEntityIsDeleted()
+  {
+    // Arrange
+    var entity = new TestAuditableEntity();
+    var userId = Guid.NewGuid();
+    entity.SetDeleted(userId);
+
+    // Act & Assert
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.EnsureNotDeleted());
+
+    // Assert
+    Assert.False(entity.IsValid);
+    Assert.Contains(entity.Notifications, n => n.Key == "Entity");
+    Assert.Contains("Record.Deleted", ex.GetErrorMessages());
+  }
+
+  // Teste para verificar se EnsureNotDeleted não lança exceção quando a entidade não está excluída
+  [Fact]
+  public void EnsureNotDeleted_ShouldNotThrowException_WhenEntityIsNotDeleted()
+  {
+    // Arrange
+    var entity = new TestAuditableEntity();
+
+    // Act
+    entity.EnsureNotDeleted();
 
     // Assert
     Assert.True(entity.IsValid);
@@ -195,12 +230,13 @@ public class AuditableEntityTests
     var userId = Guid.Empty;
 
     // Act
-    entity.SetUpdatedBy(userId);
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetUpdatedBy(userId));
 
     // Assert
     Assert.False(entity.IsValid);
     Assert.Equal(Guid.Empty, entity.UpdatedBy);
     Assert.Equal(1, entity.Version);
     Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
+    Assert.Contains("Field.Invalid;UpdatedBy", ex.GetErrorMessages());
   }
 }

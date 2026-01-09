@@ -74,16 +74,11 @@ public abstract class VersionedEntity : DetailedEntity
   /// <param name="updatedBy">O identificador do usuário que atualizou a entidade.</param>
   public override void SetUpdatedBy(UpdatedBy updatedBy)
   {
-    // Adiciona as validações dos atributos.
-    AddNotifications(updatedBy);
+    // Define o identificador do atualizador.
+    base.SetUpdatedBy(updatedBy);
 
-    // Verifica se não houve notificações de erro.
-    if (IsValid)
-    {
-      IncrementVersion();
-
-      base.SetUpdatedBy(updatedBy); // Chama a lógica da classe base.
-    }
+    // Incrementa a versão apenas após atualização bem-sucedida
+    IncrementVersion();
   }
 
   #endregion

@@ -1,180 +1,158 @@
 # Tooark.Entities
 
-Biblioteca para gerenciamento e manutenção de entidades base em projetos .NET.
+Biblioteca com entidades base para aplicações .NET, incluindo suporte a identificadores únicos, auditoria, controle de versão e exclusão lógica.
 
-## Conteúdo
+## 📦 Conteúdo do Pacote
 
-- [BaseEntity](#1-entidade-base)
-- [InitialEntity](#2-entidade-inicial)
-- [DetailedEntity](#3-entidade-detalhada)
-- [VersionedEntity](#4-entidade-versionada)
-- [SoftDeletableEntity](#5-entidade-deletável)
-- [AuditableEntity](#6-entidade-auditável)
-- [FileEntity](#7-entidade-de-arquivo)
+### Entidades
 
-## Entidades
+| Classe                                        | Descrição                                                                                                                                     |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`BaseEntity`](#baseentity)                   | Identificador único + suporte a notificações/validações                                                                                       |
+| [`InitialEntity`](#initialentity)             | Informações de criação (`CreatedBy`/`CreatedAt`)                                                                                              |
+| [`DetailedEntity`](#detailedentity)           | Informações de atualização (`UpdatedBy`/`UpdatedAt`)                                                                                          |
+| [`VersionedEntity`](#versionedentity)         | Controle de versão (`Version`) incrementada em atualizações                                                                                   |
+| [`SoftDeletableEntity`](#softdeletableentity) | Exclusão lógica simples (`Deleted`) + atualização via `UpdatedBy`                                                                             |
+| [`AuditableEntity`](#auditableentity)         | Auditoria completa: versão (`Version`) + exclusão(`Deleted`)/restauração com usuário/data (`DeletedBy`/`DeletedAt`/`RestoredBy`/`RestoredAt`) |
+| [`FileEntity`](#fileentity)                   | Entidade base para arquivos (`FileName`, `Title`, `Link`, `FileFormat`, `Type`, `Size`)                                                       |
 
-As entidades disponíveis são:
+### Value Objects usados nas entidades
 
-### 1. Entidade Base
+As entidades usam Value Objects do pacote `Tooark.ValueObjects` (ex.: `CreatedBy`, `UpdatedBy`, `DeletedBy`, `RestoredBy`, `FileStorage`, `Title`).
 
-**Funcionalidade:**
-Classe base abstrata contemplando a definição de um identificador único para a entidade.
+---
 
-- **Propriedades:**
+## 🔧 Instalação
 
-  - `Id` (Guid): Identificador único para a entidade.
+```bash
+dotnet add package Tooark.Entities
+```
 
-- **Coluna de Banco de Dados:**
+---
 
-  - `id`: Tipo: `uuid`.
+## ⚙️ Configuração
 
-- **Métodos:**
+Não há configuração adicional.
 
-  - `SetId(Guid id)`: Define o identificador único para a entidade.
+---
 
-[Exemplo de Uso](#entidade-base)
+## 🧩 Entidades (Detalhes)
 
-### 2. Entidade Inicial
+### BaseEntity
 
-**Funcionalidade:**
-Classe base abstrata que herda de [`BaseEntity`](#1-entidade-base) e define campos para rastrear a criação da entidade.
+- **Propriedades**
+  - `Id` (Guid) — coluna `id` (`uuid`)
+- **Construtores (para classes derivadas)**
+  - `BaseEntity()` — gera `Id` automaticamente
+  - `BaseEntity(Guid id)` — define `Id` determinístico (seed/testes/factories)
+- **Observações**
+  - O `Id` tem setter privado; não existe `SetId` público.
+  - [Exemplos de Uso](#entidade-base).
 
-- **Propriedades:**
+### InitialEntity
 
-  - `CreatedBy` (Guid): Identificador do usuário que criou a entidade.
-  - `CreatedAt` (DateTime): Data e hora de criação da entidade.
+- **Propriedades**
+  - `CreatedBy` (Guid) — coluna `created_by` (`uuid`)
+  - `CreatedAt` (DateTime/UTC) — coluna `created_at` (`timestamp with time zone`)
+- **Métodos**
+  - `SetCreatedBy(CreatedBy createdBy)`
+- **Observações**
+  - Herda de `BaseEntity`.
+  - `CreatedBy` é Value Object e aceita conversão implícita a partir de `Guid`.
+  - Em caso de dados inválidos, lança `BadRequestException`.
+  - [Exemplos de Uso](#entidade-inicial).
 
-- **Coluna de Banco de Dados:**
+### DetailedEntity
 
-  - `created_by`: Tipo: `uuid`.
-  - `created_at`: Tipo: `timestamp with time zone`.
+- **Propriedades**
+  - `UpdatedBy` (Guid) — coluna `updated_by` (`uuid`)
+  - `UpdatedAt` (DateTime/UTC) — coluna `updated_at` (`timestamp with time zone`)
+- **Métodos**
+  - `SetCreatedBy(CreatedBy createdBy)` — define também `UpdatedBy`
+  - `SetUpdatedBy(UpdatedBy updatedBy)`
+- **Observações**
+  - Herda de `InitialEntity`.
+  - `UpdatedBy` é Value Object e aceita conversão implícita a partir de `Guid`.
+  - Em caso de dados inválidos, lança `BadRequestException`.
+  - [Exemplos de Uso](#entidade-detalhada).
 
-- **Métodos:**
+### VersionedEntity
 
-  - `SetCreatedBy(Guid createdBy)`: Define o identificador do criador da entidade e a data e hora de criação.
+- **Propriedades**
+  - `Version` (long) — coluna `version` (`bigint`), valor padrão `1`
+- **Métodos**
+  - `SetUpdatedBy(UpdatedBy updatedBy)` — atualiza e incrementa a versão
+- **Observações**
+  - Herda de `DetailedEntity`.
+  - Em caso de dados inválidos, lança `BadRequestException`.
+  - [Exemplos de Uso](#entidade-versionada).
 
-### 3. Entidade Detalhada
+### SoftDeletableEntity
 
-**Funcionalidade:**
-Classe base abstrata que herda de [`InitialEntity`](#2-entidade-inicial) e define campos para rastrear a última atualização da entidade.
+- **Propriedades**
+  - `Deleted` (bool) — coluna `deleted` (`bool`), valor padrão `false`
+- **Métodos**
+  - `ValidateNotDeleted()` — valida se não está deletada e adiciona notificação
+  - `EnsureNotDeleted()` — lança exception se estiver deletada
+  - `SetDeleted(UpdatedBy changedBy)` — marca como deletada e atualiza
+  - `SetRestored(UpdatedBy changedBy)` — restaura e atualiza
+- **Observações**
+  - Herda de `DetailedEntity`.
+  - Em caso de dados inválidos, lança `BadRequestException`.
+  - [Exemplos de Uso](#entidade-deletável).
 
-- **Propriedades:**
+### AuditableEntity
 
-  - `UpdatedBy` (Guid): Identificador do usuário que atualizou a entidade pela última vez.
-  - `UpdatedAt` (DateTime): Data e hora da última atualização da entidade.
+- **Propriedades**
+  - `Version` (long)
+  - `Deleted` (bool)
+  - `DeletedBy` (Guid?) — coluna `deleted_by` (`uuid`)
+  - `DeletedAt` (DateTime?) — coluna `deleted_at` (`timestamp with time zone`)
+  - `RestoredBy` (Guid?) — coluna `restored_by` (`uuid`)
+  - `RestoredAt` (DateTime?) — coluna `restored_at` (`timestamp with time zone`)
+- **Métodos**
+  - `ValidateNotDeleted()` — valida se não está deletada e adiciona notificação
+  - `EnsureNotDeleted()` — lança exception se estiver deletada
+  - `SetUpdatedBy(UpdatedBy updatedBy)` — atualiza e incrementa a versão
+  - `SetDeleted(DeletedBy deletedBy)` — marca como deletada, registra o usuário e a data da exclusão, e incrementa a versão
+  - `SetRestored(RestoredBy restoredBy)` — restaura, registra o usuário e a data da restauração, e incrementa a versão
+- **Observações**
+  - Herda de `DetailedEntity`.
+  - Em caso de dados inválidos, lança `BadRequestException`.
+  - [Exemplos de Uso](#entidade-auditável).
 
-- **Coluna de Banco de Dados:**
+### FileEntity
 
-  - `updated_by`: Tipo: `uuid`.
-  - `updated_at`: Tipo: `timestamp with time zone`.
+- **Propriedades**
+  - `FileName` (string) — coluna `file_name` (`text`)
+  - `Title` (string) — coluna `title` (`varchar(255)`)
+  - `Link` (string) — coluna `link` (`text`)
+  - `FileFormat` (string?) — coluna `file_format` (`varchar(10)`)
+  - `Type` (EFileType) — coluna `type` (`int`)
+  - `Size` (long) — coluna `size` (`bigint`)
+- **Construtores (para classes derivadas)**
+  - `FileEntity(FileStorage file, Title title, CreatedBy createdBy)`
+  - `FileEntity(FileStorage file, Title title, string fileFormat, EFileType type, long size, CreatedBy createdBy)`
+- **Observações**
+  - Herda de `InitialEntity`.
+  - `FileStorage` e `Title` são Value Objects. Em caso de dados inválidos, lança `BadRequestException`.
+  - [Exemplos de Uso](#entidade-de-arquivo).
 
-- **Métodos:**
+---
 
-  - `SetCreatedBy(Guid createdBy)`: Define o identificador do criador e o atualizador da entidade.
-  - `SetUpdatedBy(Guid updatedBy)`: Define o identificador do atualizador da entidade e a data e hora da última atualização.
+## 📝 Exemplos de Uso
 
-### 4. Entidade Versionada
-
-**Funcionalidade:**
-Classe base abstrata que herda de [`DetailedEntity`](#3-entidade-detalhada) e define um campo para rastrear a versão da entidade.
-
-- **Propriedades:**
-
-  - `Version` (long): Versão da entidade.
-
-- **Coluna de Banco de Dados:**
-
-  - `version`: Tipo: `bigint`.
-
-- **Métodos:**
-
-  - `SetUpdatedBy(Guid updatedBy)`: Incrementa a versão da entidade ao atualizar.
-
-### 5. Entidade Deletável
-
-**Funcionalidade:**
-Classe base abstrata que herda de [`DetailedEntity`](#3-entidade-detalhada) e define um campo para rastrear a exclusão lógica da entidade.
-
-- **Propriedades:**
-
-  - `Deleted` (bool): Indica se a entidade foi excluída logicamente.
-
-- **Coluna de Banco de Dados:**
-
-  - `deleted`: Tipo: `boolean`.
-
-- **Métodos:**
-
-  - `SetDeleted(Guid changedBy)`: Marca a entidade como excluída logicamente.
-  - `SetRestored(Guid changedBy)`: Marca a entidade como não excluída logicamente.
-
-### 6. Entidade Auditável
-
-**Funcionalidade:**
-Classe base abstrata que herda de [`DetailedEntity`](#3-entidade-detalhada) e define campos para rastrear a exclusão lógica e restauração da entidade.
-
-- **Propriedades:**
-
-  - `Version` (long): Versão da entidade.
-  - `Deleted` (bool): Indica se a entidade foi excluída logicamente.
-  - `DeletedBy` (Guid): Identificador do usuário que excluiu a entidade.
-  - `DeletedAt` (DateTime?): Data e hora da exclusão da entidade.
-  - `RestoredBy` (Guid): Identificador do usuário que restaurou a entidade.
-  - `RestoredAt` (DateTime?): Data e hora da restauração da entidade.
-
-- **Coluna de Banco de Dados:**
-
-  - `deleted`: Tipo: `boolean`.
-  - `deleted_by`: Tipo: `uuid`.
-  - `deleted_at`: Tipo: `timestamp with time zone`.
-  - `restored_by`: Tipo: `uuid`.
-  - `restored_at`: Tipo: `timestamp with time zone`.
-
-- **Métodos:**
-
-  - `SetDeleted(Guid deletedBy)`: Marca a entidade como excluída, definindo o usuário e a data e hora da exclusão e incrementando a versão.
-  - `SetRestored(Guid restoredBy)`: Marca a entidade como restaurada, definindo o usuário e a data e hora da restauração e incrementando a versão.
-
-### .7 Entidade de Arquivo
-
-**Funcionalidade:**
-Classe base abstrata que herda de [`InitialEntity`](#2-entidade-inicial) e define campos para armazenar informações de arquivos.
-
-- **Propriedades:**
-
-  - `FileName` (string): Nome do arquivo.
-  - `Title` (string): Título do arquivo.
-  - `Link` (string): Link do arquivo no bucket.
-  - `FileFormat` (string): Formato do arquivo.
-  - `Type` (EFileType): Tipo do arquivo.
-  - `Size` (long): Tamanho do arquivo em bytes.
-
-- **Coluna de Banco de Dados:**
-
-  - `file_name`: Tipo: `text`.
-  - `title`: Tipo: `varchar(255)`.
-  - `link`: Tipo: `text`.
-  - `file_format`: Tipo: `varchar(10)`.
-  - `type`: Tipo: `int`.
-  - `size`: Tipo: `bigint`.
-
-- **Construtores:**
-
-  - `FileEntity(string fileUrl, string name, Guid createdBy)`: Inicializa uma nova instância da classe `FileEntity`.
-  - `FileEntity(string fileUrl, string name, string publicUrl, Guid createdBy)`: Inicializa uma nova instância da classe `FileEntity`.
-  - `FileEntity(string fileUrl, string name, string publicUrl, string fileFormat, EFileType type, Guid createdBy)`: Inicializa uma nova instância da classe `FileEntity`.
-
-## Exemplo de Uso
-
-### Entidade Base
+### [Entidade Base](#baseentity)
 
 ```csharp
 using Tooark.Entities;
 
 public class Produto : BaseEntity
 {
-  public string Nome { get; set; }
+  public Produto() { }
+  public Produto(Guid id) : base(id) { }
+
+  public string Nome { get; set; } = string.Empty;
   public decimal Valor { get; set; }
 }
 
@@ -188,19 +166,20 @@ public class Program
       Valor = 100.0m
     };
 
-    produto.SetId(Guid.NewGuid()); // Define o identificador único para a entidade.
+    var idGerado = produto.Id;
+    var produtoDeterministico = new Produto(Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"));
   }
 }
 ```
 
-### Entidade Inicial
+### [Entidade Inicial](#initialentity)
 
 ```csharp
 using Tooark.Entities;
 
 public class Produto : InitialEntity
 {
-  public string Nome { get; set; }
+  public string Nome { get; set; } = string.Empty;
   public decimal Valor { get; set; }
 }
 
@@ -214,20 +193,20 @@ public class Program
       Valor = 100.0m
     };
 
-    // Definindo o criador da entidade
-    produto.SetCreatedBy(Guid.NewGuid()); // Define o identificador do criador da entidade e a data e hora de criação.
+    // SetCreatedBy recebe CreatedBy (Value Object), mas Guid converte implicitamente.
+    produto.SetCreatedBy(Guid.NewGuid());
   }
 }
 ```
 
-### Entidade Detalhada
+### [Entidade Detalhada](#detailedentity)
 
 ```csharp
 using Tooark.Entities;
 
 public class Produto : DetailedEntity
 {
-  public string Nome { get; set; }
+  public string Nome { get; set; } = string.Empty;
   public decimal Valor { get; set; }
 }
 
@@ -241,23 +220,20 @@ public class Program
       Valor = 100.0m
     };
 
-    // Definindo o criador da entidade
-    produto.SetCreatedBy(Guid.NewGuid()); // Define o identificador do criador e o atualizador da entidade.
-
-    // Atualizando a entidade
-    produto.SetUpdatedBy(Guid.NewGuid()); // Define o identificador do atualizador da entidade e a data e hora da última atualização.
+    produto.SetCreatedBy(Guid.NewGuid());
+    produto.SetUpdatedBy(Guid.NewGuid());
   }
 }
 ```
 
-### Entidade Versionada
+### [Entidade Versionada](#versionedentity)
 
 ```csharp
 using Tooark.Entities;
 
 public class Produto : VersionedEntity
 {
-  public string Nome { get; set; }
+  public string Nome { get; set; } = string.Empty;
   public decimal Valor { get; set; }
 }
 
@@ -271,25 +247,22 @@ public class Program
       Valor = 100.0m
     };
 
-    // Definindo o criador da entidade
-    produto.SetCreatedBy(Guid.NewGuid()); // Define o identificador do criador e o atualizador da entidade.
+    produto.SetCreatedBy(Guid.NewGuid());
+    produto.SetUpdatedBy(Guid.NewGuid());
 
-    // Atualizando a entidade
-    produto.SetUpdatedBy(Guid.NewGuid()); // Incrementa a versão da entidade ao atualizar.
-
-    var version = produto.Version; // Obtém a versão da entidade.
+    var version = produto.Version;
   }
 }
 ```
 
-### Entidade Deletável
+### [Entidade Deletável](#softdeletableentity)
 
 ```csharp
 using Tooark.Entities;
 
 public class Produto : SoftDeletableEntity
 {
-  public string Nome { get; set; }
+  public string Nome { get; set; } = string.Empty;
   public decimal Valor { get; set; }
 }
 
@@ -303,26 +276,21 @@ public class Program
       Valor = 100.0m
     };
 
-    // Definindo o criador da entidade
-    produto.SetCreatedBy(Guid.NewGuid()); // Define o identificador do criador e o atualizador da entidade.
-
-    // Excluindo logicamente a entidade
-    produto.SetDeleted(Guid.NewGuid()); // Marca a entidade como excluída logicamente.
-
-    // Restaurando a entidade
-    produto.SetRestored(Guid.NewGuid()); // Marca a entidade como não excluída logicamente.
+    produto.SetCreatedBy(Guid.NewGuid());
+    produto.SetDeleted(Guid.NewGuid());
+    produto.SetRestored(Guid.NewGuid());
   }
 }
 ```
 
-### Entidade Auditável
+### [Entidade Auditável](#auditableentity)
 
 ```csharp
 using Tooark.Entities;
 
 public class Produto : AuditableEntity
 {
-  public string Nome { get; set; }
+  public string Nome { get; set; } = string.Empty;
   public decimal Valor { get; set; }
 }
 
@@ -336,64 +304,114 @@ public class Program
       Valor = 100.0m
     };
 
-    // Definindo o criador da entidade
-    produto.SetCreatedBy(Guid.NewGuid()); // Define o identificador do criador e o atualizador da entidade.
-
-    // Atualizando a entidade
-    produto.SetUpdatedBy(Guid.NewGuid()); // Define o identificador do atualizador da entidade e a data e hora da última atualização.
-
-    // Excluindo logicamente a entidade
-    produto.SetDeleted(Guid.NewGuid()); // Marca a entidade como excluída, definindo o usuário e a data e hora da exclusão e incrementando a versão.
-
-    // Restaurando a entidade
-    produto.SetRestored(Guid.NewGuid()); // Marca a entidade como restaurada, definindo o usuário e a data e hora da restauração e incrementando a versão.
+    produto.SetCreatedBy(Guid.NewGuid());
+    produto.SetUpdatedBy(Guid.NewGuid());
+    produto.SetDeleted(Guid.NewGuid());
+    produto.SetRestored(Guid.NewGuid());
   }
 }
 ```
 
-### Entidade de Arquivo
+### [Entidade de Arquivo](#fileentity)
 
 ```csharp
 using Tooark.Entities;
+using Tooark.Enums;
+using Tooark.ValueObjects;
 
 public class Arquivo : FileEntity
 {
-  public string Descricao { get; set; }
+  public Arquivo(string link, string name, string title, Guid createdBy)
+    : base(new FileStorage(link, name), new Title(title), new CreatedBy(createdBy))
+  { }
+
+  public Arquivo(string link, string name, string title, string fileFormat, EFileType type, long size, Guid createdBy)
+    : base(new FileStorage(link, name), new Title(title), fileFormat, type, size, createdBy)
+  { }
 }
 
 public class Program
 {
   public static void Main()
   {
-    var arquivo = new Arquivo("https://bucket.com/arquivo.pdf", "Arquivo.pdf", Guid.NewGuid())
-    {
-      Descricao = "Arquivo de teste"
-    };
+    var arquivo = new Arquivo(
+      link: "https://bucket.com/arquivo.pdf",
+      name: "Arquivo.pdf",
+      title: "Arquivo de teste",
+      createdBy: Guid.NewGuid()
+    );
+
+    var arquivoDetalhado = new Arquivo(
+      link: "https://bucket.com/arquivo.pdf",
+      name: "Arquivo.pdf",
+      title: "Arquivo de teste",
+      fileFormat: "pdf",
+      type: EFileType.Document,
+      size: 1024,
+      createdBy: Guid.NewGuid()
+    );
   }
 }
 ```
 
-## Dependências
+---
 
-- [Tooark.Enums](../Tooark.Enums/README.md)
-- [Tooark.Notifications](../Tooark.Notifications/README.md)
-- [Tooark.Utils](../Tooark.Utils/README.md)
-- [Tooark.ValueObjects](../Tooark.ValueObjects/README.md)
+## 📋 Dependências
 
-## Códigos de Erro para notificações
+| Projeto                | Versão | Descrição                                                   |
+| ---------------------- | ------ | ----------------------------------------------------------- |
+| `Tooark.Enums`         | —      | Tipos/enums compartilhados (ex.: `EFileType`)               |
+| `Tooark.Exceptions`    | —      | Exceções (ex.: `BadRequestException`)                       |
+| `Tooark.Notifications` | —      | Base de notificações usada pelas entidades                  |
+| `Tooark.Utils`         | —      | Utilitários internos do toolkit                             |
+| `Tooark.ValueObjects`  | —      | Value Objects usados por propriedades/métodos/constructores |
 
-Os códigos de erro para notificações são:
+---
 
-- `Base`: `T.ENT.BAS`
-- `Initial`: `T.ENT.INI`
-- `Detailed`: `T.ENT.DET`
-- `SoftDeletable`: `T.ENT.SOF`
-- `Auditable`: `T.ENT.AUD`
+## ⚠️ Códigos de Erro, Notificações e Soluções
 
-## Contribuição
+Os códigos de erro para notificações seguem o padrão `T.ENT.<SIGLA><N>` (ex.: `T.ENT.BAS1`).
+
+Alguns códigos utilizados diretamente nas entidades:
+
+- `BaseEntity`: `T.ENT.BAS1`, `T.ENT.BAS2`
+- `InitialEntity`: `T.ENT.INI1`
+- `SoftDeletableEntity`: `T.ENT.SOF1`
+- `AuditableEntity`: `T.ENT.AUD1`
+
+Tabela de erros/notificações:
+
+| Entidade              | Mensagem                   | Descrição                           | Solução                                                                  | Retorno      |
+| --------------------- | -------------------------- | ----------------------------------- | ------------------------------------------------------------------------ | ------------ |
+| `BaseEntity`          | `Empty;Id`                 | Identificador vazio                 | Defina um identificador válido para a entidade                           | Notification |
+| `BaseEntity`          | `ChangeBlocked;Id`         | Identificador não pode ser alterado | Informe o identificador do registro                                      | Notification |
+| `InitialEntity`       | `ChangeBlocked;CreatedBy`  | Criador não pode ser alterado       | Informe o criador do registro                                            | Exception    |
+| `InitialEntity`       | `Field.Invalid;CreatedBy`  | Campo do Criador inválido           | Informe um criador válido                                                | Exception    |
+| `DetailedEntity`      | `ChangeBlocked;CreatedBy`  | Criador não pode ser alterado       | Informe o criador do registro                                            | Exception    |
+| `DetailedEntity`      | `Field.Invalid;CreatedBy`  | Campo do Criador inválido           | Informe um criador válido                                                | Exception    |
+| `DetailedEntity`      | `Field.Invalid;UpdatedBy`  | Campo do Atualizador inválido       | Informe um atualizador válido                                            | Exception    |
+| `VersionedEntity`     | `ChangeBlocked;CreatedBy`  | Criador não pode ser alterado       | Informe o criador do registro                                            | Exception    |
+| `VersionedEntity`     | `Field.Invalid;CreatedBy`  | Campo do Criador inválido           | Informe um criador válido                                                | Exception    |
+| `VersionedEntity`     | `Field.Invalid;UpdatedBy`  | Campo do Atualizador inválido       | Informe um atualizador válido                                            | Exception    |
+| `SoftDeletableEntity` | `ChangeBlocked;CreatedBy`  | Criador não pode ser alterado       | Informe o criador do registro                                            | Exception    |
+| `SoftDeletableEntity` | `Field.Invalid;CreatedBy`  | Campo do Criador inválido           | Informe um criador válido                                                | Exception    |
+| `SoftDeletableEntity` | `Field.Invalid;UpdatedBy`  | Campo do Atualizador inválido       | Informe um atualizador válido                                            | Exception    |
+| `SoftDeletableEntity` | `Record.Deleted`           | Registro deletado                   | Análise se é necessário restaurar o registro antes de realizar operações | Notification |
+| `SoftDeletableEntity` | `Record.Deleted`           | Registro deletado                   | Restaure o registro se necessário antes de realizar operações            | Exception    |
+| `AuditableEntity`     | `ChangeBlocked;CreatedBy`  | Criador não pode ser alterado       | Informe o criador do registro                                            | Exception    |
+| `AuditableEntity`     | `Field.Invalid;CreatedBy`  | Campo do Criador inválido           | Informe um criador válido                                                | Exception    |
+| `AuditableEntity`     | `Field.Invalid;UpdatedBy`  | Campo do Atualizador inválido       | Informe um atualizador válido                                            | Exception    |
+| `AuditableEntity`     | `Field.Invalid;DeletedBy`  | Campo do Deletador inválido         | Informe um deletador válido                                              | Exception    |
+| `AuditableEntity`     | `Field.Invalid;RestoredBy` | Campo do Restaurador inválido       | Informe um restaurador válido                                            | Exception    |
+| `AuditableEntity`     | `Record.Deleted`           | Registro deletado                   | Análise se é necessário restaurar o registro antes de realizar operações | Notification |
+| `AuditableEntity`     | `Record.Deleted`           | Registro deletado                   | Restaure o registro se necessário antes de realizar operações            | Exception    |
+
+---
+
+## 🪪 Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Entities](https://github.com/Tooark/tooark/issues).
 
-## Licença
+## 📄 Licença
 
 Este projeto está licenciado sob a licença BSD 3-Clause. Veja o arquivo [LICENSE](../LICENSE) para mais detalhes.

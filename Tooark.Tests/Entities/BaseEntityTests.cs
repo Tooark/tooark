@@ -6,7 +6,13 @@ public class BaseEntityTests
 {
   // Uma classe concreta para testar BaseEntity
   private class TestEntity : BaseEntity
-  { }
+  {
+    public TestEntity() { }
+
+    public TestEntity(Guid id) : base(id) { }
+
+    public void TrySetId(Guid id) => SetId(id);
+  }
 
   // Teste se o construtor atribui um novo Guid não vazio
   [Fact]
@@ -20,37 +26,53 @@ public class BaseEntityTests
     Assert.NotEqual(Guid.Empty, entity.Id);
   }
 
-   // Teste se SetId atribui um Guid válido
+   // Teste se construtor com id atribui um Guid válido
   [Fact]
-  public void SetId_WithValidGuid_ShouldAssignGuid()
+  public void Constructor_WithValidGuid_ShouldAssignGuid()
   {
     // Arrange
-    var entity = new TestEntity();
     var newId = Guid.NewGuid();
 
     // Act
-    entity.SetId(newId);
+    var entity = new TestEntity(newId);
 
     // Assert
     Assert.True(entity.IsValid);
     Assert.Equal(newId, entity.Id);
   }
 
-  // Teste se SetId gera uma notificação ao tentar atribuir um Guid vazio
+  // Teste se construtor com Guid.Empty gera uma notificação
   [Fact]
-  public void SetId_WithEmptyGuid_ShouldGenerateNotification()
+  public void Constructor_WithEmptyGuid_ShouldGenerateNotification()
+  {
+    // Arrange
+    var emptyId = Guid.Empty;
+
+    // Act
+    var entity = new TestEntity(emptyId);
+
+    // Assert
+    Assert.False(entity.IsValid);
+    Assert.Equal("Empty;Id", entity.Notifications.First());
+    Assert.Equal(Guid.Empty, entity.Id);
+  }
+
+  // Teste se não permite trocar a identidade após criação
+  [Fact]
+  public void SetId_AfterConstruction_ShouldGenerateNotificationAndKeepId()
   {
     // Arrange
     var entity = new TestEntity();
     var originalId = entity.Id;
+    var newId = Guid.NewGuid();
 
     // Act
-    entity.SetId(Guid.Empty);
+    entity.TrySetId(newId);
 
     // Assert
     Assert.False(entity.IsValid);
-    Assert.Equal("IdentifierEmpty;Id", entity.Notifications.First());
     Assert.Equal(originalId, entity.Id);
+    Assert.Contains(entity.Notifications, n => n.Code == "T.ENT.BAS2");
   }
 
   // Teste se Equals retorna verdadeiro para o mesmo Guid
@@ -133,8 +155,7 @@ public class BaseEntityTests
   {
     // Arrange
     var entity1 = new TestEntity();
-    var entity2 = new TestEntity();
-    entity2.SetId(entity1.Id);
+    var entity2 = new TestEntity(entity1.Id);
 
     // Act
     var result = entity1.Equals(entity2);
@@ -164,8 +185,7 @@ public class BaseEntityTests
   {
     // Arrange
     var entity1 = new TestEntity();
-    var entity2 = new TestEntity();
-    entity2.SetId(entity1.Id);
+    var entity2 = new TestEntity(entity1.Id);
 
     // Act
     var result = entity1 == entity2;
@@ -225,8 +245,7 @@ public class BaseEntityTests
   {
     // Arrange
     var entity1 = new TestEntity();
-    var entity2 = new TestEntity();
-    entity2.SetId(entity1.Id);
+    var entity2 = new TestEntity(entity1.Id);
 
     // Act
     var result = entity1 != entity2;
@@ -241,8 +260,7 @@ public class BaseEntityTests
   {
     // Arrange
     var entity1 = new TestEntity();
-    var entity2 = new TestEntity();
-    entity2.SetId(entity1.Id);
+    var entity2 = new TestEntity(entity1.Id);
     object obj = entity2;
 
     // Act

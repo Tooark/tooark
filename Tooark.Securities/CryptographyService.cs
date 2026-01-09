@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
+using Tooark.Exceptions;
 using Tooark.Securities.Interfaces;
 using Tooark.Securities.Options;
 
@@ -51,16 +52,17 @@ public class CryptographyService : ICryptographyService
   /// Construtor do serviço de criptografia.
   /// </summary>
   /// <param name="options">Opções de configuração de criptografia.</param>
-  /// <exception cref="ArgumentNullException">Quando as opções não estão configuradas.</exception>
-  /// <exception cref="ArgumentException">Quando o segredo de criptografia não está configurado.</exception>
+  /// <exception cref="InternalServerErrorException">Quando as opções não estão configuradas.</exception>
+  /// <exception cref="InternalServerErrorException">Quando o segredo de criptografia não está configurado.</exception>
   public CryptographyService(IOptions<CryptographyOptions> options)
   {
     // Valida se as opções foram configuradas corretamente
     var _options = options.Value
-      ?? throw new ArgumentNullException(nameof(options), "Options.NotConfigured");
+      ?? throw new InternalServerErrorException("Options.NotConfigured");
 
     _algorithm = _options.Algorithm;
-    _secret = _options.Secret ?? throw new ArgumentException("Cryptography.SecretNotConfigured");
+    _secret = _options.Secret
+      ?? throw new InternalServerErrorException("Options.Cryptography.SecretNotConfigured");
 
     // Caso exista uma chave AES pronta em Base64, converte para byte[]
     if (!string.IsNullOrWhiteSpace(_options.SecretBase64))
@@ -83,13 +85,13 @@ public class CryptographyService : ICryptographyService
   /// </remarks>
   /// <param name="plainText">Texto plano para criptografar.</param>
   /// <returns>Texto criptografado em Base64.</returns>
-  /// <exception cref="ArgumentException">Quando o texto plano não é fornecido.</exception>
+  /// <exception cref="BadRequestException">Quando o texto plano não é fornecido.</exception>
   public string Encrypt(string plainText)
   {
     // Valida o texto a criptografar
     if (plainText is null)
     {
-      throw new ArgumentException("Cryptography.PlainTextNotProvided");
+      throw new BadRequestException("Cryptography.PlainTextNotProvided");
     }
 
     // Seleciona o algoritmo de criptografia
@@ -111,17 +113,17 @@ public class CryptographyService : ICryptographyService
   /// </remarks>
   /// <param name="cipherText">Texto criptografado em Base64.</param>
   /// <returns>Texto plano descriptografado.</returns>
-  /// <exception cref="ArgumentException">Quando o texto criptografado não é fornecido.</exception>
-  /// <exception cref="ArgumentException">Quando o texto criptografado é inválido.</exception>
+  /// <exception cref="BadRequestException">Quando o texto criptografado não é fornecido.</exception>
+  /// <exception cref="BadRequestException">Quando o texto criptografado é inválido.</exception>
   public string Decrypt(string cipherText)
   {
     // Valida o texto a descriptografar
     if (cipherText is null)
     {
-      throw new ArgumentException("Cryptography.CipherTextNotProvided");
+      throw new BadRequestException("Cryptography.CipherTextNotProvided");
     }
 
-    // Seleciona o algoritmo de descriptografia
+    // Seleciona o algoritmo de descriptografia,
     return _algorithm switch
     {
       "CBC" => DecryptCbc(cipherText),
@@ -215,7 +217,7 @@ public class CryptographyService : ICryptographyService
   /// </summary>
   /// <param name="cipherText">Texto criptografado em Base64.</param>
   /// <returns>Texto plano descriptografado.</returns>
-  /// <exception cref="ArgumentException">Lançada quando o texto criptografado é inválido.</exception>
+  /// <exception cref="BadRequestException">Lançada quando o texto criptografado é inválido.</exception>
   private string DecryptCbc(string cipherText)
   {
     // Converte o texto Base64 de volta para bytes
@@ -224,7 +226,7 @@ public class CryptographyService : ICryptographyService
     // Valida o tamanho do array de bytes
     if (allBytes.Length <= IvSize)
     {
-      throw new ArgumentException("Cryptography.InvalidCipherText");
+      throw new BadRequestException("Cryptography.InvalidCipherText");
     }
 
     // Extrai o IV e os dados criptografados
@@ -256,7 +258,7 @@ public class CryptographyService : ICryptographyService
   /// </summary>
   /// <param name="cipherText">Texto criptografado em Base64.</param>
   /// <returns>Texto plano descriptografado.</returns>
-  /// <exception cref="ArgumentException">Lançada quando o texto criptografado é inválido.</exception>
+  /// <exception cref="BadRequestException">Lançada quando o texto criptografado é inválido.</exception>
   private string DecryptGcm(string cipherText)
   {
     // Converte o texto Base64 de volta para bytes
@@ -265,7 +267,7 @@ public class CryptographyService : ICryptographyService
     // Valida o tamanho do array de bytes
     if (allBytes.Length < GcmNonceSize + GcmTagSize)
     {
-      throw new ArgumentException("Cryptography.InvalidCipherText");
+      throw new BadRequestException("Cryptography.InvalidCipherText");
     }
 
     // Extrai o nonce, a tag de autenticação e os dados criptografados

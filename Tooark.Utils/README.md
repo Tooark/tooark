@@ -94,8 +94,7 @@ Normalização de strings. Remove espaços, converte para maiúscula e substitui
 
 **Métodos:**
 
-- `Value(string value)`: Normaliza um valor removendo espaços, convertendo para maiúscula e substituindo caracteres especiais.
-- `ValueRegex(string value)`: Normaliza um valor removendo espaços, convertendo para maiúscula e substituindo caracteres especiais usando expressões regulares.
+- `Value(string value)`: Normaliza um valor removendo espaços, convertendo para maiúscula e substituindo caracteres especiais.regulares.
 
 [**Exemplo de Uso**](#normalização)
 
@@ -171,7 +170,6 @@ CultureInfo defaultCulture = Language.Default; // en-US
 using Tooark.Utils;
 
 string normalizedValue = Normalize.Value("Olá Mundo!"); // OLAMUNDO
-string normalizedValueRegex = Normalize.ValueRegex("Olá Mundo!"); // OLAMUNDO
 ```
 
 ## Dependências

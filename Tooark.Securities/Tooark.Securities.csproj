@@ -15,4 +15,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tooark.Exceptions\Tooark.Exceptions.csproj" />
+  </ItemGroup>
+
 </Project>

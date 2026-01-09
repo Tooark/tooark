@@ -1,3 +1,5 @@
+using Tooark.Exceptions;
+
 namespace Tooark.Securities.Interfaces;
 
 /// <summary>
@@ -15,7 +17,7 @@ public interface ICryptographyService
   /// </remarks>
   /// <param name="plainText">Texto plano para criptografar.</param>
   /// <returns>Texto criptografado em Base64.</returns>
-  /// <exception cref="ArgumentException">Quando o texto plano não é fornecido.</exception>
+  /// <exception cref="BadRequestException">Quando o texto plano não é fornecido.</exception>
   string Encrypt(string plainText);
 
   /// <summary>
@@ -28,7 +30,7 @@ public interface ICryptographyService
   /// </remarks>
   /// <param name="cipherText">Texto criptografado em Base64.</param>
   /// <returns>Texto plano descriptografado.</returns>
-  /// <exception cref="ArgumentException">Quando o texto criptografado não é fornecido.</exception>
-  /// <exception cref="ArgumentException">Quando o texto criptografado é inválido.</exception>
+  /// <exception cref="BadRequestException">Quando o texto criptografado não é fornecido.</exception>
+  /// <exception cref="BadRequestException">Quando o texto criptografado é inválido.</exception>
   string Decrypt(string cipherText);
 }

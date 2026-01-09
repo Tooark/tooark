@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Tooark.Exceptions;
 using Tooark.ValueObjects;
 
 namespace Tooark.Entities;
@@ -78,20 +79,22 @@ public abstract class InitialEntity : BaseEntity
     // Verifica se o identificador da entidade é vazio.
     if (CreatedBy != Guid.Empty)
     {
-      AddNotification("ChangeNotAllowed;CreatedBy", "CreatedBy", "T.ENT.INI1");
+      AddNotification("ChangeBlocked;CreatedBy", "CreatedBy", "T.ENT.INI1");
     }
     else
     {
       // Adiciona as validações dos atributos.
       AddNotifications(createdBy);
-
-      // Verifica se não houve notificações de erros.
-      if (IsValid)
-      {
-        CreatedBy = createdBy;
-        CreatedAt = DateTime.UtcNow;
-      }
     }
+
+    // Se houver notificações, lança exceção de bad request
+    if (!IsValid)
+    {
+      throw new BadRequestException(this);
+    }
+
+    CreatedBy = createdBy;
+    CreatedAt = DateTime.UtcNow;
   }
 
   #endregion

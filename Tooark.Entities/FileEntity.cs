@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Tooark.Enums;
+using Tooark.Exceptions;
 using Tooark.Validations;
 using Tooark.ValueObjects;
 
@@ -36,13 +37,15 @@ public abstract class FileEntity : InitialEntity
     // Adiciona as validações dos atributos.
     AddNotifications(file, title);
 
-    // Verifica se não houve notificações de erros.
-    if (IsValid)
+    // Se houver notificações, lança exceção de bad request
+    if (!IsValid)
     {
-      FileName = file.Name;
-      Title = title;
-      Link = file.Link;
+      throw new BadRequestException(this);
     }
+    
+    FileName = file.Name;
+    Title = title;
+    Link = file.Link;
   }
 
   /// <summary>
@@ -65,16 +68,18 @@ public abstract class FileEntity : InitialEntity
         .IsGreaterOrEquals(size, 0, "Size", "Field.Invalid;Size")
     );
 
-    // Verifica se não houve notificações de erro
-    if (IsValid)
+    // Se houver notificações, lança exceção de bad request
+    if (!IsValid)
     {
-      FileName = file.Name;
-      Title = title;
-      Link = file.Link;
-      FileFormat = fileFormat;
-      Type = type;
-      Size = size;
+      throw new BadRequestException(this);
     }
+
+    FileName = file.Name;
+    Title = title;
+    Link = file.Link;
+    FileFormat = fileFormat;
+    Type = type;
+    Size = size;
   }
 
   #endregion

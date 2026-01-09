@@ -83,7 +83,6 @@ Extensões para manipulação de strings.
 - `FromBase64`: Converte uma string Base64 de volta para uma string normal.
 - `ToSlug`: Converte uma string para um formato de slug.
 - `ToNormalize`: Normaliza uma string removendo espaços, convertendo para maiúscula e substituindo caracteres especiais.
-- `ToNormalizeRegex`: Normaliza uma string removendo espaços, convertendo para maiúscula e substituindo caracteres especiais usando expressões regulares.
 - `FromSnakeToPascalCase`: Converte uma string de snake_case para PascalCase.
 - `FromSnakeToCamelCase`: Converte uma string de snake_case para camelCase.
 - `FromSnakeToKebabCase`: Converte uma string de snake_case para kebab-case.
@@ -209,15 +208,6 @@ using Tooark.Extensions;
 
 string value = "Olá Mundo!";
 string normalizedValue = value.ToNormalize(); // OLAMUNDO
-```
-
-**ToNormalizeRegex:**
-
-```csharp
-using Tooark.Extensions;
-
-string value = "Olá Mundo!";
-string normalizedValue = value.ToNormalizeRegex(); // OLAMUNDO
 ```
 
 **FromSnakeToPascalCase:**

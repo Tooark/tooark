@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Tooark.Exceptions;
 using Tooark.ValueObjects;
 
 namespace Tooark.Entities;
@@ -71,12 +72,12 @@ public abstract class AuditableEntity : DetailedEntity
   /// O identificador do excluidor é do tipo <see cref="Guid"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'deleted_by' é do tipo 'uuid' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'deleted_by' é do tipo 'uuid'.
+  /// Só possui valor quando <see cref="Deleted"/> é <c>true</c>.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("deleted_by", TypeName = "uuid")]
-  [Required]
-  public Guid DeletedBy { get; private set; } = Guid.Empty;
+  public Guid? DeletedBy { get; private set; }
 
   /// <summary>
   /// Data e hora da exclusão da entidade.
@@ -98,12 +99,12 @@ public abstract class AuditableEntity : DetailedEntity
   /// O identificador do restaurador é do tipo <see cref="Guid"/>.
   /// </value>
   /// <remarks>
-  /// A coluna correspondente no banco de dados é 'restored_by' é do tipo 'uuid' e é obrigatória.
+  /// A coluna correspondente no banco de dados é 'restored_by' é do tipo 'uuid'.
+  /// Só possui valor quando a entidade foi restaurada.
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("restored_by", TypeName = "uuid")]
-  [Required]
-  public Guid RestoredBy { get; private set; } = Guid.Empty;
+  public Guid? RestoredBy { get; private set; }
 
   /// <summary>
   /// Data e hora da restauração da entidade.
@@ -135,17 +136,32 @@ public abstract class AuditableEntity : DetailedEntity
   #region Methods
 
   /// <summary>
-  /// Verifica se a entidade foi excluída logicamente.
+  /// Valida se a entidade não foi excluída logicamente.
   /// </summary>
   /// <remarks>
-  /// Adiciona uma notificação se a entidade foi excluída logicamente e não pode ser alterada.
+  /// Adiciona uma notificação se a entidade foi excluída logicamente.
   /// </remarks>
-  public void ChangeNotAllowedIsDeleted()
+  public void ValidateNotDeleted()
   {
     // Verifica se a entidade foi excluída logicamente.
     if (Deleted)
     {
-      AddNotification("ChangeNotAllowedIsDeleted", "Entity", "T.ENT.AUD1");
+      AddNotification("Record.Deleted", "Entity", "T.ENT.AUD1");
+    }
+  }
+
+  /// <summary>
+  /// Garante que a entidade não foi excluída logicamente.
+  /// </summary>
+  /// <exception cref="BadRequestException">Lançada quando a entidade foi excluída logicamente.</exception>
+  public void EnsureNotDeleted()
+  {
+    ValidateNotDeleted();
+
+    // Se houver notificações, lança exceção de bad request
+    if (!IsValid)
+    {
+      throw new BadRequestException(this);
     }
   }
 
@@ -155,16 +171,11 @@ public abstract class AuditableEntity : DetailedEntity
   /// <param name="updatedBy">O valor do identificador do atualizador a ser definido.</param>
   public new void SetUpdatedBy(UpdatedBy updatedBy)
   {
-    // Adiciona as validações dos atributos.
-    AddNotifications(updatedBy);
+    // Define o identificador do atualizador.
+    base.SetUpdatedBy(updatedBy);
 
-    // Verifica se não houve notificações de erro.
-    if (IsValid)
-    {
-      IncrementVersion();
-
-      base.SetUpdatedBy(updatedBy);
-    }
+    // Incrementa a versão apenas após atualização bem-sucedida
+    IncrementVersion();
   }
 
   /// <summary>
@@ -176,8 +187,14 @@ public abstract class AuditableEntity : DetailedEntity
     // Adiciona as validações dos atributos.
     AddNotifications(deletedBy);
 
-    // Verifica se não houve notificações de erros e se a entidade não foi excluída.
-    if (IsValid && !Deleted)
+    // Se houver notificações, lança exceção de bad request
+    if (!IsValid)
+    {
+      throw new BadRequestException(this);
+    }
+
+    // Atualiza apenas se não estiver deletada
+    if (!Deleted)
     {
       Deleted = true;
       DeletedBy = deletedBy;
@@ -196,8 +213,14 @@ public abstract class AuditableEntity : DetailedEntity
     // Adiciona as validações dos atributos.
     AddNotifications(restoredBy);
 
-    // Verifica se não houve notificações de erros e se a entidade foi excluída
-    if (IsValid && Deleted)
+    // Se houver notificações, lança exceção de bad request
+    if (!IsValid)
+    {
+      throw new BadRequestException(this);
+    }
+
+    // Atualiza apenas se estiver deletada
+    if (Deleted)
     {
       Deleted = false;
       RestoredBy = restoredBy;

@@ -6,10 +6,10 @@ Biblioteca de segurança para aplicações .NET, fornecendo serviços de **cript
 
 ### Serviços
 
-| Classe                | Descrição                                       |
-| --------------------- | ----------------------------------------------- |
-| `JwtTokenService`     | Serviço para criação e validação de tokens JWT  |
-| `CryptographyService` | Serviço de criptografia/descriptografia AES-256 |
+| Classe                                                     | Descrição                                       |
+| ---------------------------------------------------------- | ----------------------------------------------- |
+| [`JwtTokenService`](#jwt---criação-e-validação-de-token)   | Serviço para criação e validação de tokens JWT  |
+| [`CryptographyService`](#criptografia---encrypt-e-decrypt) | Serviço de criptografia/descriptografia AES-256 |
 
 ### Interfaces
 
@@ -416,9 +416,10 @@ openssl pkcs8 -topk8 -nocrypt -in ec_private.pem -out ec_private_pkcs8.pem
 
 ## 📋 Dependências
 
-| Pacote                                          | Versão | Descrição                          |
-| ----------------------------------------------- | ------ | ---------------------------------- |
-| `Microsoft.AspNetCore.Authentication.JwtBearer` | 8.x    | Autenticação JWT para ASP.NET Core |
+| Pacote                                          | Versão | Descrição                             |
+| ----------------------------------------------- | ------ | ------------------------------------- |
+| `Tooark.Exceptions`                             | —      | Exceções (ex.: `BadRequestException`) |
+| `Microsoft.AspNetCore.Authentication.JwtBearer` | 8.x    | Autenticação JWT para ASP.NET Core    |
 
 ---
 
@@ -440,24 +441,36 @@ openssl pkcs8 -topk8 -nocrypt -in ec_private.pem -out ec_private_pkcs8.pem
 
 ---
 
-## ⚠️ Erros Comuns
+## ⚠️ Códigos de Erro e Soluções
 
-| Código                             | Descrição                     | Solução                                                           |
-| ---------------------------------- | ----------------------------- | ----------------------------------------------------------------- |
-| `Jwt.KeyNotConfigured`             | Chave não configurada         | Configure `Secret` (HMAC) ou `PrivateKey`/`PublicKey` (RSA/ECDsa) |
-| `Jwt.InvalidKeySize`               | Tamanho da chave RSA inválido | Use chaves RSA de pelo menos 2048 bits                            |
-| `Jwt.InvalidKeyCurve`              | Curva ECDsa incompatível      | Use a curva correta para o algoritmo (P-256 para ES256, etc.)     |
-| `Jwt.InvalidKey`                   | Chave malformada              | Verifique se a chave está em Base64 válido                        |
-| `Jwt.AlgorithmNotSupported`        | Algoritmo não suportado       | Use HS/RS/PS/ES + 256/384/512                                     |
-| `Token.Expired`                    | Token expirado                | Gere um novo token                                                |
-| `Token.Invalid`                    | Token inválido                | Verifique formato e assinatura                                    |
-| `Cryptography.SecretNotConfigured` | Secret não configurado        | Configure `Secret` nas opções                                     |
+| Serviço               | Mensagem                                   | Descrição                            | Solução                                                               | Exception             |
+| --------------------- | ------------------------------------------ | ------------------------------------ | --------------------------------------------------------------------- | --------------------- |
+| `CryptographyService` | `Options.NotConfigured`                    | `Options` não configurado            | Configure `CryptographyOptions`                                       | `InternalServerError` |
+| `CryptographyService` | `Options.Cryptography.SecretNotConfigured` | `Secret` não configurado             | Configure `Secret` dentro de `CryptographyOptions`                    | `InternalServerError` |
+| `CryptographyService` | `Cryptography.PlainTextNotProvided`        | `PlainText` não fornecido            | Forneça o texto plano para criptografar                               | `BadRequest`          |
+| `CryptographyService` | `Cryptography.CipherTextNotProvided`       | `CipherText` não fornecido           | Forneça o texto criptografado para descriptografar                    | `BadRequest`          |
+| `CryptographyService` | `Cryptography.InvalidCipherText`           | `CipherText` inválido                | Forneça um texto criptografado válido para descriptografar            | `BadRequest`          |
+| `JwtTokenService`     | `Options.NotConfigured`                    | `Options` não configurado            | Configure `JwtOptions`                                                | `InternalServerError` |
+| `JwtTokenService`     | `Options.Jwt.SecretNotConfigured`          | `Secret` não configurado             | Configure `Secret` dentro de `JwtOptions` para token simétrico        | `InternalServerError` |
+| `JwtTokenService`     | `Options.Jwt.KeysNotConfigured`            | `Private` e `Public` não configurado | Configure as chaves dentro de `JwtOptions` para token assimétrico     | `InternalServerError` |
+| `JwtTokenService`     | `Options.Jwt.PrivateKey.InvalidSize`       | Tamanho da chave `Private` inválido  | Use uma chave `Private` de pelo menos 2048 bits                       | `InternalServerError` |
+| `JwtTokenService`     | `Options.Jwt.PublicKey.InvalidSize`        | Tamanho da chave `Public` inválido   | Use uma chave `Public` de pelo menos 2048 bits                        | `InternalServerError` |
+| `JwtTokenService`     | `Options.Jwt.PrivateKey.InvalidCurve`      | Curva da chave `Private` inválida    | Use uma chave `Private` com a curva correta                           | `InternalServerError` |
+| `JwtTokenService`     | `Options.Jwt.PublicKey.InvalidCurve`       | Curva da chave `Public` inválida     | Use uma chave `Public` com a curva correta                            | `InternalServerError` |
+| `JwtTokenService`     | `Options.Jwt.InvalidKey`                   | Chave inválida                       | [Utilize chaves válidas](#-gerando-chaves) para o algoritmo escolhido | `InternalServerError` |
+| `JwtTokenService`     | `Options.Jwt.AlgorithmNotSupported`        | Algoritmo não suportado              | [Utilize um algoritmo suportado](#-jwt---algoritmos-suportados)       | `InternalServerError` |
+| `JwtTokenService`     | `Options.Jwt.KeyNotConfigured;PrivateKey`  | Chave `Private` não configurado      | Configure `PrivateKey` dentro de `JwtOptions` para gerar um token     | `InternalServerError` |
+| `JwtTokenService`     | `Options.Jwt.KeyNotConfigured;PublicKey`   | Chave `Public` não configurado       | Configure `PublicKey` dentro de `JwtOptions` para valiar um token     | `InternalServerError` |
+| `JwtTokenService`     | `Token.Expired`                            | Token expirado                       | Gere um novo token                                                    | N/A                   |
+| `JwtTokenService`     | `Token.InvalidSignature`                   | Token com assinatura inválida        | Utilize apenas token com assinatura válida                            | N/A                   |
+| `JwtTokenService`     | `Token.Invalid`                            | Token inválido                       | Utilize apenas token válido                                           | N/A                   |
+| `JwtTokenService`     | `InternalServerError`                      | Erro interno do servidor             | Analise os logs para mais detalhes                                    | N/A                   |
 
 ---
 
-## Contribuição
+## 🪪 Contribuição
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Entities](https://github.com/Tooark/tooark/issues).
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Securities](https://github.com/Tooark/tooark/issues).
 
 ## 📄 Licença
 
