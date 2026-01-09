@@ -113,19 +113,9 @@ public class FileEntityTests
     var title = "Test File";
     var createdBy = Guid.NewGuid();
 
-    // Act
-    var fileEntity = new TestFileEntity(file, title, createdBy);
-
-    // Assert
-    Assert.False(fileEntity.IsValid);
-    Assert.Equal("Field.Invalid;ProtocolHttp", fileEntity.Notifications.First());
-    Assert.Null(fileEntity.FileName);
-    Assert.Null(fileEntity.Title);
-    Assert.Null(fileEntity.Link);
-    Assert.Null(fileEntity.FileFormat);
-    Assert.Equal(EFileType.Unknown, fileEntity.Type);
-    Assert.Equal(0, fileEntity.Size);
-    Assert.Equal(createdBy, fileEntity.CreatedBy);
+    // Act & Assert
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => new TestFileEntity(file, title, createdBy));
+    Assert.Contains("Field.Invalid;ProtocolHttp", ex.GetErrorMessages());
   }
 
   // Teste se o construtor atribui valores padrão quando o nome é inválido
@@ -137,19 +127,9 @@ public class FileEntityTests
     var title = "";
     var createdBy = Guid.NewGuid();
 
-    // Act
-    var fileEntity = new TestFileEntity(file, title, createdBy);
-
-    // Assert
-    Assert.False(fileEntity.IsValid);
-    Assert.Contains("Field.Invalid;Title", fileEntity.Notifications.First());
-    Assert.Null(fileEntity.FileName);
-    Assert.Null(fileEntity.Title);
-    Assert.Null(fileEntity.Link);
-    Assert.Null(fileEntity.FileFormat);
-    Assert.Equal(EFileType.Unknown, fileEntity.Type);
-    Assert.Equal(0, fileEntity.Size);
-    Assert.Equal(createdBy, fileEntity.CreatedBy);
+    // Act & Assert
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => new TestFileEntity(file, title, createdBy));
+    Assert.Contains("Field.Invalid;Title", ex.GetErrorMessages());
 
   }
 
@@ -165,19 +145,9 @@ public class FileEntityTests
     var size = 1024;
     var createdBy = Guid.NewGuid();
 
-    // Act
-    var fileEntity = new TestFileEntity(file, title, fileFormat, type, size, createdBy);
-
-    // Assert
-    Assert.False(fileEntity.IsValid);
-    Assert.Equal("Field.Required;FileFormat", fileEntity.Notifications.First());
-    Assert.Null(fileEntity.FileName);
-    Assert.Null(fileEntity.Title);
-    Assert.Null(fileEntity.Link);
-    Assert.Null(fileEntity.FileFormat);
-    Assert.Equal(EFileType.Unknown, fileEntity.Type);
-    Assert.Equal(0, fileEntity.Size);
-    Assert.Equal(createdBy, fileEntity.CreatedBy);
+    // Act & Assert
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => new TestFileEntity(file, title, fileFormat, type, size, createdBy));
+    Assert.Contains("Field.Required;FileFormat", ex.GetErrorMessages());
   }
 
   // Teste se o construtor gera notificação quando o tamanho do arquivo é inválido
@@ -192,18 +162,8 @@ public class FileEntityTests
     var size = -1; // Tamanho inválido
     var createdBy = Guid.NewGuid();
 
-    // Act
-    var fileEntity = new TestFileEntity(file, title, fileFormat, type, size, createdBy);
-
-    // Assert
-    Assert.False(fileEntity.IsValid);
-    Assert.Equal("Field.Invalid;Size", fileEntity.Notifications.First());
-    Assert.Null(fileEntity.FileName);
-    Assert.Null(fileEntity.Title);
-    Assert.Null(fileEntity.Link);
-    Assert.Null(fileEntity.FileFormat);
-    Assert.Equal(EFileType.Unknown, fileEntity.Type);
-    Assert.Equal(0, fileEntity.Size);
-    Assert.Equal(createdBy, fileEntity.CreatedBy);
+    // Act & Assert
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => new TestFileEntity(file, title, fileFormat, type, size, createdBy));
+    Assert.Contains("Field.Invalid;Size", ex.GetErrorMessages());
   }
 }

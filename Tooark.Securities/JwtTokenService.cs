@@ -2,8 +2,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Tooark.Exceptions;
 using Tooark.Securities.Dtos;
 using Tooark.Securities.Extensions;
 using Tooark.Securities.Interfaces;
@@ -17,6 +19,11 @@ namespace Tooark.Securities;
 public class JwtTokenService : IJwtTokenService
 {
   #region Private Properties
+
+  /// <summary>
+  /// Logger do serviço.
+  /// </summary>
+  private readonly ILogger<JwtTokenService> _logger;
 
   /// <summary>
   /// Opções de configuração do JWT.
@@ -56,11 +63,21 @@ public class JwtTokenService : IJwtTokenService
   /// Construtor do serviço de token JWT.
   /// </summary>
   /// <param name="jwtOptions">Opções de configuração do JWT.</param>
-  public JwtTokenService(IOptions<JwtOptions> jwtOptions)
+  /// <param name="logger">Logger do serviço.</param>
+  /// <exception cref="InternalServerErrorException">Quando as opções não estão configuradas.</exception>
+  /// <exception cref="InternalServerErrorException">Quando a chave secreta não está configurada para algoritmos simétricos.</exception>
+  /// <exception cref="InternalServerErrorException">Quando as chaves pública/privada não estão configuradas para algoritmos assimétricos.</exception>
+  /// <exception cref="InternalServerErrorException">Quando a chave RSA tem tamanho inválido.</exception>
+  /// <exception cref="InternalServerErrorException">Quando a chave ECDsa tem curva inválida.</exception>
+  /// <exception cref="InternalServerErrorException">Quando a chave é inválida ou o algoritmo não é suportado.</exception>
+  public JwtTokenService(IOptions<JwtOptions> jwtOptions, ILogger<JwtTokenService> logger)
   {
+    // Configura o logger
+    _logger = logger;
+
     // Valida se as opções foram configuradas corretamente
     _jwtOptions = jwtOptions.Value
-      ?? throw new ArgumentNullException(nameof(jwtOptions), "Options.NotConfigured");
+      ?? throw new InternalServerErrorException("Options.NotConfigured");
 
     // Suporte a algoritmo e chave simétrica ou assimétrica
     _algorithm = _jwtOptions.Algorithm;
@@ -68,7 +85,7 @@ public class JwtTokenService : IJwtTokenService
     // Verifica se o algoritmo é simétrico ou assimétrico
     if (_algorithm.StartsWith("HS")) // HMAC (simétrico)
     {
-      var secret = _jwtOptions.Secret ?? throw new ArgumentException("Jwt.KeyNotConfigured");
+      var secret = _jwtOptions.Secret ?? throw new InternalServerErrorException("Options.Jwt.SecretNotConfigured");
       var keyBytes = Encoding.UTF8.GetBytes(secret);
       _createKey = new SymmetricSecurityKey(keyBytes);
       _validationKey = _createKey;
@@ -102,7 +119,7 @@ public class JwtTokenService : IJwtTokenService
           // Verifica se ao menos uma chave está configurada
           if(!_createToken && !_validateToken)
           {
-            throw new ArgumentException("Jwt.KeyNotConfigured");
+            throw new InternalServerErrorException("Options.Jwt.KeysNotConfigured");
           }
 
           // Verifica se deve criar a chave de criação
@@ -115,7 +132,7 @@ public class JwtTokenService : IJwtTokenService
             // Valida tamanho mínimo da chave RSA
             if (privateRsa.KeySize < 2048)
             {
-              throw new ArgumentException("Jwt.InvalidKeySize");
+              throw new InternalServerErrorException("Options.Jwt.PrivateKey.InvalidSize");
             }
 
             // Configura chave de criação
@@ -132,7 +149,7 @@ public class JwtTokenService : IJwtTokenService
             // Valida tamanho mínimo da chave RSA
             if (publicRsa.KeySize < 2048)
             {
-              throw new ArgumentException("Jwt.InvalidKeySize");
+              throw new InternalServerErrorException("Options.Jwt.PublicKey.InvalidSize");
             }
 
             // Configura chave de validação
@@ -141,7 +158,9 @@ public class JwtTokenService : IJwtTokenService
         }
         catch (CryptographicException ex)
         {
-          throw new ArgumentException("Jwt.InvalidKey", ex);
+          _logger.LogError("Error loading RSA key into JWT.\n{exception}", ex);
+
+          throw new InternalServerErrorException("Options.Jwt.InvalidKey");
         }
       }
       else if (_algorithm.StartsWith("ES")) // ECDsa (assimétrico)
@@ -161,7 +180,7 @@ public class JwtTokenService : IJwtTokenService
             // Valida curva da chave ECDsa conforme o algoritmo
             if (privateEcdsa.KeySize < keySize)
             {
-              throw new ArgumentException("Jwt.InvalidKeyCurve");
+              throw new InternalServerErrorException("Options.Jwt.PrivateKey.InvalidCurve");
             }
 
             // Configura chave de criação
@@ -178,7 +197,7 @@ public class JwtTokenService : IJwtTokenService
             // Valida curva da chave ECDsa conforme o algoritmo
             if (publicEcdsa.KeySize < keySize)
             {
-              throw new ArgumentException("Jwt.InvalidKeyCurve");
+              throw new InternalServerErrorException("Options.Jwt.PublicKey.InvalidCurve");
             }
 
             // Configura chave de validação
@@ -187,12 +206,14 @@ public class JwtTokenService : IJwtTokenService
         }
         catch (CryptographicException ex)
         {
-          throw new ArgumentException("Jwt.InvalidKey", ex);
+          _logger.LogError("Error loading ECDsa key into JWT.\n{exception}", ex);
+
+          throw new InternalServerErrorException("Options.Jwt.InvalidKey");
         }
       }
       else
       {
-        throw new ArgumentException("Jwt.AlgorithmNotSupported");
+        throw new InternalServerErrorException("Options.Jwt.AlgorithmNotSupported");
       }
     }
   }
@@ -208,12 +229,13 @@ public class JwtTokenService : IJwtTokenService
   /// <param name="audience">Destinatário do token. Parâmetro opcional que sobrescreve o destinatário padrão do Options.</param>
   /// <param name="extraClaims">Claims adicionais para incluir no token. Parâmetro opcional para incluir claims extras no token.</param>
   /// <returns>Token JWT.</returns>
+  /// <exception cref="InternalServerErrorException">Quando a criação do token não está configurada.</exception>
   public string Create(JwtTokenDto data, string? audience = null, IEnumerable<Claim>? extraClaims = null)
   {
     // Valida se pode criar o token
     if (!_createToken || _createKey == null)
     {
-      throw new ArgumentException("Jwt.KeyNotConfigured");
+      throw new InternalServerErrorException("Options.Jwt.KeyNotConfigured;PrivateKey");
     }
 
     // Configura propriedades do token
@@ -263,12 +285,13 @@ public class JwtTokenService : IJwtTokenService
   /// <param name="token">Token JWT a ser validado.</param>
   /// <param name="audience">Destinatário do token. Parâmetro opcional que sobrescreve o destinatário padrão do Options.</param>
   /// <returns>Resultado da validação do token.</returns>
+  /// <exception cref="InternalServerErrorException">Quando a validação do token não está configurada.</exception>
   public UserTokenDto Validate(string token, string? audience = null)
   {
     // Valida se pode validar o token
     if (!_validateToken || _validationKey == null)
     {
-      throw new ArgumentException("Jwt.KeyNotConfigured");
+      throw new InternalServerErrorException("Options.Jwt.KeyNotConfigured;PublicKey");
     }
 
     // Configura o validador de token
@@ -321,16 +344,20 @@ public class JwtTokenService : IJwtTokenService
     {
       return new UserTokenDto("Token.Expired");
     }
-    catch (SecurityTokenInvalidSignatureException)
+    catch (SecurityTokenInvalidSignatureException ex)
     {
+      _logger.LogError("Invalid JWT signature detected.\nException: {exception}", ex);
+
       return new UserTokenDto("Token.InvalidSignature");
     }
     catch (ArgumentException)
     {
       return new UserTokenDto("Token.Invalid");
     }
-    catch (Exception)
+    catch (Exception ex)
     {
+      _logger.LogError("Error validating JWT token.\nException: {exception}", ex);
+
       return new UserTokenDto("InternalServerError");
     }
   }

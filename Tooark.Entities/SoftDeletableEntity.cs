@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Tooark.Exceptions;
 using Tooark.ValueObjects;
 
 namespace Tooark.Entities;
@@ -53,17 +54,32 @@ public abstract class SoftDeletableEntity : DetailedEntity
   #region Methods
 
   /// <summary>
-  /// Verifica se a entidade foi excluída logicamente.
+  /// Valida se a entidade não foi excluída logicamente.
   /// </summary>
   /// <remarks>
-  /// Adiciona uma notificação se a entidade foi excluída logicamente e não pode ser alterada.
+  /// Adiciona uma notificação se a entidade foi excluída logicamente.
   /// </remarks>
-  public void ChangeNotAllowedIsDeleted()
+  public void ValidateNotDeleted()
   {
     // Verifica se a entidade foi excluída logicamente.
     if (Deleted)
     {
-      AddNotification("ChangeNotAllowedIsDeleted", "Entity", "T.ENT.SOF1");
+      AddNotification("Record.Deleted", "Entity", "T.ENT.AUD1");
+    }
+  }
+
+  /// <summary>
+  /// Garante que a entidade não foi excluída logicamente.
+  /// </summary>
+  /// <exception cref="BadRequestException">Lançada quando a entidade foi excluída logicamente.</exception>
+  public void EnsureNotDeleted()
+  {
+    ValidateNotDeleted();
+
+    // Se houver notificações, lança exceção de bad request
+    if (!IsValid)
+    {
+      throw new BadRequestException(this);
     }
   }
 
@@ -76,8 +92,14 @@ public abstract class SoftDeletableEntity : DetailedEntity
     // Adiciona as validações dos atributos.
     AddNotifications(changedBy);
 
-    // Verifica se não houve notificações de erros e se a entidade não foi excluída.
-    if (IsValid && !Deleted)
+    // Se houver notificações, lança exceção de bad request
+    if (!IsValid)
+    {
+      throw new BadRequestException(this);
+    }
+
+    // Atualiza apenas se não estiver deletada
+    if (!Deleted)
     {
       Deleted = true;
 
@@ -94,8 +116,14 @@ public abstract class SoftDeletableEntity : DetailedEntity
     // Adiciona as validações dos atributos.
     AddNotifications(changedBy);
 
-    // Verifica se não houve notificações de erros e se a entidade foi excluída.
-    if (IsValid && Deleted)
+    // Se houver notificações, lança exceção de bad request
+    if (!IsValid)
+    {
+      throw new BadRequestException(this);
+    }
+
+    // Atualiza apenas se estiver deletada
+    if (Deleted)
     {
       Deleted = false;
 

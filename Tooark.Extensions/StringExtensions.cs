@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
 using Tooark.Utils;
 
 namespace Tooark.Extensions;
@@ -51,19 +50,6 @@ public static class StringExtensions
   public static string ToNormalize(this string value)
   {
     return InternalStringExtensions.ToNormalize(value);
-  }
-
-  /// <summary>
-  /// Normaliza uma string usando expressões regulares.
-  /// </summary>
-  /// <remarks>
-  /// Remove espaços e substitui caracteres acentuados por seus equivalentes não acentuados e converte para maiúscula.
-  /// </remarks>
-  /// <param name="value">A string a ser normalizada.</param>
-  /// <returns>Uma string normalizada.</returns>
-  public static string ToNormalizeRegex(this string value)
-  {
-    return InternalStringExtensions.ToNormalizeRegex(value);
   }
 
   /// <summary>
@@ -159,20 +145,141 @@ internal static class InternalStringExtensions
   /// <returns>A string convertida para slug.</returns>
   internal static string ToSlug(this string value)
   {
-    var normalizedString = value.Normalize(NormalizationForm.FormD);
-    var stringBuilder = new StringBuilder();
+    // Verifica se a string é nula ou vazia
+    if (string.IsNullOrWhiteSpace(value))
+    {
+      return string.Empty;
+    }
 
+    var normalizedString = value.Normalize(NormalizationForm.FormD);
+    var slugBuilder = new StringBuilder(normalizedString.Length);
+    var lastWasHyphen = false;
+
+    // Percorre cada caractere da string normalizada
     foreach (var c in normalizedString)
     {
-      if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+      // Ignora diacríticos
+      if (CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.NonSpacingMark)
       {
-        stringBuilder.Append(c);
+        continue;
+      }
+
+      var lower = char.ToLowerInvariant(c);
+
+      // Transliteração pontual (após remover diacríticos)
+      switch (lower)
+      {
+        case '&': // E comercial
+          AppendDiacritics("and", slugBuilder, ref lastWasHyphen);
+          continue;
+        case '@': // Arroba
+          AppendDiacritics("at", slugBuilder, ref lastWasHyphen);
+          continue;
+        case '$': // Cifrão
+          AppendDiacritics("dollar", slugBuilder, ref lastWasHyphen);
+          continue;
+        case '€': // Euro
+          AppendDiacritics("euro", slugBuilder, ref lastWasHyphen);
+          continue;
+        case '£': // Libra esterlina
+          AppendDiacritics("pound", slugBuilder, ref lastWasHyphen);
+          continue;
+        case '¥': // Iene
+          AppendDiacritics("yen", slugBuilder, ref lastWasHyphen);
+          continue;
+        case '©': // Símbolo de copyright
+          AppendDiacritics("c", slugBuilder, ref lastWasHyphen);
+          continue;
+        case '®': // Símbolo de marca registrada
+          AppendDiacritics("r", slugBuilder, ref lastWasHyphen);
+          continue;
+        case '™': // Símbolo de marca comercial
+          AppendDiacritics("tm", slugBuilder, ref lastWasHyphen);
+          continue;
+        case 'º': // Masculino ordinal
+          AppendDiacritics("o", slugBuilder, ref lastWasHyphen);
+          continue;
+        case 'ª': // Feminino ordinal
+          AppendDiacritics("a", slugBuilder, ref lastWasHyphen);
+          continue;
+        case 'ß': // Eszett alemão
+          AppendDiacritics("ss", slugBuilder, ref lastWasHyphen);
+          continue;
+        case 'æ': // Ligadura ae
+          AppendDiacritics("ae", slugBuilder, ref lastWasHyphen);
+          continue;
+        case 'œ': // Ligadura oe
+          AppendDiacritics("oe", slugBuilder, ref lastWasHyphen);
+          continue;
+        case 'ø': // O com barra
+        case 'Ø': // O com barra maiúsculo
+          AppendDiacritics("o", slugBuilder, ref lastWasHyphen);
+          continue;
+        case 'đ': // D com barra
+        case 'Ð': // D com barra maiúsculo
+        case 'ð': // Eth islandês
+          AppendDiacritics("d", slugBuilder, ref lastWasHyphen);
+          continue;
+        case 'ł': // L com barra
+        case 'Ł': // L com barra maiúsculo
+          AppendDiacritics("l", slugBuilder, ref lastWasHyphen);
+          continue;
+        case 'þ': // Thorn islandês
+          AppendDiacritics("th", slugBuilder, ref lastWasHyphen);
+          continue;
+      }
+
+      // Letras e números são mantidos
+      if ((lower >= 'a' && lower <= 'z') || (lower >= '0' && lower <= '9'))
+      {
+        slugBuilder.Append(lower);
+        lastWasHyphen = false;
+        continue;
+      }
+
+      // Espaços e caracteres especiais viram hífen, com compactação
+      if (slugBuilder.Length > 0 && !lastWasHyphen)
+      {
+        slugBuilder.Append('-');
+        lastWasHyphen = true;
       }
     }
 
-    var cleanedString = stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+    // Remove hífen no fim
+    if (slugBuilder.Length > 0 && slugBuilder[^1] == '-')
+    {
+      slugBuilder.Length--;
+    }
 
-    return Regex.Replace(cleanedString.ToLowerInvariant(), @"[^a-z0-9\-]", string.Empty, RegexOptions.None, TimeSpan.FromMilliseconds(250));
+    return slugBuilder.ToString();
+  }
+
+  /// <summary>
+  /// Adiciona um diacrítico transliterado ao slug.
+  /// </summary>
+  /// <param name="text">O texto a ser adicionado.</param>
+  /// <param name="builder">O construtor de string do slug.</param>
+  /// <param name="lastWasHyphen">Indica se o último caractere adicionado foi um hífen.</param>  /// 
+  private static void AppendDiacritics(string text, StringBuilder builder, ref bool lastWasHyphen)
+  {
+    // Adiciona cada caractere do texto
+    foreach (var ch in text)
+    {
+      // Verifica se é letra ou número
+      if ((ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9'))
+      {
+        builder.Append(ch);
+        lastWasHyphen = false;
+        continue;
+      }
+
+      // Espaços e caracteres especiais viram hífen, com compactação
+      if (builder.Length > 0 && !lastWasHyphen)
+      {
+        builder.Append('-');
+        lastWasHyphen = true;
+      }
+    }
   }
 
   /// <summary>
@@ -186,19 +293,6 @@ internal static class InternalStringExtensions
   internal static string ToNormalize(this string value)
   {
     return Normalize.Value(value);
-  }
-
-  /// <summary>
-  /// Normaliza uma string usando expressões regulares.
-  /// </summary>
-  /// <remarks>
-  /// Remove espaços e substitui caracteres acentuados por seus equivalentes não acentuados e converte para maiúscula.
-  /// </remarks>
-  /// <param name="value">A string a ser normalizada.</param>
-  /// <returns>Uma string normalizada.</returns>
-  internal static string ToNormalizeRegex(this string value)
-  {
-    return Normalize.ValueRegex(value);
   }
 
   /// <summary>
@@ -216,10 +310,10 @@ internal static class InternalStringExtensions
 
     // Converte a string para Pascal Case
     return string
-            .Join("", value
-            .Split('_')
-            .Where(word => !string.IsNullOrEmpty(word))
-            .Select(word => word.Length > 0 ? (char.ToUpperInvariant(word[0]) + word[1..].ToLowerInvariant()) : ""));
+      .Join("", value
+      .Split('_')
+      .Where(word => !string.IsNullOrEmpty(word))
+      .Select(word => word.Length > 0 ? (char.ToUpperInvariant(word[0]) + word[1..].ToLowerInvariant()) : ""));
   }
 
   /// <summary>

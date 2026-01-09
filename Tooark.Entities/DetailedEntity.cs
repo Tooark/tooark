@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Tooark.ValueObjects;
+using Tooark.Exceptions;
 
 namespace Tooark.Entities;
 
@@ -77,11 +78,7 @@ public abstract class DetailedEntity : InitialEntity
   {
     base.SetCreatedBy(createdBy);
 
-    // Verifica se não houve notificações de erro.
-    if (IsValid)
-    {
-      UpdatedBy = createdBy;
-    }
+    UpdatedBy = createdBy;
   }
 
   /// <summary>
@@ -93,12 +90,14 @@ public abstract class DetailedEntity : InitialEntity
     // Adiciona as validações dos atributos.
     AddNotifications(updatedBy);
 
-    // Verifica se não houve notificações de erros.
-    if (IsValid)
+    // Se houver notificações, lança exceção de bad request
+    if (!IsValid)
     {
-      UpdatedBy = updatedBy;
-      UpdatedAt = DateTime.UtcNow;
+      throw new BadRequestException(this);
     }
+
+    UpdatedBy = updatedBy;
+    UpdatedAt = DateTime.UtcNow;
   }
 
   #endregion

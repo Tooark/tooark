@@ -77,12 +77,12 @@ public class VersionedEntityTests
     var version = entity.Version;
 
     // Act
-    entity.SetUpdatedBy(Guid.Empty);
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetUpdatedBy(Guid.Empty));
     var updatedVersion = entity.Version;
 
     // Assert
     Assert.False(entity.IsValid);
-    Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
+    Assert.Contains("Field.Invalid;UpdatedBy", ex.GetErrorMessages());
     Assert.Equal(version, updatedVersion);
   }
 

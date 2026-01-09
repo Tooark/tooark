@@ -89,15 +89,12 @@ public class DetailedEntityTests
   {
     // Arrange
     var entity = new TestDetailedEntity();
-
-    // Act
-    entity.SetCreatedBy(Guid.Empty);
-
-    // Assert
+    // Act & Assert
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetCreatedBy(Guid.Empty));
     Assert.False(entity.IsValid);
     Assert.Equal(Guid.Empty, entity.CreatedBy);
     Assert.Equal(Guid.Empty, entity.UpdatedBy);
-    Assert.Equal("Field.Invalid;CreatedBy", entity.Notifications.First());
+    Assert.Contains("Field.Invalid;CreatedBy", ex.GetErrorMessages());
   }
 
   // Testa se SetCreatedBy gera uma notificação ao tentar alterar o criador
@@ -110,13 +107,13 @@ public class DetailedEntityTests
     entity.SetCreatedBy(createdBy);
 
     // Act
-    entity.SetCreatedBy(Guid.NewGuid());
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetCreatedBy(Guid.NewGuid()));
 
     // Assert
     Assert.False(entity.IsValid);
     Assert.Equal(createdBy, entity.CreatedBy);
     Assert.Equal(createdBy, entity.UpdatedBy);
-    Assert.Equal("ChangeNotAllowed;CreatedBy", entity.Notifications.First());
+    Assert.Contains("ChangeBlocked;CreatedBy", ex.GetErrorMessages());
   }
 
   // Testa se SetUpdatedBy gera uma notificação ao tentar atribuir um Guid vazio
@@ -128,14 +125,13 @@ public class DetailedEntityTests
     var createdBy = Guid.NewGuid();
     entity.SetCreatedBy(createdBy);
 
-    // Act
-    entity.SetUpdatedBy(Guid.Empty);
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetUpdatedBy(Guid.Empty));
 
     // Assert
     Assert.False(entity.IsValid);
     Assert.Equal(createdBy, entity.CreatedBy);
     Assert.Equal(createdBy, entity.UpdatedBy);
-    Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
+    Assert.Contains("Field.Invalid;UpdatedBy", ex.GetErrorMessages());
   }
 
   // Testa se SetUpdatedBy atualiza corretamente quando chamado várias vezes
@@ -167,11 +163,12 @@ public class DetailedEntityTests
     entity.SetCreatedBy(validCreatedBy);
 
     // Act
-    entity.SetCreatedBy(Guid.Empty);
+    var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetCreatedBy(Guid.Empty));
 
     // Assert
     Assert.False(entity.IsValid);
     Assert.Equal(validCreatedBy, entity.CreatedBy);
     Assert.Equal(validCreatedBy, entity.UpdatedBy);
+    Assert.Contains("ChangeBlocked;CreatedBy", ex.GetErrorMessages());
   }
 }
