@@ -28,8 +28,8 @@ public abstract class SoftDeletableEntity : DetailedEntity
   /// <summary>
   /// Cria uma nova instância da entidade exclusão lógica.
   /// </summary>
-  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected SoftDeletableEntity(CreatedBy createdBy) : base(createdBy) { }
+  /// <param name="createdById">O identificador do usuário que criou a entidade.</param>
+  protected SoftDeletableEntity(CreatedBy createdById) : base(createdById) { }
 
   #endregion
 
@@ -86,11 +86,11 @@ public abstract class SoftDeletableEntity : DetailedEntity
   /// <summary>
   /// Marca a entidade como excluída logicamente.
   /// </summary>
-  /// <param name="changedBy">O identificador do usuário que excluiu a entidade.</param>
-  public void SetDeleted(UpdatedBy changedBy)
+  /// <param name="changedById">O identificador do usuário que excluiu a entidade.</param>
+  public void SetDeleted(UpdatedBy changedById)
   {
     // Adiciona as validações dos atributos.
-    AddNotifications(changedBy);
+    AddNotifications(changedById);
 
     // Se houver notificações, lança exceção de bad request
     if (!IsValid)
@@ -103,18 +103,18 @@ public abstract class SoftDeletableEntity : DetailedEntity
     {
       Deleted = true;
 
-      SetUpdatedBy(changedBy);
+      SetUpdatedBy(changedById);
     }
   }
 
   /// <summary>
   /// Marca a entidade como não excluída logicamente.
   /// </summary>
-  /// <param name="changedBy">O identificador do usuário que restaurou a entidade.</param>
-  public void SetRestored(UpdatedBy changedBy)
+  /// <param name="changedById">O identificador do usuário que restaurou a entidade.</param>
+  public void SetRestored(UpdatedBy changedById)
   {
     // Adiciona as validações dos atributos.
-    AddNotifications(changedBy);
+    AddNotifications(changedById);
 
     // Se houver notificações, lança exceção de bad request
     if (!IsValid)
@@ -127,7 +127,7 @@ public abstract class SoftDeletableEntity : DetailedEntity
     {
       Deleted = false;
 
-      SetUpdatedBy(changedBy);
+      SetUpdatedBy(changedById);
     }
   }
 

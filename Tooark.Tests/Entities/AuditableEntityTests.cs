@@ -26,11 +26,11 @@ public class AuditableEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(userId, entity.CreatedBy);
-    Assert.Equal(userId, entity.UpdatedBy);
+    Assert.Equal(userId, entity.CreatedById);
+    Assert.Equal(userId, entity.UpdatedById);
     Assert.Equal(1, entity.Version);
     Assert.False(entity.Deleted);
-    Assert.Null(entity.DeletedBy);
+    Assert.Null(entity.DeletedById);
     Assert.Null(entity.DeletedAt);
   }
 
@@ -46,17 +46,17 @@ public class AuditableEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(userId, entity.CreatedBy);
-    Assert.Equal(userId, entity.UpdatedBy);
+    Assert.Equal(userId, entity.CreatedById);
+    Assert.Equal(userId, entity.UpdatedById);
     Assert.Equal(1, entity.Version);
     Assert.False(entity.Deleted);
-    Assert.Null(entity.DeletedBy);
+    Assert.Null(entity.DeletedById);
     Assert.Null(entity.DeletedAt);
   }
 
   // Teste para marcar a entidade como excluída
   [Fact]
-  public void SetDeleted_ShouldSetDeletedByAndDeletedAt()
+  public void SetDeleted_ShouldSetDeletedByIdAndDeletedAt()
   {
     // Arrange
     var entity = new TestAuditableEntity();
@@ -69,13 +69,13 @@ public class AuditableEntityTests
     Assert.True(entity.IsValid);
     Assert.Equal(2, entity.Version);
     Assert.True(entity.Deleted);
-    Assert.Equal(userId, entity.DeletedBy);
+    Assert.Equal(userId, entity.DeletedById);
     Assert.NotNull(entity.DeletedAt);
   }
 
-  // Teste se SetDeleted não atribui DeletedBy quando o usuário é vazio
+  // Teste se SetDeleted não atribui DeletedById quando o usuário é vazio
   [Fact]
-  public void SetDeleted_ShouldNotSetDeletedBy_WhenUserIdIsEmpty()
+  public void SetDeleted_ShouldNotSetDeletedById_WhenUserIdIsEmpty()
   {
     // Arrange
     var entity = new TestAuditableEntity();
@@ -86,10 +86,10 @@ public class AuditableEntityTests
 
     // Assert
     Assert.False(entity.IsValid);
-    Assert.Equal(userId, entity.UpdatedBy);
+    Assert.Equal(userId, entity.UpdatedById);
     Assert.Equal(1, entity.Version);
     Assert.False(entity.Deleted);
-    Assert.Null(entity.DeletedBy);
+    Assert.Null(entity.DeletedById);
     Assert.Null(entity.DeletedAt);
     Assert.Equal("Field.Invalid;DeletedBy", entity.Notifications.First());
     Assert.Contains("Field.Invalid;DeletedBy", ex.GetErrorMessages());
@@ -97,7 +97,7 @@ public class AuditableEntityTests
 
   // Teste se SetRestored atribui valores corretos
   [Fact]
-  public void SetRestored_ShouldSetRestoredByAndRestoredAt()
+  public void SetRestored_ShouldSetRestoredByIdAndRestoredAt()
   {
     // Arrange
     var entity = new TestAuditableEntity();
@@ -112,13 +112,13 @@ public class AuditableEntityTests
     Assert.True(entity.IsValid);
     Assert.Equal(3, entity.Version);
     Assert.False(entity.Deleted);
-    Assert.Equal(userId, entity.RestoredBy);
+    Assert.Equal(userId, entity.RestoredById);
     Assert.NotNull(entity.RestoredAt);
   }
 
-  // Teste se SetRestored não atribui RestoredBy quando o usuário é vazio
+  // Teste se SetRestored não atribui RestoredById quando o usuário é vazio
   [Fact]
-  public void SetRestored_ShouldNotSetRestoredBy_WhenUserIdIsEmpty()
+  public void SetRestored_ShouldNotSetRestoredById_WhenUserIdIsEmpty()
   {
     // Arrange
     var entity = new TestAuditableEntity();
@@ -133,7 +133,7 @@ public class AuditableEntityTests
     Assert.False(entity.IsValid);
     Assert.Equal(2, entity.Version);
     Assert.True(entity.Deleted);
-    Assert.Null(entity.RestoredBy);
+    Assert.Null(entity.RestoredById);
     Assert.Null(entity.RestoredAt);
     Assert.Equal("Field.Invalid;RestoredBy", entity.Notifications.First());
     Assert.Contains("Field.Invalid;RestoredBy", ex.GetErrorMessages());
@@ -204,7 +204,7 @@ public class AuditableEntityTests
     Assert.Empty(entity.Notifications);
   }
 
-  // Teste para SetUpdatedBy incrementando a versão e atualizando o UpdatedBy
+  // Teste para SetUpdatedBy incrementando a versão e atualizando o UpdatedById
   [Fact]
   public void SetUpdatedBy_ShouldIncrementVersionAndSetUpdatedBy()
   {
@@ -217,7 +217,7 @@ public class AuditableEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(userId, entity.UpdatedBy);
+    Assert.Equal(userId, entity.UpdatedById);
     Assert.Equal(2, entity.Version);
   }
 
@@ -234,7 +234,7 @@ public class AuditableEntityTests
 
     // Assert
     Assert.False(entity.IsValid);
-    Assert.Equal(Guid.Empty, entity.UpdatedBy);
+    Assert.Equal(Guid.Empty, entity.UpdatedById);
     Assert.Equal(1, entity.Version);
     Assert.Equal("Field.Invalid;UpdatedBy", entity.Notifications.First());
     Assert.Contains("Field.Invalid;UpdatedBy", ex.GetErrorMessages());

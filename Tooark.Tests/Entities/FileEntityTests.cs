@@ -35,7 +35,7 @@ public class FileEntityTests
     Assert.Null(fileEntity.FileName);
     Assert.Null(fileEntity.Title);
     Assert.Null(fileEntity.Link);
-    Assert.Equal(Guid.Empty, fileEntity.CreatedBy);
+    Assert.Equal(Guid.Empty, fileEntity.CreatedById);
   }
 
   // Teste se o construtor atribui valores padrão às propriedades com parâmetros base
@@ -55,7 +55,7 @@ public class FileEntityTests
     Assert.Equal(file, fileEntity.FileName);
     Assert.Equal(title, fileEntity.Title);
     Assert.Equal(file, fileEntity.Link);
-    Assert.Equal(createdBy, fileEntity.CreatedBy);
+    Assert.Equal(createdBy, fileEntity.CreatedById);
   }
 
   // Teste se o construtor atribui valores padrão às propriedades com parâmetros e URL pública
@@ -75,7 +75,7 @@ public class FileEntityTests
     Assert.Equal(file.Name, fileEntity.FileName);
     Assert.Equal(title, fileEntity.Title);
     Assert.Equal(file.Link, fileEntity.Link);
-    Assert.Equal(createdBy, fileEntity.CreatedBy);
+    Assert.Equal(createdBy, fileEntity.CreatedById);
   }
 
   // Teste se o construtor atribui valores padrão às propriedades com parâmetros, URL pública, formato e tipo
@@ -101,7 +101,7 @@ public class FileEntityTests
     Assert.Equal(fileFormat, fileEntity.FileFormat);
     Assert.Equal(type, fileEntity.Type);
     Assert.Equal(size, fileEntity.Size);
-    Assert.Equal(createdBy, fileEntity.CreatedBy);
+    Assert.Equal(createdBy, fileEntity.CreatedById);
   }
 
   // Teste se o construtor atribui valores padrão às propriedades com parâmetros, URL pública, formato e tipo

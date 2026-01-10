@@ -26,7 +26,7 @@ public class InitialEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
     Assert.True((DateTime.UtcNow - entity.CreatedAt).TotalMinutes < 1);
   }
 
@@ -42,7 +42,7 @@ public class InitialEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
     Assert.True((DateTime.UtcNow - entity.CreatedAt).TotalMinutes < 1);
   }
 
@@ -59,7 +59,7 @@ public class InitialEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
     Assert.True((DateTime.UtcNow - entity.CreatedAt).TotalMinutes < 1);
   }
 
@@ -74,7 +74,7 @@ public class InitialEntityTests
     // Act & Assert
     var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetCreatedBy(createdBy));
     Assert.False(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
     Assert.Contains("Field.Invalid;CreatedBy", ex.GetErrorMessages());
   }
 
@@ -90,7 +90,7 @@ public class InitialEntityTests
     // Act & Assert
     var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetCreatedBy(Guid.NewGuid()));
     Assert.False(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
     Assert.Contains("ChangeBlocked;CreatedBy", ex.GetErrorMessages());
   }
 }

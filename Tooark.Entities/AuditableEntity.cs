@@ -29,8 +29,8 @@ public abstract class AuditableEntity : DetailedEntity
   /// <summary>
   /// Cria uma nova instância da entidade auditoria.
   /// </summary>
-  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected AuditableEntity(CreatedBy createdBy) : base(createdBy) { }
+  /// <param name="createdById">O identificador do usuário que criou a entidade.</param>
+  protected AuditableEntity(CreatedBy createdById) : base(createdById) { }
 
   #endregion
 
@@ -77,7 +77,7 @@ public abstract class AuditableEntity : DetailedEntity
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("deleted_by", TypeName = "uuid")]
-  public Guid? DeletedBy { get; private set; }
+  public Guid? DeletedById { get; private set; }
 
   /// <summary>
   /// Data e hora da exclusão da entidade.
@@ -104,7 +104,7 @@ public abstract class AuditableEntity : DetailedEntity
   /// </remarks>
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("restored_by", TypeName = "uuid")]
-  public Guid? RestoredBy { get; private set; }
+  public Guid? RestoredById { get; private set; }
 
   /// <summary>
   /// Data e hora da restauração da entidade.
@@ -168,11 +168,11 @@ public abstract class AuditableEntity : DetailedEntity
   /// <summary>
   /// Atualiza entidade e incrementa a versão.
   /// </summary>
-  /// <param name="updatedBy">O valor do identificador do atualizador a ser definido.</param>
-  public new void SetUpdatedBy(UpdatedBy updatedBy)
+  /// <param name="updatedById">O valor do identificador do atualizador a ser definido.</param>
+  public new void SetUpdatedBy(UpdatedBy updatedById)
   {
     // Define o identificador do atualizador.
-    base.SetUpdatedBy(updatedBy);
+    base.SetUpdatedBy(updatedById);
 
     // Incrementa a versão apenas após atualização bem-sucedida
     IncrementVersion();
@@ -181,11 +181,11 @@ public abstract class AuditableEntity : DetailedEntity
   /// <summary>
   /// Marca a entidade como excluída.
   /// </summary>
-  /// <param name="deletedBy">O valor do identificador do excluidor a ser definido.</param>
-  public void SetDeleted(DeletedBy deletedBy)
+  /// <param name="deletedById">O valor do identificador do excluidor a ser definido.</param>
+  public void SetDeleted(DeletedBy deletedById)
   {
     // Adiciona as validações dos atributos.
-    AddNotifications(deletedBy);
+    AddNotifications(deletedById);
 
     // Se houver notificações, lança exceção de bad request
     if (!IsValid)
@@ -197,7 +197,7 @@ public abstract class AuditableEntity : DetailedEntity
     if (!Deleted)
     {
       Deleted = true;
-      DeletedBy = deletedBy;
+      DeletedById = deletedById;
       DeletedAt = DateTime.UtcNow;
 
       IncrementVersion();
@@ -207,11 +207,11 @@ public abstract class AuditableEntity : DetailedEntity
   /// <summary>
   /// Marca a entidade como restaurada.
   /// </summary>
-  /// <param name="restoredBy">O valor do identificador do restaurador a ser definido.</param>
-  public void SetRestored(RestoredBy restoredBy)
+  /// <param name="restoredById">O valor do identificador do restaurador a ser definido.</param>
+  public void SetRestored(RestoredBy restoredById)
   {
     // Adiciona as validações dos atributos.
-    AddNotifications(restoredBy);
+    AddNotifications(restoredById);
 
     // Se houver notificações, lança exceção de bad request
     if (!IsValid)
@@ -223,7 +223,7 @@ public abstract class AuditableEntity : DetailedEntity
     if (Deleted)
     {
       Deleted = false;
-      RestoredBy = restoredBy;
+      RestoredById = restoredById;
       RestoredAt = DateTime.UtcNow;
 
       IncrementVersion();

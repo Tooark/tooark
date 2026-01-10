@@ -27,7 +27,7 @@ public class VersionedEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
     Assert.Equal(1, version);
   }
 
@@ -44,7 +44,7 @@ public class VersionedEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
     Assert.Equal(1, version);
   }
 

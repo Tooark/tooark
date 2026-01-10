@@ -26,7 +26,7 @@ public class SoftDeletableEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
     Assert.False(entity.Deleted);
   }
 
@@ -42,7 +42,7 @@ public class SoftDeletableEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
     Assert.False(entity.Deleted);
   }
 
@@ -60,7 +60,7 @@ public class SoftDeletableEntityTests
     // Assert
     Assert.True(entity.IsValid);
     Assert.True(entity.Deleted);
-    Assert.Equal(userId, entity.UpdatedBy);
+    Assert.Equal(userId, entity.UpdatedById);
   }
 
   // Teste para não marcar a entidade como excluída quando o usuário é vazio
