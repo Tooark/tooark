@@ -28,10 +28,10 @@ public abstract class InitialEntity : BaseEntity
   /// <summary>
   /// Cria uma nova instância da entidade inicial.
   /// </summary>
-  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected InitialEntity(CreatedBy createdBy)
+  /// <param name="createdById">O identificador do usuário que criou a entidade.</param>
+  protected InitialEntity(CreatedBy createdById)
   {
-    SetCreatedBy(createdBy);
+    SetCreatedBy(createdById);
   }
 
   #endregion
@@ -50,7 +50,7 @@ public abstract class InitialEntity : BaseEntity
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("created_by", TypeName = "uuid")]
   [Required]
-  public Guid CreatedBy { get; private set; }
+  public Guid CreatedById { get; private set; }
 
   /// <summary>
   /// Data e hora de criação da entidade.
@@ -73,18 +73,18 @@ public abstract class InitialEntity : BaseEntity
   /// <summary>
   /// Define o identificador do criador da entidade e a data e hora de criação.
   /// </summary>
-  /// <param name="createdBy">O valor do identificador do criador a ser definido.</param>
-  public virtual void SetCreatedBy(CreatedBy createdBy)
+  /// <param name="createdById">O valor do identificador do criador a ser definido.</param>
+  public virtual void SetCreatedBy(CreatedBy createdById)
   {
     // Verifica se o identificador da entidade é vazio.
-    if (CreatedBy != Guid.Empty)
+    if (CreatedById != Guid.Empty)
     {
       AddNotification("ChangeBlocked;CreatedBy", "CreatedBy", "T.ENT.INI1");
     }
     else
     {
       // Adiciona as validações dos atributos.
-      AddNotifications(createdBy);
+      AddNotifications(createdById);
     }
 
     // Se houver notificações, lança exceção de bad request
@@ -93,7 +93,7 @@ public abstract class InitialEntity : BaseEntity
       throw new BadRequestException(this);
     }
 
-    CreatedBy = createdBy;
+    CreatedById = createdById;
     CreatedAt = DateTime.UtcNow;
   }
 

@@ -26,8 +26,8 @@ public class DetailedEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
-    Assert.Equal(createdBy, entity.UpdatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
+    Assert.Equal(createdBy, entity.UpdatedById);
     Assert.True((DateTime.UtcNow - entity.UpdatedAt).TotalMinutes < 1);
   }
 
@@ -43,8 +43,8 @@ public class DetailedEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
-    Assert.Equal(createdBy, entity.UpdatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
+    Assert.Equal(createdBy, entity.UpdatedById);
     Assert.True((DateTime.UtcNow - entity.CreatedAt).TotalMinutes < 1);
   }
 
@@ -61,8 +61,8 @@ public class DetailedEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
-    Assert.Equal(createdBy, entity.UpdatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
+    Assert.Equal(createdBy, entity.UpdatedById);
     Assert.True((DateTime.UtcNow - entity.CreatedAt).TotalMinutes < 1);
   }
 
@@ -79,7 +79,7 @@ public class DetailedEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(updatedBy, entity.UpdatedBy);
+    Assert.Equal(updatedBy, entity.UpdatedById);
     Assert.True((DateTime.UtcNow - entity.UpdatedAt).TotalMinutes < 1);
   }
 
@@ -92,8 +92,8 @@ public class DetailedEntityTests
     // Act & Assert
     var ex = Assert.Throws<Tooark.Exceptions.BadRequestException>(() => entity.SetCreatedBy(Guid.Empty));
     Assert.False(entity.IsValid);
-    Assert.Equal(Guid.Empty, entity.CreatedBy);
-    Assert.Equal(Guid.Empty, entity.UpdatedBy);
+    Assert.Equal(Guid.Empty, entity.CreatedById);
+    Assert.Equal(Guid.Empty, entity.UpdatedById);
     Assert.Contains("Field.Invalid;CreatedBy", ex.GetErrorMessages());
   }
 
@@ -111,8 +111,8 @@ public class DetailedEntityTests
 
     // Assert
     Assert.False(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
-    Assert.Equal(createdBy, entity.UpdatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
+    Assert.Equal(createdBy, entity.UpdatedById);
     Assert.Contains("ChangeBlocked;CreatedBy", ex.GetErrorMessages());
   }
 
@@ -129,8 +129,8 @@ public class DetailedEntityTests
 
     // Assert
     Assert.False(entity.IsValid);
-    Assert.Equal(createdBy, entity.CreatedBy);
-    Assert.Equal(createdBy, entity.UpdatedBy);
+    Assert.Equal(createdBy, entity.CreatedById);
+    Assert.Equal(createdBy, entity.UpdatedById);
     Assert.Contains("Field.Invalid;UpdatedBy", ex.GetErrorMessages());
   }
 
@@ -149,11 +149,11 @@ public class DetailedEntityTests
 
     // Assert
     Assert.True(entity.IsValid);
-    Assert.Equal(secondUpdatedBy, entity.UpdatedBy);
+    Assert.Equal(secondUpdatedBy, entity.UpdatedById);
     Assert.True((DateTime.UtcNow - entity.UpdatedAt).TotalMinutes < 1);
   }
 
-  // Testa se SetCreatedBy não altera UpdatedBy quando há erro de validação
+  // Testa se SetCreatedBy não altera UpdatedById quando há erro de validação
   [Fact]
   public void SetCreatedBy_WithInvalidGuid_ShouldNotChangeUpdatedBy()
   {
@@ -167,8 +167,8 @@ public class DetailedEntityTests
 
     // Assert
     Assert.False(entity.IsValid);
-    Assert.Equal(validCreatedBy, entity.CreatedBy);
-    Assert.Equal(validCreatedBy, entity.UpdatedBy);
+    Assert.Equal(validCreatedBy, entity.CreatedById);
+    Assert.Equal(validCreatedBy, entity.UpdatedById);
     Assert.Contains("ChangeBlocked;CreatedBy", ex.GetErrorMessages());
   }
 }

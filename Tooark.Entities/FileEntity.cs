@@ -31,8 +31,8 @@ public abstract class FileEntity : InitialEntity
   /// </summary>
   /// <param name="file">O nome e link do arquivo.</param>
   /// <param name="title">O título do arquivo.</param>
-  /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  protected FileEntity(FileStorage file, Title title, CreatedBy createdBy) : base(createdBy)
+  /// <param name="createdById">O identificador do usuário que criou o arquivo.</param>
+  protected FileEntity(FileStorage file, Title title, CreatedBy createdById) : base(createdById)
   {
     // Adiciona as validações dos atributos.
     AddNotifications(file, title);
@@ -56,8 +56,8 @@ public abstract class FileEntity : InitialEntity
   /// <param name="fileFormat">O formato do arquivo.</param>
   /// <param name="type">O tipo do arquivo.</param>
   /// <param name="size">O tamanho do arquivo.</param>
-  /// <param name="createdBy">O identificador do usuário que criou o arquivo.</param>
-  protected FileEntity(FileStorage file, Title title, string fileFormat, EFileType type, long size, CreatedBy createdBy) : base(createdBy)
+  /// <param name="createdById">O identificador do usuário que criou o arquivo.</param>
+  protected FileEntity(FileStorage file, Title title, string fileFormat, EFileType type, long size, CreatedBy createdById) : base(createdById)
   {
     // Valida os parâmetros
     AddNotifications(

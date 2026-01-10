@@ -27,8 +27,8 @@ public abstract class VersionedEntity : DetailedEntity
   /// <summary>
   /// Cria uma nova instância da entidade versionamento.
   /// </summary>
-  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected VersionedEntity(CreatedBy createdBy) : base(createdBy) { }
+  /// <param name="createdById">O identificador do usuário que criou a entidade.</param>
+  protected VersionedEntity(CreatedBy createdById) : base(createdById) { }
 
   #endregion
 
@@ -71,11 +71,11 @@ public abstract class VersionedEntity : DetailedEntity
   /// <remarks>
   /// Este método deve ser chamado sempre que a entidade for atualizada.
   /// </remarks>
-  /// <param name="updatedBy">O identificador do usuário que atualizou a entidade.</param>
-  public override void SetUpdatedBy(UpdatedBy updatedBy)
+  /// <param name="updatedById">O identificador do usuário que atualizou a entidade.</param>
+  public override void SetUpdatedBy(UpdatedBy updatedById)
   {
     // Define o identificador do atualizador.
-    base.SetUpdatedBy(updatedBy);
+    base.SetUpdatedBy(updatedById);
 
     // Incrementa a versão apenas após atualização bem-sucedida
     IncrementVersion();

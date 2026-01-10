@@ -28,10 +28,10 @@ public abstract class DetailedEntity : InitialEntity
   /// <summary>
   /// Cria uma nova instância da entidade detalhada.
   /// </summary>
-  /// <param name="createdBy">O identificador do usuário que criou a entidade.</param>
-  protected DetailedEntity(CreatedBy createdBy)
+  /// <param name="createdById">O identificador do usuário que criou a entidade.</param>
+  protected DetailedEntity(CreatedBy createdById)
   {
-    SetCreatedBy(createdBy);
+    SetCreatedBy(createdById);
   }
 
   #endregion
@@ -50,7 +50,7 @@ public abstract class DetailedEntity : InitialEntity
   [DatabaseGenerated(DatabaseGeneratedOption.None)]
   [Column("updated_by", TypeName = "uuid")]
   [Required]
-  public Guid UpdatedBy { get; private set; } = Guid.Empty;
+  public Guid UpdatedById { get; private set; } = Guid.Empty;
 
   /// <summary>
   /// Data e hora da última atualização da entidade.
@@ -73,22 +73,22 @@ public abstract class DetailedEntity : InitialEntity
   /// <summary>
   /// Define o identificador do criador e o atualizador da entidade.
   /// </summary>
-  /// <param name="createdBy">O valor do identificador do criador a ser definido.</param>
-  public override void SetCreatedBy(CreatedBy createdBy)
+  /// <param name="createdById">O valor do identificador do criador a ser definido.</param>
+  public override void SetCreatedBy(CreatedBy createdById)
   {
-    base.SetCreatedBy(createdBy);
+    base.SetCreatedBy(createdById);
 
-    UpdatedBy = createdBy;
+    UpdatedById = createdById;
   }
 
   /// <summary>
   /// Define o identificador do atualizador da entidade e a data e hora da última atualização.
   /// </summary>
-  /// <param name="updatedBy">O valor do identificador do atualizador a ser definido.</param>
-  public virtual void SetUpdatedBy(UpdatedBy updatedBy)
+  /// <param name="updatedById">O valor do identificador do atualizador a ser definido.</param>
+  public virtual void SetUpdatedBy(UpdatedBy updatedById)
   {
     // Adiciona as validações dos atributos.
-    AddNotifications(updatedBy);
+    AddNotifications(updatedById);
 
     // Se houver notificações, lança exceção de bad request
     if (!IsValid)
@@ -96,7 +96,7 @@ public abstract class DetailedEntity : InitialEntity
       throw new BadRequestException(this);
     }
 
-    UpdatedBy = updatedBy;
+    UpdatedById = updatedById;
     UpdatedAt = DateTime.UtcNow;
   }
 
