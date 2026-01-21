@@ -3,7 +3,7 @@ name: Build and deploy package
 on:
   push:
     branches:
-      - main
+      - v2
   workflow_dispatch:
 env:
   VERSION: 0.0.0
@@ -43,6 +43,7 @@ jobs:
           dotnet pack Tooark.Entities/Tooark.Entities.csproj --configuration Release /p:NoWarn="1591"
           dotnet pack Tooark.ValueObjects/Tooark.ValueObjects.csproj --configuration Release /p:NoWarn="1591"
           dotnet pack Tooark.Securities/Tooark.Securities.csproj --configuration Release /p:NoWarn="1591"
+          dotnet pack Tooark.Observability/Tooark.Observability.csproj --configuration Release /p:NoWarn="1591"
           dotnet pack Tooark/Tooark.csproj --configuration Release /p:NoWarn="1591"
 
       - name: Extract version from Directory.Build.props
@@ -117,6 +118,9 @@ jobs:
       
       - name: Publish Tooark.Securities to NuGet
         run: dotnet nuget push Tooark.Securities/bin/Release/Tooark.Securities.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+      
+      - name: Publish Tooark.Observability to NuGet
+        run: dotnet nuget push Tooark.Observability/bin/Release/Tooark.Observability.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
 
       - name: Publish Tooark to NuGet
         run: dotnet nuget push Tooark/bin/Release/Tooark.${{ env.VERSION }}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
