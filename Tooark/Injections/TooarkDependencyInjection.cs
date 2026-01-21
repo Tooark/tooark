@@ -2,6 +2,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tooark.Dtos.Injections;
 using Tooark.Extensions.Injections;
+using Tooark.Observability.Injections;
+using Tooark.Observability.Options;
 using Tooark.Securities.Injections;
 using Tooark.Securities.Options;
 using Tooark.ValueObjects.Injections;
@@ -31,15 +33,24 @@ public static partial class TooarkDependencyInjection
     services.AddTooarkValueObjects();
 
     // Verifica se as configurações para JWT Token ou Criptografia existem
-    if (configuration is not null &&
-      (
+    if (configuration is not null)
+    {
+      // Verifica se as seções de configuração existem
+      if (
         configuration.GetSection(JwtOptions.Section).Exists() ||
         configuration.GetSection(CryptographyOptions.Section).Exists()
       )
-    )
-    {
-      // Adiciona as injeções de dependência Securities
-      services.AddTooarkSecurities(configuration);
+      {
+        // Adiciona as injeções de dependência Securities
+        services.AddTooarkSecurities(configuration);
+      }
+
+      // Verifica se a seção de configuração de Observability existe
+      if (configuration.GetSection(ObservabilityOptions.Section).Exists())
+      {
+        // Adiciona as injeções de dependência Observability
+        services.AddTooarkObservability(configuration);
+      }
     }
 
     // Retorna a coleção de serviços

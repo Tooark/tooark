@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageId>Tooark.Observability</PackageId>
+    <Title>Tooark.Observability</Title>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <PackageTags>toolkit, observability, opentelemetry, tracing, metrics, logging, .NET</PackageTags>
+    <Summary>OpenTelemetry-based observability for .NET applications with easy configuration.</Summary>
+    <PackageDescription>Package providing OpenTelemetry-based observability (traces, metrics, logs) with sensible defaults and easy configuration via appsettings for .NET applications.</PackageDescription>
+    <Description>Library for managing OpenTelemetry observability with predefined configurations for traces, metrics, and logs, ensuring consistent telemetry collection for .NET projects.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tooark.Exceptions\Tooark.Exceptions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenTelemetry" />
+    <PackageReference Include="OpenTelemetry.Exporter.Console" />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" />
+  </ItemGroup>
+
+</Project>
