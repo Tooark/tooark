@@ -6,6 +6,7 @@ using Moq;
 using Tooark.Dtos;
 using Tooark.Extensions.Factories;
 using Tooark.Injections;
+using Tooark.Observability.Options;
 using Tooark.Securities.Interfaces;
 using Tooark.Securities.Options;
 
@@ -239,5 +240,43 @@ public class TooarkDependencyInjectionTests
     var cryptographyService = serviceProvider.GetService<ICryptographyService>();
     Assert.NotNull(jwtService);
     Assert.NotNull(cryptographyService);
+  }
+
+  // Testa se o método AddTooarkService registra Observability quando existe seção Observability
+  [Fact]
+  public void AddTooarkService_ShouldRegisterObservability_WhenBothSectionsExist()
+  {
+    // Arrange
+    var services = new ServiceCollection();
+    var inMemorySettings = new Dictionary<string, string?>
+    {
+      // Configurações de Observability
+      { $"{ObservabilityOptions.Section}:Enable", "true" }
+    };
+
+    IConfiguration configuration = new ConfigurationBuilder()
+      .AddInMemoryCollection(inMemorySettings)
+      .Build();
+
+    // Act
+    services.AddTooarkService(configuration);
+    var serviceProvider = services.BuildServiceProvider();
+    ServiceDescriptor? otelDescriptor = null;
+    foreach (var sd in services)
+    {
+      if ((sd.ServiceType?.Namespace?.StartsWith("OpenTelemetry") == true) ||
+          (sd.ImplementationType?.Namespace?.StartsWith("OpenTelemetry") == true))
+      {
+        otelDescriptor = sd;
+        break;
+      }
+    }
+
+    // Assert
+    Assert.NotNull(otelDescriptor);
+
+    // Tenta resolver a instância registrada (se houver)
+    var otelInstance = otelDescriptor is not null ? serviceProvider.GetService(otelDescriptor.ServiceType!) : null;
+    Assert.NotNull(otelInstance);
   }
 }

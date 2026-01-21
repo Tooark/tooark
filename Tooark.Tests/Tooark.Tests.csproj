@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tooark\Tooark.csproj" />
-    <ProjectReference Include="..\Tooark.Securities\Tooark.Securities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +30,7 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Moq" />
+    <PackageReference Include="OpenTelemetry" />
     <PackageReference Include="ReportGenerator" />
     <PackageReference Include="System.IO.Abstractions" />
     <PackageReference Include="xunit" />
