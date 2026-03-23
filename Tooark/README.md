@@ -68,6 +68,10 @@ Descrição: Este pacote fornece métodos de extensão para tipos e classes comu
 
 Descrição: Este pacote oferece funcionalidades para gerenciamento de notificações e mensagens na aplicação.
 
+### [Tooark.Observability](../Tooark.Observability/README.md)
+
+Descrição: Este pacote fornece ferramentas para monitoramento e observabilidade da aplicação.
+
 ### [Tooark.Securities](../Tooark.Securities/README.md)
 
 Descrição: Este pacote oferece funcionalidades para segurança, incluindo criptografia e autenticação.

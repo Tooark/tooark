@@ -627,6 +627,7 @@ public class MeuServico
 | `OpenTelemetry.Extensions.Hosting`             | Integração com Host do .NET             |
 | `OpenTelemetry.Instrumentation.AspNetCore`     | Instrumentação automática ASP.NET Core  |
 | `OpenTelemetry.Instrumentation.Http`           | Instrumentação automática HttpClient    |
+| `OpenTelemetry.Instrumentation.Process`        | Instrumentação automática Process       |
 | `OpenTelemetry.Instrumentation.Runtime`        | Métricas do runtime .NET                |
 
 ---

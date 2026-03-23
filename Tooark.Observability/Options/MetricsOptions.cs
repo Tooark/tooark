@@ -16,6 +16,11 @@ public class MetricsOptions
   public bool RuntimeMetricsEnabled { get; set; } = true;
 
   /// <summary>
+  /// Indica se as métricas de processo estão habilitadas. Padrão: true.
+  /// </summary>
+  public bool ProcessMetricsEnabled { get; set; } = true;
+
+  /// <summary>
   /// Nome padrão do Meter para métricas.
   /// </summary>
   /// <remarks>

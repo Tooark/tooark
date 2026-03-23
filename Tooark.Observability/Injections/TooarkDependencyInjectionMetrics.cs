@@ -41,6 +41,12 @@ public static partial class TooarkDependencyInjection
       builder.AddRuntimeInstrumentation();
     }
 
+    // Adiciona métricas de processo se habilitado
+    if (options.Metrics.ProcessMetricsEnabled)
+    {
+      builder.AddProcessInstrumentation();
+    }
+
     // Adiciona meters padrão e customizados
     builder.AddMeter(options.Metrics.MeterName);
     foreach (var meter in options.Metrics.AdditionalMeters)
