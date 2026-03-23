@@ -1,161 +1,155 @@
 # Tooark.Exceptions
 
-Biblioteca que fornece exceções para projetos .NET, permitindo padronização para tratamento de erros. Inclui métodos para criar e gerenciar exceções.
+Biblioteca que fornece exceções padronizadas para projetos .NET, com mapeamento para status HTTP e suporte a múltiplas formas de construção de mensagens de erro.
 
 ## Conteúdo
 
-- [TooarkException](#0-tooarkexception)
-- [BadRequestException](#400-badrequestexception)
-- [UnauthorizedException](#401-unauthorizedexception)
-- [ForbiddenException](#403-forbiddenexception)
-- [NotFoundException](#404-notfoundexception)
-- [MethodNotAllowedException](#405-methodnotallowedexception)
-- [InternalServerErrorException](#500-internalservererrorexception)
-- [BadGatewayException](#502-badgatewayexception)
-- [ServiceUnavailableException](#503-serviceunavailableexception)
-- [GatewayTimeoutException](#504-gatewaytimeoutexception)
-- [GetInfoException](#400-getinfoexception)
+- [Visão Geral](#visão-geral)
+- [Recursos Suportados](#recursos-suportados)
+- [Exceções Disponíveis](#exceções-disponíveis)
+- [Exemplos de Uso](#exemplos-de-uso)
+- [Dependências](#dependências)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
 
-## Exceções
+## Visão Geral
 
-### 0. TooarkException
+Todas as exceções específicas do pacote herdam de `TooarkException`, que por sua vez herda de `Exception`.
 
-Classe base abstrata para todas as exceções do Tooark estende a classe `Exception`.
+A classe base concentra:
 
-- **Construtores:**
+- armazenamento de mensagens de erro (`GetErrorMessages()`);
+- armazenamento de notificações (`GetNotifications()`);
+- contrato para código HTTP (`GetStatusCode()`).
 
-  - `TooarkException(string message)`: Inicializa uma nova instância da classe `TooarkException` com uma mensagem de erro.
-  - `TooarkException(IList<string> messages)`: Inicializa uma nova instância da classe `TooarkException` com uma lista de mensagens de erros.
-  - `TooarkException(Notification notification)`: Inicializa uma nova instância da classe `TooarkException` com uma notificação com as mensagens de erros.
+## Recursos Suportados
 
-- **Propriedades:**
+As classes de exceção suportam os seguintes construtores:
 
-  - `_errors`: Lista privada de mensagens de erro.
+- `ExceptionType(string message)`
+- `ExceptionType(IList<string> messages)`
+- `ExceptionType(Notification notification)`
+- `ExceptionType(string messageFormat, params object[] args)`
 
-- **Métodos:**
-  - `GetErrorMessages()`: Retorna a lista de mensagens de erro.
-  - `GetNotifications()`: Retorna a lista de itens de notificação.
-  - `GetStatusCode()`: Método abstrato para retornar o código de status HTTP associado à exceção.
+### Novos recursos documentados
 
-### 400. BadRequestException
+- **Mensagem formatada com placeholders**: permite criar mensagens dinâmicas com `string.Format`.
+- **Integração com `Notification`**: reutiliza mensagens/notificações já agregadas na camada de validação.
+- **Múltiplas mensagens**: suporta lista de erros para cenários de validação com mais de uma falha.
 
-**Funcionalidade:**
-Representa uma exceção de requisição inválida (HTTP 400).
+## Exceções Disponíveis
 
-- **Métodos:**
-  - `GetStatusCode()`: Configurado para retornar `HttpStatusCode.BadRequest`.
+| Classe                          | Status HTTP                  |
+| ------------------------------- | ---------------------------- |
+| `BadRequestException`           | 400 (`BadRequest`)           |
+| `GetInfoException`              | 400 (`BadRequest`)           |
+| `UnauthorizedException`         | 401 (`Unauthorized`)         |
+| `ForbiddenException`            | 403 (`Forbidden`)            |
+| `NotFoundException`             | 404 (`NotFound`)             |
+| `MethodNotAllowedException`     | 405 (`MethodNotAllowed`)     |
+| `ConflictException`             | 409 (`Conflict`)             |
+| `PayloadTooLargeException`      | 413 (`PayloadTooLarge`)      |
+| `UnsupportedMediaTypeException` | 415 (`UnsupportedMediaType`) |
+| `UnprocessableEntityException`  | 422 (`UnprocessableEntity`)  |
+| `TooManyRequestsException`      | 429 (`TooManyRequests`)      |
+| `InternalServerErrorException`  | 500 (`InternalServerError`)  |
+| `BadGatewayException`           | 502 (`BadGateway`)           |
+| `ServiceUnavailableException`   | 503 (`ServiceUnavailable`)   |
+| `GatewayTimeoutException`       | 504 (`GatewayTimeout`)       |
 
-### 401. UnauthorizedException
+## Exemplos de Uso
 
-**Funcionalidade:**
-Representa uma exceção de não autorizado (HTTP 401).
+### 1) Mensagem simples
 
-- **Métodos:**
-  - `GetStatusCode()`: Configurado para retornar `HttpStatusCode.Unauthorized`.
+```csharp
+throw new BadRequestException("Payload inválido.");
+```
 
-### 403. ForbiddenException
+### 2) Múltiplas mensagens
 
-**Funcionalidade:**
-Representa uma exceção de acesso negado (HTTP 403).
+```csharp
+throw new BadRequestException([
+  "Nome é obrigatório.",
+  "E-mail inválido."
+]);
+```
 
-- **Métodos:**
-  - `GetStatusCode()`: Configurado para retornar `HttpStatusCode.Forbidden`.
+### 3) Mensagem formatada (novo)
 
-### 404. NotFoundException
+```csharp
+var userId = 42;
+throw new NotFoundException("Usuário com ID {0} não encontrado.", userId);
+```
 
-**Funcionalidade:**
-Representa uma exceção de recurso não encontrado (HTTP 404).
+### 4) A partir de `Notification` (novo)
 
-- **Métodos:**
-  - `GetStatusCode()`: Configurado para retornar `HttpStatusCode.NotFound`.
+```csharp
+using Tooark.Notifications;
 
-### 405. MethodNotAllowedException
+public sealed class DomainNotification : Notification { }
 
-**Funcionalidade:**
-Representa uma exceção de método não permitido (HTTP 405).
+var notification = new DomainNotification();
+notification.AddNotification("Documento é obrigatório.", "Document");
+notification.AddNotification("Telefone inválido.", "Phone");
 
-- **Métodos:**
-  - `GetStatusCode()`: Configurado para retornar `HttpStatusCode.MethodNotAllowed`.
+throw new BadRequestException(notification);
+```
 
-### 500. InternalServerErrorException
-
-**Funcionalidade:**
-Representa uma exceção de erro interno do servidor (HTTP 500).
-
-- **Métodos:**
-  - `GetStatusCode()`: Configurado para retornar `HttpStatusCode.InternalServerError`.
-
-### 502. BadGatewayException
-
-**Funcionalidade:**
-Representa uma exceção de gateway inválido (HTTP 502).
-
-- **Métodos:**
-  - `GetStatusCode()`: Configurado para retornar `HttpStatusCode.BadGateway`.
-
-### 503. ServiceUnavailableException
-
-**Funcionalidade:**
-Representa uma exceção de serviço indisponível (HTTP 503).
-
-- **Métodos:**
-  - `GetStatusCode()`: Configurado para retornar `HttpStatusCode.ServiceUnavailable`.
-
-### 504. GatewayTimeoutException
-
-**Funcionalidade:**
-Representa uma exceção de tempo limite de gateway (HTTP 504).
-
-- **Métodos:**
-  - `GetStatusCode()`: Configurado para retornar `HttpStatusCode.GatewayTimeout`.
-
-### 400. GetInfoException
-
-**Funcionalidade:**
-Representa erro ao tentar buscar dados gerando uma exceção de requisição inválida (HTTP 400).
-
-- **Métodos:**
-  - `GetStatusCode()`: Configurado para retornar `HttpStatusCode.BadRequest`.
-
-## Exemplo de Uso
+### 5) Tratamento padronizado
 
 ```csharp
 using Tooark.Exceptions;
 
-public class ExampleService
+try
 {
-  public void Execute()
-  {
-    try
-    {
-      // Lógica que pode lançar exceções
-      ValidateUserInput(null);
-      FetchResource(0);
-    }
-    catch (TooarkException ex)
-    {
-      Console.WriteLine($"Erro: {ex.GetErrorMessages().FirstOrDefault()}");
-      Console.WriteLine($"Code: {ex.GetNotifications().FirstOrDefault()?.Code}, Message: {ex.GetNotifications().FirstOrDefault()?.Message}");
-      Console.WriteLine($"Status Code: {(int)ex.GetStatusCode()}");
-    }
-  }
-
-  private void ValidateUserInput(string input)
-  {
-    if (string.IsNullOrEmpty(input))
-    {
-      throw new BadRequestException("Input inválido.");
-    }
-  }
-
-  private void FetchResource(int resourceId)
-  {
-    if (resourceId <= 0)
-    {
-      throw new NotFoundException("Recurso não encontrado.");
-    }
-  }
+  throw new ServiceUnavailableException("Serviço externo indisponível.");
 }
+catch (TooarkException ex)
+{
+  var statusCode = ex.GetStatusCode();
+  var errors = ex.GetErrorMessages();
+  var notifications = ex.GetNotifications();
+
+  Console.WriteLine($"Status: {(int)statusCode} - {statusCode}");
+  Console.WriteLine($"Primeiro erro: {errors.FirstOrDefault()}");
+  Console.WriteLine($"Total de notificações: {notifications.Count}");
+}
+```
+
+### 6) Conflito de estado (409)
+
+```csharp
+throw new ConflictException("Já existe um usuário com este e-mail.");
+```
+
+### 7) Payload muito grande (413)
+
+```csharp
+throw new PayloadTooLargeException(
+  "Arquivo excede o limite permitido de {0} MB.",
+  10
+);
+```
+
+### 8) Tipo de mídia não suportado (415)
+
+```csharp
+throw new UnsupportedMediaTypeException("Content-Type 'text/plain' não é suportado.");
+```
+
+### 9) Entidade não processável (422)
+
+```csharp
+throw new UnprocessableEntityException([
+  "CPF inválido para a regra de negócio.",
+  "Data de nascimento incompatível com o cadastro."
+]);
+```
+
+### 10) Muitas requisições (429)
+
+```csharp
+throw new TooManyRequestsException("Limite de requisições excedido. Tente novamente em alguns segundos.");
 ```
 
 ## Dependências
@@ -165,8 +159,8 @@ public class ExampleService
 
 ## Contribuição
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark.Exceptions](https://github.com/Tooark/tooark/issues).
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no repositório [Tooark](https://github.com/Tooark/tooark/issues).
 
 ## Licença
 
-Este projeto está licenciado sob a licença BSD 3-Clause. Veja o arquivo [LICENSE](../LICENSE) para mais detalhes.
+Este projeto está licenciado sob a licença BSD 3-Clause. Veja [LICENSE](../LICENSE) para mais detalhes.

@@ -12,6 +12,7 @@ public class TooarkExceptionTests
     public TestTooarkException(string message) : base(message) { }
     public TestTooarkException(IList<string> errors) : base(errors) { }
     public TestTooarkException(Notification notification) : base(notification) { }
+    public TestTooarkException(string messageFormat, params object[] args) : base(messageFormat, args) { }
 
     public override HttpStatusCode GetStatusCode() => HttpStatusCode.BadRequest;
   }
@@ -80,5 +81,58 @@ public class TooarkExceptionTests
 
     // Assert
     Assert.Equal(HttpStatusCode.BadRequest, statusCode);
+  }
+
+  // Teste de unidade para o construtor com formatação de string (um parâmetro).
+  [Fact]
+  public void Constructor_WithFormattedMessageSingleParameter_ShouldFormatAndInitialize()
+  {
+    // Arrange
+    var format = "Test error with value: {0}";
+    var value = "test123";
+    var expectedMessage = "Test error with value: test123";
+
+    // Act
+    var exception = new TestTooarkException(format, value);
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Single(exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+  }
+
+  // Teste de unidade para o construtor com formatação de string (múltiplos parâmetros).
+  [Fact]
+  public void Constructor_WithFormattedMessageMultipleParameters_ShouldFormatAndInitialize()
+  {
+    // Arrange
+    var format = "Tenho {0} registros com problema {1} no sistema {2}";
+    var expectedMessage = "Tenho 2 registros com problema algum erro no sistema prod";
+
+    // Act
+    var exception = new TestTooarkException(format, 2, "algum erro", "prod");
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Single(exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+  }
+
+  // Teste de unidade para o construtor com formatação de string (com objetos complexos).
+  [Fact]
+  public void Constructor_WithFormattedMessageComplexObjects_ShouldFormatAndInitialize()
+  {
+    // Arrange
+    var format = "Erro ao processar {0} de {1} items";
+    var expectedMessage = "Erro ao processar 5 de 100 items";
+
+    // Act
+    var exception = new TestTooarkException(format, 5, 100);
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
   }
 }

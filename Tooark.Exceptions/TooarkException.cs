@@ -66,6 +66,23 @@ public abstract class TooarkException : Exception
     _notifications = [.. notification.Notifications];
   }
 
+  /// <summary>
+  /// Construtor da classe com suporte a formatação de mensagem.
+  /// </summary>
+  /// <param name="messageFormat">Formato da mensagem de erro com placeholders {0}, {1}, etc.</param>
+  /// <param name="args">Parâmetros para substituição nos placeholders.</param>
+  public TooarkException(string messageFormat, params object[] args) : base(string.Format(messageFormat, args))
+  {
+    // Formata a mensagem com os parâmetros fornecidos.
+    var message = string.Format(messageFormat, args);
+    
+    // Adiciona a mensagem de erro na lista.
+    _errors.Add(message);
+    
+    // Adiciona a mensagem de erro na lista de notificações.
+    _notifications.Add(new NotificationItem(message));
+  }
+
 
   /// <summary>
   /// Função para obter as mensagens de erro.

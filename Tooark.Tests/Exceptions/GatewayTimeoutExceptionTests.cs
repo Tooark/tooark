@@ -62,4 +62,42 @@ public class GatewayTimeoutExceptionTests
     Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
     Assert.Equal(HttpStatusCode.GatewayTimeout, exception.GetStatusCode());
   }
+
+  // Teste para formatação de mensagem com um parâmetro.
+  [Fact]
+  public void GatewayTimeoutException_ShouldReturnCorrectMessage_WithFormattedString_SingleParameter()
+  {
+    // Arrange
+    var format = "Tempo limite do gateway {0} expirou";
+    var expectedMessage = "Tempo limite do gateway externa não expirou";
+
+    // Act
+    var exception = new GatewayTimeoutException(format, "externa não");
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Single(exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.GatewayTimeout, exception.GetStatusCode());
+  }
+
+  // Teste para formatação de mensagem com múltiplos parâmetros.
+  [Fact]
+  public void GatewayTimeoutException_ShouldReturnCorrectMessage_WithFormattedString_MultipleParameters()
+  {
+    // Arrange
+    var format = "Servidor {0} expirou após {1} segundos";
+    var expectedMessage = "Servidor api-externa expirou após 30 segundos";
+
+    // Act
+    var exception = new GatewayTimeoutException(format, "api-externa", "30");
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Single(exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.GatewayTimeout, exception.GetStatusCode());
+  }
 }

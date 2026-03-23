@@ -62,4 +62,42 @@ public class BadRequestExceptionTests
     Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
     Assert.Equal(HttpStatusCode.BadRequest, exception.GetStatusCode());
   }
+
+  // Teste para formatação de mensagem com um parâmetro.
+  [Fact]
+  public void BadRequestException_ShouldReturnCorrectMessage_WithFormattedString_SingleParameter()
+  {
+    // Arrange
+    var format = "Erro de validação: {0}";
+    var expectedMessage = "Erro de validação: campo obrigatório";
+
+    // Act
+    var exception = new BadRequestException(format, "campo obrigatório");
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Single(exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.BadRequest, exception.GetStatusCode());
+  }
+
+  // Teste para formatação de mensagem com múltiplos parâmetros.
+  [Fact]
+  public void BadRequestException_ShouldReturnCorrectMessage_WithFormattedString_MultipleParameters()
+  {
+    // Arrange
+    var format = "Tenho {0} registros com problema {1}";
+    var expectedMessage = "Tenho 2 registros com problema algum erro";
+
+    // Act
+    var exception = new BadRequestException(format, 2, "algum erro");
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Single(exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.BadRequest, exception.GetStatusCode());
+  }
 }

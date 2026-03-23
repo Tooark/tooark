@@ -62,4 +62,42 @@ public class GetInfoExceptionTests
     Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
     Assert.Equal(HttpStatusCode.BadRequest, exception.GetStatusCode());
   }
+
+  // Teste para formatação de mensagem com um parâmetro.
+  [Fact]
+  public void GetInfoException_ShouldReturnCorrectMessage_WithFormattedString_SingleParameter()
+  {
+    // Arrange
+    var format = "Campo {0} não encontrado";
+    var expectedMessage = "Campo name não encontrado";
+
+    // Act
+    var exception = new GetInfoException(format, "name");
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Single(exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.BadRequest, exception.GetStatusCode());
+  }
+
+  // Teste para formatação de mensagem com múltiplos parâmetros.
+  [Fact]
+  public void GetInfoException_ShouldReturnCorrectMessage_WithFormattedString_MultipleParameters()
+  {
+    // Arrange
+    var format = "Campo {0} obrigatório foi definido como {1}";
+    var expectedMessage = "Campo title obrigatório foi definido como vazio";
+
+    // Act
+    var exception = new GetInfoException(format, "title", "vazio");
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Single(exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.BadRequest, exception.GetStatusCode());
+  }
 }

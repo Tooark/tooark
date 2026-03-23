@@ -62,4 +62,42 @@ public class NotFoundExceptionTests
     Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
     Assert.Equal(HttpStatusCode.NotFound, exception.GetStatusCode());
   }
+
+  // Teste para formatação de mensagem com um parâmetro.
+  [Fact]
+  public void NotFoundException_ShouldReturnCorrectMessage_WithFormattedString_SingleParameter()
+  {
+    // Arrange
+    var format = "Recurso {0} não foi encontrado";
+    var expectedMessage = "Recurso Usuário não foi encontrado";
+
+    // Act
+    var exception = new NotFoundException(format, "Usuário");
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Single(exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.NotFound, exception.GetStatusCode());
+  }
+
+  // Teste para formatação de mensagem com múltiplos parâmetros.
+  [Fact]
+  public void NotFoundException_ShouldReturnCorrectMessage_WithFormattedString_MultipleParameters()
+  {
+    // Arrange
+    var format = "Recurso {0} não encontrado no sistema {1}";
+    var expectedMessage = "Recurso Usuário não encontrado no sistema prod";
+
+    // Act
+    var exception = new NotFoundException(format, "Usuário", "prod");
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Single(exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.NotFound, exception.GetStatusCode());
+  }
 }

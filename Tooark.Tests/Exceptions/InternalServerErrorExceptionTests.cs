@@ -62,4 +62,42 @@ public class InternalServerErrorExceptionTests
     Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
     Assert.Equal(HttpStatusCode.InternalServerError, exception.GetStatusCode());
   }
+
+  // Teste para formatação de mensagem com um parâmetro.
+  [Fact]
+  public void InternalServerErrorException_ShouldReturnCorrectMessage_WithFormattedString_SingleParameter()
+  {
+    // Arrange
+    var format = "Erro ao processar {0}";
+    var expectedMessage = "Erro ao processar requisição";
+
+    // Act
+    var exception = new InternalServerErrorException(format, "requisição");
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Single(exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.InternalServerError, exception.GetStatusCode());
+  }
+
+  // Teste para formatação de mensagem com múltiplos parâmetros.
+  [Fact]
+  public void InternalServerErrorException_ShouldReturnCorrectMessage_WithFormattedString_MultipleParameters()
+  {
+    // Arrange
+    var format = "Erro ao processar {0} de {1} items";
+    var expectedMessage = "Erro ao processar 5 de 100 items";
+
+    // Act
+    var exception = new InternalServerErrorException(format, 5, 100);
+
+    // Assert
+    Assert.Equal(expectedMessage, exception.Message);
+    Assert.Single(exception.GetErrorMessages());
+    Assert.Equal(expectedMessage, exception.GetErrorMessages().First());
+    Assert.Equal(expectedMessage, exception.GetNotifications().FirstOrDefault()?.Message);
+    Assert.Equal(HttpStatusCode.InternalServerError, exception.GetStatusCode());
+  }
 }

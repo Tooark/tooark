@@ -26,6 +26,13 @@ public class GetInfoException : TooarkException
   /// <param name="notification">A notificação com as mensagens de erros associadas à exceção.</param>
   public GetInfoException(Notification notification) : base(notification) { }
 
+  /// <summary>
+  /// Construtor com suporte a formatação de mensagem.
+  /// </summary>
+  /// <param name="messageFormat">Formato da mensagem de erro com placeholders {0}, {1}, etc.</param>
+  /// <param name="args">Parâmetros para substituição nos placeholders.</param>
+  public GetInfoException(string messageFormat, params object[] args) : base(messageFormat, args) { }
+
 
   /// <summary>
   /// Função virtual para obter o status code da exceção.

@@ -1,0 +1,42 @@
+using System.Net;
+using Tooark.Notifications;
+
+namespace Tooark.Exceptions;
+
+/// <summary>
+/// Representa uma exceção para carga de requisição muito grande (Payload Too Large).
+/// </summary>
+public class PayloadTooLargeException : TooarkException
+{
+  /// <summary>
+  /// Construtor padrão da exceção com mensagem única.
+  /// </summary>
+  /// <param name="message">A mensagem de erro associada à exceção.</param>
+  public PayloadTooLargeException(string message) : base(message) { }
+
+  /// <summary>
+  /// Construtor padrão da exceção com lista de mensagens.
+  /// </summary>
+  /// <param name="messages">A lista de mensagens de erros associadas à exceção.</param>
+  public PayloadTooLargeException(IList<string> messages) : base(messages) { }
+
+  /// <summary>
+  /// Construtor padrão da exceção com notificação.
+  /// </summary>
+  /// <param name="notification">A notificação com as mensagens de erros associadas à exceção.</param>
+  public PayloadTooLargeException(Notification notification) : base(notification) { }
+
+  /// <summary>
+  /// Construtor com suporte a formatação de mensagem.
+  /// </summary>
+  /// <param name="messageFormat">Formato da mensagem de erro com placeholders {0}, {1}, etc.</param>
+  /// <param name="args">Parâmetros para substituição nos placeholders.</param>
+  public PayloadTooLargeException(string messageFormat, params object[] args) : base(messageFormat, args) { }
+
+
+  /// <summary>
+  /// Obtém o código de status HTTP associado à exceção.
+  /// </summary>
+  /// <returns>O código de status HTTP 413 (Payload Too Large).</returns>
+  public override HttpStatusCode GetStatusCode() => HttpStatusCode.RequestEntityTooLarge;
+}

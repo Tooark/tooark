@@ -26,6 +26,13 @@ public class MethodNotAllowedException : TooarkException
   /// <param name="notification">A notificação com as mensagens de erros associadas à exceção.</param>
   public MethodNotAllowedException(Notification notification) : base(notification) { }
 
+  /// <summary>
+  /// Construtor com suporte a formatação de mensagem.
+  /// </summary>
+  /// <param name="messageFormat">Formato da mensagem de erro com placeholders {0}, {1}, etc.</param>
+  /// <param name="args">Parâmetros para substituição nos placeholders.</param>
+  public MethodNotAllowedException(string messageFormat, params object[] args) : base(messageFormat, args) { }
+
 
   /// <summary>
   /// Obtém o código de status HTTP associado à exceção.
