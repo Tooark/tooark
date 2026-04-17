@@ -30,5 +30,7 @@
     <ProjectReference Include="..\Tooark.ValueObjects\Tooark.ValueObjects.csproj" />
     <ProjectReference Include="..\Tooark.Securities\Tooark.Securities.csproj" />
     <ProjectReference Include="..\Tooark.Observability\Tooark.Observability.csproj" />
+    <ProjectReference Include="..\Tooark.Mediator.Abstractions\Tooark.Mediator.Abstractions.csproj" />
+    <ProjectReference Include="..\Tooark.Mediator\Tooark.Mediator.csproj" />
   </ItemGroup>
 </Project>

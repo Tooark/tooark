@@ -1,0 +1,23 @@
+namespace Tooark.Mediator.Abstractions;
+
+/// <summary>
+/// Define uma requisição, que é um tipo de mensagem que espera uma resposta do tipo TResponse.
+/// </summary>
+/// <remarks>
+/// As requisições são usadas para operações que exigem uma resposta, como comandos ou consultas
+/// e geralmente são manipuladas por um único manipulador, que é responsável por processar a requisição
+/// e retornar a resposta solicitada.
+/// </remarks>
+/// <typeparam name="TResponse">O tipo de resposta que a requisição retorna.</typeparam>
+public interface IRequest<out TResponse>
+{ }
+
+/// <summary>
+/// Define uma requisição que não retorna uma resposta.
+/// </summary>
+/// <remarks>
+/// Este é um atalho para requisições que não precisam retornar um valor, usando o tipo de resposta <see cref="Unit"/>.
+/// </remarks>
+/// <typeparam>O tipo de resposta, que é <see cref="Unit"/> para indicar que não há resposta.</typeparam>
+public interface IRequest : IRequest<Unit>
+{ }
