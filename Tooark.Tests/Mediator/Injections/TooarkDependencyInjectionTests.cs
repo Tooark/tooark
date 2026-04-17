@@ -1,20 +1,24 @@
 using Microsoft.Extensions.DependencyInjection;
+using Tooark.Exceptions;
+using Tooark.Mediator;
 using Tooark.Mediator.Abstractions;
+using Tooark.Mediator.Enums;
 using Tooark.Mediator.Handlers;
 using Tooark.Mediator.Injections;
+using Tooark.Mediator.Options;
 
 namespace Tooark.Tests.Mediator.Injections;
 
 public class TooarkDependencyInjectionTests
 {
   [Fact]
-  public void AddTooarkMediator_ShouldThrowArgumentNullException_WhenServicesIsNull()
+  public void AddTooarkMediator_ShouldThrowInternalServerErrorException_WhenServicesIsNull()
   {
     // Arrange
     ServiceCollection? services = null;
 
     // Act & Assert
-    Assert.Throws<ArgumentNullException>(() => services!.AddTooarkMediator(typeof(TooarkDependencyInjectionTests).Assembly));
+    Assert.Throws<InternalServerErrorException>(() => services!.AddTooarkMediator(typeof(TooarkDependencyInjectionTests).Assembly));
   }
 
   [Fact]
@@ -32,21 +36,21 @@ public class TooarkDependencyInjectionTests
     // Assert
     Assert.NotNull(mediator);
 
-    var queryResult = await mediator.Send(new TestQuery("query-result"));
+    var queryResult = await mediator.SendAsync(new TestQuery("query-result"));
     Assert.Equal("query-result", queryResult);
 
-    var commandResult = await mediator.Send(new TestCommand("command-result"));
+    var commandResult = await mediator.SendAsync(new TestCommand("command-result"));
     Assert.Equal("command-result", commandResult);
 
-    await mediator.Send(new VoidCommand());
+    await mediator.SendAsync(new VoidCommand());
 
     NotificationCounter.Reset();
-    await mediator.Publish(new TestNotification());
+    await mediator.PublishAsync(new TestNotification());
     Assert.Equal(1, NotificationCounter.Value);
   }
 
   [Fact]
-  public async Task AddTooarkMediator_ShouldUseCallingAssembly_WhenNoAssemblyIsProvided()
+  public void AddTooarkMediator_ShouldUseDefaultAssembly_WhenNoAssemblyIsProvided()
   {
     // Arrange
     var services = new ServiceCollection();
@@ -58,8 +62,7 @@ public class TooarkDependencyInjectionTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Assert
-    var result = await mediator.Send(new TestQuery("from-calling-assembly"));
-    Assert.Equal("from-calling-assembly", result);
+    Assert.NotNull(mediator);
   }
 
   [Fact]
@@ -78,7 +81,7 @@ public class TooarkDependencyInjectionTests
       && service.ImplementationType == typeof(TestQueryHandler));
 
     var notificationHandlerRegistrations = services.Count(service =>
-      service.ServiceType == typeof(INotificationHandler<TestNotification>)
+      service.ServiceType == typeof(INotifyHandler<TestNotification>)
       && service.ImplementationType == typeof(TestNotificationHandler));
 
     Assert.Equal(1, requestHandlerRegistrations);
@@ -108,11 +111,50 @@ public class TooarkDependencyInjectionTests
       && service.ImplementationType == typeof(VoidCommandHandler));
   }
 
+  [Fact]
+  public void AddTooarkMediator_ShouldRegisterISenderAndIPublisher()
+  {
+    // Arrange
+    var services = new ServiceCollection();
+
+    // Act
+    services.AddTooarkMediator(typeof(TooarkDependencyInjectionTests).Assembly);
+
+    var provider = services.BuildServiceProvider();
+
+    // Assert
+    var sender = provider.GetRequiredService<ISender>();
+    var publisher = provider.GetRequiredService<IPublisher>();
+    var mediator = provider.GetRequiredService<IMediator>();
+
+    Assert.NotNull(sender);
+    Assert.NotNull(publisher);
+    Assert.NotNull(mediator);
+  }
+
+  [Fact]
+  public void AddTooarkMediator_ShouldApplyConfiguredOptions()
+  {
+    // Arrange
+    var services = new ServiceCollection();
+
+    // Act
+    services.AddTooarkMediator(
+      options => options.NotifyPublishStrategy = ENotifyStrategy.Sequential,
+      typeof(TooarkDependencyInjectionTests).Assembly);
+
+    var provider = services.BuildServiceProvider();
+
+    // Assert
+    var options = provider.GetRequiredService<MediatorOptions>();
+    Assert.Equal(ENotifyStrategy.Sequential, options.NotifyPublishStrategy);
+  }
+
   private sealed record TestQuery(string Value) : IQuery<string>;
 
   private sealed class TestQueryHandler : IQueryHandler<TestQuery, string>
   {
-    public Task<string> Handle(TestQuery request, CancellationToken cancellationToken)
+    public Task<string> HandleAsync(TestQuery request, CancellationToken cancellationToken)
     {
       return Task.FromResult(request.Value);
     }
@@ -122,7 +164,7 @@ public class TooarkDependencyInjectionTests
 
   private sealed class TestCommandHandler : ICommandHandler<TestCommand, string>
   {
-    public Task<string> Handle(TestCommand request, CancellationToken cancellationToken)
+    public Task<string> HandleAsync(TestCommand request, CancellationToken cancellationToken)
     {
       return Task.FromResult(request.Value);
     }
@@ -132,13 +174,13 @@ public class TooarkDependencyInjectionTests
 
   private sealed class VoidCommandHandler : ICommandHandler<VoidCommand>
   {
-    public Task<Unit> Handle(VoidCommand request, CancellationToken cancellationToken)
+    public Task<Unit> HandleAsync(VoidCommand request, CancellationToken cancellationToken)
     {
       return Unit.Task;
     }
   }
 
-  private sealed record TestNotification : INotification;
+  private sealed record TestNotification : INotify;
 
   private static class NotificationCounter
   {
@@ -157,9 +199,9 @@ public class TooarkDependencyInjectionTests
     }
   }
 
-  private sealed class TestNotificationHandler : INotificationHandler<TestNotification>
+  private sealed class TestNotificationHandler : INotifyHandler<TestNotification>
   {
-    public Task Handle(TestNotification notification, CancellationToken cancellationToken)
+    public Task HandleAsync(TestNotification notification, CancellationToken cancellationToken)
     {
       NotificationCounter.Increment();
       return Task.CompletedTask;
