@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Securities", "Tooark
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Observability", "Tooark.Observability\Tooark.Observability.csproj", "{12B6FEB8-73BD-4AED-8A8D-9F739D1695F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Mediator.Abstractions", "Tooark.Mediator.Abstractions\Tooark.Mediator.Abstractions.csproj", "{040A9E36-B8DC-477A-A98B-A2C7AD7055EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tooark.Mediator", "Tooark.Mediator\Tooark.Mediator.csproj", "{D19C5E5D-AAD8-4416-84D0-EE8803E61081}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,5 +106,13 @@ Global
 		{12B6FEB8-73BD-4AED-8A8D-9F739D1695F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12B6FEB8-73BD-4AED-8A8D-9F739D1695F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12B6FEB8-73BD-4AED-8A8D-9F739D1695F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{040A9E36-B8DC-477A-A98B-A2C7AD7055EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{040A9E36-B8DC-477A-A98B-A2C7AD7055EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{040A9E36-B8DC-477A-A98B-A2C7AD7055EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{040A9E36-B8DC-477A-A98B-A2C7AD7055EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D19C5E5D-AAD8-4416-84D0-EE8803E61081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D19C5E5D-AAD8-4416-84D0-EE8803E61081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D19C5E5D-AAD8-4416-84D0-EE8803E61081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D19C5E5D-AAD8-4416-84D0-EE8803E61081}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

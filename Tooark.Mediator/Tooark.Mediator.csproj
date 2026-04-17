@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageId>Tooark.Mediator</PackageId>
+    <Title>Tooark.Mediator</Title>
+    <Authors>Paulo Sergio de Freitas Junior</Authors>
+    <PackageTags>toolkit, mediator, cqrs, cqs, .NET</PackageTags>
+    <Summary>Mediator para arquiteturas CQRS/CQS em .NET.</Summary>
+    <PackageDescription>Biblioteca para desacoplamento entre requests e handlers com padrão Mediator em aplicações .NET.</PackageDescription>
+    <Description>Library for Mediator pattern supporting commands, queries and notifications in .NET projects.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tooark.Exceptions\Tooark.Exceptions.csproj" />
+    <ProjectReference Include="..\Tooark.Mediator.Abstractions\Tooark.Mediator.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+</Project>
