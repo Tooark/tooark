@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Tooark.Exceptions;
-using Tooark.Mediator;
 using Tooark.Mediator.Abstractions;
 using Tooark.Mediator.Enums;
 using Tooark.Mediator.Handlers;
@@ -22,7 +21,9 @@ public class MediatorTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Act
-    var result = await mediator.SendAsync(new PingRequest("pong"));
+    var result = await mediator.SendAsync(
+      new PingRequest("pong"),
+      TestContext.Current.CancellationToken);
 
     // Assert
     Assert.Equal("pong", result);
@@ -39,7 +40,8 @@ public class MediatorTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Act & Assert
-    await Assert.ThrowsAsync<BadRequestException>(() => mediator.SendAsync<string>(null!));
+    await Assert.ThrowsAsync<BadRequestException>(
+      () => mediator.SendAsync<string>(null!, TestContext.Current.CancellationToken));
   }
 
   [Fact]
@@ -53,7 +55,8 @@ public class MediatorTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Act
-    var exception = await Assert.ThrowsAsync<InternalServerErrorException>(() => mediator.SendAsync(new PingRequest("pong")));
+    var exception = await Assert.ThrowsAsync<InternalServerErrorException>(
+      () => mediator.SendAsync(new PingRequest("pong"), TestContext.Current.CancellationToken));
 
     // Assert
     Assert.Contains("Handler.NotFound", exception.Message);
@@ -71,7 +74,8 @@ public class MediatorTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Act
-    var exception = await Assert.ThrowsAsync<InternalServerErrorException>(() => mediator.SendAsync(new NullTaskRequest()));
+    var exception = await Assert.ThrowsAsync<InternalServerErrorException>(
+      () => mediator.SendAsync(new NullTaskRequest(), TestContext.Current.CancellationToken));
 
     // Assert
     Assert.Contains("Handler.ExecutionFailed", exception.Message);
@@ -92,7 +96,7 @@ public class MediatorTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Act
-    await mediator.PublishAsync(new TestNotification());
+    await mediator.PublishAsync(new TestNotification(), TestContext.Current.CancellationToken);
 
     // Assert
     Assert.Equal(2, TestNotificationCounter.Value);
@@ -109,7 +113,7 @@ public class MediatorTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Act & Assert
-    await mediator.PublishAsync(new TestNotification());
+    await mediator.PublishAsync(new TestNotification(), TestContext.Current.CancellationToken);
   }
 
   [Fact]
@@ -123,7 +127,8 @@ public class MediatorTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Act & Assert
-    await Assert.ThrowsAsync<BadRequestException>(() => mediator.PublishAsync(null!));
+    await Assert.ThrowsAsync<BadRequestException>(
+      () => mediator.PublishAsync(null!, TestContext.Current.CancellationToken));
   }
 
   [Fact]
@@ -138,7 +143,8 @@ public class MediatorTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Act
-    var exception = await Assert.ThrowsAsync<InternalServerErrorException>(() => mediator.PublishAsync(new NullTaskNotification()));
+    var exception = await Assert.ThrowsAsync<InternalServerErrorException>(
+      () => mediator.PublishAsync(new NullTaskNotification(), TestContext.Current.CancellationToken));
 
     // Assert
     Assert.Contains("Handler.ExecutionFailed", exception.Message);
@@ -159,9 +165,9 @@ public class MediatorTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Act
-    var publishTask = mediator.PublishAsync(new ParallelProbeNotification());
+    var publishTask = mediator.PublishAsync(new ParallelProbeNotification(), TestContext.Current.CancellationToken);
     await ParallelPublishProbe.WaitForFirstHandlerAsync();
-    await Task.Delay(50);
+    await Task.Delay(50, TestContext.Current.CancellationToken);
 
     // Assert
     Assert.True(ParallelPublishProbe.SecondHandlerStarted);
@@ -190,9 +196,9 @@ public class MediatorTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Act
-    var publishTask = mediator.PublishAsync(new ParallelProbeNotification());
+    var publishTask = mediator.PublishAsync(new ParallelProbeNotification(), TestContext.Current.CancellationToken);
     await ParallelPublishProbe.WaitForFirstHandlerAsync();
-    await Task.Delay(50);
+    await Task.Delay(50, TestContext.Current.CancellationToken);
 
     // Assert - A implementação atual invoca todos os handlers antes de aplicar a estratégia.
     Assert.True(ParallelPublishProbe.SecondHandlerStarted);

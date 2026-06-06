@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Tooark.Exceptions;
-using Tooark.Mediator;
 using Tooark.Mediator.Abstractions;
 using Tooark.Mediator.Enums;
 using Tooark.Mediator.Handlers;
@@ -36,16 +35,24 @@ public class TooarkDependencyInjectionTests
     // Assert
     Assert.NotNull(mediator);
 
-    var queryResult = await mediator.SendAsync(new TestQuery("query-result"));
+    var queryResult = await mediator.SendAsync(
+      new TestQuery("query-result"),
+      TestContext.Current.CancellationToken);
     Assert.Equal("query-result", queryResult);
 
-    var commandResult = await mediator.SendAsync(new TestCommand("command-result"));
+    var commandResult = await mediator.SendAsync(
+      new TestCommand("command-result"),
+      TestContext.Current.CancellationToken);
     Assert.Equal("command-result", commandResult);
 
-    await mediator.SendAsync(new VoidCommand());
+    await mediator.SendAsync(
+      new VoidCommand(),
+      TestContext.Current.CancellationToken);
 
     NotificationCounter.Reset();
-    await mediator.PublishAsync(new TestNotification());
+    await mediator.PublishAsync(
+      new TestNotification(),
+      TestContext.Current.CancellationToken);
     Assert.Equal(1, NotificationCounter.Value);
   }
 
