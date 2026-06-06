@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Tooark.Exceptions;
-using Tooark.Mediator;
 using Tooark.Mediator.Abstractions;
 using Tooark.Mediator.Enums;
 using Tooark.Mediator.Handlers;
@@ -60,7 +59,9 @@ public class MediatorDependencyInjectionAdvancedTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Assert - Should be able to send requests without errors
-    var result = await mediator.SendAsync(new TestQueryForDI("test"), CancellationToken.None);
+    var result = await mediator.SendAsync(
+      new TestQueryForDI("test"),
+      TestContext.Current.CancellationToken);
     Assert.Equal("test", result);
   }
 
@@ -244,7 +245,9 @@ public class MediatorDependencyInjectionAdvancedTests
     var mediator = provider.GetRequiredService<IMediator>();
 
     // Act
-    await mediator.PublishAsync(new TestNotificationForDI());
+    await mediator.PublishAsync(
+      new TestNotificationForDI(),
+      TestContext.Current.CancellationToken);
 
     // Assert - Should have called at least one handler
     Assert.True(DITestNotificationCounter.Value > 0);

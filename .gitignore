@@ -491,3 +491,6 @@ scripts/**
 # Script files
 *.ps1
 *.sh
+
+## Report files
+**/reports/*.json
